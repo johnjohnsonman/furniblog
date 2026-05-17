@@ -2,28 +2,36 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Menu, X, Search } from "lucide-react"
+import { Menu, X, Search, ChevronDown } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 
-const navigation = [
-  { name: "Products", href: "/products" },
+const mainNav = [
   { name: "Brands", href: "/brands" },
-  { name: "Designers", href: "/designers" },
+  { name: "Reviews", href: "/reviews" },
+  { name: "Gallery", href: "/gallery" },
   { name: "Compare", href: "/compare" },
 ]
 
 export function Header() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [categoryOpen, setCategoryOpen] = useState(false)
+
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(href + "/")
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-4 h-14">
-        <Link href="/" className="font-serif text-lg font-medium tracking-tight text-foreground">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 h-14">
+        <Link
+          href="/"
+          className="font-serif text-lg font-medium tracking-tight text-foreground"
+        >
           Furniblog
         </Link>
-        
+
         <div className="flex lg:hidden">
           <button
             type="button"
@@ -35,14 +43,58 @@ export function Header() {
           </button>
         </div>
 
-        <div className="hidden lg:flex lg:items-center lg:gap-6">
-          {navigation.map((item) => (
+        <div className="hidden lg:flex lg:items-center lg:gap-1">
+          {/* Shop by Category */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setCategoryOpen((o) => !o)}
+              onBlur={() => setTimeout(() => setCategoryOpen(false), 150)}
+              className={cn(
+                "inline-flex items-center gap-1 px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted",
+                pathname.startsWith("/products")
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground"
+              )}
+            >
+              Chairs
+              <ChevronDown
+                className={cn(
+                  "h-3.5 w-3.5 transition-transform",
+                  categoryOpen && "rotate-180"
+                )}
+              />
+            </button>
+            {categoryOpen && (
+              <div className="absolute left-0 top-full mt-1 w-56 py-2 bg-card border border-border rounded-lg shadow-lg z-50">
+                <Link
+                  href="/products"
+                  className="block px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
+                  onClick={() => setCategoryOpen(false)}
+                >
+                  All Chairs
+                </Link>
+                {CHAIR_CATEGORIES.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/products?category=${cat.id}`}
+                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    onClick={() => setCategoryOpen(false)}
+                  >
+                    {cat.navLabel}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {mainNav.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               className={cn(
-                "text-sm transition-colors hover:text-foreground",
-                pathname === item.href || pathname.startsWith(item.href + "/")
+                "px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted",
+                isActive(item.href)
                   ? "text-foreground font-medium"
                   : "text-muted-foreground"
               )}
@@ -50,23 +102,29 @@ export function Header() {
               {item.name}
             </Link>
           ))}
+
           <Link
             href="/products"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 ml-1 text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-muted"
+            aria-label="Search chairs"
           >
             <Search className="h-4 w-4" />
           </Link>
         </div>
       </nav>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-50">
-          <div className="fixed inset-0 bg-foreground/20" onClick={() => setMobileMenuOpen(false)} />
+          <div
+            className="fixed inset-0 bg-foreground/20"
+            onClick={() => setMobileMenuOpen(false)}
+          />
           <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-background px-6 py-6 sm:max-w-sm border-l border-border">
             <div className="flex items-center justify-between">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                <span className="font-serif text-lg font-medium tracking-tight">Furniblog</span>
+                <span className="font-serif text-lg font-medium tracking-tight">
+                  Furniblog
+                </span>
               </Link>
               <button
                 type="button"
@@ -77,22 +135,46 @@ export function Header() {
                 <X className="h-5 w-5" />
               </button>
             </div>
+
             <div className="mt-8 space-y-1">
-              {navigation.map((item) => (
+              <p className="px-1 py-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                Chairs
+              </p>
+              <Link
+                href="/products"
+                className="block py-2.5 text-base text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                All Chairs
+              </Link>
+              {CHAIR_CATEGORIES.map((cat) => (
                 <Link
-                  key={item.name}
-                  href={item.href}
-                  className={cn(
-                    "block py-3 text-base transition-colors",
-                    pathname === item.href || pathname.startsWith(item.href + "/")
-                      ? "text-foreground font-medium"
-                      : "text-muted-foreground"
-                  )}
+                  key={cat.id}
+                  href={`/products?category=${cat.id}`}
+                  className="block py-2.5 text-base text-muted-foreground"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.name}
+                  {cat.navLabel}
                 </Link>
               ))}
+
+              <div className="pt-4 mt-4 border-t border-border space-y-1">
+                {mainNav.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "block py-3 text-base transition-colors",
+                      isActive(item.href)
+                        ? "text-foreground font-medium"
+                        : "text-muted-foreground"
+                    )}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

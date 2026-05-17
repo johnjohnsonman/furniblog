@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://furniblog.vercel.app
+
+# Sitemaps
+Sitemap: https://furniblog.vercel.app/sitemap.xml

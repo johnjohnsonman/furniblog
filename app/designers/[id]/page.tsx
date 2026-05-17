@@ -22,7 +22,7 @@ export default async function DesignerPage({ params }: DesignerPageProps) {
   }
 
   const designerProducts = products.filter((p) => p.designerId === designer.id)
-  const associatedBrands = brands.filter((b) => designer.brands.includes(b.name))
+  const associatedBrands = brands.filter((b) => designer.brands.includes(b.id))
 
   return (
     <div className="min-h-screen flex flex-col">

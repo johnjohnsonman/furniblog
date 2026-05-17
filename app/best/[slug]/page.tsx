@@ -3,7 +3,7 @@ import Link from "next/link"
 import { ArrowRight, Check, X, ExternalLink, MapPin, Star, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { products, bestLists, getAverageScore } from "@/lib/data"
+import { products, bestLists, listProductMap, getAverageScore } from "@/lib/data"
 
 interface BestListPageProps {
   params: Promise<{ slug: string }>
@@ -11,15 +11,6 @@ interface BestListPageProps {
 
 export function generateStaticParams() {
   return bestLists.map((list) => ({ slug: list.id }))
-}
-
-const listProductMap: Record<string, string[]> = {
-  "best-office-chairs": ["1", "2", "3", "4", "9", "10"],
-  "best-ergonomic-chairs": ["1", "2", "3", "4", "7", "9"],
-  "best-for-back-pain": ["1", "3", "4", "9"],
-  "best-japanese-chairs": ["1", "2"],
-  "best-luxury-chairs": ["5", "6", "2"],
-  "best-for-long-hours": ["1", "2", "3", "4", "9", "10"],
 }
 
 export default async function BestListPage({ params }: BestListPageProps) {

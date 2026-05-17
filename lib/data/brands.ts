@@ -1,0 +1,95 @@
+import type { Brand } from "@/types/brand"
+
+export const brands: Brand[] = [
+  {
+    id: "herman-miller",
+    slug: "herman-miller",
+    name: "Herman Miller",
+    country: "USA",
+    founded: 1905,
+    logo: "HM",
+    description:
+      "Pioneers of modern furniture design, known for iconic ergonomic office chairs and timeless residential pieces.",
+    productCount: 3,
+    category: "Office & Residential",
+    website: "https://www.hermanmiller.com",
+  },
+  {
+    id: "knoll",
+    slug: "knoll",
+    name: "Knoll",
+    country: "USA",
+    founded: 1938,
+    logo: "KN",
+    description:
+      "Renowned for furniture that combines modernist design principles with rigorous manufacturing standards.",
+    productCount: 1,
+    category: "Office",
+    website: "https://www.knoll.com",
+  },
+  {
+    id: "steelcase",
+    slug: "steelcase",
+    name: "Steelcase",
+    country: "USA",
+    founded: 1912,
+    logo: "SC",
+    description:
+      "Global leader in office furniture, architecture, and technology products for office environments.",
+    productCount: 2,
+    category: "Office",
+    website: "https://www.steelcase.com",
+  },
+  {
+    id: "humanscale",
+    slug: "humanscale",
+    name: "Humanscale",
+    country: "USA",
+    founded: 1983,
+    logo: "HS",
+    description:
+      "Leader in ergonomic products that improve health and comfort at work.",
+    productCount: 1,
+    category: "Office",
+    website: "https://www.humanscale.com",
+  },
+  {
+    id: "okamura",
+    slug: "okamura",
+    name: "Okamura",
+    country: "Japan",
+    founded: 1945,
+    logo: "OK",
+    description:
+      "Japanese manufacturer known for precision engineering and premium ergonomic seating.",
+    productCount: 2,
+    category: "Office",
+    website: "https://www.okamura.jp",
+  },
+  {
+    id: "itoki",
+    slug: "itoki",
+    name: "Itoki",
+    country: "Japan",
+    founded: 1890,
+    logo: "IT",
+    description:
+      "One of Japan's oldest office furniture makers, focused on ergonomic task seating.",
+    productCount: 1,
+    category: "Office",
+    website: "https://www.itoki.jp",
+  },
+  {
+    id: "kokuyo",
+    slug: "kokuyo",
+    name: "Kokuyo",
+    country: "Japan",
+    founded: 1905,
+    logo: "KY",
+    description:
+      "Major Japanese workspace brand offering ergonomic chairs for corporate and home offices.",
+    productCount: 2,
+    category: "Office",
+    website: "https://www.kokuyo.co.jp",
+  },
+]
