@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -133,7 +133,13 @@ export default function AdminPipelinePage() {
     naver: false,
   })
   const [running, setRunning] = useState(false)
-  const [runAllProgress, setRunAllProgress] = useState<string | null>(null)
+  const [isRunningAll, setIsRunningAll] = useState(false)
+  const [runAllIndex, setRunAllIndex] = useState(0)
+  const [runAllTotal, setRunAllTotal] = useState(0)
+  const [runAllChairName, setRunAllChairName] = useState<string | null>(null)
+  const [runAllSaved, setRunAllSaved] = useState(0)
+  const [runAllDoneMessage, setRunAllDoneMessage] = useState<string | null>(null)
+  const stopAllRef = useRef(false)
   const [result, setResult] = useState<RunResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
@@ -178,10 +184,25 @@ export default function AdminPipelinePage() {
       if (resultsFilter === "no") qs.set("hasResults", "false")
       if (dateFilter !== "all") qs.set("dateRange", dateFilter)
 
-      const res = await fetch(`/api/pipeline/history?${qs}`)
-      if (!res.ok) return
+      const historyResult = await fetchJson<HistoryResponse>(
+        `/api/pipeline/history?${qs}`
+      )
+      if (!historyResult.ok) {
+        setHistoryError(historyResult.error)
+        setHistory([])
+        setHistoryTotal(0)
+        setHistoryTotalPages(0)
+        setHistoryStats({
+          totalRuns: 0,
+          totalCollected: 0,
+          totalSaved: 0,
+          successRate: 0,
+        })
+        return
+      }
 
-      const data = (await res.json()) as HistoryResponse
+      setHistoryError(null)
+      const data = historyResult.data
       setHistory(data.runs ?? [])
       setHistoryTotal(data.total ?? 0)
       setHistoryTotalPages(data.totalPages ?? 0)
@@ -220,11 +241,11 @@ export default function AdminPipelinePage() {
     void loadHistory()
   }, [loadHistory])
 
-  async function runPipeline(opts?: { runAll?: boolean }) {
+  async function runPipeline() {
     setRunning(true)
     setError(null)
     setResult(null)
-    if (opts?.runAll) setRunAllProgress("Starting…")
+    setRunAllDoneMessage(null)
 
     try {
       const selectedSources = (
@@ -233,13 +254,12 @@ export default function AdminPipelinePage() {
         .filter(([, on]) => on)
         .map(([key]) => key)
 
-      if (!opts?.runAll && selectedSources.length === 0) {
+      if (selectedSources.length === 0) {
         throw new Error("Select at least one source")
       }
 
       const runResult = await fetchJson<{
         error?: string
-        chairs?: number
         collected: number
         processed: number
         saved: number
@@ -249,14 +269,10 @@ export default function AdminPipelinePage() {
       }>("/api/pipeline/run?debug=true", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          opts?.runAll
-            ? { runAll: true, maxPerSource: 5 }
-            : {
-                chairSlug,
-                sources: selectedSources,
-              }
-        ),
+        body: JSON.stringify({
+          chairSlug,
+          sources: selectedSources,
+        }),
       })
 
       if (!runResult.ok) {
@@ -264,28 +280,14 @@ export default function AdminPipelinePage() {
       }
 
       const data = runResult.data
-
-      if (opts?.runAll) {
-        setRunAllProgress(
-          `Completed ${data.chairs} chairs — saved ${data.saved} reviews`
-        )
-        setResult({
-          collected: data.collected,
-          processed: data.processed,
-          saved: data.saved,
-          failed: data.failed,
-        })
-      } else {
-        setResult({
-          collected: data.collected,
-          processed: data.processed,
-          saved: data.saved,
-          failed: data.failed,
-          chairName: data.chairName,
-          debugSamples: data.debug?.samples,
-        })
-        setRunAllProgress(null)
-      }
+      setResult({
+        collected: data.collected,
+        processed: data.processed,
+        saved: data.saved,
+        failed: data.failed,
+        chairName: data.chairName,
+        debugSamples: data.debug?.samples,
+      })
 
       setHistoryPage(1)
       void loadHistory()
@@ -294,6 +296,101 @@ export default function AdminPipelinePage() {
     } finally {
       setRunning(false)
     }
+  }
+
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms))
+  }
+
+  async function runAllChairs() {
+    stopAllRef.current = false
+    setIsRunningAll(true)
+    setRunning(true)
+    setError(null)
+    setResult(null)
+    setRunAllDoneMessage(null)
+    setRunAllIndex(0)
+    setRunAllTotal(0)
+    setRunAllChairName(null)
+    setRunAllSaved(0)
+
+    const runAllSources: PipelineSourceKey[] = ["reddit"]
+    let index = 0
+    let total = 0
+    let savedTotal = 0
+    let done = false
+
+    try {
+      while (!done && !stopAllRef.current) {
+        const runResult = await fetchJson<{
+          error?: string
+          done: boolean
+          next: number
+          total: number
+          current: string | null
+          collected: number
+          saved: number
+          failed: number
+        }>("/api/pipeline/run-all", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            index,
+            sources: runAllSources,
+            maxPerSource: 5,
+          }),
+        })
+
+        if (!runResult.ok) {
+          throw new Error(runResult.error)
+        }
+
+        const data = runResult.data
+        total = data.total
+        savedTotal += data.saved ?? 0
+
+        setRunAllTotal(total)
+        setRunAllIndex(data.done ? total : data.next)
+        setRunAllChairName(data.current)
+        setRunAllSaved(savedTotal)
+
+        done = data.done
+        index = data.next
+
+        if (!done && !stopAllRef.current) {
+          await delay(1000)
+        }
+      }
+
+      if (stopAllRef.current) {
+        setRunAllDoneMessage(
+          `Stopped at ${index} / ${total}. Saved ${savedTotal} reviews so far.`
+        )
+      } else {
+        setRunAllDoneMessage(
+          `Done! Processed ${total} chairs. Saved ${savedTotal} reviews.`
+        )
+      }
+
+      setResult({
+        collected: 0,
+        processed: total,
+        saved: savedTotal,
+        failed: 0,
+      })
+      setHistoryPage(1)
+      void loadHistory()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Run all failed")
+    } finally {
+      setIsRunningAll(false)
+      setRunning(false)
+      setRunAllChairName(null)
+    }
+  }
+
+  function stopRunAll() {
+    stopAllRef.current = true
   }
 
   const rangeStart =
@@ -341,8 +438,11 @@ export default function AdminPipelinePage() {
           ))}
         </div>
 
-        <Button onClick={() => void runPipeline()} disabled={running || !chairSlug}>
-          {running && !runAllProgress ? (
+        <Button
+          onClick={() => void runPipeline()}
+          disabled={running || isRunningAll || !chairSlug}
+        >
+          {running && !isRunningAll ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
           ) : null}
           Run Pipeline
@@ -352,10 +452,10 @@ export default function AdminPipelinePage() {
       {(running || result) && (
         <section className="border border-border rounded-xl p-6 mb-8">
           <h2 className="text-lg font-medium mb-4">Run result</h2>
-          {running && (
+          {running && !isRunningAll && (
             <p className="text-sm text-muted-foreground flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
-              Processing… {runAllProgress ?? ""}
+              Processing…
             </p>
           )}
           {result && !running && (
@@ -407,18 +507,52 @@ export default function AdminPipelinePage() {
       <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
         <h2 className="text-lg font-medium">Quick run</h2>
         <p className="text-sm text-muted-foreground">
-          Process every chair with Reddit only (max 5 posts per chair). This may
-          take a long time and uses Claude API credits.
+          Process every chair one at a time with Reddit only (max 5 posts per
+          chair). Runs in the background from your browser to avoid server
+          timeouts.
         </p>
         <Button
           variant="outline"
-          onClick={() => void runPipeline({ runAll: true })}
+          onClick={() => void runAllChairs()}
           disabled={running}
         >
           Run for All Chairs
         </Button>
-        {runAllProgress && (
-          <p className="text-sm text-muted-foreground">{runAllProgress}</p>
+
+        {isRunningAll && (
+          <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-3">
+            <div className="text-sm font-medium">
+              Processing {runAllIndex} / {runAllTotal || "…"}
+              {runAllChairName ? `: ${runAllChairName}` : ""}
+            </div>
+            {runAllChairName && (
+              <p className="text-sm text-muted-foreground">
+                Current: {runAllChairName}
+              </p>
+            )}
+            {runAllTotal > 0 && (
+              <progress
+                className="w-full h-2 rounded"
+                value={runAllIndex}
+                max={runAllTotal}
+              />
+            )}
+            <p className="text-sm text-muted-foreground">
+              Saved so far: {runAllSaved} reviews
+            </p>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={stopRunAll}
+            >
+              Stop
+            </Button>
+          </div>
+        )}
+
+        {runAllDoneMessage && !isRunningAll && (
+          <p className="text-sm text-foreground">{runAllDoneMessage}</p>
         )}
       </section>
 

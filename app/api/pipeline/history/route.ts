@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
-import { jsonInternalError, isMissingTableError } from "@/lib/admin/api-response"
+import { isMissingTableError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 export type PipelineRun = {
@@ -156,16 +156,7 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.warn("[pipeline/history]", error.message, error.code)
-      if (isMissingTableError(error)) {
-        return NextResponse.json(emptyHistoryResponse(page))
-      }
-      return NextResponse.json(
-        {
-          error: error.message,
-          ...emptyHistoryResponse(page),
-        },
-        { status: 500 }
-      )
+      return NextResponse.json(emptyHistoryResponse(page))
     }
 
     const total = count ?? 0
@@ -198,7 +189,7 @@ export async function GET(request: NextRequest) {
       stats,
     })
   } catch (error) {
-    console.error("[pipeline/history]", error)
-    return jsonInternalError(error)
+    console.error("Pipeline history error:", error)
+    return NextResponse.json(emptyHistoryResponse(page))
   }
 }

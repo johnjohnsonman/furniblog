@@ -37,7 +37,7 @@ async function fetchHtml(url: string): Promise<string | null> {
   try {
     const res = await axios.get(url, {
       headers: HEADERS,
-      timeout: 15000,
+      timeout: 10000,
       maxRedirects: 5,
       validateStatus: (s) => s < 400,
     })
@@ -74,7 +74,7 @@ async function searchDCInsidePosts(
   try {
     const res = await axios.get(searchUrl, {
       headers: HEADERS,
-      timeout: 15000,
+      timeout: 10000,
       maxRedirects: 5,
       validateStatus: () => true,
     })

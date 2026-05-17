@@ -5,6 +5,8 @@ import { runPipeline } from "@/lib/pipeline"
 import type { PipelineSource } from "@/lib/pipeline/types"
 import { createAdminClient } from "@/lib/supabase/admin"
 
+export const maxDuration = 60
+
 const VALID_SOURCES: PipelineSource[] = [
   "reddit",
   "youtube",
@@ -23,7 +25,6 @@ export async function POST(request: NextRequest) {
     chairSlug?: string
     sources?: string[]
     maxPerSource?: number
-    runAll?: boolean
   }
 
   try {
@@ -33,121 +34,70 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-  const supabase = createAdminClient()
+    const supabase = createAdminClient()
 
-  if (body.runAll) {
-    const { data: products, error } = await supabase
+    const chairSlug = body.chairSlug?.trim()
+    if (!chairSlug) {
+      return NextResponse.json({ error: "chairSlug is required" }, { status: 400 })
+    }
+
+    const { data: product, error: productError } = await supabase
       .from("products")
       .select("id, slug, name")
+      .eq("slug", chairSlug)
       .eq("track", "chair")
-      .order("name")
+      .maybeSingle()
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    if (productError) {
+      return NextResponse.json({ error: productError.message }, { status: 500 })
+    }
+    if (!product) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 })
     }
 
-    const totals = { collected: 0, processed: 0, saved: 0, failed: 0 }
-    const runs: Array<{
-      chairSlug: string
-      chairName: string
-      collected: number
-      saved: number
-      failed: number
-    }> = []
+    const sources = (body.sources ?? ["reddit", "youtube"]).filter(
+      (s): s is PipelineSource => VALID_SOURCES.includes(s as PipelineSource)
+    )
 
-    for (const product of products ?? []) {
-      const result = await runPipeline({
-        chairSlug: product.slug,
-        chairName: product.name,
-        productId: product.id,
-        sources: ["reddit"],
-        maxPerSource: body.maxPerSource ?? 5,
-        debug,
-      })
-      totals.collected += result.collected
-      totals.processed += result.processed
-      totals.saved += result.saved
-      totals.failed += result.failed
-      runs.push({
-        chairSlug: product.slug,
-        chairName: product.name,
-        collected: result.collected,
-        saved: result.saved,
-        failed: result.failed,
-      })
+    if (sources.length === 0) {
+      return NextResponse.json({ error: "No valid sources" }, { status: 400 })
     }
+
+    const result = await runPipeline({
+      chairSlug: product.slug,
+      chairName: product.name,
+      productId: product.id,
+      sources,
+      maxPerSource: body.maxPerSource,
+      debug,
+    })
 
     return NextResponse.json({
       success: true,
-      runAll: true,
-      chairs: runs.length,
-      ...totals,
-      runs,
+      debug,
+      chairName: product.name,
+      chairSlug: product.slug,
+      collected: result.collected,
+      processed: result.processed,
+      saved: result.saved,
+      failed: result.failed,
+      ...(debug
+        ? {
+            debugItems: result.debugItems,
+            debug: {
+              samples:
+                result.debugSamples ??
+                result.collectedItems?.slice(0, 2).map((item) => ({
+                  source: item.source,
+                  url: item.url,
+                  textPreview: item.body.substring(0, 300),
+                  claudeOutput: result.results[0] ?? null,
+                })) ??
+                [],
+            },
+          }
+        : {}),
     })
-  }
-
-  const chairSlug = body.chairSlug?.trim()
-  if (!chairSlug) {
-    return NextResponse.json({ error: "chairSlug is required" }, { status: 400 })
-  }
-
-  const { data: product, error: productError } = await supabase
-    .from("products")
-    .select("id, slug, name")
-    .eq("slug", chairSlug)
-    .eq("track", "chair")
-    .maybeSingle()
-
-  if (productError) {
-    return NextResponse.json({ error: productError.message }, { status: 500 })
-  }
-  if (!product) {
-    return NextResponse.json({ error: "Product not found" }, { status: 404 })
-  }
-
-  const sources = (body.sources ?? ["reddit", "youtube"]).filter(
-    (s): s is PipelineSource => VALID_SOURCES.includes(s as PipelineSource)
-  )
-
-  if (sources.length === 0) {
-    return NextResponse.json({ error: "No valid sources" }, { status: 400 })
-  }
-
-  const result = await runPipeline({
-    chairSlug: product.slug,
-    chairName: product.name,
-    productId: product.id,
-    sources,
-    maxPerSource: body.maxPerSource,
-    debug,
-  })
-
-  return NextResponse.json({
-    success: true,
-    debug,
-    chairName: product.name,
-    chairSlug: product.slug,
-    collected: result.collected,
-    processed: result.processed,
-    saved: result.saved,
-    failed: result.failed,
-    ...(debug
-      ? {
-          debugItems: result.debugItems,
-          debug: {
-            samples:
-              result.debugSamples ??
-              result.collectedItems?.slice(0, 2).map((item) => ({
-                source: item.source,
-                url: item.url,
-                textPreview: item.body.substring(0, 300),
-                claudeOutput: result.results[0] ?? null,
-              })) ??
-              [],
-          },
-        }
-      : {}),
-  })
   } catch (error) {
     console.error("[pipeline/run]", error)
     return jsonInternalError(error)

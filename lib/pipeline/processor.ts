@@ -8,6 +8,67 @@ import type {
 } from "@/types/review"
 import type { ProcessedReview, RawContent } from "@/lib/pipeline/types"
 
+const CHAIR_KEYWORDS = [
+  "chair",
+  "seat",
+  "sitting",
+  "ergonomic",
+  "lumbar",
+  "armrest",
+  "backrest",
+  "cushion",
+  "recline",
+  "mesh",
+  "office",
+  "desk",
+  "work",
+  "posture",
+  "back pain",
+  "herman miller",
+  "steelcase",
+  "okamura",
+  "humanscale",
+  "aeron",
+  "leap",
+  "gesture",
+  "embody",
+  "cosm",
+]
+
+const CHAIR_EXTRACTION_PROMPT = `You are a premium chair review analyst.
+The text is confirmed chair-related. Extract review content only.
+Respond ONLY with a JSON object. Never copy the original text.
+
+{
+  "summary": "2-3 sentence English summary of key points",
+  "scores": {
+    "lumbarSupport": 1-5 or null,
+    "seatComfort": 1-5 or null,
+    "armrest": 1-5 or null,
+    "headrest": 1-5 or null,
+    "adjustability": 1-5 or null,
+    "buildQuality": 1-5 or null,
+    "valueForMoney": 1-5 or null,
+    "overall": 1-5
+  },
+  "pros": ["pro1", "pro2"],
+  "cons": ["con1"],
+  "reviewerHeightCm": number or null,
+  "reviewerWeightKg": number or null,
+  "usageHoursPerDay": number or null,
+  "occupation": "job type" or null,
+  "bodyType": "slim"|"average"|"athletic"|"plus" or null,
+  "backIssues": ["lower_back_pain"] or [],
+  "confidence": 0.5-1.0
+}
+
+Always set confidence at least 0.5 when extracting chair feedback.`
+
+function hasChairKeywords(text: string): boolean {
+  const lower = text.toLowerCase()
+  return CHAIR_KEYWORDS.some((kw) => lower.includes(kw))
+}
+
 const CHAIR_SYSTEM_PROMPT = `You are a premium chair review analyst.
 Analyze the following review text and respond ONLY with a JSON object.
 Never copy the original text. Summarize and restructure completely.
@@ -164,9 +225,10 @@ type JapanSimpleAiResponse = {
 function parseJapanCommunityResponse(
   parsed: JapanSimpleAiResponse,
   rawContent: RawContent,
-  options?: ProcessWithClaudeOptions
+  options?: ProcessWithClaudeOptions,
+  keywordMatch = false
 ): ProcessedReview | null {
-  if (parsed.isRelevant === false) {
+  if (parsed.isRelevant === false && !keywordMatch) {
     console.log("[PROCESSOR] Rejected: isRelevant false (japan_community)")
     return null
   }
@@ -257,15 +319,20 @@ export async function processWithClaude(
 
   const body = rawContent.body.slice(0, 3000)
   const userContent = `${rawContent.title}\n\n${body}`
+  const keywordMatch =
+    itemType === "chair" && hasChairKeywords(`${rawContent.title}\n${body}`)
 
   console.log("[PROCESSOR] Input text length:", rawContent.body.length)
   console.log("[PROCESSOR] Source:", rawContent.source)
+  console.log("[PROCESSOR] Chair keywords matched:", keywordMatch)
   console.log("[PROCESSOR] First 200 chars:", rawContent.body.substring(0, 200))
 
   try {
     const systemPrompt =
       itemType === "chair"
-        ? getChairSystemPrompt(rawContent.source)
+        ? keywordMatch
+          ? CHAIR_EXTRACTION_PROMPT
+          : getChairSystemPrompt(rawContent.source)
         : FURNITURE_SYSTEM_PROMPT
 
     const response = await client.messages.create({
@@ -296,7 +363,8 @@ export async function processWithClaude(
       const japanResult = parseJapanCommunityResponse(
         parsed as JapanSimpleAiResponse,
         rawContent,
-        options
+        options,
+        keywordMatch
       )
       if (japanResult) return japanResult
     }
@@ -307,7 +375,16 @@ export async function processWithClaude(
 
     console.log("[PROCESSOR] Parsed confidence:", (parsed as ChairAiResponse).confidence)
 
-    const minConfidence = options?.debug ? 0 : CONFIDENCE_MIN
+    if (keywordMatch && typeof (parsed as ChairAiResponse).confidence === "number") {
+      ;(parsed as ChairAiResponse).confidence = Math.max(
+        (parsed as ChairAiResponse).confidence,
+        0.5
+      )
+    } else if (keywordMatch) {
+      ;(parsed as ChairAiResponse).confidence = 0.5
+    }
+
+    const minConfidence = keywordMatch ? 0 : options?.debug ? 0 : CONFIDENCE_MIN
     if (typeof parsed.confidence !== "number" || parsed.confidence < minConfidence) {
       console.log(
         "[PROCESSOR] Rejected: confidence",

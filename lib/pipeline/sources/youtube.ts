@@ -1,3 +1,4 @@
+import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
 interface YoutubeSearchItem {
@@ -27,7 +28,7 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
       key: apiKey,
     })
 
-    const searchRes = await fetch(
+    const searchRes = await fetchWithTimeout(
       `https://www.googleapis.com/youtube/v3/search?${searchParams}`
     )
 
@@ -52,7 +53,7 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
       key: apiKey,
     })
 
-    const videoRes = await fetch(
+    const videoRes = await fetchWithTimeout(
       `https://www.googleapis.com/youtube/v3/videos?${videoParams}`
     )
 

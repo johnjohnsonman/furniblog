@@ -1,4 +1,5 @@
 import { getSearchQueries } from "@/lib/pipeline/chair-names"
+import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
 const USER_AGENT = "furniblog/1.0 (chair review aggregator)"
@@ -47,7 +48,7 @@ async function fetchSubredditSearch(
 
   const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`
 
-  const res = await fetch(url, {
+  const res = await fetchWithTimeout(url, {
     headers: { "User-Agent": USER_AGENT },
     cache: "no-store",
   })
