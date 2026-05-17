@@ -17,8 +17,13 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { fetchJson } from "@/lib/admin/fetch-json"
+import {
+  collectDCInsideFromBrowser,
+  collectRedditFromBrowser,
+} from "@/lib/pipeline/browser-collect"
+import type { RawContent } from "@/lib/pipeline/types"
 
-type ProductOption = { slug: string; name: string }
+type ProductOption = { id: string; slug: string; name: string }
 
 type PipelineSourceKey =
   | "reddit"
@@ -73,12 +78,18 @@ type HistoryResponse = {
   stats: HistoryStats
 }
 
-const SOURCE_OPTIONS: { key: PipelineSourceKey; label: string }[] = [
-  { key: "reddit", label: "Reddit" },
-  { key: "youtube", label: "YouTube" },
-  { key: "dcinside", label: "DC Inside" },
-  { key: "japan_community", label: "Japan" },
-  { key: "naver", label: "Naver" },
+const SOURCE_OPTIONS: { key: PipelineSourceKey; label: string; hint?: string }[] = [
+  { key: "reddit", label: "Reddit", hint: "Browser" },
+  { key: "youtube", label: "YouTube", hint: "Server" },
+  { key: "dcinside", label: "DC Inside", hint: "Browser*" },
+  { key: "japan_community", label: "Japan", hint: "Server" },
+  { key: "naver", label: "Naver", hint: "Server" },
+]
+
+const SERVER_SOURCE_KEYS: PipelineSourceKey[] = [
+  "youtube",
+  "naver",
+  "japan_community",
 ]
 
 const HISTORY_LIMIT = 20
@@ -142,6 +153,7 @@ export default function AdminPipelinePage() {
   const stopAllRef = useRef(false)
   const [result, setResult] = useState<RunResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [status, setStatus] = useState<string | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
 
   const [history, setHistory] = useState<HistoryRow[]>([])
@@ -221,14 +233,15 @@ export default function AdminPipelinePage() {
 
   useEffect(() => {
     void (async () => {
-      const result = await fetchJson<{ products?: { slug: string; name: string }[] }>(
-        "/api/admin/products"
-      )
+      const result = await fetchJson<{
+        products?: { id: string; slug: string; name: string }[]
+      }>("/api/admin/products")
       if (!result.ok) {
         console.error("Failed to load products:", result.error)
         return
       }
       const list = (result.data.products ?? []).map((p) => ({
+        id: p.id,
         slug: p.slug,
         name: p.name,
       }))
@@ -241,11 +254,86 @@ export default function AdminPipelinePage() {
     void loadHistory()
   }, [loadHistory])
 
+  async function collectAndProcessChair(
+    product: ProductOption,
+    selectedSources: PipelineSourceKey[]
+  ) {
+    const browserItems: RawContent[] = []
+
+    if (selectedSources.includes("reddit")) {
+      setStatus("Collecting from Reddit (your browser)…")
+      browserItems.push(...(await collectRedditFromBrowser(product.name)))
+    }
+
+    if (selectedSources.includes("dcinside")) {
+      setStatus("Trying DC Inside (browser — may be blocked by CORS)…")
+      browserItems.push(
+        ...(await collectDCInsideFromBrowser(product.slug, product.name))
+      )
+    }
+
+    const serverSources = selectedSources.filter((s) =>
+      SERVER_SOURCE_KEYS.includes(s)
+    )
+
+    let serverItems: RawContent[] = []
+    if (serverSources.length > 0) {
+      setStatus(`Collecting from ${serverSources.join(", ")} (server)…`)
+      const serverRes = await fetchJson<{
+        items?: RawContent[]
+        error?: string
+      }>("/api/pipeline/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          chairSlug: product.slug,
+          sources: serverSources,
+        }),
+      })
+
+      if (!serverRes.ok) {
+        throw new Error(serverRes.error)
+      }
+      serverItems = serverRes.data.items ?? []
+    }
+
+    const allItems = [...browserItems, ...serverItems]
+    setStatus(
+      `Collected ${allItems.length} posts (${browserItems.length} browser, ${serverItems.length} server). Processing with AI…`
+    )
+
+    const processRes = await fetchJson<{
+      error?: string
+      collected: number
+      processed: number
+      saved: number
+      failed: number
+      chairName?: string
+    }>("/api/pipeline/process-items?debug=true", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        productId: product.id,
+        productSlug: product.slug,
+        productName: product.name,
+        items: allItems,
+        sources: selectedSources,
+      }),
+    })
+
+    if (!processRes.ok) {
+      throw new Error(processRes.error)
+    }
+
+    return processRes.data
+  }
+
   async function runPipeline() {
     setRunning(true)
     setError(null)
     setResult(null)
     setRunAllDoneMessage(null)
+    setStatus(null)
 
     try {
       const selectedSources = (
@@ -258,35 +346,18 @@ export default function AdminPipelinePage() {
         throw new Error("Select at least one source")
       }
 
-      const runResult = await fetchJson<{
-        error?: string
-        collected: number
-        processed: number
-        saved: number
-        failed: number
-        chairName?: string
-        debug?: { samples?: RunDebugSample[] }
-      }>("/api/pipeline/run?debug=true", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chairSlug,
-          sources: selectedSources,
-        }),
-      })
-
-      if (!runResult.ok) {
-        throw new Error(runResult.error)
+      const product = products.find((p) => p.slug === chairSlug)
+      if (!product) {
+        throw new Error("Selected chair not found")
       }
 
-      const data = runResult.data
+      const data = await collectAndProcessChair(product, selectedSources)
       setResult({
         collected: data.collected,
         processed: data.processed,
         saved: data.saved,
         failed: data.failed,
-        chairName: data.chairName,
-        debugSamples: data.debug?.samples,
+        chairName: data.chairName ?? product.name,
       })
 
       setHistoryPage(1)
@@ -295,6 +366,7 @@ export default function AdminPipelinePage() {
       setError(err instanceof Error ? err.message : "Pipeline failed")
     } finally {
       setRunning(false)
+      setStatus(null)
     }
   }
 
@@ -322,40 +394,43 @@ export default function AdminPipelinePage() {
 
     try {
       while (!done && !stopAllRef.current) {
-        const runResult = await fetchJson<{
+        const batchRes = await fetchJson<{
           error?: string
           done: boolean
           next: number
           total: number
-          current: string | null
-          collected: number
-          saved: number
-          failed: number
+          product: { id: string; slug: string; name: string } | null
         }>("/api/pipeline/run-all", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            index,
-            sources: runAllSources,
-            maxPerSource: 5,
-          }),
+          body: JSON.stringify({ index }),
         })
 
-        if (!runResult.ok) {
-          throw new Error(runResult.error)
+        if (!batchRes.ok) {
+          throw new Error(batchRes.error)
         }
 
-        const data = runResult.data
+        const data = batchRes.data
         total = data.total
-        savedTotal += data.saved ?? 0
+        done = data.done
+        index = data.next
 
         setRunAllTotal(total)
         setRunAllIndex(data.done ? total : data.next)
-        setRunAllChairName(data.current)
-        setRunAllSaved(savedTotal)
 
-        done = data.done
-        index = data.next
+        if (data.product && !stopAllRef.current) {
+          setRunAllChairName(data.product.name)
+          setStatus(`Run all: ${data.product.name}`)
+
+          const result = await collectAndProcessChair(
+            data.product,
+            runAllSources
+          )
+          savedTotal += result.saved ?? 0
+          setRunAllSaved(savedTotal)
+        } else {
+          setRunAllChairName(null)
+        }
 
         if (!done && !stopAllRef.current) {
           await delay(1000)
@@ -386,6 +461,7 @@ export default function AdminPipelinePage() {
       setIsRunningAll(false)
       setRunning(false)
       setRunAllChairName(null)
+      setStatus(null)
     }
   }
 
@@ -401,8 +477,9 @@ export default function AdminPipelinePage() {
     <div className="p-8 max-w-6xl">
       <h1 className="font-serif text-2xl font-medium">Review Pipeline</h1>
       <p className="text-sm text-muted-foreground mt-2 mb-8">
-        Collect and process chair reviews from Reddit, YouTube, DC Inside, Japan
-        communities, and Naver using Claude AI.
+        Reddit is collected in your browser (Vercel IPs are blocked). YouTube,
+        Naver, and Japan are collected on the server. Claude processing runs on
+        the server after collection.
       </p>
 
       <section className="border border-border rounded-xl p-6 mb-8 space-y-6">
@@ -425,7 +502,7 @@ export default function AdminPipelinePage() {
         </div>
 
         <div className="flex flex-wrap gap-6">
-          {SOURCE_OPTIONS.map(({ key, label }) => (
+          {SOURCE_OPTIONS.map(({ key, label, hint }) => (
             <label key={key} className="flex items-center gap-2 text-sm">
               <Checkbox
                 checked={sources[key]}
@@ -434,6 +511,9 @@ export default function AdminPipelinePage() {
                 }
               />
               {label}
+              {hint && (
+                <span className="text-xs text-muted-foreground">({hint})</span>
+              )}
             </label>
           ))}
         </div>
@@ -452,10 +532,10 @@ export default function AdminPipelinePage() {
       {(running || result) && (
         <section className="border border-border rounded-xl p-6 mb-8">
           <h2 className="text-lg font-medium mb-4">Run result</h2>
-          {running && !isRunningAll && (
+          {(running || status) && !isRunningAll && (
             <p className="text-sm text-muted-foreground flex items-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Processing…
+              {running && <Loader2 className="h-4 w-4 animate-spin" />}
+              {status ?? "Processing…"}
             </p>
           )}
           {result && !running && (
@@ -507,9 +587,8 @@ export default function AdminPipelinePage() {
       <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
         <h2 className="text-lg font-medium">Quick run</h2>
         <p className="text-sm text-muted-foreground">
-          Process every chair one at a time with Reddit only (max 5 posts per
-          chair). Runs in the background from your browser to avoid server
-          timeouts.
+          Process every chair with Reddit collected in your browser (one chair
+          per step). Avoids Vercel IP blocks and server timeouts.
         </p>
         <Button
           variant="outline"
