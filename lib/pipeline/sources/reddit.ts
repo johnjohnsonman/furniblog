@@ -52,7 +52,6 @@ export async function collectFromReddit(
             "User-Agent": USER_AGENT,
             Accept: "application/json",
           },
-          signal: AbortSignal.timeout(10_000),
           cache: "no-store",
         })
 

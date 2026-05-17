@@ -1,6 +1,5 @@
 import { parse } from "node-html-parser"
 import { getSearchQueries } from "@/lib/pipeline/chair-names"
-import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
 interface NaverBlogItem {
@@ -45,7 +44,7 @@ async function searchNaverBlog(
 
   console.log("[NAVER] Query:", searchQuery)
 
-  const res = await fetchWithTimeout(
+  const res = await fetch(
     `https://openapi.naver.com/v1/search/blog?${params}`,
     {
       headers: {

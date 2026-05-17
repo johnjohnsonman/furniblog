@@ -1,5 +1,4 @@
 import { getChairNames } from "@/lib/pipeline/chair-names"
-import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
 const USER_AGENT = "furniblog/1.0"
@@ -76,7 +75,7 @@ async function fetchRedditSearch(
   const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`
   console.log("[JAPAN] Reddit search:", subreddit, query)
 
-  const res = await fetchWithTimeout(url, {
+  const res = await fetch(url, {
     headers: { "User-Agent": USER_AGENT },
     cache: "no-store",
   })
@@ -192,7 +191,7 @@ async function collectFromYoutubeJa(
         key: apiKey,
       })
 
-      const videoRes = await fetchWithTimeout(
+      const videoRes = await fetch(
         `https://www.googleapis.com/youtube/v3/videos?${videoParams}`
       )
 
