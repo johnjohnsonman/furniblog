@@ -1,31 +1,24 @@
-import { getSearchQueries } from "@/lib/pipeline/chair-names"
-import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
-const USER_AGENT = "furniblog/1.0 (chair review aggregator)"
+const USER_AGENT = "furniblog/1.0 chair review aggregator"
 
-const DEFAULT_SUBREDDITS = [
+const SUBREDDITS = [
   "officechairs",
   "Workspaces",
-  "malelivingspace",
-  "femalelivingspace",
+  "remotework",
   "battlestations",
-  "AskReddit",
 ] as const
 
-interface RedditPost {
-  title: string
-  selftext: string
-  score: number
-  url: string
-  created_utc: number
-  num_comments: number
-  permalink: string
+type RedditPostData = {
+  title?: string
+  selftext?: string
+  score?: number
+  permalink?: string
 }
 
-interface RedditListing {
+type RedditListing = {
   data?: {
-    children?: Array<{ data?: RedditPost }>
+    children?: Array<{ data?: RedditPostData }>
   }
 }
 
@@ -33,129 +26,95 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-async function fetchSubredditSearch(
-  chairName: string,
-  subreddit: string,
-  sort: "relevance" | "top",
-  limit: number
-): Promise<RedditPost[]> {
-  const params = new URLSearchParams({
-    q: chairName,
-    sort,
-    limit: String(limit),
-    restrict_sr: "1",
-  })
-
-  const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`
-
-  const res = await fetchWithTimeout(url, {
-    headers: { "User-Agent": USER_AGENT },
-    cache: "no-store",
-  })
-
-  if (!res.ok) {
-    throw new Error(`Reddit ${subreddit} (${sort}): HTTP ${res.status}`)
-  }
-
-  const json = (await res.json()) as RedditListing
-  return (json.data?.children ?? [])
-    .map((c) => c.data)
-    .filter((d): d is RedditPost => Boolean(d?.title))
-}
-
-function postToRawContent(post: RedditPost): RawContent | null {
-  if (post.score < 10) return null
-  const body = (post.selftext ?? "").trim()
-  if (body.length < 100) return null
-
-  const permalink = post.permalink.startsWith("/")
-    ? post.permalink
-    : `/${post.permalink}`
-
-  return {
-    url: `https://www.reddit.com${permalink}`,
-    title: post.title.trim(),
-    body,
-    source: "reddit",
-    score: post.score,
-    collectedAt: new Date(post.created_utc * 1000).toISOString(),
-  }
-}
-
-export async function collectFromSubreddit(
-  chairName: string,
-  subreddit: string = "officechairs",
-  maxPerSort: number = 10
-): Promise<RawContent[]> {
-  const query = chairName
-  console.log("[REDDIT] Search query:", query, "| subreddit:", subreddit)
-
-  const [relevance, top] = await Promise.all([
-    fetchSubredditSearch(chairName, subreddit, "relevance", maxPerSort),
-    fetchSubredditSearch(chairName, subreddit, "top", Math.min(5, maxPerSort)),
-  ])
-
-  const posts = [...relevance, ...top]
-  console.log("[REDDIT] Posts found:", posts.length)
-
-  const items: RawContent[] = []
-  for (const post of posts) {
-    const raw = postToRawContent(post)
-    if (raw) items.push(raw)
-  }
-
-  console.log("[REDDIT] After filter:", items.length)
-  for (const post of posts) {
-    console.log(
-      "[REDDIT] Post score:",
-      post.score,
-      "length:",
-      post.selftext?.length ?? 0,
-      "title:",
-      post.title
-    )
-  }
-
-  return items
-}
-
-function dedupeByUrl(items: RawContent[]): RawContent[] {
-  const seen = new Set<string>()
-  const results: RawContent[] = []
-  for (const item of items) {
-    if (!seen.has(item.url)) {
-      seen.add(item.url)
-      results.push(item)
-    }
-  }
-  return results
-}
-
-/** Collect Reddit posts across chair-related subreddits (no API key). */
 export async function collectFromReddit(
   chairSlug: string,
-  chairNameEn: string,
-  subreddits: readonly string[] = DEFAULT_SUBREDDITS,
-  maxPerSubreddit: number = 10
+  chairName: string
 ): Promise<RawContent[]> {
-  const queries = getSearchQueries(chairSlug, chairNameEn, "en")
-  const all: RawContent[] = []
+  void chairSlug
 
-  for (const query of queries) {
-    for (const subreddit of subreddits) {
+  const results: RawContent[] = []
+  const seen = new Set<string>()
+
+  const queries = [
+    chairName,
+    chairName.replace(/\s+v\d+$/i, ""),
+  ].filter((q, i, arr) => q.trim().length > 0 && arr.indexOf(q) === i)
+
+  for (const subreddit of SUBREDDITS.slice(0, 2)) {
+    for (const query of queries.slice(0, 1)) {
       try {
-        const items = await collectFromSubreddit(query, subreddit, maxPerSubreddit)
-        all.push(...items)
-      } catch (err) {
-        console.warn(
-          `[reddit] ${subreddit} (${query}) failed:`,
-          err instanceof Error ? err.message : err
+        const searchUrl = `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&sort=relevance&limit=10&restrict_sr=1&t=all`
+
+        console.log(`[REDDIT] Fetching: ${searchUrl}`)
+
+        const response = await fetch(searchUrl, {
+          headers: {
+            "User-Agent": USER_AGENT,
+            Accept: "application/json",
+          },
+          signal: AbortSignal.timeout(10_000),
+          cache: "no-store",
+        })
+
+        console.log(`[REDDIT] Status: ${response.status}`)
+
+        if (!response.ok) {
+          console.log(
+            `[REDDIT] Error: ${response.status} ${response.statusText}`
+          )
+          continue
+        }
+
+        const data = (await response.json()) as RedditListing
+        const posts = data?.data?.children ?? []
+
+        console.log(
+          `[REDDIT] Posts found: ${posts.length} for "${query}" in r/${subreddit}`
         )
+
+        for (const post of posts) {
+          const p = post.data
+          if (!p?.permalink) continue
+
+          const postUrl = `https://reddit.com${p.permalink.startsWith("/") ? p.permalink : `/${p.permalink}`}`
+          if (seen.has(postUrl)) continue
+          seen.add(postUrl)
+
+          const body = (p.selftext ?? "").trim()
+          const title = (p.title ?? "").trim()
+          const combined = `${title}\n\n${body}`.trim()
+
+          if (combined.length < 50) {
+            console.log(`[REDDIT] Skipped (too short): ${title}`)
+            continue
+          }
+
+          if ((p.score ?? 0) < 1) {
+            console.log(`[REDDIT] Skipped (low score): ${p.score}`)
+            continue
+          }
+
+          results.push({
+            url: postUrl,
+            title,
+            body: combined,
+            source: "reddit",
+            score: p.score,
+            collectedAt: new Date().toISOString(),
+          })
+
+          console.log(
+            `[REDDIT] Added: "${title}" (score: ${p.score}, length: ${combined.length})`
+          )
+        }
+      } catch (error) {
+        console.error(`[REDDIT] Error for r/${subreddit}/${query}:`, error)
       }
-      await sleep(400)
+
+      await sleep(1000)
     }
-    await sleep(400)
   }
 
-  return dedupeByUrl(all)
+  console.log(`[REDDIT] Total collected: ${results.length}`)
+  return results
 }

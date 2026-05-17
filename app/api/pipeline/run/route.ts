@@ -59,9 +59,26 @@ export async function POST(request: NextRequest) {
       (s): s is PipelineSource => VALID_SOURCES.includes(s as PipelineSource)
     )
 
+    console.log("Received sources:", body.sources)
+    console.log("Validated sources:", sources)
+    console.log("Running Reddit:", sources.includes("reddit"))
+    console.log("Running YouTube:", sources.includes("youtube"))
+    console.log("Running DC Inside:", sources.includes("dcinside"))
+    console.log("Running Japan:", sources.includes("japan_community"))
+    console.log("Running Naver:", sources.includes("naver"))
+
     if (sources.length === 0) {
       return NextResponse.json({ error: "No valid sources" }, { status: 400 })
     }
+
+    const redditTest = await fetch(
+      "https://www.reddit.com/r/officechairs.json?limit=1",
+      {
+        headers: { "User-Agent": "furniblog/1.0" },
+        cache: "no-store",
+      }
+    ).catch(() => null)
+    console.log("[PIPELINE] Reddit reachable:", redditTest?.ok ?? false)
 
     const result = await runPipeline({
       chairSlug: product.slug,

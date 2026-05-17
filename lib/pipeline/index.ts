@@ -5,6 +5,7 @@ import { collectFromYoutube } from "@/lib/pipeline/sources/youtube"
 import { collectFromNaver } from "@/lib/pipeline/sources/naver"
 import { collectFromDCInside } from "@/lib/pipeline/sources/dcinside"
 import { collectFromJapan } from "@/lib/pipeline/sources/japan"
+import { withTimeout } from "@/lib/pipeline/with-timeout"
 import type {
   PipelineOptions,
   PipelineResult,
@@ -14,25 +15,83 @@ import type {
 
 const DEFAULT_SOURCES: PipelineSource[] = ["reddit", "youtube", "naver"]
 
-async function collectFromSource(
+function getSourceTimeoutMs(
   source: PipelineSource,
+  activeSourceCount: number
+): number {
+  if (source === "reddit") {
+    // Reddit: 2 subreddits × ~1s delay + fetch; allow headroom on Vercel
+    return activeSourceCount >= 3 ? 20_000 : 25_000
+  }
+  if (source === "youtube") {
+    return activeSourceCount >= 3 ? 12_000 : 30_000
+  }
+  return 8_000
+}
+
+async function collectFromSourceTimed(
+  source: PipelineSource,
+  chairSlug: string,
+  chairName: string,
+  activeSourceCount: number
+): Promise<RawContent[]> {
+  const ms = getSourceTimeoutMs(source, activeSourceCount)
+  const task = (async (): Promise<RawContent[]> => {
+    switch (source) {
+      case "reddit":
+        return collectFromReddit(chairSlug, chairName)
+      case "youtube":
+        return collectFromYoutube(chairName)
+      case "naver":
+        return collectFromNaver(chairSlug, chairName)
+      case "dcinside":
+        return collectFromDCInside(chairSlug, chairName)
+      case "japan_community":
+        return collectFromJapan(chairSlug, chairName)
+      default:
+        return []
+    }
+  })()
+
+  return withTimeout(task, ms).catch((err) => {
+    console.warn(
+      `[pipeline] ${source} failed:`,
+      err instanceof Error ? err.message : err
+    )
+    return []
+  })
+}
+
+async function collectAllSources(
+  sources: PipelineSource[],
   chairSlug: string,
   chairName: string
 ): Promise<RawContent[]> {
-  switch (source) {
-    case "reddit":
-      return collectFromReddit(chairSlug, chairName)
-    case "youtube":
-      return collectFromYoutube(chairName)
-    case "naver":
-      return collectFromNaver(chairSlug, chairName)
-    case "dcinside":
-      return collectFromDCInside(chairSlug, chairName)
-    case "japan_community":
-      return collectFromJapan(chairSlug, chairName)
-    default:
-      return []
-  }
+  console.log("[pipeline] Collecting from sources:", sources)
+  console.log("[pipeline] Running Reddit:", sources.includes("reddit"))
+  console.log("[pipeline] Running YouTube:", sources.includes("youtube"))
+  console.log("[pipeline] Running DC Inside:", sources.includes("dcinside"))
+  console.log("[pipeline] Running Japan:", sources.includes("japan_community"))
+  console.log("[pipeline] Running Naver:", sources.includes("naver"))
+
+  const results = await Promise.allSettled(
+    sources.map((source) =>
+      collectFromSourceTimed(source, chairSlug, chairName, sources.length)
+    )
+  )
+
+  const allItems: RawContent[] = []
+  results.forEach((result, i) => {
+    const source = sources[i]
+    if (result.status === "fulfilled") {
+      console.log(`[pipeline] ${source} collected:`, result.value.length)
+      allItems.push(...result.value)
+    } else {
+      console.warn(`[pipeline] ${source} rejected:`, result.reason)
+    }
+  })
+
+  return allItems
 }
 
 async function getExistingUrls(productId: string): Promise<Set<string>> {
@@ -62,16 +121,11 @@ export async function runPipeline(
 
   const existingUrls = await getExistingUrls(options.productId)
 
-  const collectedArrays = await Promise.all(
-    sources.map((source) =>
-      collectFromSource(source, options.chairSlug, options.chairName).catch((err) => {
-        console.warn(`[pipeline] ${source} failed:`, err)
-        return [] as RawContent[]
-      })
-    )
+  let allRaw = await collectAllSources(
+    sources,
+    options.chairSlug,
+    options.chairName
   )
-
-  let allRaw = collectedArrays.flat()
   const seen = new Set<string>()
   allRaw = allRaw.filter((item) => {
     if (seen.has(item.url) || existingUrls.has(item.url)) return false
