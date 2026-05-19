@@ -19,56 +19,14 @@ interface CommentThreadItem {
   }
 }
 
-/** Model unique name only (e.g. Modus, Physix, Leap V2, Aeron) */
-export function extractModelUniqueName(chairName: string): string {
-  const tokens = chairName
-    .trim()
-    .replace(/"/g, "")
-    .split(/\s+/)
-    .filter(Boolean)
-
-  while (tokens.length > 1) {
-    const last = tokens[tokens.length - 1]!
-    if (/^size$/i.test(last) || /^[a-z]$/i.test(last)) {
-      tokens.pop()
-      continue
-    }
-    break
-  }
-
-  if (tokens.length === 0) return chairName.trim()
-  if (tokens.length === 1) return tokens[0]!
-
-  const last = tokens[tokens.length - 1]!
-  if (/^v\d+$/i.test(last)) {
-    return tokens.slice(-2).join(" ")
-  }
-
-  return last
-}
-
-/** Model-only search (e.g. `Modus chair review`, `Leap V2 chair review`) */
 export function buildYoutubeSearchQuery(chairName: string): string {
-  const model = extractModelUniqueName(chairName)
-  return `${model} chair review`
-}
-
-export function isVideoRelevantToProduct(
-  chairName: string,
-  title: string,
-  description: string
-): boolean {
-  const model = extractModelUniqueName(chairName).toLowerCase()
-  if (!model) return false
-
-  const text = `${title} ${description}`.toLowerCase()
-  return text.includes(model)
+  const name = chairName.trim().replace(/"/g, "")
+  return `${name} review`
 }
 
 async function getVideoComments(
   videoId: string,
-  apiKey: string,
-  chairName: string
+  apiKey: string
 ): Promise<string> {
   try {
     const params = new URLSearchParams({
@@ -86,12 +44,7 @@ async function getVideoComments(
     const data = (await res.json()) as { items?: CommentThreadItem[] }
     const comments = (data.items ?? [])
       .map((c) => c.snippet?.topLevelComment?.snippet?.textDisplay ?? "")
-      .filter((t) => {
-        if (t.length < 30) return false
-        const lower = t.toLowerCase()
-        const model = extractModelUniqueName(chairName).toLowerCase()
-        return model.length > 0 && lower.includes(model)
-      })
+      .filter((t) => t.length >= 30)
       .slice(0, 10)
       .join("\n---\n")
 
@@ -165,12 +118,7 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
       const description = (video.snippet?.description ?? "").trim()
       const viewCount = Number(video.statistics?.viewCount ?? 0)
 
-      if (!isVideoRelevantToProduct(chairName, title, description)) {
-        console.log("[youtube] Skipped irrelevant video:", title)
-        continue
-      }
-
-      const comments = await getVideoComments(id, apiKey, chairName)
+      const comments = await getVideoComments(id, apiKey)
       const body = `${title}\n\n${description}${
         comments ? `\n\nUser comments:\n${comments}` : ""
       }`.trim()
