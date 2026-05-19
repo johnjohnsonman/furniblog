@@ -19,27 +19,38 @@ interface CommentThreadItem {
   }
 }
 
-/** Quoted exact product name + review (e.g. `"Vitra Physix" review`) */
-export function buildYoutubeSearchQuery(chairName: string): string {
-  const name = chairName.trim().replace(/"/g, "")
-  const tokens = name.split(/\s+/).filter(Boolean)
-
-  if (tokens.length === 1) {
-    return `"${name}" chair review`
-  }
-
-  return `"${name}" review`
-}
-
-/** Model-level token (e.g. Physix, Modus, Aeron) — avoids brand-only matches */
-function getPrimaryModelToken(chairName: string): string {
+/** Model unique name only (e.g. Modus, Physix, Leap V2, Aeron) */
+export function extractModelUniqueName(chairName: string): string {
   const tokens = chairName
     .trim()
-    .toLowerCase()
+    .replace(/"/g, "")
     .split(/\s+/)
-    .filter((t) => t.length > 2)
+    .filter(Boolean)
 
-  return tokens[tokens.length - 1] ?? chairName.trim().toLowerCase()
+  while (tokens.length > 1) {
+    const last = tokens[tokens.length - 1]!
+    if (/^size$/i.test(last) || /^[a-z]$/i.test(last)) {
+      tokens.pop()
+      continue
+    }
+    break
+  }
+
+  if (tokens.length === 0) return chairName.trim()
+  if (tokens.length === 1) return tokens[0]!
+
+  const last = tokens[tokens.length - 1]!
+  if (/^v\d+$/i.test(last)) {
+    return tokens.slice(-2).join(" ")
+  }
+
+  return last
+}
+
+/** Model-only search (e.g. `Modus chair review`, `Leap V2 chair review`) */
+export function buildYoutubeSearchQuery(chairName: string): string {
+  const model = extractModelUniqueName(chairName)
+  return `${model} chair review`
 }
 
 export function isVideoRelevantToProduct(
@@ -47,27 +58,11 @@ export function isVideoRelevantToProduct(
   title: string,
   description: string
 ): boolean {
+  const model = extractModelUniqueName(chairName).toLowerCase()
+  if (!model) return false
+
   const text = `${title} ${description}`.toLowerCase()
-  const primary = getPrimaryModelToken(chairName)
-
-  if (!primary || !text.includes(primary)) {
-    return false
-  }
-
-  const tokens = chairName
-    .trim()
-    .toLowerCase()
-    .split(/\s+/)
-    .filter((t) => t.length > 2)
-
-  if (tokens.length >= 2) {
-    const brand = tokens[0]
-    if (text.includes(brand) && !text.includes(primary)) {
-      return false
-    }
-  }
-
-  return true
+  return text.includes(model)
 }
 
 async function getVideoComments(
@@ -94,8 +89,8 @@ async function getVideoComments(
       .filter((t) => {
         if (t.length < 30) return false
         const lower = t.toLowerCase()
-        const primary = getPrimaryModelToken(chairName)
-        return lower.includes(primary)
+        const model = extractModelUniqueName(chairName).toLowerCase()
+        return model.length > 0 && lower.includes(model)
       })
       .slice(0, 10)
       .join("\n---\n")
