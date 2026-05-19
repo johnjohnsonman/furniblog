@@ -54,41 +54,88 @@ export function getJapaneseName(chairName: string): string {
   return chairName
 }
 
-type RedditProxyPost = {
+type RedditSearchPost = {
   url: string
   title: string
   body: string
   permalink: string
 }
 
-async function fetchRedditPostsViaProxy(params: {
-  q: string
-  subreddit?: string
-  limit?: number
-  chairReview?: boolean
-}): Promise<RedditProxyPost[]> {
-  const qs = new URLSearchParams({ q: params.q })
-  if (params.subreddit) qs.set("subreddit", params.subreddit)
-  if (params.limit != null) qs.set("limit", String(params.limit))
-  if (params.chairReview === false) qs.set("chairReview", "false")
-
-  try {
-    const res = await fetch(`/api/pipeline/reddit-proxy?${qs}`)
-    if (!res.ok) {
-      console.log("[Reddit] error:", res.status)
-      return []
-    }
-    const posts = (await res.json()) as RedditProxyPost[]
-    console.log("[Reddit] status:", res.status, "items:", posts.length)
-    return Array.isArray(posts) ? posts : []
-  } catch (error) {
-    console.log("[Reddit] error:", error)
-    return []
+function parseRedditSearchJson(json: unknown): RedditSearchPost[] {
+  const listing = json as {
+    data?: { children?: Array<{ data?: Record<string, unknown> }> }
   }
+  const children = listing?.data?.children ?? []
+  const posts: RedditSearchPost[] = []
+
+  for (const child of children) {
+    const p = child.data
+    if (!p) continue
+
+    const permalink = String(p.permalink ?? "")
+    const title = String(p.title ?? "")
+    const selftext = String(p.selftext ?? "")
+    const body = `${title}\n\n${selftext}`.trim()
+
+    if (!permalink || body.length < 10) continue
+
+    const postUrl = permalink.startsWith("/")
+      ? `https://reddit.com${permalink}`
+      : `https://reddit.com/${permalink}`
+
+    posts.push({
+      url: postUrl,
+      title,
+      body,
+      permalink,
+    })
+  }
+
+  return posts
 }
 
-function mergeProxyPosts(
-  posts: RedditProxyPost[],
+async function fetchRedditSearchBrowser(
+  searchTerm: string,
+  options?: { subreddit?: string; limit?: number }
+): Promise<RedditSearchPost[]> {
+  const q = encodeURIComponent(`${searchTerm} review`)
+  const limit = options?.limit ?? 10
+  const subreddit = options?.subreddit
+
+  const urls = subreddit
+    ? [
+        `https://www.reddit.com/r/${encodeURIComponent(subreddit)}/search.json?q=${q}&sort=relevance&limit=${limit}&restrict_sr=1&t=all`,
+        `https://old.reddit.com/r/${encodeURIComponent(subreddit)}/search.json?q=${q}&sort=relevance&limit=${limit}&restrict_sr=1`,
+      ]
+    : [
+        `https://www.reddit.com/search.json?q=${q}&sort=relevance&t=all&limit=${limit}`,
+        `https://old.reddit.com/search.json?q=${q}&sort=relevance&limit=${limit}`,
+      ]
+
+  const fetchOpts: RequestInit = {
+    mode: "cors",
+    headers: { Accept: "application/json" },
+  }
+
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, fetchOpts)
+      if (!res.ok) continue
+
+      const json = await res.json()
+      const posts = parseRedditSearchJson(json)
+      console.log("[Reddit Browser] status:", res.status, "items:", posts.length)
+      return posts
+    } catch (error) {
+      console.log("[Reddit Browser] error:", error)
+    }
+  }
+
+  return []
+}
+
+function mergeRedditPosts(
+  posts: RedditSearchPost[],
   source: BrowserCollectItem["source"],
   minBodyLength: number,
   seen: Set<string>,
@@ -132,27 +179,14 @@ export async function browserCollectReddit(
 ): Promise<BrowserCollectItem[]> {
   const results: BrowserCollectItem[] = []
   const seen = new Set<string>()
-  const subreddits = [
-    "officechairs",
-    "Workspaces",
-    "remotework",
-    "battlestations",
-    "pcmasterrace",
-  ]
   const queries = [chairName, ...aliases].slice(0, 3)
 
-  for (const subreddit of subreddits.slice(0, 3)) {
-    for (const query of queries.slice(0, 2)) {
-      const posts = await fetchRedditPostsViaProxy({
-        q: query,
-        subreddit,
-        limit: 10,
-        chairReview: false,
-      })
-      mergeProxyPosts(posts, "reddit", 50, seen, results)
-      await new Promise((r) => setTimeout(r, 800))
-    }
+  for (const query of queries) {
+    const posts = await fetchRedditSearchBrowser(query)
+    mergeRedditPosts(posts, "reddit", 50, seen, results)
+    await new Promise((r) => setTimeout(r, 800))
   }
+
   return results
 }
 
@@ -175,23 +209,19 @@ export async function browserCollectJapan(
 
   const jpSubreddits = ["japanlife", "digitalnomad"]
   for (const sub of jpSubreddits) {
-    const posts = await fetchRedditPostsViaProxy({
-      q: `${chairName} chair`,
+    const posts = await fetchRedditSearchBrowser(`${chairName} chair`, {
       subreddit: sub,
       limit: 5,
-      chairReview: false,
     })
-    mergeProxyPosts(posts, "japan_community", 30, seen, results)
+    mergeRedditPosts(posts, "japan_community", 30, seen, results)
     await new Promise((r) => setTimeout(r, 800))
   }
 
-  const officeChairPosts = await fetchRedditPostsViaProxy({
-    q: jaName,
+  const officeChairPosts = await fetchRedditSearchBrowser(jaName, {
     subreddit: "officechairs",
     limit: 5,
-    chairReview: false,
   })
-  mergeProxyPosts(officeChairPosts, "japan_community", 30, seen, results)
+  mergeRedditPosts(officeChairPosts, "japan_community", 30, seen, results)
 
   return results
 }
