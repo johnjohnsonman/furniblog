@@ -4,9 +4,10 @@ import { ProductsPageContent } from "./products-content"
 import { isChairCategory } from "@/lib/chair-categories"
 import {
   getProducts,
-  getBrands,
+  getBrandsForProductFilter,
   getSiteStats,
   getReviewCounts,
+  getCategoryCounts,
 } from "@/lib/supabase/queries"
 
 type ProductsPageProps = {
@@ -17,16 +18,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const params = await searchParams
   const rawCategory = params.category ?? "All"
   const initialCategory =
-    rawCategory === "All"
+    rawCategory === "All" || rawCategory === "all"
       ? "All"
       : isChairCategory(rawCategory.toLowerCase())
         ? rawCategory.toLowerCase()
         : "All"
 
-  const [products, brands, stats] = await Promise.all([
+  const [products, brands, stats, categoryCounts] = await Promise.all([
     getProducts(),
-    getBrands(),
+    getBrandsForProductFilter(),
     getSiteStats(),
+    getCategoryCounts(),
   ])
 
   const reviewCounts = await getReviewCounts(products.map((p) => p.id))
@@ -39,6 +41,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         brands={brands}
         reviewCounts={reviewCounts}
         stats={stats}
+        categoryCounts={categoryCounts}
         initialCategory={initialCategory}
         initialSearch={params.search ?? ""}
       />

@@ -18,11 +18,23 @@ export function toProductView(product: Product) {
   )
   const priceUsd = resolvePriceUsd(product.priceUsd, product.priceLabel)
 
+  const category = product.category
+  const gallery =
+    product.galleryImages && product.galleryImages.length > 0
+      ? product.galleryImages
+      : product.imageUrl?.trim()
+        ? [product.imageUrl]
+        : []
+  const images = gallery.map((url) => resolveProductImageUrl(url, category))
+  const image =
+    images[0] ?? resolveProductImageUrl(product.imageUrl, category)
+
   return {
     ...product,
     priceUsd: priceUsd ?? undefined,
     categoryLabel: getChairCategoryLabel(product.category),
-    image: resolveProductImageUrl(product.imageUrl, product.category),
+    image,
+    images,
     rating: product.ratingOverall,
     reviewCount: product.reviewCount ?? 0,
     description: product.summary,

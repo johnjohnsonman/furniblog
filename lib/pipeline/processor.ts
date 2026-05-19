@@ -160,26 +160,10 @@ Extract review information and respond ONLY with valid JSON, no markdown.
   "summary": "2-3 sentences in English",
   "pros": ["English pros"],
   "cons": ["English cons"],
-  "overall": 1-5,
-  "isRelevant": true/false
+  "overall": 1-5
 }
 
-If about chairs at all, set isRelevant: true.
-If isRelevant is false, still return the JSON with empty pros/cons and overall: 3.`
-
-function getChairSystemPrompt(
-  source: RawContent["source"]
-): string {
-  switch (source) {
-    case "dcinside":
-    case "naver":
-      return CHAIR_SYSTEM_PROMPT_KO
-    case "japan_community":
-      return CHAIR_SYSTEM_PROMPT_JA
-    default:
-      return CHAIR_SYSTEM_PROMPT
-  }
-}
+Always extract available chair feedback. Use overall 3 if uncertain.`
 
 const FURNITURE_SYSTEM_PROMPT = `You are an editor for a premium furniture encyclopedia.
 Analyze the following text and respond with JSON only in English.
@@ -212,61 +196,6 @@ type ChairAiResponse = {
   confidence: number
 }
 
-type JapanSimpleAiResponse = {
-  summary?: string
-  pros?: string[]
-  cons?: string[]
-  overall?: number
-  isRelevant?: boolean
-  scores?: { overall?: number }
-  confidence?: number
-}
-
-function parseJapanCommunityResponse(
-  parsed: JapanSimpleAiResponse,
-  rawContent: RawContent,
-  options?: ProcessWithClaudeOptions,
-  keywordMatch = false
-): ProcessedReview | null {
-  if (parsed.isRelevant === false && !keywordMatch) {
-    console.log("[PROCESSOR] Rejected: isRelevant false (japan_community)")
-    return null
-  }
-
-  const summary = pickSummary(parsed)
-  const overall = parsed.overall ?? parsed.scores?.overall
-
-  if (!summary || overall == null) {
-    if (!options?.debug) {
-      console.log("[PROCESSOR] Rejected: missing summary or overall (japan_community)")
-      return null
-    }
-  }
-
-  const effectiveSummary =
-    summary || `Review: ${rawContent.title}`.slice(0, 200)
-  const effectiveOverall = overall ?? 3
-
-  const result: ProcessedReview = {
-    summary: effectiveSummary,
-    scores: { overall: effectiveOverall },
-    pros: parsed.pros ?? [],
-    cons: parsed.cons ?? [],
-    confidence:
-      parsed.isRelevant === true
-        ? 0.85
-        : typeof parsed.confidence === "number"
-          ? parsed.confidence
-          : 0.5,
-    sourceUrl: rawContent.url,
-    source: rawContent.source,
-  }
-
-  console.log("[PROCESSOR] japan_community overall:", effectiveOverall)
-  console.log("[PROCESSOR] Parsed summary:", result.summary)
-  return result
-}
-
 type FurnitureAiResponse = {
   summary?: string
   scores: FurnitureScores
@@ -277,9 +206,9 @@ type FurnitureAiResponse = {
 }
 
 function extractJson(text: string): unknown {
-  const trimmed = text.trim()
-  const fenced = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/)
-  const raw = fenced ? fenced[1].trim() : trimmed
+  const cleaned = stripJsonMarkdown(text)
+  const fenced = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/)
+  const raw = fenced ? fenced[1].trim() : cleaned
   return JSON.parse(raw)
 }
 
@@ -292,8 +221,38 @@ export const CONFIDENCE_MIN = 0.2
 const CLAUDE_MODEL =
   process.env.CLAUDE_MODEL?.trim() || "claude-sonnet-4-5"
 
-export type ProcessWithClaudeOptions = {
-  debug?: boolean
+export type ClaudeProcessResult = {
+  summary: string
+  pros: string[]
+  cons: string[]
+  overall: number
+  confidence: number
+  mentions_back_pain?: boolean
+  mentions_lumbar?: boolean
+  back_issue_sentiment?: "positive" | "negative" | "neutral" | null
+}
+
+export type ProcessWithClaudeOutcome =
+  | { status: "success"; data: ClaudeProcessResult }
+  | { status: "rejected"; confidence: number }
+  | { status: "error" }
+
+type SimpleChairResponse = {
+  summary?: string
+  pros?: string[]
+  cons?: string[]
+  overall?: number
+  confidence?: number
+  mentions_back_pain?: boolean
+  mentions_lumbar?: boolean
+  back_issue_sentiment?: "positive" | "negative" | "neutral" | null
+}
+
+function stripJsonMarkdown(text: string): string {
+  return text
+    .replace(/```json\n?/g, "")
+    .replace(/```\n?/g, "")
+    .trim()
 }
 
 function getClient(): Anthropic | null {
@@ -307,176 +266,139 @@ function sleep(ms: number) {
 }
 
 export async function processWithClaude(
-  rawContent: RawContent,
-  itemType: "chair" | "furniture",
-  options?: ProcessWithClaudeOptions
-): Promise<ProcessedReview | null> {
+  item: RawContent,
+  chairName: string
+): Promise<ProcessWithClaudeOutcome> {
   const client = getClient()
   if (!client) {
     console.error("[PROCESSOR] ANTHROPIC_API_KEY not set")
-    return null
+    return { status: "error" }
   }
 
-  const body = rawContent.body.slice(0, 3000)
-  const userContent = `${rawContent.title}\n\n${body}`
-  const keywordMatch =
-    itemType === "chair" && hasChairKeywords(`${rawContent.title}\n${body}`)
+  const body = item.body.slice(0, 3000)
+  const userContent = `${item.title}\n\n${body}`
 
-  console.log("[PROCESSOR] Input text length:", rawContent.body.length)
-  console.log("[PROCESSOR] Source:", rawContent.source)
-  console.log("[PROCESSOR] Chair keywords matched:", keywordMatch)
-  console.log("[PROCESSOR] First 200 chars:", rawContent.body.substring(0, 200))
+  console.log("[PROCESSOR] Input text length:", item.body.length)
+  console.log("[PROCESSOR] Source:", item.source)
+
+  const prompt = `
+You are a chair review analyst.
+Analyze the following text (may be in Korean, Japanese, or English).
+Respond ONLY with valid JSON. No markdown, no explanation.
+ALL fields must be in ENGLISH regardless of the source language.
+
+{
+  "summary": "2-3 sentences in ENGLISH summarizing the review",
+  "pros": ["positive point in ENGLISH", "positive point in ENGLISH"],
+  "cons": ["negative point in ENGLISH"],
+  "overall": 4,
+  "confidence": 0.85,
+  "mentions_back_pain": true,
+  "mentions_lumbar": false,
+  "back_issue_sentiment": "positive"
+}
+
+confidence: 0.0-1.0 how specifically this content reviews "${chairName}" (the exact chair model).
+- 0.7-1.0: Clear review focused on ${chairName}
+- 0.4-0.7: Mentions ${chairName} with useful detail
+- 0.2-0.4: Vague or only brief mention
+- Below 0.2: Wrong product — same brand different model, brand overview, or unrelated
+
+CRITICAL relevance rule:
+If this content does NOT specifically cover "${chairName}" and instead discusses
+other products from the same brand, a brand-wide roundup, or a different chair model,
+you MUST set confidence below 0.2 (e.g. 0.1). Do not summarize other products as if they were ${chairName}.
+
+mentions_back_pain: true if back pain, lower back, 허리, 요통 mentioned
+mentions_lumbar: true if lumbar support, 요추 mentioned
+back_issue_sentiment:
+  - "positive": says good for back / helps back pain
+  - "negative": says bad for back / worsens pain
+  - "neutral": only mentions back without clear sentiment
+  - null: no back-related mention
+
+Rules:
+- summary MUST be in English
+- pros MUST be in English
+- cons MUST be in English
+- overall MUST be 1-5 (use 3 if uncertain)
+- Translate all insights to English even if source is Japanese or Korean
+- Only extract feedback that clearly applies to ${chairName}, not sibling models
+`
 
   try {
-    const systemPrompt =
-      itemType === "chair"
-        ? keywordMatch
-          ? CHAIR_EXTRACTION_PROMPT
-          : getChairSystemPrompt(rawContent.source)
-        : FURNITURE_SYSTEM_PROMPT
-
     const response = await client.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userContent }],
+      max_tokens: 400,
+      messages: [
+        {
+          role: "user",
+          content: `${prompt.trim()}\n\n---\n\n${userContent}`,
+        },
+      ],
     })
 
     const block = response.content.find((b) => b.type === "text")
     if (!block || block.type !== "text") {
       console.log("[PROCESSOR] No text block in Claude response")
-      return null
+      return { status: "error" }
     }
 
     console.log("[PROCESSOR] Raw response:", block.text)
 
-    const parsed = extractJson(block.text) as
-      | ChairAiResponse
-      | FurnitureAiResponse
-      | JapanSimpleAiResponse
+    const text = stripJsonMarkdown(block.text)
+    const parsed = JSON.parse(text) as SimpleChairResponse
 
-    if (
-      itemType === "chair" &&
-      rawContent.source === "japan_community" &&
-      ("isRelevant" in parsed || "overall" in parsed)
-    ) {
-      const japanResult = parseJapanCommunityResponse(
-        parsed as JapanSimpleAiResponse,
-        rawContent,
-        options,
-        keywordMatch
-      )
-      if (japanResult) return japanResult
-    }
+    const rawOverall =
+      typeof parsed.overall === "number" ? parsed.overall : 3
+    const overall = Math.min(5, Math.max(1, rawOverall))
 
-    if (typeof parsed.confidence !== "number" && options?.debug) {
-      ;(parsed as ChairAiResponse).confidence = 0.5
-    }
+    const confidence =
+      typeof parsed.confidence === "number" ? parsed.confidence : 0.5
 
-    console.log("[PROCESSOR] Parsed confidence:", (parsed as ChairAiResponse).confidence)
-
-    if (keywordMatch && typeof (parsed as ChairAiResponse).confidence === "number") {
-      ;(parsed as ChairAiResponse).confidence = Math.max(
-        (parsed as ChairAiResponse).confidence,
-        0.5
-      )
-    } else if (keywordMatch) {
-      ;(parsed as ChairAiResponse).confidence = 0.5
-    }
-
-    const minConfidence = keywordMatch ? 0 : options?.debug ? 0 : CONFIDENCE_MIN
-    if (typeof parsed.confidence !== "number" || parsed.confidence < minConfidence) {
+    if (confidence < CONFIDENCE_MIN) {
       console.log(
-        "[PROCESSOR] Rejected: confidence",
-        parsed.confidence,
-        `< ${minConfidence}`
+        "[PROCESSOR] Rejected low relevance for",
+        chairName,
+        "confidence:",
+        confidence
       )
-      return null
+      return { status: "rejected", confidence }
     }
 
-    const summary = pickSummary(parsed)
-    console.log("[PROCESSOR] Parsed summary:", summary)
+    const summary =
+      parsed.summary?.trim() ||
+      item.title?.trim() ||
+      item.body.slice(0, 200).trim() ||
+      "Review collected from source"
 
-    if (!summary || !parsed.scores?.overall) {
-      console.log("[PROCESSOR] Rejected: missing summary or overall score", {
-        hasSummary: Boolean(summary),
-        overall: parsed.scores?.overall,
-      })
-      if (!options?.debug) return null
+    const sentiment = parsed.back_issue_sentiment
+    const backIssueSentiment =
+      sentiment === "positive" ||
+      sentiment === "negative" ||
+      sentiment === "neutral"
+        ? sentiment
+        : null
+
+    const result: ClaudeProcessResult = {
+      summary,
+      pros: parsed.pros ?? [],
+      cons: parsed.cons ?? [],
+      overall,
+      confidence,
+      mentions_back_pain: parsed.mentions_back_pain === true,
+      mentions_lumbar: parsed.mentions_lumbar === true,
+      back_issue_sentiment: backIssueSentiment,
     }
 
-    const isKoSource =
-      rawContent.source === "dcinside" || rawContent.source === "naver"
-
-    const effectiveSummary =
-      summary ||
-      (options?.debug
-        ? `Debug summary: ${rawContent.title}`.slice(0, 200)
-        : "")
-    let effectiveOverall =
-      parsed.scores?.overall ?? (options?.debug ? 3 : undefined)
-
-    if (
-      effectiveOverall == null &&
-      effectiveSummary &&
-      isKoSource &&
-      typeof parsed.confidence === "number" &&
-      parsed.confidence >= CONFIDENCE_MIN
-    ) {
-      effectiveOverall = 3
-    }
-
-    if (!effectiveSummary || effectiveOverall == null) return null
-
-    if (itemType === "chair") {
-      const p = parsed as ChairAiResponse
-      const result: ProcessedReview = {
-        summary: effectiveSummary,
-        scores: {
-          ...p.scores,
-          overall: effectiveOverall,
-        },
-        pros: p.pros ?? [],
-        cons: p.cons ?? [],
-        reviewerHeightCm: p.reviewerHeightCm,
-        reviewerWeightKg: p.reviewerWeightKg,
-        usageHoursPerDay: p.usageHoursPerDay,
-        occupation: p.occupation,
-        bodyType: p.bodyType ?? null,
-        backIssues: Array.isArray(p.backIssues) ? p.backIssues : [],
-        confidence:
-          typeof parsed.confidence === "number" ? parsed.confidence : 0.5,
-        sourceUrl: rawContent.url,
-        source: rawContent.source,
-      }
-      console.log("[PROCESSOR] Parsed confidence:", result.confidence)
-      console.log("[PROCESSOR] Parsed summary:", result.summary)
-      return result
-    }
-
-    const p = parsed as FurnitureAiResponse
-    const result: ProcessedReview = {
-      summary: effectiveSummary,
-      scores: {
-        ...(p.scores as unknown as ChairScores),
-        overall: effectiveOverall,
-      },
-      pros: p.pros ?? [],
-      cons: p.cons ?? [],
-      confidence:
-        typeof parsed.confidence === "number" ? parsed.confidence : 0.5,
-      sourceUrl: rawContent.url,
-      source: rawContent.source,
-    }
-    console.log("[PROCESSOR] Parsed confidence:", result.confidence)
     console.log("[PROCESSOR] Parsed summary:", result.summary)
-    return result
+    return { status: "success", data: result }
   } catch (err) {
     console.error(
       "[PROCESSOR] Claude error:",
       err instanceof Error ? err.message : err
     )
-    return null
+    return { status: "error" }
   }
 }
 

@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
 import type { AdminReview } from "./admin-review-types"
+import type { ReviewSource } from "@/types/review"
 import {
   SOURCE_LABELS,
   formatReviewDate,
   formatSourceUrl,
+  getSourceBadgeClass,
   renderStars,
 } from "./admin-review-types"
 
@@ -72,7 +74,12 @@ export function AdminReviewCard({
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary" className="capitalize">
+              <Badge
+                variant="outline"
+                className={getSourceBadgeClass(
+                  review.source as ReviewSource
+                )}
+              >
                 {sourceLabel}
               </Badge>
               <span className="font-medium text-foreground">
@@ -112,7 +119,7 @@ export function AdminReviewCard({
                 key={`pro-${pro}`}
                 className="rounded-full bg-emerald-50 text-emerald-800 px-2.5 py-1"
               >
-                ??{pro}
+                + {pro}
               </span>
             ))}
             {review.cons.map((con) => (
@@ -120,7 +127,7 @@ export function AdminReviewCard({
                 key={`con-${con}`}
                 className="rounded-full bg-red-50 text-red-800 px-2.5 py-1"
               >
-                ??{con}
+                − {con}
               </span>
             ))}
           </div>

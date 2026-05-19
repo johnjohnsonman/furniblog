@@ -2,20 +2,23 @@
 
 import { ExternalLink } from "lucide-react"
 import type { Review } from "@/types/review"
-import {
-  SOURCE_LABELS,
-  getReviewOverall,
-} from "./review-utils"
+import { getReviewOverall } from "./review-utils"
+import { SourceBadge } from "@/components/reviews/source-badge"
 import type { ProfileHighlight } from "@/lib/reviews/review-filters"
 import {
   BACK_ISSUE_LABELS,
   BODY_TYPE_LABELS,
 } from "@/lib/reviews/review-labels"
 import { cn } from "@/lib/utils"
+import {
+  getBackIssueSentiment,
+  reviewHasBackMention,
+} from "@/lib/reviews/back-issue-utils"
 
 interface ReviewCardProps {
   review: Review
   highlights?: ProfileHighlight
+  showBackBadges?: boolean
 }
 
 function HighlightStat({
@@ -37,18 +40,41 @@ function HighlightStat({
   )
 }
 
-export function ReviewCard({ review, highlights }: ReviewCardProps) {
+export function ReviewCard({
+  review,
+  highlights,
+  showBackBadges = false,
+}: ReviewCardProps) {
   const overall = getReviewOverall(review.scores)
+  const backSentiment =
+    showBackBadges || highlights?.backSentiment
+      ? getBackIssueSentiment(review)
+      : null
+  const showBack =
+    (showBackBadges || highlights?.backSentiment) && reviewHasBackMention(review)
 
   return (
     <article className="p-5 bg-card rounded-lg border border-border">
       <header className="flex flex-wrap items-center gap-2 mb-3">
-        <span className="px-2 py-0.5 rounded-full bg-muted text-xs font-medium text-foreground">
-          {SOURCE_LABELS[review.source]}
-        </span>
+        <SourceBadge source={review.source} variant="compact" />
         {review.verified && (
           <span className="px-2 py-0.5 rounded-full bg-foreground/10 text-xs text-foreground">
             Verified
+          </span>
+        )}
+        {showBack && backSentiment === "positive" && (
+          <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-medium border border-emerald-200">
+            Good for back ✓
+          </span>
+        )}
+        {showBack && backSentiment === "negative" && (
+          <span className="px-2 py-0.5 rounded-full bg-red-100 text-red-800 text-xs font-medium border border-red-200">
+            Bad for back ✗
+          </span>
+        )}
+        {showBack && backSentiment === "neutral" && (
+          <span className="px-2 py-0.5 rounded-full bg-amber-50 text-amber-900 text-xs font-medium border border-amber-200">
+            Mentions back
           </span>
         )}
         <span className="text-sm font-semibold text-foreground ml-auto">{overall}/5</span>

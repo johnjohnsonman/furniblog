@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
-import { runPipeline } from "@/lib/pipeline"
+import { executeServerPipeline } from "@/lib/pipeline/server-run"
 import type { PipelineSource } from "@/lib/pipeline/types"
 import { createAdminClient } from "@/lib/supabase/admin"
 
@@ -95,13 +95,12 @@ export async function POST(request: NextRequest) {
 
     const product = list[index]
 
-    const result = await runPipeline({
-      chairSlug: product.slug,
-      chairName: product.name,
+    const result = await executeServerPipeline({
       productId: product.id,
+      productSlug: product.slug,
+      productName: product.name,
       sources,
       maxPerSource: body.maxPerSource ?? 5,
-      debug,
     })
 
     const nextIndex = index + 1

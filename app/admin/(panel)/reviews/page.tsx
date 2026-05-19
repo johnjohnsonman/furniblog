@@ -31,7 +31,12 @@ import type {
   AdminReviewStats,
   ProductOption,
 } from "@/components/admin/admin-review-types"
-import { SOURCE_OPTIONS } from "@/components/admin/admin-review-types"
+import {
+  SOURCE_OPTIONS,
+  getSourceBadgeClass,
+} from "@/components/admin/admin-review-types"
+import type { ReviewSource } from "@/types/review"
+import { cn } from "@/lib/utils"
 
 type Pagination = {
   page: number
@@ -318,7 +323,37 @@ export default function AdminReviewsPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="flex flex-wrap gap-2">
+          {SOURCE_OPTIONS.map((opt) => {
+            const active = source === opt.value
+            const isAll = opt.value === "all"
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  setSource(opt.value)
+                  setPagination((p) => ({ ...p, page: 1 }))
+                }}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium border transition-colors",
+                  isAll
+                    ? active
+                      ? "bg-foreground text-background border-foreground"
+                      : "bg-muted text-foreground border-border hover:bg-muted/80"
+                    : cn(
+                        getSourceBadgeClass(opt.value as ReviewSource),
+                        active && "ring-2 ring-offset-1 ring-foreground/25"
+                      )
+                )}
+              >
+                {opt.label}
+              </button>
+            )
+          })}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           <Select
             value={productId}
             onValueChange={(v) => {
@@ -334,25 +369,6 @@ export default function AdminReviewsPage() {
               {products.map((p) => (
                 <SelectItem key={p.id} value={p.id}>
                   {p.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
-            value={source}
-            onValueChange={(v) => {
-              setSource(v)
-              setPagination((p) => ({ ...p, page: 1 }))
-            }}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Source" />
-            </SelectTrigger>
-            <SelectContent>
-              {SOURCE_OPTIONS.map((opt) => (
-                <SelectItem key={opt.value} value={opt.value}>
-                  {opt.label}
                 </SelectItem>
               ))}
             </SelectContent>

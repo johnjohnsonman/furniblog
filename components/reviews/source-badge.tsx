@@ -6,6 +6,10 @@ import {
   FileText,
   Globe,
   Search,
+  ShieldCheck,
+  HelpCircle,
+  Newspaper,
+  Twitter,
 } from "lucide-react"
 import type { ReviewSource } from "@/types/review"
 import { cn } from "@/lib/utils"
@@ -52,6 +56,31 @@ const BADGE_CONFIG: Record<
     label: "Google reviews",
     className: "bg-slate-50 text-slate-700 border-slate-200",
     icon: Search,
+  },
+  trustpilot: {
+    label: "Trustpilot review",
+    className: "bg-[#00B67A]/10 text-[#00B67A] border-[#00B67A]/30",
+    icon: ShieldCheck,
+  },
+  review_sites: {
+    label: "Review Sites",
+    className: "bg-blue-100 text-blue-800 border-blue-200",
+    icon: FileText,
+  },
+  hackernews: {
+    label: "Hacker News",
+    className: "bg-[#FF6600]/10 text-[#FF6600] border-[#FF6600]/30",
+    icon: Newspaper,
+  },
+  twitter: {
+    label: "Twitter / X",
+    className: "bg-sky-50 text-sky-700 border-sky-200",
+    icon: Twitter,
+  },
+  quora: {
+    label: "Quora answer",
+    className: "bg-[#B92B27]/10 text-[#B92B27] border-[#B92B27]/30",
+    icon: HelpCircle,
   },
 }
 

@@ -1,29 +1,42 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
-import { jsonInternalError } from "@/lib/admin/api-response"
-import { runPipeline } from "@/lib/pipeline"
+import { executeServerPipeline } from "@/lib/pipeline/server-run"
 import type { PipelineSource } from "@/lib/pipeline/types"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 export const maxDuration = 60
 
-const VALID_SOURCES: PipelineSource[] = [
+const SERVER_SOURCES: PipelineSource[] = [
+  "youtube",
+  "naver",
+  "dcinside",
+  "trustpilot",
+  "review_sites",
+  "hackernews",
+]
+const ALL_SOURCES: PipelineSource[] = [
   "reddit",
   "youtube",
   "naver",
   "dcinside",
   "japan_community",
+  "trustpilot",
+  "review_sites",
+  "hackernews",
 ]
 
 export async function POST(request: NextRequest) {
   const denied = requireAdmin(request)
   if (denied) return denied
 
-  const debug = request.nextUrl.searchParams.get("debug") === "true"
-
   let body: {
     chairSlug?: string
+    productId?: string
+    productSlug?: string
+    productName?: string
     sources?: string[]
+    allSources?: string[]
+    browserItems?: unknown[]
     maxPerSource?: number
   }
 
@@ -36,87 +49,91 @@ export async function POST(request: NextRequest) {
   try {
     const supabase = createAdminClient()
 
-    const chairSlug = body.chairSlug?.trim()
-    if (!chairSlug) {
-      return NextResponse.json({ error: "chairSlug is required" }, { status: 400 })
-    }
+    let productId = body.productId?.trim()
+    let productSlug = body.productSlug?.trim()
+    let productName = body.productName?.trim()
 
-    const { data: product, error: productError } = await supabase
-      .from("products")
-      .select("id, slug, name")
-      .eq("slug", chairSlug)
-      .eq("track", "chair")
-      .maybeSingle()
+    const chairSlug = body.chairSlug?.trim() ?? productSlug
 
-    if (productError) {
-      return NextResponse.json({ error: productError.message }, { status: 500 })
-    }
-    if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 })
-    }
+    if (chairSlug) {
+      const { data: product, error: productError } = await supabase
+        .from("products")
+        .select("id, slug, name")
+        .eq("slug", chairSlug)
+        .eq("track", "chair")
+        .maybeSingle()
 
-    const sources = (body.sources ?? ["reddit", "youtube"]).filter(
-      (s): s is PipelineSource => VALID_SOURCES.includes(s as PipelineSource)
-    )
-
-    console.log("Received sources:", body.sources)
-    console.log("Validated sources:", sources)
-    console.log("Running Reddit:", sources.includes("reddit"))
-    console.log("Running YouTube:", sources.includes("youtube"))
-    console.log("Running DC Inside:", sources.includes("dcinside"))
-    console.log("Running Japan:", sources.includes("japan_community"))
-    console.log("Running Naver:", sources.includes("naver"))
-
-    if (sources.length === 0) {
-      return NextResponse.json({ error: "No valid sources" }, { status: 400 })
-    }
-
-    const redditTest = await fetch(
-      "https://www.reddit.com/r/officechairs.json?limit=1",
-      {
-        headers: { "User-Agent": "furniblog/1.0" },
-        cache: "no-store",
+      if (productError) {
+        return NextResponse.json({ error: productError.message }, { status: 500 })
       }
-    ).catch(() => null)
-    console.log("[PIPELINE] Reddit reachable:", redditTest?.ok ?? false)
+      if (!product) {
+        return NextResponse.json({ error: "Product not found" }, { status: 404 })
+      }
 
-    const result = await runPipeline({
-      chairSlug: product.slug,
-      chairName: product.name,
-      productId: product.id,
-      sources,
-      maxPerSource: body.maxPerSource,
-      debug,
+      productId = product.id
+      productSlug = product.slug
+      productName = product.name
+    }
+
+    if (!productId || !productSlug || !productName) {
+      return NextResponse.json(
+        { error: "chairSlug or productId/productSlug/productName is required" },
+        { status: 400 }
+      )
+    }
+
+    const browserItems = Array.isArray(body.browserItems) ? body.browserItems : []
+
+    const serverSources = (body.sources ?? [])
+      .map((s) => (s === "japan" ? "japan_community" : s))
+      .filter((s): s is PipelineSource =>
+        SERVER_SOURCES.includes(s as PipelineSource)
+      )
+
+    const allSources = (body.allSources ?? [...serverSources])
+      .map((s) => (s === "japan" ? "japan_community" : s))
+      .filter((s): s is PipelineSource =>
+        ALL_SOURCES.includes(s as PipelineSource)
+      )
+
+    if (serverSources.length === 0 && browserItems.length === 0) {
+      return NextResponse.json(
+        { error: "No items to process (enable sources or provide browserItems)" },
+        { status: 400 }
+      )
+    }
+
+    const result = await executeServerPipeline({
+      productId,
+      productSlug,
+      productName,
+      sources: serverSources,
+      allSources: [...new Set(allSources)],
+      browserItems,
+      maxPerSource: body.maxPerSource ?? 5,
     })
 
     return NextResponse.json({
       success: true,
-      debug,
-      chairName: product.name,
-      chairSlug: product.slug,
+      chairName: productName,
+      chairSlug: productSlug,
       collected: result.collected,
       processed: result.processed,
       saved: result.saved,
       failed: result.failed,
-      ...(debug
-        ? {
-            debugItems: result.debugItems,
-            debug: {
-              samples:
-                result.debugSamples ??
-                result.collectedItems?.slice(0, 2).map((item) => ({
-                  source: item.source,
-                  url: item.url,
-                  textPreview: item.body.substring(0, 300),
-                  claudeOutput: result.results[0] ?? null,
-                })) ??
-                [],
-            },
-          }
-        : {}),
+      sourceCounts: result.sourceCounts,
     })
   } catch (error) {
-    console.error("[pipeline/run]", error)
-    return jsonInternalError(error)
+    console.error("[PIPELINE] Fatal:", error)
+    return NextResponse.json(
+      {
+        error: String(error),
+        collected: 0,
+        processed: 0,
+        saved: 0,
+        failed: 0,
+      },
+      { status: 500 }
+    )
   }
 }

@@ -1,3 +1,7 @@
+import { getSourceBadgeClass } from "@/components/chairs/review-utils"
+
+export { getSourceBadgeClass }
+
 export type AdminReview = {
   id: string
   productId: string
@@ -34,6 +38,10 @@ export const SOURCE_OPTIONS = [
   { value: "dcinside", label: "DC Inside" },
   { value: "naver", label: "Naver" },
   { value: "japan_community", label: "Japan" },
+  { value: "trustpilot", label: "Trustpilot" },
+  { value: "review_sites", label: "Review Sites" },
+  { value: "hackernews", label: "Hacker News" },
+  { value: "twitter", label: "Twitter" },
 ] as const
 
 export const SOURCE_LABELS: Record<string, string> = {
@@ -44,6 +52,11 @@ export const SOURCE_LABELS: Record<string, string> = {
   naver: "Naver",
   japan_community: "Japan",
   google: "Google",
+  trustpilot: "Trustpilot",
+  review_sites: "Review Sites",
+  hackernews: "Hacker News",
+  twitter: "Twitter",
+  quora: "Quora",
 }
 
 export function formatSourceUrl(url?: string): string {

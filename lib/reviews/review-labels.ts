@@ -71,6 +71,10 @@ export const SOURCE_FILTER_OPTIONS: {
   { id: "dcinside", label: "DC Inside" },
   { id: "naver", label: "Naver" },
   { id: "japan_community", label: "Japanese Community" },
+  { id: "trustpilot", label: "Trustpilot" },
+  { id: "review_sites", label: "Review Sites" },
+  { id: "hackernews", label: "Hacker News" },
+  { id: "twitter", label: "Twitter" },
 ]
 
 export const ALL_OCCUPATIONS: ReviewOccupation[] = [

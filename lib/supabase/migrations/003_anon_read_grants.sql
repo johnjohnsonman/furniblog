@@ -8,3 +8,4 @@ grant select on public.products to anon, authenticated;
 grant select on public.reviews to anon, authenticated;
 grant select on public.affiliate_links to anon, authenticated;
 grant select on public.designers to anon, authenticated;
+grant select on public.product_images to anon, authenticated;

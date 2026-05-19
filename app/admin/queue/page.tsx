@@ -32,6 +32,11 @@ const SOURCE_BADGE: Record<ReviewSource, string> = {
   naver: "bg-green-100 text-green-800",
   japan_community: "bg-purple-100 text-purple-800",
   google: "bg-slate-100 text-slate-800",
+  trustpilot: "bg-[#00B67A]/15 text-[#00B67A]",
+  review_sites: "bg-blue-100 text-blue-800 border-blue-200",
+  hackernews: "bg-[#FF6600]/15 text-[#FF6600]",
+  twitter: "bg-sky-100 text-sky-700",
+  quora: "bg-[#B92B27]/15 text-[#B92B27]",
 }
 
 function getAdminSecret(): string {

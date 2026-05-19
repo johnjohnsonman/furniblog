@@ -54,6 +54,18 @@ export const CHAIR_CATEGORY_FILTER_OPTIONS: { label: string; value: string }[] =
     ...CHAIR_CATEGORIES.map((c) => ({ label: c.label, value: c.id })),
   ]
 
+/** Category pills on /products — order matches typical DB distribution */
+export const PRODUCT_LIST_CATEGORIES: { value: string; label: string }[] = [
+  { value: "All", label: "All" },
+  { value: "office", label: "Office" },
+  { value: "executive", label: "Executive" },
+  { value: "gaming", label: "Gaming" },
+  { value: "conference", label: "Conference" },
+  { value: "standing", label: "Standing" },
+  { value: "study", label: "Study" },
+  { value: "lounge", label: "Lounge" },
+]
+
 export function countByChairCategory(
   items: Pick<Product, "category">[]
 ): Record<ChairCategory, number> {

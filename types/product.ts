@@ -29,6 +29,8 @@ export interface Product {
   priceUsd?: number
   priceKrw?: number
   imageUrl: string
+  /** Gallery URLs from product_images (Supabase); falls back to imageUrl */
+  galleryImages?: string[]
   summary: string
   pros: string[]
   cons: string[]

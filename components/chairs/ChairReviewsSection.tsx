@@ -10,6 +10,7 @@ import {
   averageOverall,
   averageBodyStats,
   countBySource,
+  getSourceBadgeClass,
 } from "./review-utils"
 import {
   DEFAULT_REVIEW_FILTERS,
@@ -29,6 +30,9 @@ const FILTER_SOURCES: (ReviewSource | "all")[] = [
   "dcinside",
   "naver",
   "japan_community",
+  "trustpilot",
+  "review_sites",
+  "hackernews",
 ]
 
 interface ChairReviewsSectionProps {
@@ -76,7 +80,10 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
                 ([source, count]) => (
                   <span
                     key={source}
-                    className="px-2.5 py-1 rounded-full bg-muted text-xs text-foreground"
+                    className={cn(
+                      "px-2.5 py-1 rounded-full text-xs font-medium border",
+                      getSourceBadgeClass(source)
+                    )}
                   >
                     {SOURCE_LABELS[source]} ({count})
                   </span>
@@ -114,7 +121,14 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
         >
           <TabsList className="flex-wrap h-auto gap-1">
             {FILTER_SOURCES.map((source) => (
-              <TabsTrigger key={source} value={source} className="text-xs">
+              <TabsTrigger
+                key={source}
+                value={source}
+                className={cn(
+                  "text-xs",
+                  source !== "all" && getSourceBadgeClass(source)
+                )}
+              >
                 {source === "all" ? "All" : SOURCE_LABELS[source]}
               </TabsTrigger>
             ))}
@@ -135,6 +149,7 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
                 key={review.id}
                 review={review}
                 highlights={getProductProfileHighlights(review, profileFilters)}
+                showBackBadges={profileFilters.backIssues.length > 0}
               />
             ))
           ) : (

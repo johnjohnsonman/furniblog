@@ -6,7 +6,11 @@ export interface Brand {
   founded: number
   logo: string
   description: string
+  descriptionLong?: string
   productCount: number
   category: string
   website?: string
+  heroImageUrl?: string
+  colorPrimary?: string
+  colorSecondary?: string
 }

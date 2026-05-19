@@ -6,6 +6,11 @@ export type ReviewSource =
   | "naver"
   | "japan_community"
   | "google"
+  | "trustpilot"
+  | "review_sites"
+  | "hackernews"
+  | "twitter"
+  | "quora"
 
 export type BodyType = "slim" | "average" | "athletic" | "plus"
 
@@ -39,6 +44,8 @@ export interface ReviewerProfile {
   backIssues?: BackIssueId[]
 }
 
+export type BackIssueSentiment = "positive" | "negative" | "neutral"
+
 export interface ChairScores {
   lumbarSupport?: number
   seatComfort?: number
@@ -48,6 +55,9 @@ export interface ChairScores {
   buildQuality?: number
   valueForMoney?: number
   overall: number
+  mentionsBackPain?: boolean
+  mentionsLumbar?: boolean
+  backIssueSentiment?: BackIssueSentiment | null
 }
 
 export interface FurnitureScores {

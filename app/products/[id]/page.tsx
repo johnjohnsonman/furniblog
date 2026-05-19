@@ -16,6 +16,7 @@ import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
 import { ChairProductSpecs } from "@/components/chairs/ChairProductSpecs"
+import { ProductImageGallery } from "@/components/chairs/ProductImageGallery"
 import { BuyButtonGroup } from "@/components/affiliate/BuyButton"
 import { AdSlot } from "@/components/common/AdSlot"
 import {
@@ -91,6 +92,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
       ? chairReviews.length
       : product.reviewCount ?? 0
   const rating = product.rating ?? 0
+  const galleryImages =
+    product.images && product.images.length > 0
+      ? product.images
+      : product.image
+        ? [product.image]
+        : []
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "/" },
@@ -135,15 +142,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="lg:grid lg:grid-cols-3 lg:gap-10">
             <div className="lg:col-span-2">
               <div className="flex flex-col gap-8 md:flex-row md:gap-10">
-                <div className="aspect-square w-full md:w-80 shrink-0 relative bg-muted rounded-xl overflow-hidden">
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
-                  {product.availableInKorea && (
-                    <div className="absolute top-3 left-3 px-2.5 py-1 bg-foreground text-background text-xs font-medium rounded-full flex items-center gap-1">
-                      <MapPin className="h-3 w-3" />
-                      Available in Korea
-                    </div>
-                  )}
-                </div>
+                <ProductImageGallery
+                  images={galleryImages}
+                  alt={product.name}
+                  category={product.category}
+                  className="w-full md:w-80 shrink-0"
+                  badge={
+                    product.availableInKorea ? (
+                      <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
+                        <MapPin className="h-3 w-3" />
+                        Available in Korea
+                      </div>
+                    ) : undefined
+                  }
+                />
 
                 <div className="flex-1">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">

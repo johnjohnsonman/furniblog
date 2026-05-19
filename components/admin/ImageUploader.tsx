@@ -16,9 +16,17 @@ export type ProductImageItem = {
 
 type ImageUploaderProps = {
   productId: string
+  /** Called when the primary (first) image URL changes after load, upload, reorder, or delete */
+  onPrimaryImageChange?: (url: string | null) => void
 }
 
-export function ImageUploader({ productId }: ImageUploaderProps) {
+function primaryImageUrl(images: ProductImageItem[]): string | null {
+  if (images.length === 0) return null
+  const thumb = images.find((img) => img.isThumbnail)
+  return thumb?.url ?? images[0]?.url ?? null
+}
+
+export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploaderProps) {
   const [images, setImages] = useState<ProductImageItem[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
@@ -32,7 +40,9 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch(`/api/admin/products/${productId}/images`)
+      const res = await fetch(`/api/admin/products/${productId}/images`, {
+        credentials: "include",
+      })
       const text = await res.text()
       let data: { images?: ProductImageItem[]; error?: string }
       try {
@@ -41,20 +51,20 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
         throw new Error("Invalid response from server")
       }
       if (!res.ok) throw new Error(data.error ?? "Failed to load images")
-      setImages(
-        (data.images ?? []).map((img) => ({
-          id: img.id,
-          url: img.url,
-          sortOrder: img.sortOrder,
-          isThumbnail: img.isThumbnail,
-        }))
-      )
+      const next = (data.images ?? []).map((img) => ({
+        id: img.id,
+        url: img.url,
+        sortOrder: img.sortOrder,
+        isThumbnail: img.isThumbnail,
+      }))
+      setImages(next)
+      onPrimaryImageChange?.(primaryImageUrl(next))
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load images")
     } finally {
       setLoading(false)
     }
-  }, [productId])
+  }, [productId, onPrimaryImageChange])
 
   useEffect(() => {
     void loadImages()
@@ -63,6 +73,7 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
   async function persistOrder(next: ProductImageItem[]) {
     const res = await fetch(`/api/admin/products/${productId}/images`, {
       method: "PATCH",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         images: next.map((img, index) => ({
@@ -74,13 +85,15 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
     })
     const data = await res.json()
     if (!res.ok) throw new Error(data.error ?? "Failed to save order")
-    setImages(
-      (data.images ?? next).map((img: ProductImageItem, index: number) => ({
+    const normalized = (data.images ?? next).map(
+      (img: ProductImageItem, index: number) => ({
         ...img,
         sortOrder: index,
         isThumbnail: index === 0,
-      }))
+      })
     )
+    setImages(normalized)
+    onPrimaryImageChange?.(primaryImageUrl(normalized))
   }
 
   async function uploadFiles(fileList: FileList | File[]) {
@@ -97,16 +110,40 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
 
       const res = await fetch(`/api/admin/products/${productId}/images`, {
         method: "POST",
+        credentials: "include",
         body: formData,
       })
 
       setProgress(90)
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? "Upload failed")
+      const text = await res.text()
+      let data: {
+        images?: ProductImageItem[]
+        thumbnailUrl?: string
+        error?: string
+        details?: string
+        hint?: string
+      }
+      try {
+        data = JSON.parse(text)
+      } catch {
+        throw new Error(`Invalid response (${res.status})`)
+      }
 
+      if (!res.ok) {
+        const base = data.error ?? data.details ?? "Upload failed"
+        const message = data.hint ? `${base} — ${data.hint}` : base
+        console.error("[UPLOAD] Error:", res.status, data)
+        throw new Error(message)
+      }
+
+      console.log("[UPLOAD] Success:", data)
+      if (data.thumbnailUrl) {
+        onPrimaryImageChange?.(data.thumbnailUrl)
+      }
       await loadImages()
       setProgress(100)
     } catch (err) {
+      console.error("[UPLOAD] Error:", err)
       setError(err instanceof Error ? err.message : "Upload failed")
     } finally {
       setTimeout(() => {
@@ -121,7 +158,7 @@ export function ImageUploader({ productId }: ImageUploaderProps) {
     try {
       const res = await fetch(
         `/api/admin/products/${productId}/images?imageId=${imageId}`,
-        { method: "DELETE" }
+        { method: "DELETE", credentials: "include" }
       )
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? "Delete failed")

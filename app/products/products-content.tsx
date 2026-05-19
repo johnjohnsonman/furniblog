@@ -4,25 +4,21 @@ import { useMemo, useState } from "react"
 import { ChevronDown } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import type { Brand } from "@/types/brand"
-import type { ReviewCountStats } from "@/lib/supabase/queries"
-import type { SiteStats } from "@/lib/supabase/queries"
+import type {
+  ReviewCountStats,
+  SiteStats,
+  CategoryCountMap,
+} from "@/lib/supabase/queries"
+import { PRODUCT_LIST_CATEGORIES } from "@/lib/chair-categories"
 import { ChairCard } from "@/components/chairs/ChairCard"
 import { cn } from "@/lib/utils"
-
-const CATEGORY_PILLS = [
-  { label: "All", value: "All" },
-  { label: "Office", value: "office" },
-  { label: "Executive", value: "executive" },
-  { label: "Gaming", value: "gaming" },
-  { label: "Standing", value: "standing" },
-  { label: "Study", value: "study" },
-] as const
 
 const SORT_OPTIONS = [
   { label: "Best Rated", value: "rating" },
   { label: "Most Reviews", value: "reviews" },
   { label: "Price ↑", value: "price-low" },
   { label: "Price ↓", value: "price-high" },
+  { label: "Newest", value: "newest" },
 ] as const
 
 export type ProductsPageContentProps = {
@@ -30,8 +26,16 @@ export type ProductsPageContentProps = {
   brands: Brand[]
   reviewCounts: Record<string, ReviewCountStats>
   stats: SiteStats
+  categoryCounts: CategoryCountMap
   initialCategory?: string
   initialSearch?: string
+}
+
+function resolvePriceUsd(product: ProductView): number | null {
+  if (product.priceUsd != null && product.priceUsd > 0) {
+    return product.priceUsd
+  }
+  return null
 }
 
 export function ProductsPageContent({
@@ -39,6 +43,7 @@ export function ProductsPageContent({
   brands,
   reviewCounts,
   stats,
+  categoryCounts,
   initialCategory = "All",
   initialSearch = "",
 }: ProductsPageContentProps) {
@@ -46,6 +51,23 @@ export function ProductsPageContent({
   const [selectedBrand, setSelectedBrand] = useState("All")
   const [sortBy, setSortBy] = useState<string>("rating")
   const [searchQuery] = useState(initialSearch)
+
+  const totalChairs = stats.products
+
+  const categoryPills = useMemo(() => {
+    return PRODUCT_LIST_CATEGORIES.filter((cat) => {
+      if (cat.value === "All") return true
+      return (categoryCounts[cat.value] ?? 0) > 0
+    }).map((cat) => {
+      const count =
+        cat.value === "All" ? totalChairs : (categoryCounts[cat.value] ?? 0)
+      return {
+        ...cat,
+        count,
+        displayLabel: `${cat.label} (${count})`,
+      }
+    })
+  }, [categoryCounts, totalChairs])
 
   const filteredProducts = useMemo(() => {
     let filtered = products
@@ -65,7 +87,16 @@ export function ProductsPageContent({
     }
 
     if (selectedBrand !== "All") {
-      filtered = filtered.filter((p) => p.brandId === selectedBrand)
+      const brandMeta = brands.find(
+        (b) => b.id === selectedBrand || b.slug === selectedBrand
+      )
+      filtered = filtered.filter(
+        (p) =>
+          p.brandId === selectedBrand ||
+          p.brandId === brandMeta?.slug ||
+          (brandMeta &&
+            p.brand.toLowerCase() === brandMeta.name.toLowerCase())
+      )
     }
 
     const withStats = filtered.map((p) => {
@@ -83,26 +114,37 @@ export function ProductsPageContent({
     switch (sortBy) {
       case "reviews":
         return [...withStats].sort((a, b) => b.reviewCount - a.reviewCount)
-      case "price-low": {
-        const priceOrder = { $: 1, $$: 2, $$$: 3, $$$$: 4 }
-        return [...withStats].sort(
-          (a, b) =>
-            priceOrder[a.product.priceRange] - priceOrder[b.product.priceRange]
-        )
-      }
-      case "price-high": {
-        const priceOrder = { $: 1, $$: 2, $$$: 3, $$$$: 4 }
-        return [...withStats].sort(
-          (a, b) =>
-            priceOrder[b.product.priceRange] - priceOrder[a.product.priceRange]
-        )
-      }
+      case "price-low":
+        return [...withStats].sort((a, b) => {
+          const pa = resolvePriceUsd(a.product)
+          const pb = resolvePriceUsd(b.product)
+          if (pa == null && pb == null) return 0
+          if (pa == null) return 1
+          if (pb == null) return -1
+          return pa - pb
+        })
+      case "price-high":
+        return [...withStats].sort((a, b) => {
+          const pa = resolvePriceUsd(a.product)
+          const pb = resolvePriceUsd(b.product)
+          if (pa == null && pb == null) return 0
+          if (pa == null) return 1
+          if (pb == null) return -1
+          return pb - pa
+        })
+      case "newest":
+        return [...withStats].sort((a, b) => {
+          const da = new Date(a.product.publishedAt ?? 0).getTime()
+          const db = new Date(b.product.publishedAt ?? 0).getTime()
+          return db - da
+        })
       case "rating":
       default:
         return [...withStats].sort((a, b) => b.avgScore - a.avgScore)
     }
   }, [
     products,
+    brands,
     reviewCounts,
     selectedCategory,
     selectedBrand,
@@ -112,7 +154,6 @@ export function ProductsPageContent({
 
   return (
     <main className="flex-1 bg-premium-bg">
-      {/* Header */}
       <section className="border-b border-[#E5E5E5] bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
           <h1 className="font-serif text-[40px] font-medium leading-tight text-premium-text">
@@ -129,11 +170,10 @@ export function ProductsPageContent({
         </div>
       </section>
 
-      {/* Sticky filter bar */}
       <section className="sticky top-0 z-20 border-b border-[#E5E5E5] bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-2">
-            {CATEGORY_PILLS.map((pill) => {
+            {categoryPills.map((pill) => {
               const active = selectedCategory === pill.value
               return (
                 <button
@@ -147,7 +187,7 @@ export function ProductsPageContent({
                       : "border border-premium-border bg-white text-premium-text hover:border-premium-border-hover"
                   )}
                 >
-                  {pill.label}
+                  {pill.displayLabel}
                 </button>
               )
             })}
@@ -163,8 +203,8 @@ export function ProductsPageContent({
               >
                 <option value="All">All Brands</option>
                 {brands.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.name}
+                  <option key={b.slug} value={b.slug}>
+                    {b.name} ({b.productCount})
                   </option>
                 ))}
               </select>
@@ -190,7 +230,6 @@ export function ProductsPageContent({
         </div>
       </section>
 
-      {/* Grid */}
       <section className="mx-auto max-w-7xl px-6 py-10">
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

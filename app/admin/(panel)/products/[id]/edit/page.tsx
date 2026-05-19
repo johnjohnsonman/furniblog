@@ -11,6 +11,9 @@ export default function AdminEditProductPage({
 }) {
   const [initial, setInitial] = useState<Partial<ProductFormValues>>()
   const [slug, setSlug] = useState<string>("")
+  const [thumbnailFromImages, setThumbnailFromImages] = useState<string | null>(
+    null
+  )
 
   useEffect(() => {
     void params.then(async ({ id }) => {
@@ -28,9 +31,17 @@ export default function AdminEditProductPage({
   return (
     <div className="p-8">
       <h1 className="font-serif text-2xl font-medium mb-8">Edit Product</h1>
-      <ImageUploader productId={slug} />
+      <ImageUploader
+        productId={slug}
+        onPrimaryImageChange={setThumbnailFromImages}
+      />
       <div className="mt-8">
-        <ProductForm initial={initial} productId={slug} />
+        <ProductForm
+          initial={initial}
+          productId={slug}
+          thumbnailFromImages={thumbnailFromImages}
+          stayOnPage
+        />
       </div>
     </div>
   )

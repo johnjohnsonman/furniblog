@@ -1,24 +1,24 @@
-import axios from "axios"
-import { parse } from "node-html-parser"
 import { getSearchQueries } from "@/lib/pipeline/chair-names"
 import type { RawContent } from "@/lib/pipeline/types"
 
-const HEADERS = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
-  Referer: "https://gall.dcinside.com",
-  "Accept-Language": "ko-KR,ko;q=0.9,en;q=0.8",
+const MIN_BODY_LENGTH = 15
+const MAX_ITEMS = 5
+
+interface NaverSearchItem {
+  title?: string
+  link?: string
+  description?: string
 }
 
-const AD_KEYWORDS = ["판매", "팝니다", "삽니다", "거래", "양도"]
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-function isAdTitle(title: string): boolean {
-  const t = title.toLowerCase()
-  return AD_KEYWORDS.some((kw) => t.includes(kw))
+function stripHtml(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim()
 }
 
 function dedupeByUrl(items: RawContent[]): RawContent[] {
@@ -33,137 +33,167 @@ function dedupeByUrl(items: RawContent[]): RawContent[] {
   return results
 }
 
-async function fetchHtml(url: string): Promise<string | null> {
-  try {
-    const res = await axios.get(url, {
-      headers: HEADERS,
-      timeout: 10000,
-      maxRedirects: 5,
-      validateStatus: (s) => s < 400,
-    })
-    return typeof res.data === "string" ? res.data : null
-  } catch {
-    return null
-  }
+function isDcInsideUrl(url: string): boolean {
+  const lower = url.toLowerCase()
+  return (
+    lower.includes("dcinside.com") ||
+    lower.includes("dcinside.co.kr") ||
+    lower.includes("gall.dcinside")
+  )
 }
 
-function extractPostBody(html: string): string {
-  const root = parse(html)
-  root.querySelectorAll("script, style, img, iframe").forEach((el) => el.remove())
-
-  const selectors = [".write_div", ".s_write", ".tbody", ".gallview_contents"]
-  for (const sel of selectors) {
-    const node = root.querySelector(sel)
-    if (node) {
-      const text = node.textContent.replace(/\s+/g, " ").trim()
-      if (text.length >= 50) return text
-    }
+async function naverSearch(
+  endpoint: "webkr" | "blog",
+  query: string,
+  clientId: string,
+  clientSecret: string
+): Promise<NaverSearchItem[]> {
+  const params = new URLSearchParams({
+    query,
+    display: "10",
+  })
+  if (endpoint === "blog") {
+    params.set("sort", "sim")
   }
 
-  return root.textContent.replace(/\s+/g, " ").trim()
-}
+  const url = `https://openapi.naver.com/v1/search/${endpoint}?${params}`
+  console.log(`[DC] Naver ${endpoint} query:`, query)
 
-async function searchDCInsidePosts(
-  searchQuery: string
-): Promise<{ title: string; url: string }[]> {
-  console.log("[DC] Searching for:", searchQuery)
-  const searchUrl = `https://search.dcinside.com/post/p/1/sort/accuracy/q/${encodeURIComponent(searchQuery)}`
-
-  let responseStatus = 0
-  let html: string | null = null
-  try {
-    const res = await axios.get(searchUrl, {
-      headers: HEADERS,
-      timeout: 10000,
-      maxRedirects: 5,
-      validateStatus: () => true,
-    })
-    responseStatus = res.status
-    html = typeof res.data === "string" ? res.data : null
-  } catch {
-    responseStatus = 0
-  }
-
-  console.log("[DC] Response status:", responseStatus)
-  if (!html || responseStatus >= 400) return []
-
-  const root = parse(html)
-  const items: { title: string; url: string }[] = []
-
-  root.querySelectorAll(".ub-content li, .sch_result li, li.ub-content").forEach((li) => {
-    const titleEl = li.querySelector(".ub-word, .tit, a")
-    const linkEl = li.querySelector("a[href]")
-    if (!titleEl || !linkEl) return
-
-    const title = titleEl.textContent.replace(/\s+/g, " ").trim()
-    let href = linkEl.getAttribute("href") ?? ""
-    if (!title || !href) return
-    if (isAdTitle(title)) return
-
-    if (href.startsWith("//")) href = `https:${href}`
-    else if (href.startsWith("/")) href = `https://gall.dcinside.com${href}`
-
-    items.push({ title, url: href })
+  const response = await fetch(url, {
+    headers: {
+      "X-Naver-Client-Id": clientId,
+      "X-Naver-Client-Secret": clientSecret,
+    },
+    cache: "no-store",
   })
 
+  if (!response.ok) {
+    const text = await response.text().catch(() => "")
+    console.log(`[DC] Naver ${endpoint} failed:`, response.status, text.slice(0, 200))
+    return []
+  }
+
+  const data = (await response.json()) as { items?: NaverSearchItem[] }
+  const items = data.items ?? []
+  console.log(`[DC] Naver ${endpoint} results:`, items.length)
   return items
 }
 
+function itemsToRawContent(
+  items: NaverSearchItem[],
+  koQuery: string,
+  requireDcUrl: boolean
+): RawContent[] {
+  const results: RawContent[] = []
+
+  for (const item of items) {
+    const link = item.link?.trim()
+    if (!link) continue
+    if (requireDcUrl && !isDcInsideUrl(link)) continue
+
+    const title = stripHtml(item.title ?? "")
+    const description = stripHtml(item.description ?? "")
+    const combined = `${title}\n${description}`.trim()
+
+    if (combined.length < MIN_BODY_LENGTH) continue
+
+    results.push({
+      url: link,
+      title: title || koQuery,
+      body: combined,
+      source: "dcinside",
+      collectedAt: new Date().toISOString(),
+    })
+  }
+
+  return results
+}
+
+async function searchDCViaNaver(
+  koQuery: string,
+  clientId: string,
+  clientSecret: string
+): Promise<RawContent[]> {
+  const allResults: RawContent[] = []
+
+  // 1. Web search — DC Inside URLs only
+  const webQueries = [
+    `${koQuery} site:dcinside.com`,
+    `${koQuery} 디시`,
+    `${koQuery} 디시인사이드`,
+  ]
+
+  for (const query of webQueries) {
+    const items = await naverSearch("webkr", query, clientId, clientSecret)
+    allResults.push(...itemsToRawContent(items, koQuery, true))
+    if (allResults.length >= 5) break
+  }
+
+  // 2. Blog search — posts mentioning DC / chair reviews (broader)
+  if (allResults.length < 3) {
+    const blogItems = await naverSearch(
+      "blog",
+      `${koQuery} 디시 의자`,
+      clientId,
+      clientSecret
+    )
+    for (const raw of itemsToRawContent(blogItems, koQuery, false)) {
+      const text = `${raw.title} ${raw.body}`.toLowerCase()
+      if (
+        text.includes("디시") ||
+        text.includes("dcinside") ||
+        text.includes("dc inside")
+      ) {
+        allResults.push(raw)
+      }
+    }
+  }
+
+  return allResults
+}
+
+/**
+ * DC Inside content via Naver Search API (webkr + blog fallback).
+ * Avoids direct gall.dcinside.com fetches blocked on Vercel / browser CORS.
+ */
 export async function collectFromDCInside(
   chairSlug: string,
   chairNameEn: string
 ): Promise<RawContent[]> {
+  const clientId = process.env.NAVER_CLIENT_ID?.trim()
+  const clientSecret = process.env.NAVER_CLIENT_SECRET?.trim()
+
+  if (!clientId || !clientSecret) {
+    console.log("[DC] NAVER_CLIENT_ID or NAVER_CLIENT_SECRET not set, skipping")
+    return []
+  }
+
   const queries = getSearchQueries(chairSlug, chairNameEn, "ko")
-  const maxItems = 10
+  if (queries.length === 0) {
+    queries.push(chairNameEn)
+  }
 
   try {
-    const seenPostUrls = new Set<string>()
-    const postItems: { title: string; url: string }[] = []
+    const allResults: RawContent[] = []
 
-    for (const searchQuery of queries) {
-      const items = await searchDCInsidePosts(searchQuery)
-      for (const item of items) {
-        if (!seenPostUrls.has(item.url)) {
-          seenPostUrls.add(item.url)
-          postItems.push(item)
-        }
-      }
-      await sleep(1000)
+    for (const koQuery of queries.slice(0, 2)) {
+      const items = await searchDCViaNaver(koQuery, clientId, clientSecret)
+      allResults.push(...items)
     }
 
-    const results: RawContent[] = []
+    const posts = dedupeByUrl(allResults).slice(0, MAX_ITEMS)
 
-    for (const item of postItems.slice(0, maxItems + 5)) {
-      if (results.length >= maxItems) break
-
-      await sleep(2500)
-
-      const detailHtml = await fetchHtml(item.url)
-      if (!detailHtml) continue
-
-      const body = extractPostBody(detailHtml)
-      if (body.length < 150) continue
-
-      results.push({
-        url: item.url,
-        title: item.title,
-        body,
-        source: "dcinside",
-        collectedAt: new Date().toISOString(),
-      })
-    }
-
-    const posts = dedupeByUrl(results).slice(0, maxItems)
     if (posts.length > 0) {
-      console.log("[DC] Sample post title:", posts[0].title)
-      console.log("[DC] Sample post text:", posts[0].body.substring(0, 200))
+      console.log("[DC] Sample title:", posts[0].title)
+      console.log("[DC] Sample text:", posts[0].body.substring(0, 200))
+    } else {
+      console.log("[DC] No results — check NAVER API keys and webkr permission")
     }
+
+    console.log("[DC] Total collected:", posts.length)
     return posts
-  } catch (err) {
-    console.warn(
-      "[dcinside] collection failed:",
-      err instanceof Error ? err.message : err
-    )
+  } catch (e) {
+    console.error("[DC] Error:", e)
     return []
   }
 }

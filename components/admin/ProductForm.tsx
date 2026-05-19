@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -51,16 +52,24 @@ function slugify(name: string) {
     .replace(/^-|-$/g, "")
 }
 
+type SaveStatus = "idle" | "saving" | "saved" | "error"
+
 export function ProductForm({
   initial,
   productId,
+  thumbnailFromImages,
+  stayOnPage = false,
 }: {
   initial?: Partial<ProductFormValues>
   productId?: string
+  /** Synced from ImageUploader — first product image URL */
+  thumbnailFromImages?: string | null
+  /** When true, do not redirect after save (edit page) */
+  stayOnPage?: boolean
 }) {
   const router = useRouter()
   const [brands, setBrands] = useState<BrandOption[]>([])
-  const [saving, setSaving] = useState(false)
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle")
   const [error, setError] = useState<string | null>(null)
 
   const [values, setValues] = useState<ProductFormValues>({
@@ -107,6 +116,17 @@ export function ProductForm({
     })
   }, [initial])
 
+  useEffect(() => {
+    if (!thumbnailFromImages) return
+    setValues((v) => ({ ...v, thumbnailUrl: thumbnailFromImages }))
+  }, [thumbnailFromImages])
+
+  useEffect(() => {
+    if (saveStatus !== "saved") return
+    const timer = setTimeout(() => setSaveStatus("idle"), 2000)
+    return () => clearTimeout(timer)
+  }, [saveStatus])
+
   function updateSpec(key: string, val: unknown) {
     setValues((v) => ({
       ...v,
@@ -116,33 +136,57 @@ export function ProductForm({
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    setSaving(true)
+    setSaveStatus("saving")
     setError(null)
     try {
       const url = productId
         ? `/api/admin/products/${productId}`
         : "/api/admin/products"
       const method = productId ? "PUT" : "POST"
+      const payload = {
+        ...values,
+        thumbnailUrl: thumbnailFromImages || values.thumbnailUrl || undefined,
+      }
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        credentials: "include",
+        body: JSON.stringify(payload),
       })
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
         throw new Error(body.error ?? "Save failed")
       }
-      router.push("/admin/products")
-      router.refresh()
+      setSaveStatus("saved")
+      if (stayOnPage) {
+        router.refresh()
+      } else {
+        router.push("/admin/products")
+        router.refresh()
+      }
     } catch (err) {
+      setSaveStatus("error")
       setError(err instanceof Error ? err.message : "Save failed")
-    } finally {
-      setSaving(false)
     }
   }
 
+  const isSaving = saveStatus === "saving"
+  const submitLabel =
+    saveStatus === "saving"
+      ? "Saving..."
+      : saveStatus === "saved"
+        ? "✓ Saved"
+        : saveStatus === "error"
+          ? "Error - Try again"
+          : "Save Product"
+
   return (
     <form onSubmit={onSubmit} className="max-w-3xl space-y-10 pb-16">
+      {saveStatus === "saved" && (
+        <div className="fixed top-4 right-4 z-50 rounded bg-green-500 px-4 py-2 text-white shadow-lg">
+          ✓ Product saved successfully
+        </div>
+      )}
       <section className="space-y-4">
         <h2 className="text-lg font-medium">Basic Info</h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -467,8 +511,16 @@ export function ProductForm({
       </section>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <Button type="submit" disabled={saving}>
-        {saving ? "Saving..." : "Save Product"}
+      <Button
+        type="submit"
+        disabled={isSaving}
+        className={cn(
+          saveStatus === "saved" &&
+            "bg-green-600 text-white hover:bg-green-600",
+          saveStatus === "error" && "bg-red-600 text-white hover:bg-red-600"
+        )}
+      >
+        {submitLabel}
       </Button>
     </form>
   )

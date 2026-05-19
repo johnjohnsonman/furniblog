@@ -1,6 +1,10 @@
 import type { RawContent } from "@/lib/pipeline/types"
 
-const USER_AGENT = "furniblog/1.0 chair review aggregator"
+const REDDIT_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  Accept: "application/json",
+} as const
 
 const SUBREDDITS = [
   "officechairs",
@@ -43,16 +47,12 @@ export async function collectFromReddit(
   for (const subreddit of SUBREDDITS.slice(0, 2)) {
     for (const query of queries.slice(0, 1)) {
       try {
-        const searchUrl = `https://www.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&sort=relevance&limit=10&restrict_sr=1&t=all`
+        const searchUrl = `https://old.reddit.com/r/${subreddit}/search.json?q=${encodeURIComponent(query)}&sort=relevance&limit=10&restrict_sr=1&t=all`
 
         console.log(`[REDDIT] Fetching: ${searchUrl}`)
 
         const response = await fetch(searchUrl, {
-          headers: {
-            "User-Agent": USER_AGENT,
-            Accept: "application/json",
-          },
-          signal: AbortSignal.timeout(10_000),
+          headers: REDDIT_HEADERS,
           cache: "no-store",
         })
 
@@ -62,6 +62,10 @@ export async function collectFromReddit(
           console.log(
             `[REDDIT] Error: ${response.status} ${response.statusText}`
           )
+          if (response.status === 403) {
+            console.log("[REDDIT] 403 — giving up immediately")
+            return []
+          }
           continue
         }
 
@@ -106,13 +110,20 @@ export async function collectFromReddit(
           console.log(
             `[REDDIT] Added: "${title}" (score: ${p.score}, length: ${combined.length})`
           )
+
+          if (results.length >= 5) break
         }
+
+        if (results.length >= 5) break
       } catch (error) {
         console.error(`[REDDIT] Error for r/${subreddit}/${query}:`, error)
       }
 
+      if (results.length >= 5) break
+
       await sleep(1000)
     }
+    if (results.length >= 5) break
   }
 
   console.log(`[REDDIT] Total collected: ${results.length}`)

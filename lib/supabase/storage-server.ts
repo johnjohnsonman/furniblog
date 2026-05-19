@@ -27,6 +27,8 @@ export async function uploadProductImageServer(
   const supabase = createAdminClient()
   const path = `${productSlug}-${Date.now()}.${ext}`
 
+  console.log("[STORAGE] Uploading:", path, "size:", file.size, "type:", file.type)
+
   const buffer = Buffer.from(await file.arrayBuffer())
   const { error } = await supabase.storage
     .from(PRODUCT_BUCKET)
@@ -36,9 +38,13 @@ export async function uploadProductImageServer(
       upsert: false,
     })
 
-  if (error) throw new Error(error.message)
+  if (error) {
+    console.error("[STORAGE] Upload error:", error)
+    throw new Error(error.message)
+  }
 
   const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(path)
+  console.log("[STORAGE] Public URL:", data.publicUrl)
   return data.publicUrl
 }
 

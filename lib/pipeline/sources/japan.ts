@@ -1,8 +1,13 @@
 import { getChairNames } from "@/lib/pipeline/chair-names"
-import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import type { RawContent } from "@/lib/pipeline/types"
 
-const USER_AGENT = "furniblog/1.0"
+const REDDIT_HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  Accept: "application/json, text/plain, */*",
+  "Accept-Language": "en-US,en;q=0.9",
+  "Cache-Control": "no-cache",
+} as const
 const JAPAN_SUBREDDITS = [
   "japanlife",
   "japanfinance",
@@ -73,11 +78,11 @@ async function fetchRedditSearch(
     restrict_sr: "1",
   })
 
-  const url = `https://www.reddit.com/r/${subreddit}/search.json?${params}`
+  const url = `https://old.reddit.com/r/${subreddit}/search.json?${params}`
   console.log("[JAPAN] Reddit search:", subreddit, query)
 
-  const res = await fetchWithTimeout(url, {
-    headers: { "User-Agent": USER_AGENT },
+  const res = await fetch(url, {
+    headers: REDDIT_HEADERS,
     cache: "no-store",
   })
 
@@ -192,7 +197,7 @@ async function collectFromYoutubeJa(
         key: apiKey,
       })
 
-      const videoRes = await fetchWithTimeout(
+      const videoRes = await fetch(
         `https://www.googleapis.com/youtube/v3/videos?${videoParams}`
       )
 

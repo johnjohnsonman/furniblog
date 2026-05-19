@@ -49,34 +49,20 @@ function storagePathFromPublicUrl(
   }
 }
 
+/**
+ * Client-side upload uses the anon key and often fails without storage RLS for authenticated users.
+ * Use POST /api/admin/products/[id]/images from the admin UI instead.
+ */
 export async function uploadProductImage(
   file: File,
   productSlug: string
 ): Promise<string | null> {
-  try {
-    const ext = validateImageFile(file)
-    const supabase = createClient()
-    const path = `${productSlug}-${Date.now()}.${ext}`
-
-    const { error } = await supabase.storage
-      .from(PRODUCT_BUCKET)
-      .upload(path, file, {
-        cacheControl: "3600",
-        upsert: false,
-        contentType: file.type,
-      })
-
-    if (error) {
-      console.error("[uploadProductImage]", error.message)
-      return null
-    }
-
-    const { data } = supabase.storage.from(PRODUCT_BUCKET).getPublicUrl(path)
-    return data.publicUrl
-  } catch (err) {
-    console.error("[uploadProductImage]", err)
-    return null
-  }
+  void file
+  void productSlug
+  console.warn(
+    "[uploadProductImage] Client-side storage upload is disabled. Use the admin API route."
+  )
+  return null
 }
 
 export async function uploadGalleryImage(

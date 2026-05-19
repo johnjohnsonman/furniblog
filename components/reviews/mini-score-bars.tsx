@@ -3,7 +3,10 @@ import { isChairScores } from "@/components/chairs/review-utils"
 import type { Review } from "@/types/review"
 import { cn } from "@/lib/utils"
 
-const MINI_AXES: { key: keyof ChairScores; label: string }[] = [
+const MINI_AXES: {
+  key: "lumbarSupport" | "seatComfort" | "overall"
+  label: string
+}[] = [
   { key: "lumbarSupport", label: "\uc694\ucd95" },
   { key: "seatComfort", label: "\uc88c\ud310" },
   { key: "overall", label: "\uc885\ud569" },
@@ -27,7 +30,7 @@ export function MiniScoreBars({ scores, className }: MiniScoreBarsProps) {
     <div className={cn("space-y-2", className)}>
       {MINI_AXES.map(({ key, label }) => {
         const value = scores[key]
-        if (value == null) return null
+        if (typeof value !== "number") return null
         const pct = (value / 5) * 100
         return (
           <div key={key} className="flex items-center gap-2 text-xs">

@@ -23,6 +23,10 @@ type DbBrand = {
   country: string
   logo_url: string | null
   description_ko: string
+  description_long?: string | null
+  hero_image_url?: string | null
+  color_primary?: string | null
+  color_secondary?: string | null
   website_url: string | null
   tier: string
   founded_year: number | null
@@ -77,6 +81,14 @@ type DbProduct = {
   created_at: string
   updated_at: string
   brands?: DbBrand | DbBrand[] | null
+  product_images?: DbProductImage[] | null
+}
+
+type DbProductImage = {
+  id: string
+  url: string
+  sort_order: number
+  is_thumbnail: boolean
 }
 
 type DbAffiliateLink = {
@@ -124,18 +136,30 @@ export type SiteStats = {
   comparisons: number
 }
 
-function mapDbBrand(row: DbBrand): Brand {
+function mapDbBrand(row: DbBrand, productCount = 0): Brand {
+  const initials = row.name
+    .trim()
+    .split(/\s+/)
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase()
+
   return {
     id: row.slug,
     slug: row.slug,
     name: row.name,
     country: row.country,
     founded: row.founded_year ?? 0,
-    logo: row.logo_url ? row.name.slice(0, 2).toUpperCase() : row.name.slice(0, 2),
+    logo: initials || row.name.slice(0, 2).toUpperCase(),
     description: row.description_ko,
-    productCount: 0,
+    descriptionLong: row.description_long ?? undefined,
+    productCount,
     category: "Office",
     website: row.website_url ?? undefined,
+    heroImageUrl: row.hero_image_url ?? undefined,
+    colorPrimary: row.color_primary ?? undefined,
+    colorSecondary: row.color_secondary ?? undefined,
   }
 }
 
@@ -164,8 +188,34 @@ function mapDbAffiliateLink(row: DbAffiliateLink): AffiliateLink {
   }
 }
 
+function sortedProductImageUrls(
+  images: DbProductImage[] | null | undefined
+): string[] {
+  if (!images?.length) return []
+  return [...images]
+    .sort((a, b) => {
+      if (a.is_thumbnail !== b.is_thumbnail) {
+        return a.is_thumbnail ? -1 : 1
+      }
+      return a.sort_order - b.sort_order
+    })
+    .map((img) => img.url)
+    .filter((url) => Boolean(url?.trim()))
+}
+
 function mapDbProduct(row: DbProduct, affiliateLinks: AffiliateLink[] = []): ProductView {
   const brand = unwrapBrand(row.brands)
+  const category = isChairCategory(row.category) ? row.category : "office"
+  const galleryFromDb = sortedProductImageUrls(row.product_images)
+  const gallery =
+    galleryFromDb.length > 0
+      ? galleryFromDb
+      : row.thumbnail_url?.trim()
+        ? [row.thumbnail_url]
+        : row.images?.filter((u) => u?.trim()) ?? []
+  const thumbnailFallback = row.thumbnail_url?.trim() || null
+  const primaryImage =
+    gallery[0] ?? thumbnailFallback ?? row.images?.[0] ?? ""
 
   const product: Product = {
     id: row.slug,
@@ -173,17 +223,15 @@ function mapDbProduct(row: DbProduct, affiliateLinks: AffiliateLink[] = []): Pro
     name: row.name,
     brand: brand?.name ?? "",
     brandId: brand?.slug ?? "",
-    category: isChairCategory(row.category) ? row.category : "office",
+    category,
     chairType: row.chair_type ?? undefined,
     country: row.country ?? brand?.country ?? "",
     launchYear: row.launch_year ?? undefined,
     priceRange: row.price_range ?? "$$$",
     priceUsd: row.price_usd ?? undefined,
     priceLabel: formatProductPrice(row.price_usd),
-    imageUrl: resolveProductImageUrl(
-      row.thumbnail_url ?? row.images?.[0] ?? "",
-      isChairCategory(row.category) ? row.category : "office"
-    ),
+    imageUrl: resolveProductImageUrl(primaryImage, category),
+    galleryImages: gallery,
     summary: row.description_ko,
     pros: Array.isArray(row.pros) ? row.pros : [],
     cons: Array.isArray(row.cons) ? row.cons : [],
@@ -240,7 +288,7 @@ function mapDbReview(row: DbReview & {
   }
 }
 
-const PRODUCT_SELECT = `
+const PRODUCT_SELECT_BASE = `
   *,
   brands (
     id,
@@ -254,6 +302,37 @@ const PRODUCT_SELECT = `
     founded_year
   )
 `
+
+const PRODUCT_SELECT = `
+  ${PRODUCT_SELECT_BASE},
+  product_images (
+    id,
+    url,
+    sort_order,
+    is_thumbnail
+  )
+`
+
+function isProductImagesPermissionError(error: { message?: string } | null): boolean {
+  const msg = error?.message?.toLowerCase() ?? ""
+  return msg.includes("product_images") && msg.includes("permission")
+}
+
+function productListQuery(
+  supabase: ReturnType<typeof createPublicServerClient>,
+  includeImages = true
+) {
+  const base = supabase.from("products")
+  if (!includeImages) {
+    return base.select(PRODUCT_SELECT_BASE)
+  }
+  return base
+    .select(PRODUCT_SELECT)
+    .order("sort_order", {
+      foreignTable: "product_images",
+      ascending: true,
+    })
+}
 
 async function resolveProductUuid(slug: string): Promise<string | null> {
   const supabase = createPublicServerClient()
@@ -282,12 +361,20 @@ export async function getProductBySlug(
 
   try {
     const supabase = createPublicServerClient()
-    const { data, error } = await supabase
-      .from("products")
-      .select(PRODUCT_SELECT)
+    let { data, error } = await productListQuery(supabase)
       .eq("slug", slug)
       .eq("published", true)
       .maybeSingle()
+
+    if (isProductImagesPermissionError(error)) {
+      console.warn(
+        "[getProductBySlug] product_images not readable — run 013_product_images_anon_grant.sql"
+      )
+      ;({ data, error } = await productListQuery(supabase, false)
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle())
+    }
 
     if (error || !data) {
       if (error) {
@@ -304,10 +391,17 @@ export async function getProductBySlug(
   }
 }
 
+function normalizeCategoryFilter(category?: string): string | null {
+  if (!category || category === "All" || category === "all") return null
+  return category
+}
+
 export async function getProducts(filters?: {
   brand?: string
   category?: string
 }): Promise<ProductView[]> {
+  const categoryFilter = normalizeCategoryFilter(filters?.category)
+
   if (!isSupabaseConfigured()) {
     const { products } = await import("@/lib/data")
     let list = products
@@ -315,23 +409,21 @@ export async function getProducts(filters?: {
     if (filters?.brand) {
       list = list.filter((p) => p.brandId === filters.brand)
     }
-    if (filters?.category && filters.category !== "All") {
-      list = list.filter((p) => p.category === filters.category)
+    if (categoryFilter) {
+      list = list.filter((p) => p.category === categoryFilter)
     }
 
     return list
   }
 
   const supabase = createPublicServerClient()
-  let query = supabase
-    .from("products")
-    .select(PRODUCT_SELECT)
+  let query = productListQuery(supabase)
     .eq("published", true)
     .order("rating_overall", { ascending: false, nullsFirst: false })
     .eq("track", "chair")
 
-  if (filters?.category && filters.category !== "All") {
-    query = query.eq("category", filters.category)
+  if (categoryFilter) {
+    query = query.eq("category", categoryFilter)
   }
   if (filters?.brand) {
     const { data: brandRow } = await supabase
@@ -340,12 +432,38 @@ export async function getProducts(filters?: {
       .eq("slug", filters.brand)
       .maybeSingle()
 
-    if (brandRow) {
-      query = query.eq("brand_id", brandRow.id)
+    if (!brandRow) {
+      return []
     }
+    query = query.eq("brand_id", brandRow.id)
   }
 
-  const { data, error } = await query
+  let { data, error } = await query
+
+  if (isProductImagesPermissionError(error)) {
+    console.warn(
+      "[getProducts] product_images not readable — run 013_product_images_anon_grant.sql"
+    )
+    let fallbackQuery = productListQuery(supabase, false)
+      .eq("published", true)
+      .order("rating_overall", { ascending: false, nullsFirst: false })
+      .eq("track", "chair")
+    if (categoryFilter) {
+      fallbackQuery = fallbackQuery.eq("category", categoryFilter)
+    }
+    if (filters?.brand) {
+      const { data: brandRow } = await supabase
+        .from("brands")
+        .select("id")
+        .eq("slug", filters.brand)
+        .maybeSingle()
+      if (!brandRow) {
+        return []
+      }
+      fallbackQuery = fallbackQuery.eq("brand_id", brandRow.id)
+    }
+    ;({ data, error } = await fallbackQuery)
+  }
 
   if (error) {
     console.error("[getProducts] Supabase error:", error.message)
@@ -363,14 +481,64 @@ export async function getProducts(filters?: {
     if (filters?.brand) {
       list = list.filter((p) => p.brandId === filters.brand)
     }
-    if (filters?.category && filters.category !== "All") {
-      list = list.filter((p) => p.category === filters.category)
+    if (categoryFilter) {
+      list = list.filter((p) => p.category === categoryFilter)
     }
 
     return list
   }
 
   return (data as DbProduct[]).map((row) => mapDbProduct(row))
+}
+
+export type CategoryCountMap = Record<string, number>
+
+export async function getCategoryCounts(): Promise<CategoryCountMap> {
+  if (!isSupabaseConfigured()) {
+    const { products } = await import("@/lib/data")
+    const counts: CategoryCountMap = {}
+    for (const p of products) {
+      if (p.category) {
+        counts[p.category] = (counts[p.category] ?? 0) + 1
+      }
+    }
+    return counts
+  }
+
+  const supabase = createPublicServerClient()
+  const { data, error } = await supabase
+    .from("products")
+    .select("category")
+    .eq("published", true)
+    .eq("track", "chair")
+
+  if (error || !data?.length) {
+    const { products } = await import("@/lib/data")
+    const counts: CategoryCountMap = {}
+    for (const p of products) {
+      if (p.category) {
+        counts[p.category] = (counts[p.category] ?? 0) + 1
+      }
+    }
+    return counts
+  }
+
+  const counts: CategoryCountMap = {}
+  for (const row of data) {
+    const cat = row.category as string | null
+    if (cat) {
+      counts[cat] = (counts[cat] ?? 0) + 1
+    }
+  }
+  return counts
+}
+
+/** Brands that have at least one published chair product */
+export async function getBrandsForProductFilter(): Promise<Brand[]> {
+  const brands = await getBrandsWithCounts()
+  return brands
+    .filter((b) => b.productCount > 0)
+    .sort((a, b) => a.name.localeCompare(b.name))
 }
 
 export async function getFeaturedProducts(
@@ -382,12 +550,17 @@ export async function getFeaturedProducts(
   }
 
   const supabase = createPublicServerClient()
-  const { data, error } = await supabase
-    .from("products")
-    .select(PRODUCT_SELECT)
+  let { data, error } = await productListQuery(supabase)
     .eq("published", true)
     .order("rating_overall", { ascending: false, nullsFirst: false })
     .limit(limit)
+
+  if (isProductImagesPermissionError(error)) {
+    ;({ data, error } = await productListQuery(supabase, false)
+      .eq("published", true)
+      .order("rating_overall", { ascending: false, nullsFirst: false })
+      .limit(limit))
+  }
 
   if (error || !data?.length) {
     const { getFeaturedProducts: local } = await import("@/lib/data/queries")
@@ -422,9 +595,17 @@ export async function getProductReviews(productId: string): Promise<Review[]> {
 }
 
 export async function getBrands(): Promise<Brand[]> {
+  return getBrandsWithCounts()
+}
+
+export async function getBrandsWithCounts(): Promise<Brand[]> {
   if (!isSupabaseConfigured()) {
     const { brands } = await import("@/lib/data")
-    return brands
+    const { products } = await import("@/lib/data")
+    return brands.map((b) => ({
+      ...b,
+      productCount: products.filter((p) => p.brandId === b.slug).length,
+    }))
   }
 
   const supabase = createPublicServerClient()
@@ -434,11 +615,34 @@ export async function getBrands(): Promise<Brand[]> {
     .order("name")
 
   if (error || !data?.length) {
-    const { brands } = await import("@/lib/data")
-    return brands
+    const { brands, products } = await import("@/lib/data")
+    return brands.map((b) => ({
+      ...b,
+      productCount: products.filter((p) => p.brandId === b.slug).length,
+    }))
   }
 
-  return (data as DbBrand[]).map(mapDbBrand)
+  const { data: productRows } = await supabase
+    .from("products")
+    .select("brand_id")
+    .eq("published", true)
+    .eq("track", "chair")
+
+  const countByBrandId = new Map<string, number>()
+  for (const row of productRows ?? []) {
+    const id = row.brand_id as string
+    countByBrandId.set(id, (countByBrandId.get(id) ?? 0) + 1)
+  }
+
+  return (data as DbBrand[]).map((row) =>
+    mapDbBrand(row, countByBrandId.get(row.id) ?? 0)
+  )
+}
+
+export async function getProductsByBrandSlug(
+  brandSlug: string
+): Promise<ProductView[]> {
+  return getProducts({ brand: brandSlug })
 }
 
 export async function getBrandBySlug(slug: string): Promise<Brand | undefined> {
@@ -666,20 +870,41 @@ export async function getSiteStats(): Promise<SiteStats> {
 
   const supabase = createPublicServerClient()
 
-  const [productsRes, brandsRes, reviewsRes] = await Promise.all([
+  const [productsRes, brandRowsRes, reviewsRes] = await Promise.all([
     supabase
       .from("products")
       .select("*", { count: "exact", head: true })
       .eq("published", true)
       .eq("track", "chair"),
-    supabase.from("brands").select("*", { count: "exact", head: true }),
+    supabase
+      .from("products")
+      .select("brand_id")
+      .eq("published", true)
+      .eq("track", "chair"),
     supabase.from("reviews").select("*", { count: "exact", head: true }),
   ])
 
+  const brandIds = new Set(
+    (brandRowsRes.data ?? []).map((r) => r.brand_id as string).filter(Boolean)
+  )
+
   return {
     products: productsRes.count ?? 0,
-    brands: brandsRes.count ?? 0,
+    brands: brandIds.size,
     reviews: reviewsRes.count ?? 0,
     comparisons: comparisons.length,
   }
 }
+
+export {
+  getReviews,
+  getReviewsFeedMeta,
+} from "@/lib/supabase/reviews-feed"
+export type {
+  GetReviewsParams,
+  GetReviewsResult,
+  ReviewFeedItem,
+  ReviewsFeedMeta,
+  ReviewFeedSort,
+  ReviewFeedPeriod,
+} from "@/lib/reviews/feed-types"

@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { resolveProductByIdOrSlug } from "@/lib/admin/resolve-product"
+import { syncProductThumbnail } from "@/lib/admin/product-thumbnail"
 import { createAdminClient } from "@/lib/supabase/admin"
 import {
   deleteStorageObject,
   uploadProductImageServer,
 } from "@/lib/supabase/storage-server"
+
+export const runtime = "nodejs"
 
 type RouteContext = { params: Promise<{ id: string }> }
 
@@ -17,34 +20,6 @@ type ProductImageRow = {
   sort_order: number
   is_thumbnail: boolean
   created_at: string
-}
-
-async function syncProductThumbnail(
-  supabase: ReturnType<typeof createAdminClient>,
-  productId: string
-) {
-  const { data: thumb } = await supabase
-    .from("product_images")
-    .select("url")
-    .eq("product_id", productId)
-    .eq("is_thumbnail", true)
-    .order("sort_order", { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  const { data: first } = await supabase
-    .from("product_images")
-    .select("url")
-    .eq("product_id", productId)
-    .order("sort_order", { ascending: true })
-    .limit(1)
-    .maybeSingle()
-
-  const url = thumb?.url ?? first?.url ?? null
-  await supabase
-    .from("products")
-    .update({ thumbnail_url: url })
-    .eq("id", productId)
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
@@ -113,40 +88,64 @@ export async function POST(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: "No files provided" }, { status: 400 })
     }
 
-    const { count } = await supabase
+    console.log(
+      "[API] Product image upload:",
+      product.slug,
+      files.map((f) => `${f.name} (${f.size}b)`)
+    )
+
+    const { data: existingImages } = await supabase
       .from("product_images")
-      .select("*", { count: "exact", head: true })
+      .select("id")
       .eq("product_id", product.id)
 
-    let nextOrder = count ?? 0
+    const existingCount = existingImages?.length ?? 0
+    let nextOrder = existingCount
     const inserted: ProductImageRow[] = []
 
     for (const file of files) {
-      const url = await uploadProductImageServer(file, product.slug)
-      const isFirst = nextOrder === 0 && (count ?? 0) === 0
+      let url: string
+      try {
+        url = await uploadProductImageServer(file, product.slug)
+      } catch (uploadErr) {
+        const message =
+          uploadErr instanceof Error ? uploadErr.message : "Storage upload failed"
+        console.error("[API] Upload error:", message)
+        return NextResponse.json({ error: message }, { status: 500 })
+      }
+
+      const isFirst = existingCount === 0 && inserted.length === 0
 
       const { data: row, error } = await supabase
         .from("product_images")
         .insert({
           product_id: product.id,
           url,
-          sort_order: nextOrder,
+          sort_order: isFirst ? 0 : nextOrder,
           is_thumbnail: isFirst,
         })
         .select("*")
         .single()
 
       if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 })
+        console.error("[API] product_images insert error:", error)
+        return NextResponse.json(
+          {
+            error: error.message,
+            hint: "Run migration 007_product_images.sql if the table is missing",
+          },
+          { status: 500 }
+        )
       }
 
       inserted.push(row as ProductImageRow)
       nextOrder += 1
     }
 
-    await syncProductThumbnail(supabase, product.id)
+    const thumbnailUrl = await syncProductThumbnail(supabase, product.id)
 
     return NextResponse.json({
+      thumbnailUrl,
       images: inserted.map((row) => ({
         id: row.id,
         url: row.url,
@@ -200,7 +199,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         .eq("product_id", product.id)
     }
 
-    await syncProductThumbnail(supabase, product.id)
+    const thumbnailUrl = await syncProductThumbnail(supabase, product.id)
 
     const { data } = await supabase
       .from("product_images")
@@ -209,6 +208,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       .order("sort_order", { ascending: true })
 
     return NextResponse.json({
+      thumbnailUrl,
       images: (data ?? []).map((row: ProductImageRow) => ({
         id: row.id,
         url: row.url,

@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
+import { resolveThumbnailForSave } from "@/lib/admin/product-thumbnail"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 type RouteContext = { params: Promise<{ id: string }> }
 
 async function resolveProduct(supabase: ReturnType<typeof createAdminClient>, id: string) {
-  const isUuid = id.includes("-") && id.length === 36
+  const isUuid =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
   let query = supabase
     .from("products")
     .select("*, brands(slug, name)")
@@ -88,6 +90,13 @@ export async function PUT(request: NextRequest, context: RouteContext) {
       return NextResponse.json({ error: "Brand not found" }, { status: 400 })
     }
 
+    const thumbnailUrl = await resolveThumbnailForSave(
+      supabase,
+      existing.id,
+      body.thumbnailUrl,
+      existing.thumbnail_url
+    )
+
     const { error } = await supabase
       .from("products")
       .update({
@@ -99,7 +108,7 @@ export async function PUT(request: NextRequest, context: RouteContext) {
         price_krw: body.priceKrw ?? null,
         description_ko: body.description ?? "",
         description_en: body.description ?? "",
-        thumbnail_url: body.thumbnailUrl ?? null,
+        thumbnail_url: thumbnailUrl,
         chair_specs: body.chairSpecs ?? null,
         seo_title: body.seoTitle ?? null,
         seo_description: body.seoDescription ?? null,

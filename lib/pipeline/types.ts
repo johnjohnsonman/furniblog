@@ -6,7 +6,14 @@ export interface RawContent {
   body: string
   source: Extract<
     ReviewSource,
-    "reddit" | "youtube" | "naver" | "dcinside" | "japan_community"
+    | "reddit"
+    | "youtube"
+    | "naver"
+    | "dcinside"
+    | "japan_community"
+    | "trustpilot"
+    | "review_sites"
+    | "hackernews"
   >
   score?: number
   viewCount?: number
@@ -35,6 +42,9 @@ export type PipelineSource =
   | "naver"
   | "dcinside"
   | "japan_community"
+  | "trustpilot"
+  | "review_sites"
+  | "hackernews"
 
 export interface PipelineOptions {
   chairSlug: string

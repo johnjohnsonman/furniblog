@@ -9,6 +9,8 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const search = searchParams.get("search")?.trim()
   const brand = searchParams.get("brand")?.trim()
+  const publishedOnly = searchParams.get("published") === "true"
+  const limit = parseInt(searchParams.get("limit") ?? "0", 10)
 
   try {
     const supabase = createAdminClient()
@@ -19,6 +21,14 @@ export async function GET(request: NextRequest) {
       )
       .eq("track", "chair")
       .order("name")
+
+    if (publishedOnly) {
+      query = query.eq("published", true)
+    }
+
+    if (limit > 0) {
+      query = query.limit(limit)
+    }
 
     if (brand) {
       const { data: brandRow } = await supabase

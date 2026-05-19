@@ -8,6 +8,11 @@ import type {
 } from "@/types/review"
 import type { FeedCategoryId } from "./feed-category-pills"
 import { getReviewOverall } from "@/components/chairs/review-utils"
+import {
+  getBackIssueSentiment,
+  reviewHasBackMention,
+  reviewMatchesBackIssueFilter,
+} from "@/lib/reviews/back-issue-utils"
 
 export type SortOption = "latest" | "rating" | "helpful" | "match"
 
@@ -63,10 +68,15 @@ export type ProfileHighlight = {
   occupation?: boolean
   usagePurpose?: boolean
   backIssues?: boolean
+  backSentiment?: boolean
 }
 
 type ProfileReview = Pick<
   Review,
+  | "summary"
+  | "pros"
+  | "cons"
+  | "scores"
   | "reviewerHeightCm"
   | "reviewerWeightKg"
   | "bodyType"
@@ -151,9 +161,9 @@ function matchesOccupations(review: ProfileReview, filters: ReviewFilters): bool
 
 function matchesBackIssues(review: ProfileReview, filters: ReviewFilters): boolean {
   if (filters.backIssues.length === 0) return true
-  const issues = review.backIssues
-  if (!issues?.length) return true
-  return filters.backIssues.some((id) => issues.includes(id))
+
+  const full = review as Review
+  return filters.backIssues.some((id) => reviewMatchesBackIssueFilter(full, id))
 }
 
 function matchesSources(
@@ -289,8 +299,12 @@ export function profileMatchScore(
   if (filters.usagePurpose !== "any" && review.usagePurpose) {
     if (matchesUsagePurpose(review, filters)) score += 1
   }
-  if (filters.backIssues.length > 0 && review.backIssues?.length) {
-    if (filters.backIssues.some((id) => review.backIssues!.includes(id))) {
+  if (filters.backIssues.length > 0) {
+    if (
+      filters.backIssues.some((id) =>
+        reviewMatchesBackIssueFilter(review as Review, id)
+      )
+    ) {
       score += 3
     }
   }
@@ -330,8 +344,11 @@ export function getProfileHighlights(
       matchesUsagePurpose(review, filters),
     backIssues:
       filters.backIssues.length > 0 &&
-      review.backIssues != null &&
-      filters.backIssues.some((id) => review.backIssues!.includes(id)),
+      filters.backIssues.some((id) =>
+        reviewMatchesBackIssueFilter(review as Review, id)
+      ),
+    backSentiment:
+      filters.backIssues.length > 0 && reviewHasBackMention(review as Review),
   }
 }
 

@@ -1,114 +1,196 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import Image from "next/image"
+import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { brands, products } from "@/lib/data"
+import { BrandProductsGrid } from "@/components/brands/brand-products-grid"
+import {
+  getBrandBySlug,
+  getBrandsWithCounts,
+  getProductsByBrandSlug,
+  getReviewCounts,
+} from "@/lib/supabase/queries"
+import {
+  getBrandGradientStyle,
+  getBrandHeroImage,
+  getBrandLogoInitials,
+  getBrandLongDescription,
+  getBrandWarrantyLabel,
+} from "@/lib/brand-assets"
 
 interface BrandPageProps {
   params: Promise<{ id: string }>
 }
 
-export function generateStaticParams() {
-  return brands.map((brand) => ({ id: brand.id }))
+export async function generateStaticParams() {
+  const brands = await getBrandsWithCounts()
+  return brands.map((brand) => ({ id: brand.slug }))
 }
 
 export default async function BrandPage({ params }: BrandPageProps) {
   const { id } = await params
-  const brand = brands.find((b) => b.id === id)
-  
+  const brand = await getBrandBySlug(id)
+
   if (!brand) {
     notFound()
   }
 
-  const brandProducts = products.filter((p) => p.brandId === brand.id)
+  const products = await getProductsByBrandSlug(brand.slug)
+  const reviewCounts = await getReviewCounts(products.map((p) => p.id))
+
+  const heroImage = getBrandHeroImage(brand.slug, brand.heroImageUrl)
+  const gradientStyle = getBrandGradientStyle(
+    brand.colorPrimary,
+    brand.colorSecondary
+  )
+  const longDescription = getBrandLongDescription(brand)
+  const warrantyLabel = getBrandWarrantyLabel(brand.slug)
+  const isLightHero =
+    brand.slug === "hag-flokk" || brand.slug === "vitra"
+  const textClass = isLightHero ? "text-gray-900" : "text-white"
+  const mutedClass = isLightHero
+    ? "text-gray-700/90"
+    : "text-white/80"
+
+  const stats = [
+    {
+      label: `${products.length} ${products.length === 1 ? "Chair" : "Chairs"}`,
+    },
+    ...(brand.founded > 0
+      ? [{ label: `Est. ${brand.founded}` }]
+      : []),
+    { label: brand.country },
+    ...(warrantyLabel ? [{ label: warrantyLabel }] : []),
+  ]
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <Header />
-      
+
       <main className="flex-1">
-        {/* Breadcrumb */}
-        <div className="border-b border-border bg-card">
-          <div className="mx-auto max-w-7xl px-4 py-3 lg:px-8">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Link href="/brands" className="hover:text-foreground transition-colors">Brands</Link>
-              <span>/</span>
-              <span className="text-foreground">{brand.name}</span>
-            </div>
-          </div>
-        </div>
+        {/* Hero */}
+        <section className="relative h-[400px] w-full overflow-hidden">
+          <div className="absolute inset-0" style={gradientStyle} />
+          <Image
+            src={heroImage}
+            alt=""
+            fill
+            className="object-cover opacity-30 mix-blend-overlay"
+            sizes="100vw"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-        {/* Brand Header */}
-        <div className="border-b border-border">
-          <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-            <div className="flex items-start gap-5">
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-muted text-foreground font-bold text-2xl shrink-0">
-                {brand.logo}
-              </div>
-              
-              <div>
-                <h1 className="font-serif text-3xl font-medium text-foreground">
-                  {brand.name}
-                </h1>
-                
-                <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground">
-                  <span>{brand.country}</span>
-                  <span>•</span>
-                  <span>Est. {brand.founded}</span>
-                  <span>•</span>
-                  <span>{brand.category}</span>
-                </div>
-                
-                <p className="mt-4 text-muted-foreground max-w-2xl">
-                  {brand.description}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+          <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-10 lg:px-8">
+            <Link
+              href="/brands"
+              className={`mb-6 inline-flex items-center gap-2 text-sm ${mutedClass} transition-colors hover:opacity-100`}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              All brands
+            </Link>
 
-        {/* Products Section */}
-        <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-          <h2 className="font-serif text-xl font-medium text-foreground mb-6">
-            Products ({brandProducts.length})
-          </h2>
-          
-          {brandProducts.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {brandProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.id}`}
-                  className="flex items-center gap-3 p-4 bg-card rounded-lg border border-border hover:border-foreground/20 transition-all"
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div className="flex items-end gap-5">
+                <div
+                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border text-xl font-bold backdrop-blur-sm ${
+                    isLightHero
+                      ? "border-gray-900/20 bg-white/60 text-gray-900"
+                      : "border-white/20 bg-white/10 text-white"
+                  }`}
                 >
-                  <div className="h-16 w-16 shrink-0 rounded-lg overflow-hidden bg-muted">
-                    <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-foreground truncate">{product.name}</h3>
-                    <div className="flex items-center gap-2 mt-1 text-sm">
-                      <span className="font-semibold">{product.rating}</span>
-                      <span className="text-muted-foreground">({product.reviewCount})</span>
-                    </div>
-                    <p className="text-sm font-medium mt-1">{product.price}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 bg-card rounded-lg border border-border">
-              <p className="text-muted-foreground">No products available yet.</p>
-            </div>
-          )}
-        </div>
+                  {getBrandLogoInitials(brand.name)}
+                </div>
+                <div>
+                  <h1
+                    className={`font-serif text-4xl font-medium md:text-5xl ${textClass}`}
+                  >
+                    {brand.name}
+                  </h1>
+                  <p className={`mt-2 text-sm md:text-base ${mutedClass}`}>
+                    {brand.country}
+                    {brand.founded > 0 && (
+                      <>
+                        {" "}
+                        · Est. {brand.founded}
+                      </>
+                    )}
+                  </p>
+                  <p
+                    className={`mt-3 max-w-xl text-sm md:text-base ${mutedClass} line-clamp-2`}
+                  >
+                    {longDescription.split(".").slice(0, 1).join(".")}.
+                  </p>
+                </div>
+              </div>
 
-        {/* Back Link */}
+              <div className="flex flex-wrap gap-3">
+                {brand.website && (
+                  <a
+                    href={brand.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex items-center gap-2 rounded-sm border px-4 py-2.5 text-sm font-medium transition-colors ${
+                      isLightHero
+                        ? "border-gray-900/30 bg-white/80 text-gray-900 hover:bg-white"
+                        : "border-white/30 bg-white/10 text-white hover:bg-white/20"
+                    }`}
+                  >
+                    Official site
+                    <ArrowUpRight className="h-4 w-4" />
+                  </a>
+                )}
+                <a
+                  href="#chairs"
+                  className={`inline-flex items-center gap-2 rounded-sm px-4 py-2.5 text-sm font-medium transition-colors ${
+                    isLightHero
+                      ? "bg-gray-900 text-white hover:bg-gray-800"
+                      : "bg-white text-gray-900 hover:bg-white/90"
+                  }`}
+                >
+                  View all chairs
+                  <ChevronDown className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats bar */}
+        <section className="border-b border-border bg-card">
+          <div className="mx-auto flex max-w-7xl flex-wrap gap-3 px-4 py-4 lg:px-8">
+            {stats.map((stat) => (
+              <span
+                key={stat.label}
+                className="rounded-full border border-border bg-background px-4 py-1.5 text-sm font-medium text-foreground"
+              >
+                {stat.label}
+              </span>
+            ))}
+          </div>
+        </section>
+
+        {/* Long description */}
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-3xl px-4 py-10 lg:px-8">
+            <p className="text-base leading-relaxed text-muted-foreground">
+              {longDescription}
+            </p>
+          </div>
+        </section>
+
+        <BrandProductsGrid
+          products={products}
+          reviewCounts={reviewCounts}
+          brandName={brand.name}
+        />
+
         <div className="border-t border-border">
           <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
             <Link
               href="/brands"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               All brands

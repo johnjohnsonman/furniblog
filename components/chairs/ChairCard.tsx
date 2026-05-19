@@ -49,9 +49,9 @@ export function ChairCard({ product, reviewCount, avgScore }: ChairCardProps) {
       >
         <div className="relative aspect-square">
           <div className="absolute inset-0 flex items-center justify-center transition-transform duration-200 ease-out group-hover:scale-[1.02]">
-            {product.image ? (
+            {(product.images?.[0] ?? product.image) ? (
               <ChairProductImage
-                src={product.image}
+                src={product.images?.[0] ?? product.image}
                 alt={product.name}
                 category={product.category}
                 className="object-contain p-6"
