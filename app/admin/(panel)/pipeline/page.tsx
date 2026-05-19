@@ -617,7 +617,10 @@ export default function AdminPipelinePage() {
       if (autoSettings.sources.includes("reddit")) {
         setAutoState((prev) => ({ ...prev, currentSource: "reddit" }))
         try {
-          const items = await browserCollectReddit(product.name, [])
+          const items = await browserCollectReddit(
+            product.name,
+            getAliases(product.name)
+          )
           browserItems.push(...items.slice(0, PER_SOURCE_LIMIT))
         } catch {
           /* continue */
