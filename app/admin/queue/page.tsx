@@ -250,6 +250,36 @@ export default function AdminQueuePage() {
                         onProcess={() => handleProcess(item.id)}
                         onApprove={() => handleApprove(item.id)}
                         onReject={() => handleReject(item.id)}
+                        onReclassify={async (productSlug) => {
+                          setActionId(item.id)
+                          setMessage(null)
+                          try {
+                            const res = await apiFetch(
+                              "/api/admin/pipeline/reclassify",
+                              {
+                                method: "POST",
+                                body: JSON.stringify({
+                                  queueId: item.id,
+                                  productSlug,
+                                }),
+                              }
+                            )
+                            const json = await res.json()
+                            if (!res.ok) {
+                              throw new Error(json.error ?? "Reclassify failed")
+                            }
+                            setMessage(`의자 재분류 완료: ${productSlug}`)
+                            await loadQueue()
+                          } catch (err) {
+                            setMessage(
+                              err instanceof Error
+                                ? err.message
+                                : "Reclassify failed"
+                            )
+                          } finally {
+                            setActionId(null)
+                          }
+                        }}
                       />
                     ))}
                   </div>
@@ -270,15 +300,19 @@ function QueueRowCard({
   onProcess,
   onApprove,
   onReject,
+  onReclassify,
 }: {
   item: QueueItemView
   busy: boolean
   onProcess: () => void
   onApprove: () => void
   onReject: () => void
+  onReclassify?: (productSlug: string) => void
 }) {
+  const [reclassSlug, setReclassSlug] = useState("")
   const preview = item.rawContent.slice(0, 120).replace(/\n/g, " ")
   const badgeClass = SOURCE_BADGE[item.sourceType] ?? "bg-muted text-foreground"
+  const meta = item.subredditMeta
 
   return (
     <article className="p-4 bg-card border border-border rounded-lg">
@@ -315,6 +349,42 @@ function QueueRowCard({
           </p>
         </div>
       </div>
+
+      {meta?.subredditCrawl && (
+        <div className="mt-4 p-3 rounded-lg border border-orange-200 bg-orange-50/50 dark:bg-orange-950/20 text-sm space-y-2">
+          <p className="font-medium text-foreground">
+            서브레딧 자동 수집 · r/{meta.subreddit ?? "?"}
+          </p>
+          {meta.postTitle && (
+            <p className="text-muted-foreground line-clamp-2">{meta.postTitle}</p>
+          )}
+          <p className="text-xs">
+            감성: {meta.sentiment ?? "—"} · 리뷰:{" "}
+            {meta.isReview ? "예" : "아니오"}
+            {meta.classifiedSlugs?.length
+              ? ` · 후보: ${meta.classifiedSlugs.join(", ")}`
+              : ""}
+          </p>
+          {item.status === "pending" && onReclassify && (
+            <div className="flex flex-wrap gap-2 items-center pt-1">
+              <Input
+                className="h-8 max-w-[200px] text-xs"
+                placeholder="product-slug"
+                value={reclassSlug}
+                onChange={(e) => setReclassSlug(e.target.value)}
+              />
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={busy || !reclassSlug.trim()}
+                onClick={() => onReclassify(reclassSlug.trim())}
+              >
+                재분류
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
 
       {item.aiOutput && (
         <div className="mt-4 p-3 bg-muted/40 rounded-lg text-sm space-y-2">
