@@ -117,10 +117,11 @@ function mapRun(row: {
   }
 }
 
-function computeStats(rows: { collected: number; saved: number }[]): HistoryStats {
-  const totalRuns = rows.length
-  const totalCollected = rows.reduce((sum, r) => sum + (r.collected ?? 0), 0)
-  const totalSaved = rows.reduce((sum, r) => sum + (r.saved ?? 0), 0)
+function computeStats(
+  totalRuns: number,
+  totalCollected: number,
+  totalSaved: number
+): HistoryStats {
   const successRate =
     totalCollected > 0
       ? Math.round((totalSaved / totalCollected) * 1000) / 10
@@ -150,9 +151,18 @@ export async function GET(request: NextRequest) {
       params
     )
 
-    const { data: runs, error, count } = await baseQuery
-      .order("created_at", { ascending: false })
-      .range(from, to)
+    const statsSumQuery = applyFilters(
+      supabase
+        .from("pipeline_runs")
+        .select("total_collected:collected.sum(), total_saved:saved.sum()"),
+      params
+    )
+
+    const [{ data: runs, error, count }, { data: sumRows, error: statsError }] =
+      await Promise.all([
+        baseQuery.order("created_at", { ascending: false }).range(from, to),
+        statsSumQuery,
+      ])
 
     if (error) {
       console.warn("[pipeline/history]", error.message, error.code)
@@ -161,13 +171,6 @@ export async function GET(request: NextRequest) {
 
     const total = count ?? 0
     const totalPages = total > 0 ? Math.ceil(total / limit) : 0
-
-    const statsQuery = applyFilters(
-      supabase.from("pipeline_runs").select("collected, saved"),
-      params
-    )
-
-    const { data: statsRows, error: statsError } = await statsQuery
 
     if (statsError && isMissingTableError(statsError)) {
       return NextResponse.json({
@@ -179,7 +182,19 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    const stats = computeStats(statsRows ?? [])
+    if (statsError) {
+      console.warn("[pipeline/history] stats", statsError.message, statsError.code)
+    }
+
+    const sumRow = sumRows?.[0] as
+      | { total_collected: number | null; total_saved: number | null }
+      | undefined
+
+    const stats = computeStats(
+      total,
+      Number(sumRow?.total_collected ?? 0),
+      Number(sumRow?.total_saved ?? 0)
+    )
 
     return NextResponse.json({
       runs: (runs ?? []).map(mapRun),
