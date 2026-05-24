@@ -25,7 +25,6 @@ import {
   type BrowserCollectItem,
 } from "@/app/admin/(panel)/pipeline/browser-collect"
 import { ChairSearchCombobox } from "@/components/admin/pipeline/chair-search-combobox"
-import { SubredditCrawlPanel } from "@/components/admin/pipeline/subreddit-crawl-panel"
 import { Switch } from "@/components/ui/switch"
 
 type ProductOption = { id: string; slug: string; name: string }
@@ -1019,10 +1018,6 @@ export default function AdminPipelinePage() {
           <p className="text-sm text-foreground">{runAllDoneMessage}</p>
         )}
       </section>
-
-      <SubredditCrawlPanel
-        disabled={running || autoState.running || isRunningAll}
-      />
 
       <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
         <h2 className="text-lg font-medium">Auto Collection</h2>
