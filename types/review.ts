@@ -89,3 +89,43 @@ export interface Review {
   helpfulCount?: number
   createdAt: string
 }
+
+export type ExperienceReviewStatus = "pending" | "approved" | "rejected"
+export type ExperienceReviewSource = "native" | "google_form"
+export type ExperienceReviewSex = "male" | "female"
+export type ExperienceReviewHeightBand =
+  | "~160"
+  | "160s"
+  | "170s"
+  | "180s"
+  | "185+"
+export type ExperienceReviewBody = "below" | "normal" | "above"
+export type ExperienceReviewAgeBand = "10s" | "20s" | "30s" | "40s" | "50s+"
+export type ExperienceReviewSitHours = "under2" | "2to6" | "over6"
+
+export interface ExperienceReviewSession {
+  id: string
+  createdAt: string
+  status: ExperienceReviewStatus
+  source: ExperienceReviewSource
+  sex?: ExperienceReviewSex | null
+  heightBand?: ExperienceReviewHeightBand | null
+  body?: ExperienceReviewBody | null
+  ageBand?: ExperienceReviewAgeBand | null
+  job?: string | null
+  sitHours?: ExperienceReviewSitHours | null
+  uses: string[]
+  pain: string[]
+  reasons: string[]
+  comment?: string | null
+  purchased?: boolean | null
+  /** 추첨용 비공개 연락처 (클라이언트 응답 금지) */
+  contact?: string | null
+}
+
+export interface ExperienceReviewRanking {
+  id: string
+  sessionId: string
+  chairId: string
+  rank: 1 | 2 | 3
+}
