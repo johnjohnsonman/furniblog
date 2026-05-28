@@ -11,6 +11,7 @@ export interface Video {
   duration?: string | null
   viewCount?: number | null
   description?: string | null
+  summary?: string | null
   chairId?: string | null
   brand?: string | null
   status: VideoStatus

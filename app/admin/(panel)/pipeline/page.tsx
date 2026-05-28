@@ -43,6 +43,12 @@ type VideoCollectResult = {
   skippedDuplicates?: number
 }
 
+type VideoSummaryBackfillResult = {
+  processed: number
+  updated: number
+  failed: number
+}
+
 type PipelineSourceKey =
   | "reddit"
   | "youtube"
@@ -266,6 +272,9 @@ export default function AdminPipelinePage() {
   const [videoMaxChairs, setVideoMaxChairs] = useState(50)
   const [videoDelayMs, setVideoDelayMs] = useState(1000)
   const [videoResult, setVideoResult] = useState<VideoCollectResult | null>(null)
+  const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
+  const [summaryBackfillResult, setSummaryBackfillResult] =
+    useState<VideoSummaryBackfillResult | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
 
   const [history, setHistory] = useState<HistoryRow[]>([])
@@ -877,6 +886,30 @@ export default function AdminPipelinePage() {
     }
   }
 
+  async function runVideoSummaryBackfill() {
+    setSummaryBackfillRunning(true)
+    setVideoError(null)
+    setSummaryBackfillResult(null)
+    try {
+      const res = await fetchJson<VideoSummaryBackfillResult>(
+        "/api/admin/videos/summaries",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ maxItems: 100 }),
+        }
+      )
+      if (!res.ok) throw new Error(res.error)
+      setSummaryBackfillResult(res.data)
+    } catch (err) {
+      setVideoError(
+        err instanceof Error ? err.message : "Video summary backfill failed"
+      )
+    } finally {
+      setSummaryBackfillRunning(false)
+    }
+  }
+
   const rangeStart =
     historyTotal === 0 ? 0 : (historyPage - 1) * HISTORY_LIMIT + 1
   const rangeEnd = Math.min(historyPage * HISTORY_LIMIT, historyTotal)
@@ -1143,10 +1176,22 @@ export default function AdminPipelinePage() {
 
         <Button
           onClick={() => void runVideoCollection()}
-          disabled={videoRunning || running || autoState.running}
+          disabled={
+            videoRunning || summaryBackfillRunning || running || autoState.running
+          }
         >
           {videoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
           Run Video Collection
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => void runVideoSummaryBackfill()}
+          disabled={videoRunning || summaryBackfillRunning || running}
+        >
+          {summaryBackfillRunning ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : null}
+          Generate Video Summaries
         </Button>
 
         {videoError && (
@@ -1174,6 +1219,14 @@ export default function AdminPipelinePage() {
                 <p>Duplicate skip: {videoResult.totalDuplicateSkips ?? 0}</p>
               </>
             )}
+          </div>
+        )}
+        {summaryBackfillResult && (
+          <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm space-y-1">
+            <p>Summary backfill completed</p>
+            <p>Processed: {summaryBackfillResult.processed}</p>
+            <p>Updated: {summaryBackfillResult.updated}</p>
+            <p>Failed: {summaryBackfillResult.failed}</p>
           </div>
         )}
       </section>

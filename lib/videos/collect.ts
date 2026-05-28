@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { generateVideoSummary } from "@/lib/videos/summary"
 
 type ProductRow = {
   id: string
@@ -64,6 +65,12 @@ export type CollectBatchResult = {
   totalDuplicateSkips: number
   quotaExceeded: boolean
   message: string
+}
+
+export type SummaryBackfillResult = {
+  processed: number
+  updated: number
+  failed: number
 }
 
 export function buildYoutubeSearchQuery(chairName: string): string {
@@ -287,6 +294,22 @@ export async function collectVideosForChair(params: {
   const insertedVideos = merged.filter((row) => !existingSet.has(row.youtube_id)).length
   const skippedDuplicates = merged.length - insertedVideos
 
+  const insertedRows = merged.filter((row) => !existingSet.has(row.youtube_id))
+  for (const row of insertedRows) {
+    const summary = await generateVideoSummary(row.title ?? "", row.description ?? "")
+    const { error: summaryError } = await params.supabase
+      .from("videos")
+      .update({ summary })
+      .eq("youtube_id", row.youtube_id)
+    if (summaryError) {
+      console.warn(
+        "[videos] failed to save summary:",
+        row.youtube_id,
+        summaryError.message
+      )
+    }
+  }
+
   return {
     chairId: params.product.id,
     chairSlug: params.product.slug,
@@ -297,6 +320,48 @@ export async function collectVideosForChair(params: {
     skippedDuplicates,
     quotaExceeded: false,
   }
+}
+
+export async function backfillMissingVideoSummaries(params: {
+  supabase: SupabaseClient
+  maxItems: number
+}): Promise<SummaryBackfillResult> {
+  const limit = Math.max(1, Math.min(params.maxItems, 200))
+  const { data, error } = await params.supabase
+    .from("videos")
+    .select("id, title, description")
+    .is("summary", null)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+
+  if (error) throw new Error(error.message)
+
+  let processed = 0
+  let updated = 0
+  let failed = 0
+
+  for (const row of data ?? []) {
+    processed += 1
+    try {
+      const summary = await generateVideoSummary(
+        typeof row.title === "string" ? row.title : "",
+        typeof row.description === "string" ? row.description : ""
+      )
+      const { error: updateError } = await params.supabase
+        .from("videos")
+        .update({ summary })
+        .eq("id", row.id)
+      if (updateError) {
+        failed += 1
+        continue
+      }
+      updated += 1
+    } catch {
+      failed += 1
+    }
+  }
+
+  return { processed, updated, failed }
 }
 
 function sleep(ms: number) {
