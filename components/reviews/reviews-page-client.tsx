@@ -58,6 +58,7 @@ const PERIOD_OPTIONS = [
 type ReviewsPageClientProps = {
   initialMeta: ReviewsFeedMeta
   brands: Brand[]
+  compact?: boolean
 }
 
 function buildQueryString(params: {
@@ -81,6 +82,7 @@ function buildQueryString(params: {
 export function ReviewsPageClient({
   initialMeta,
   brands,
+  compact = false,
 }: ReviewsPageClientProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -214,20 +216,22 @@ export function ReviewsPageClient({
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6">
-        <h1 className="font-serif text-3xl font-medium text-foreground">
-          Review Feed
-        </h1>
-        <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
-          Real chair reviews from Reddit, YouTube, forums, and more—search by
-          product, feature, or comfort topic.
-        </p>
-        <p className="mt-3 text-sm text-muted-foreground">
-          {meta.reviews.toLocaleString()} reviews · {meta.brands.toLocaleString()}{" "}
-          brands · {meta.sources.toLocaleString()} sources
-        </p>
-      </div>
+    <div className={compact ? "" : "mx-auto max-w-4xl px-4 py-8"}>
+      {!compact && (
+        <div className="mb-6">
+          <h1 className="font-serif text-3xl font-medium text-foreground">
+            Review Feed
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+            Real chair reviews from Reddit, YouTube, forums, and more—search by
+            product, feature, or comfort topic.
+          </p>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {meta.reviews.toLocaleString()} reviews · {meta.brands.toLocaleString()}{" "}
+            brands · {meta.sources.toLocaleString()} sources
+          </p>
+        </div>
+      )}
 
       <div className="relative mb-4">
         <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
