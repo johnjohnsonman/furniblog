@@ -12,9 +12,15 @@ type ProductRow = {
 type SubmitBody = {
   rankings?: string[]
   sex?: "male" | "female" | null
-  heightBand?: "~160" | "160s" | "170s" | "180s" | "185+" | null
+  heightBand?:
+    | "under_5_4"
+    | "5_4_5_7"
+    | "5_8_5_11"
+    | "6_0_6_2"
+    | "6_3plus"
+    | null
   body?: "below" | "normal" | "above" | null
-  ageBand?: "10s" | "20s" | "30s" | "40s" | "50s+" | null
+  ageBand?: "under20" | "20s" | "30s" | "40s" | "50plus" | null
   job?: string | null
   sitHours?: "under2" | "2to6" | "over6" | null
   uses?: string[]
@@ -76,13 +82,13 @@ export async function POST(request: NextRequest) {
   const rankings = cleanArray(body.rankings).slice(0, 3)
   if (rankings.length < 1) {
     return NextResponse.json(
-      { error: "최소 1개의 의자를 선택해주세요." },
+      { error: "Select at least one chair." },
       { status: 400 }
     )
   }
   if (!rankings.every(isUuid)) {
     return NextResponse.json(
-      { error: "의자 선택 값이 올바르지 않습니다." },
+      { error: "Invalid chair selection value." },
       { status: 400 }
     )
   }
@@ -101,7 +107,7 @@ export async function POST(request: NextRequest) {
   }
   if ((products ?? []).length !== productIds.length) {
     return NextResponse.json(
-      { error: "선택한 의자 중 유효하지 않은 항목이 있습니다." },
+      { error: "Some selected chairs are invalid." },
       { status: 400 }
     )
   }
@@ -136,7 +142,7 @@ export async function POST(request: NextRequest) {
 
   if (sessionError || !session) {
     return NextResponse.json(
-      { error: sessionError?.message ?? "저장에 실패했습니다." },
+      { error: sessionError?.message ?? "Failed to save review session." },
       { status: 500 }
     )
   }

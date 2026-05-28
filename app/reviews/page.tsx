@@ -19,9 +19,15 @@ type SessionRow = {
   id: string
   created_at: string
   sex: "male" | "female" | null
-  height_band: "~160" | "160s" | "170s" | "180s" | "185+" | null
+  height_band:
+    | "under_5_4"
+    | "5_4_5_7"
+    | "5_8_5_11"
+    | "6_0_6_2"
+    | "6_3plus"
+    | null
   body: "below" | "normal" | "above" | null
-  age_band: "10s" | "20s" | "30s" | "40s" | "50s+" | null
+  age_band: "under20" | "20s" | "30s" | "40s" | "50plus" | null
   job: string | null
   sit_hours: "under2" | "2to6" | "over6" | null
   pain: string[] | null

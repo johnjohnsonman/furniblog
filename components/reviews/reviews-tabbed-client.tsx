@@ -28,18 +28,18 @@ export function ReviewsTabbedClient({
             Reviews
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            실제 사용자 체험 후기와 웹 수집 리뷰를 함께 확인하세요.
+            See both hands-on experience reviews and web-collected reviews.
           </p>
         </div>
         <Button asChild className="shrink-0">
-          <Link href="/reviews/new">체험 후기 쓰기</Link>
+          <Link href="/reviews/new">Write a Review</Link>
         </Button>
       </div>
 
       <Tabs defaultValue="web" className="w-full">
         <TabsList className="mb-5 w-full justify-start">
-          <TabsTrigger value="experience">체험 후기</TabsTrigger>
-          <TabsTrigger value="web">웹 리뷰</TabsTrigger>
+          <TabsTrigger value="experience">Experience Reviews</TabsTrigger>
+          <TabsTrigger value="web">Web Reviews</TabsTrigger>
         </TabsList>
 
         <TabsContent value="experience">

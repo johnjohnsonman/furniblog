@@ -16,65 +16,83 @@ type ProductOption = {
 type SingleValue<T extends string> = T | null
 
 const SEX_OPTIONS = [
-  { label: "남", value: "male" },
-  { label: "여", value: "female" },
+  { label: "Male", value: "male" },
+  { label: "Female", value: "female" },
 ] as const
-const HEIGHT_OPTIONS = ["~160", "160s", "170s", "180s", "185+"] as const
+
+const HEIGHT_OPTIONS = [
+  { label: "under 5'4\"", value: "under_5_4" },
+  { label: "5'4\"–5'7\"", value: "5_4_5_7" },
+  { label: "5'8\"–5'11\"", value: "5_8_5_11" },
+  { label: "6'0\"–6'2\"", value: "6_0_6_2" },
+  { label: "6'3\"+", value: "6_3plus" },
+] as const
+
 const BODY_OPTIONS = [
-  { label: "보통 이하", value: "below" },
-  { label: "보통", value: "normal" },
-  { label: "보통 이상", value: "above" },
+  { label: "Below average", value: "below" },
+  { label: "Average", value: "normal" },
+  { label: "Above average", value: "above" },
 ] as const
-const AGE_OPTIONS = ["10s", "20s", "30s", "40s", "50s+"] as const
+
+const AGE_OPTIONS = [
+  { label: "Under 20", value: "under20" },
+  { label: "20s", value: "20s" },
+  { label: "30s", value: "30s" },
+  { label: "40s", value: "40s" },
+  { label: "50+", value: "50plus" },
+] as const
+
 const JOB_OPTIONS = [
-  "사무직",
-  "개발·디자인",
-  "전문직",
-  "학생·고시생",
-  "현장직",
-  "기타",
+  "Office worker",
+  "Developer or designer",
+  "Professional",
+  "Student",
+  "Manual or field work",
+  "Other",
 ] as const
+
 const SIT_HOURS_OPTIONS = [
-  { label: "2시간 미만", value: "under2" },
-  { label: "2~6시간", value: "2to6" },
-  { label: "6시간 이상", value: "over6" },
+  { label: "Under 2 hrs", value: "under2" },
+  { label: "2–6 hrs", value: "2to6" },
+  { label: "6+ hrs", value: "over6" },
 ] as const
+
 const USES_OPTIONS = [
-  "업무",
-  "공부",
-  "게임",
-  "영상 시청",
-  "독서",
-  "기타",
+  "Work & study",
+  "Gaming & internet",
+  "Creative work",
+  "Watching & relaxing",
 ] as const
+
 const PAIN_OPTIONS = [
-  "목",
-  "어깨",
-  "허리",
-  "엉덩이",
-  "다리·하체",
-  "없음",
+  "Neck",
+  "Shoulders",
+  "Lower back",
+  "Hips",
+  "Legs",
+  "None",
 ] as const
+
 const REASON_OPTIONS = [
-  "편안한 등판",
-  "푹신한 좌판",
-  "헤드레스트",
-  "사이즈가 잘 맞음",
-  "팔걸이 조작",
-  "소재",
-  "디자인",
-  "브랜드 명성",
+  "Comfortable backrest",
+  "Cushioned seat",
+  "Headrest",
+  "Good fit for my size",
+  "Easy armrest adjustment",
+  "Build materials",
+  "Design",
+  "Brand reputation",
 ] as const
 
 const STEP_TITLES = [
-  "순위 선택",
-  "체형",
-  "나는",
-  "사용 패턴",
-  "불편한 곳",
-  "좋았던 점",
-  "한마디",
-  "추첨 응모",
+  "Rank your chairs",
+  "Your body type",
+  "About you",
+  "How do you use it?",
+  "Any discomfort?",
+  "What did you like?",
+  "Anything to add?",
+  "Enter our monthly giveaway",
 ] as const
 
 function Chip({
@@ -115,6 +133,21 @@ function toggleMulti(current: string[], value: string): string[] {
     : [...current, value]
 }
 
+function decodeHeight(value: (typeof HEIGHT_OPTIONS)[number]["value"] | null): string | null {
+  if (!value) return null
+  return HEIGHT_OPTIONS.find((v) => v.value === value)?.label ?? null
+}
+
+function decodeAge(value: (typeof AGE_OPTIONS)[number]["value"] | null): string | null {
+  if (!value) return null
+  return AGE_OPTIONS.find((v) => v.value === value)?.label ?? null
+}
+
+function decodeSitHours(value: "under2" | "2to6" | "over6" | null): string | null {
+  if (!value) return null
+  return SIT_HOURS_OPTIONS.find((v) => v.value === value)?.label ?? null
+}
+
 export function ExperienceReviewWizard() {
   const [step, setStep] = useState(0)
   const [search, setSearch] = useState("")
@@ -125,11 +158,11 @@ export function ExperienceReviewWizard() {
   const [rankings, setRankings] = useState<ProductOption[]>([])
   const [sex, setSex] = useState<"male" | "female" | null>(null)
   const [heightBand, setHeightBand] = useState<
-    "~160" | "160s" | "170s" | "180s" | "185+" | null
+    "under_5_4" | "5_4_5_7" | "5_8_5_11" | "6_0_6_2" | "6_3plus" | null
   >(null)
   const [body, setBody] = useState<"below" | "normal" | "above" | null>(null)
   const [ageBand, setAgeBand] = useState<
-    "10s" | "20s" | "30s" | "40s" | "50s+" | null
+    "under20" | "20s" | "30s" | "40s" | "50plus" | null
   >(null)
   const [job, setJob] = useState<string | null>(null)
   const [sitHours, setSitHours] = useState<"under2" | "2to6" | "over6" | null>(
@@ -155,7 +188,7 @@ export function ExperienceReviewWizard() {
         `/api/reviews/experience${query ? `?q=${encodeURIComponent(query)}` : ""}`
       )
       const json = (await res.json()) as { products?: ProductOption[] }
-      if (!res.ok) throw new Error("의자 목록을 불러오지 못했습니다.")
+      if (!res.ok) throw new Error("Failed to load chair list.")
 
       const list = json.products ?? []
       if (query) {
@@ -203,7 +236,7 @@ export function ExperienceReviewWizard() {
 
   async function handleSubmit() {
     if (rankings.length < 1) {
-      setSubmitError("1위 의자는 필수입니다.")
+      setSubmitError("You must select at least one chair.")
       return
     }
     setSubmitting(true)
@@ -229,35 +262,39 @@ export function ExperienceReviewWizard() {
       })
       const json = (await res.json()) as { error?: string }
       if (!res.ok) {
-        setSubmitError(json.error ?? "제출에 실패했습니다.")
+        setSubmitError(json.error ?? "Failed to submit.")
         return
       }
       setDone(true)
     } catch {
-      setSubmitError("네트워크 오류가 발생했습니다.")
+      setSubmitError("A network error occurred.")
     } finally {
       setSubmitting(false)
     }
   }
 
   if (done) {
+    const preview = [
+      sex ? (sex === "male" ? "Male" : "Female") : null,
+      decodeHeight(heightBand),
+      decodeAge(ageBand),
+      job,
+      decodeSitHours(sitHours),
+      ...pain,
+    ].filter(Boolean) as string[]
+
     return (
       <section className="rounded-2xl border border-neutral-200 bg-white p-8 text-center">
         <CheckCircle2 className="mx-auto h-10 w-10 text-green-600" />
         <h2 className="mt-4 text-2xl font-semibold tracking-tight text-neutral-900">
-          제출이 완료되었습니다
+          Thanks! Your review is now live.
         </h2>
-        <p className="mt-2 text-sm text-neutral-600">검토 후 게시됩니다.</p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          {sex ? <span className="rounded-full border px-3 py-1 text-xs">{sex === "male" ? "남" : "여"}</span> : null}
-          {heightBand ? <span className="rounded-full border px-3 py-1 text-xs">{heightBand}</span> : null}
-          {body ? (
-            <span className="rounded-full border px-3 py-1 text-xs">
-              {body === "below" ? "보통 이하" : body === "normal" ? "보통" : "보통 이상"}
-            </span>
-          ) : null}
-          {ageBand ? <span className="rounded-full border px-3 py-1 text-xs">{ageBand}</span> : null}
-        </div>
+        <p className="mt-2 text-sm text-neutral-600">
+          Your profile preview is shown below.
+        </p>
+        {preview.length > 0 && (
+          <p className="mt-5 text-sm text-neutral-700">{preview.join(" · ")}</p>
+        )}
       </section>
     )
   }
@@ -267,7 +304,7 @@ export function ExperienceReviewWizard() {
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between text-xs text-neutral-500">
           <span>
-            STEP {step + 1} / {STEP_TITLES.length}
+            Step {step + 1} / {STEP_TITLES.length}
           </span>
           <span>{progress}%</span>
         </div>
@@ -278,7 +315,7 @@ export function ExperienceReviewWizard() {
           />
         </div>
         <h1 className="mt-4 text-2xl font-semibold tracking-tight text-neutral-900">
-          체험 후기 작성
+          Write a Review
         </h1>
         <p className="mt-1 text-sm text-neutral-600">{STEP_TITLES[step]}</p>
       </div>
@@ -287,19 +324,19 @@ export function ExperienceReviewWizard() {
         {step === 0 && (
           <div className="space-y-5">
             <p className="text-sm text-neutral-600">
-              의자를 탭한 순서대로 1·2·3위가 됩니다. (최대 3개)
+              Tap chairs in the order you liked them — 1st, 2nd, 3rd. (Up to 3)
             </p>
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="의자 이름 검색 (예: Aeron)"
+              placeholder="Search chairs (e.g. Aeron)"
               className="h-11"
             />
 
             {rankings.length > 0 && (
               <div className="space-y-2">
                 <p className="text-xs uppercase tracking-wide text-neutral-500">
-                  선택된 순위
+                  Selected ranking
                 </p>
                 <div className="space-y-2">
                   {rankings.map((r, idx) => (
@@ -310,9 +347,9 @@ export function ExperienceReviewWizard() {
                       className="flex w-full items-center justify-between rounded-lg border border-neutral-200 px-3 py-2 text-left text-sm"
                     >
                       <span>
-                        {idx + 1}위 · {r.name}
+                        #{idx + 1} · {r.name}
                       </span>
-                      <span className="text-xs text-neutral-500">제거</span>
+                      <span className="text-xs text-neutral-500">Remove</span>
                     </button>
                   ))}
                 </div>
@@ -321,7 +358,7 @@ export function ExperienceReviewWizard() {
 
             <div>
               <p className="mb-2 text-xs uppercase tracking-wide text-neutral-500">
-                {search.trim() ? "검색 결과" : "인기 의자"}
+                {search.trim() ? "Search results" : "Popular"}
               </p>
               <div className="flex flex-wrap gap-2">
                 {(search.trim() ? productResults : popularProducts).map((p) => (
@@ -334,7 +371,7 @@ export function ExperienceReviewWizard() {
                   </Chip>
                 ))}
                 {loadingProducts && (
-                  <span className="text-xs text-neutral-500">불러오는 중…</span>
+                  <span className="text-xs text-neutral-500">Loading...</span>
                 )}
               </div>
             </div>
@@ -344,7 +381,7 @@ export function ExperienceReviewWizard() {
         {step === 1 && (
           <div className="space-y-6">
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">성별</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Gender</p>
               <div className="flex flex-wrap gap-2">
                 {SEX_OPTIONS.map((o) => (
                   <Chip
@@ -358,21 +395,21 @@ export function ExperienceReviewWizard() {
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">키</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Height</p>
               <div className="flex flex-wrap gap-2">
                 {HEIGHT_OPTIONS.map((o) => (
                   <Chip
-                    key={o}
-                    active={heightBand === o}
-                    onClick={() => setHeightBand(selectSingle(heightBand, o))}
+                    key={o.value}
+                    active={heightBand === o.value}
+                    onClick={() => setHeightBand(selectSingle(heightBand, o.value))}
                   >
-                    {o}
+                    {o.label}
                   </Chip>
                 ))}
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">체형</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Build</p>
               <div className="flex flex-wrap gap-2">
                 {BODY_OPTIONS.map((o) => (
                   <Chip
@@ -391,21 +428,21 @@ export function ExperienceReviewWizard() {
         {step === 2 && (
           <div className="space-y-6">
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">연령대</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Age</p>
               <div className="flex flex-wrap gap-2">
                 {AGE_OPTIONS.map((o) => (
                   <Chip
-                    key={o}
-                    active={ageBand === o}
-                    onClick={() => setAgeBand(selectSingle(ageBand, o))}
+                    key={o.value}
+                    active={ageBand === o.value}
+                    onClick={() => setAgeBand(selectSingle(ageBand, o.value))}
                   >
-                    {o}
+                    {o.label}
                   </Chip>
                 ))}
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">직업</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Occupation</p>
               <div className="flex flex-wrap gap-2">
                 {JOB_OPTIONS.map((o) => (
                   <Chip
@@ -424,7 +461,7 @@ export function ExperienceReviewWizard() {
         {step === 3 && (
           <div className="space-y-6">
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">하루 착석시간</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">Daily sitting</p>
               <div className="flex flex-wrap gap-2">
                 {SIT_HOURS_OPTIONS.map((o) => (
                   <Chip
@@ -438,7 +475,9 @@ export function ExperienceReviewWizard() {
               </div>
             </div>
             <div>
-              <p className="mb-2 text-sm font-medium text-neutral-800">주 용도 (복수)</p>
+              <p className="mb-2 text-sm font-medium text-neutral-800">
+                Main use (select all)
+              </p>
               <div className="flex flex-wrap gap-2">
                 {USES_OPTIONS.map((o) => (
                   <Chip
@@ -456,7 +495,9 @@ export function ExperienceReviewWizard() {
 
         {step === 4 && (
           <div>
-            <p className="mb-2 text-sm font-medium text-neutral-800">불편한 곳 (복수)</p>
+            <p className="mb-2 text-sm font-medium text-neutral-800">
+              Any discomfort? (select all)
+            </p>
             <div className="flex flex-wrap gap-2">
               {PAIN_OPTIONS.map((o) => (
                 <Chip
@@ -474,10 +515,10 @@ export function ExperienceReviewWizard() {
         {step === 5 && (
           <div>
             <p className="mb-2 text-sm font-medium text-neutral-800">
-              좋았던 점 (1위 의자 기준)
+              What did you like? (select all)
             </p>
             {firstRankName ? (
-              <p className="mb-3 text-xs text-neutral-500">1위: {firstRankName}</p>
+              <p className="mb-3 text-xs text-neutral-500">For your #1: {firstRankName}</p>
             ) : null}
             <div className="flex flex-wrap gap-2">
               {REASON_OPTIONS.map((o) => (
@@ -495,13 +536,12 @@ export function ExperienceReviewWizard() {
 
         {step === 6 && (
           <div>
-            <p className="mb-2 text-sm font-medium text-neutral-800">
-              1위 의자 한마디 (선택)
-            </p>
+            <p className="mb-2 text-sm font-medium text-neutral-800">Anything to add?</p>
+            <p className="mb-2 text-xs text-neutral-500">Optional</p>
             <Textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="한 줄로 남겨주세요."
+              placeholder="e.g. The lumbar support felt great for long sessions."
               className="min-h-[160px]"
             />
           </div>
@@ -509,15 +549,18 @@ export function ExperienceReviewWizard() {
 
         {step === 7 && (
           <div className="space-y-3">
-            <p className="text-sm font-medium text-neutral-800">추첨 응모 연락처 (선택)</p>
+            <p className="text-sm font-medium text-neutral-800">
+              Enter our monthly giveaway
+            </p>
+            <p className="text-xs text-neutral-500">Optional</p>
             <Input
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              placeholder="이메일 또는 휴대폰"
+              placeholder="Your email (optional)"
               className="h-11"
             />
             <p className="text-xs text-neutral-500">
-              연락처는 비공개로 저장되며 화면/응답에 노출되지 않습니다.
+              Contact is stored privately and is never returned to client responses.
             </p>
           </div>
         )}
@@ -532,7 +575,7 @@ export function ExperienceReviewWizard() {
           onClick={() => setStep((s) => Math.max(0, s - 1))}
           disabled={step === 0 || submitting}
         >
-          이전
+          Back
         </Button>
         <div className="flex gap-2">
           {step > 0 && step < STEP_TITLES.length - 1 && (
@@ -542,7 +585,7 @@ export function ExperienceReviewWizard() {
               onClick={() => setStep((s) => Math.min(STEP_TITLES.length - 1, s + 1))}
               disabled={submitting}
             >
-              건너뛰기
+              Skip
             </Button>
           )}
           {step < STEP_TITLES.length - 1 ? (
@@ -551,7 +594,7 @@ export function ExperienceReviewWizard() {
               onClick={() => setStep((s) => Math.min(STEP_TITLES.length - 1, s + 1))}
               disabled={!canGoNext || submitting}
             >
-              다음
+              Next
             </Button>
           ) : (
             <>
@@ -564,10 +607,10 @@ export function ExperienceReviewWizard() {
                 }}
                 disabled={submitting}
               >
-                건너뛰고 제출
+                Skip
               </Button>
               <Button type="button" onClick={handleSubmit} disabled={submitting}>
-                {submitting ? "제출 중..." : "제출"}
+                {submitting ? "Submitting..." : "Submit"}
               </Button>
             </>
           )}

@@ -1,14 +1,19 @@
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
 export type ExperienceReviewCard = {
   id: string
   createdAt: string
   sex: "male" | "female" | null
-  heightBand: "~160" | "160s" | "170s" | "180s" | "185+" | null
+  heightBand:
+    | "under_5_4"
+    | "5_4_5_7"
+    | "5_8_5_11"
+    | "6_0_6_2"
+    | "6_3plus"
+    | null
   body: "below" | "normal" | "above" | null
-  ageBand: "10s" | "20s" | "30s" | "40s" | "50s+" | null
+  ageBand: "under20" | "20s" | "30s" | "40s" | "50plus" | null
   job: string | null
   sitHours: "under2" | "2to6" | "over6" | null
   pain: string[]
@@ -22,31 +27,46 @@ export type ExperienceReviewCard = {
 }
 
 function decodeSex(value: ExperienceReviewCard["sex"]): string | null {
-  if (value === "male") return "남"
-  if (value === "female") return "여"
+  if (value === "male") return "Male"
+  if (value === "female") return "Female"
   return null
 }
 
 function decodeBody(value: ExperienceReviewCard["body"]): string | null {
-  if (value === "below") return "보통 이하"
-  if (value === "normal") return "보통"
-  if (value === "above") return "보통 이상"
+  if (value === "below") return "Below average"
+  if (value === "normal") return "Average"
+  if (value === "above") return "Above average"
   return null
 }
 
+function decodeHeight(value: ExperienceReviewCard["heightBand"]): string | null {
+  if (value === "under_5_4") return `under 5'4"`
+  if (value === "5_4_5_7") return `5'4"–5'7"`
+  if (value === "5_8_5_11") return `5'8"–5'11"`
+  if (value === "6_0_6_2") return `6'0"–6'2"`
+  if (value === "6_3plus") return `6'3"+`
+  return null
+}
+
+function decodeAge(value: ExperienceReviewCard["ageBand"]): string | null {
+  if (value === "under20") return "Under 20"
+  if (value === "50plus") return "50+"
+  return value
+}
+
 function decodeSitHours(value: ExperienceReviewCard["sitHours"]): string | null {
-  if (value === "under2") return "2시간 미만"
-  if (value === "2to6") return "2~6시간"
-  if (value === "over6") return "6시간 이상"
+  if (value === "under2") return "Under 2 hrs"
+  if (value === "2to6") return "2–6 hrs"
+  if (value === "over6") return "6+ hrs"
   return null
 }
 
 function buildProfileChips(item: ExperienceReviewCard): string[] {
   return [
     decodeSex(item.sex),
-    item.heightBand,
+    decodeHeight(item.heightBand),
     decodeBody(item.body),
-    item.ageBand,
+    decodeAge(item.ageBand),
     item.job,
     decodeSitHours(item.sitHours),
     ...(item.pain ?? []),
@@ -61,12 +81,12 @@ export function ExperienceReviewsList({
   if (items.length === 0) {
     return (
       <div className="rounded-xl border border-[#EFEFEF] bg-white px-6 py-14 text-center">
-        <p className="font-medium text-foreground">첫 체험 후기를 남겨보세요</p>
+        <p className="font-medium text-foreground">Be the first to share your experience review.</p>
         <p className="mt-2 text-sm text-muted-foreground">
-          실제 체형과 사용 패턴을 공유하면 다른 사용자에게 큰 도움이 됩니다.
+          Your real-world body profile and usage pattern can help others choose better.
         </p>
         <Button asChild className="mt-5">
-          <Link href="/reviews/new">체험 후기 쓰기</Link>
+          <Link href="/reviews/new">Write a Review</Link>
         </Button>
       </div>
     )
@@ -86,14 +106,8 @@ export function ExperienceReviewsList({
             className="rounded-xl border border-[#EFEFEF] bg-white p-5"
           >
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <Badge
-                variant="outline"
-                className="border-emerald-300 bg-emerald-50 text-emerald-800"
-              >
-                Chairpark Verified
-              </Badge>
               <span className="text-xs text-muted-foreground">
-                {new Date(item.createdAt).toLocaleDateString("ko-KR")}
+                {new Date(item.createdAt).toLocaleDateString("en-US")}
               </span>
             </div>
 
@@ -111,11 +125,11 @@ export function ExperienceReviewsList({
             {first ? (
               <h3 className="text-lg font-medium text-foreground">
                 <Link href={`/products/${first.chairSlug}`} className="hover:underline">
-                  1위: {first.chairName}
+                  #1: {first.chairName}
                 </Link>
               </h3>
             ) : (
-              <h3 className="text-lg font-medium text-foreground">1위 의자 없음</h3>
+              <h3 className="text-lg font-medium text-foreground">No top chair selected</h3>
             )}
 
             {item.reasons.length > 0 && (
@@ -137,7 +151,7 @@ export function ExperienceReviewsList({
 
             {compared.length > 0 ? (
               <p className="mt-4 text-xs text-muted-foreground">
-                함께 비교: {compared.join(", ")}
+                Compared with: {compared.join(", ")}
               </p>
             ) : null}
           </article>

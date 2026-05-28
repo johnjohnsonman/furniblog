@@ -94,13 +94,18 @@ export type ExperienceReviewStatus = "pending" | "approved" | "rejected"
 export type ExperienceReviewSource = "native" | "google_form"
 export type ExperienceReviewSex = "male" | "female"
 export type ExperienceReviewHeightBand =
-  | "~160"
-  | "160s"
-  | "170s"
-  | "180s"
-  | "185+"
+  | "under_5_4"
+  | "5_4_5_7"
+  | "5_8_5_11"
+  | "6_0_6_2"
+  | "6_3plus"
 export type ExperienceReviewBody = "below" | "normal" | "above"
-export type ExperienceReviewAgeBand = "10s" | "20s" | "30s" | "40s" | "50s+"
+export type ExperienceReviewAgeBand =
+  | "under20"
+  | "20s"
+  | "30s"
+  | "40s"
+  | "50plus"
 export type ExperienceReviewSitHours = "under2" | "2to6" | "over6"
 
 export interface ExperienceReviewSession {
@@ -119,7 +124,7 @@ export interface ExperienceReviewSession {
   reasons: string[]
   comment?: string | null
   purchased?: boolean | null
-  /** 추첨용 비공개 연락처 (클라이언트 응답 금지) */
+  /** Private giveaway contact (must never be returned to clients) */
   contact?: string | null
 }
 
