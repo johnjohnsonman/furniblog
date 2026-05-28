@@ -29,6 +29,20 @@ import { Switch } from "@/components/ui/switch"
 
 type ProductOption = { id: string; slug: string; name: string }
 
+type VideoCollectResult = {
+  mode: "single" | "all"
+  message?: string
+  quotaExceeded?: boolean
+  processedChairs?: number
+  skippedChairs?: number
+  totalFetchedVideos?: number
+  totalInsertedVideos?: number
+  totalDuplicateSkips?: number
+  fetchedVideos?: number
+  insertedVideos?: number
+  skippedDuplicates?: number
+}
+
 type PipelineSourceKey =
   | "reddit"
   | "youtube"
@@ -245,6 +259,13 @@ export default function AdminPipelinePage() {
   } | null>(null)
   const [result, setResult] = useState<PipelineResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [videoError, setVideoError] = useState<string | null>(null)
+  const [videoRunning, setVideoRunning] = useState(false)
+  const [videoMode, setVideoMode] = useState<"single" | "all">("single")
+  const [videoSkipExisting, setVideoSkipExisting] = useState(true)
+  const [videoMaxChairs, setVideoMaxChairs] = useState(50)
+  const [videoDelayMs, setVideoDelayMs] = useState(1000)
+  const [videoResult, setVideoResult] = useState<VideoCollectResult | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
 
   const [history, setHistory] = useState<HistoryRow[]>([])
@@ -820,6 +841,42 @@ export default function AdminPipelinePage() {
     stopAllRef.current = true
   }
 
+  async function runVideoCollection() {
+    if (!chairSlug && videoMode === "single") {
+      setVideoError("Select a chair")
+      return
+    }
+
+    setVideoRunning(true)
+    setVideoError(null)
+    setVideoResult(null)
+
+    try {
+      const body =
+        videoMode === "single"
+          ? { mode: "single" as const, chairSlug }
+          : {
+              mode: "all" as const,
+              maxChairs: videoMaxChairs,
+              delayMs: videoDelayMs,
+              skipChairsWithVideos: videoSkipExisting,
+            }
+
+      const res = await fetchJson<VideoCollectResult>("/api/admin/videos/collect", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+
+      if (!res.ok) throw new Error(res.error)
+      setVideoResult(res.data)
+    } catch (err) {
+      setVideoError(err instanceof Error ? err.message : "Video collection failed")
+    } finally {
+      setVideoRunning(false)
+    }
+  }
+
   const rangeStart =
     historyTotal === 0 ? 0 : (historyPage - 1) * HISTORY_LIMIT + 1
   const rangeEnd = Math.min(historyPage * HISTORY_LIMIT, historyTotal)
@@ -1016,6 +1073,108 @@ export default function AdminPipelinePage() {
 
         {runAllDoneMessage && !isRunningAll && (
           <p className="text-sm text-foreground">{runAllDoneMessage}</p>
+        )}
+      </section>
+
+      <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
+        <h2 className="text-lg font-medium">Video Collection</h2>
+        <p className="text-sm text-muted-foreground">
+          Collect YouTube videos to the <code>videos</code> table. Uses server-side
+          API key and auto-publishes with status=published.
+        </p>
+
+        <div className="flex flex-wrap items-center gap-6">
+          <label className="flex items-center gap-2 text-sm">
+            <Switch
+              checked={videoMode === "all"}
+              onCheckedChange={(checked) =>
+                setVideoMode(checked ? "all" : "single")
+              }
+              disabled={videoRunning}
+            />
+            Run all published chairs
+          </label>
+          <label className="flex items-center gap-2 text-sm">
+            <Switch
+              checked={videoSkipExisting}
+              onCheckedChange={(checked) => setVideoSkipExisting(Boolean(checked))}
+              disabled={videoRunning || videoMode !== "all"}
+            />
+            Skip chairs with existing videos
+          </label>
+        </div>
+
+        {videoMode === "all" && (
+          <div className="flex flex-wrap items-end gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="video-max-chairs">maxChairs</Label>
+              <Input
+                id="video-max-chairs"
+                type="number"
+                min={1}
+                max={100}
+                value={videoMaxChairs}
+                onChange={(e) =>
+                  setVideoMaxChairs(Math.max(1, Math.min(100, Number(e.target.value) || 1)))
+                }
+                className="w-[120px]"
+                disabled={videoRunning}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="video-delay-ms">Delay (ms)</Label>
+              <Input
+                id="video-delay-ms"
+                type="number"
+                min={0}
+                max={20000}
+                value={videoDelayMs}
+                onChange={(e) =>
+                  setVideoDelayMs(
+                    Math.max(0, Math.min(20000, Number(e.target.value) || 0))
+                  )
+                }
+                className="w-[140px]"
+                disabled={videoRunning}
+              />
+            </div>
+          </div>
+        )}
+
+        <Button
+          onClick={() => void runVideoCollection()}
+          disabled={videoRunning || running || autoState.running}
+        >
+          {videoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+          Run Video Collection
+        </Button>
+
+        {videoError && (
+          <p className="text-sm text-red-600 dark:text-red-400">{videoError}</p>
+        )}
+
+        {videoResult && (
+          <div className="rounded-lg border border-border bg-muted/20 p-4 text-sm space-y-1">
+            <p>
+              Status:{" "}
+              {videoResult.quotaExceeded ? "quota exceeded (stopped)" : "completed"}
+            </p>
+            {videoResult.mode === "single" ? (
+              <>
+                <p>Collected videos: {videoResult.fetchedVideos ?? 0}</p>
+                <p>Inserted videos: {videoResult.insertedVideos ?? 0}</p>
+                <p>Duplicate skip: {videoResult.skippedDuplicates ?? 0}</p>
+              </>
+            ) : (
+              <>
+                <p>Processed chairs: {videoResult.processedChairs ?? 0}</p>
+                <p>Skipped chairs: {videoResult.skippedChairs ?? 0}</p>
+                <p>Collected videos: {videoResult.totalFetchedVideos ?? 0}</p>
+                <p>Inserted videos: {videoResult.totalInsertedVideos ?? 0}</p>
+                <p>Duplicate skip: {videoResult.totalDuplicateSkips ?? 0}</p>
+              </>
+            )}
+          </div>
         )}
       </section>
 

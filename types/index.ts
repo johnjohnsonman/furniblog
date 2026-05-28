@@ -17,3 +17,4 @@ export type {
   FurnitureScores,
 } from "./review"
 export type { QueueItem } from "./pipeline"
+export type { Video, VideoStatus } from "./video"

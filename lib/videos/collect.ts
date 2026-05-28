@@ -1,0 +1,375 @@
+import type { SupabaseClient } from "@supabase/supabase-js"
+
+type ProductRow = {
+  id: string
+  slug: string
+  name: string
+  published: boolean
+  track: string | null
+  brands?: { name?: string | null } | Array<{ name?: string | null }> | null
+}
+
+type YoutubeSearchItem = {
+  id?: { videoId?: string }
+  snippet?: {
+    title?: string
+    channelTitle?: string
+    publishedAt?: string
+    description?: string
+    thumbnails?: {
+      maxres?: { url?: string }
+      standard?: { url?: string }
+      high?: { url?: string }
+      medium?: { url?: string }
+      default?: { url?: string }
+    }
+  }
+}
+
+type YoutubeVideoItem = {
+  id?: string
+  statistics?: { viewCount?: string }
+  contentDetails?: { duration?: string }
+}
+
+type YoutubeErrorPayload = {
+  error?: {
+    errors?: Array<{ reason?: string; message?: string }>
+    message?: string
+  }
+}
+
+export type CollectSingleResult = {
+  chairId: string
+  chairSlug: string
+  chairName: string
+  sourceQuery: string
+  fetchedVideos: number
+  insertedVideos: number
+  skippedDuplicates: number
+  quotaExceeded: boolean
+}
+
+export type CollectBatchOptions = {
+  maxChairs: number
+  delayMs: number
+  skipChairsWithVideos: boolean
+}
+
+export type CollectBatchResult = {
+  processedChairs: number
+  skippedChairs: number
+  totalFetchedVideos: number
+  totalInsertedVideos: number
+  totalDuplicateSkips: number
+  quotaExceeded: boolean
+  message: string
+}
+
+export function buildYoutubeSearchQuery(chairName: string): string {
+  const name = chairName.trim().replace(/"/g, "")
+  return `${name} review`
+}
+
+function extractBrandName(row: ProductRow): string | null {
+  const brand = Array.isArray(row.brands) ? row.brands[0] : row.brands
+  return typeof brand?.name === "string" && brand.name.trim() ? brand.name.trim() : null
+}
+
+function pickThumbnail(item: YoutubeSearchItem): string | null {
+  const thumbs = item.snippet?.thumbnails
+  return (
+    thumbs?.maxres?.url ??
+    thumbs?.standard?.url ??
+    thumbs?.high?.url ??
+    thumbs?.medium?.url ??
+    thumbs?.default?.url ??
+    null
+  )
+}
+
+async function parseQuotaExceeded(res: Response): Promise<boolean> {
+  if (res.status !== 403) return false
+  try {
+    const payload = (await res.json()) as YoutubeErrorPayload
+    return Boolean(
+      payload.error?.errors?.some((e) => e.reason === "quotaExceeded")
+    )
+  } catch {
+    return false
+  }
+}
+
+async function fetchYoutubeSearch(params: {
+  apiKey: string
+  query: string
+}): Promise<{ items: YoutubeSearchItem[]; quotaExceeded: boolean }> {
+  const searchParams = new URLSearchParams({
+    part: "snippet",
+    q: params.query,
+    type: "video",
+    maxResults: "5",
+    key: params.apiKey,
+  })
+
+  const res = await fetch(`https://www.googleapis.com/youtube/v3/search?${searchParams}`)
+  if (!res.ok) {
+    const quotaExceeded = await parseQuotaExceeded(res)
+    if (quotaExceeded) return { items: [], quotaExceeded: true }
+    throw new Error(`YouTube search failed: HTTP ${res.status}`)
+  }
+
+  const json = (await res.json()) as { items?: YoutubeSearchItem[] }
+  return { items: json.items ?? [], quotaExceeded: false }
+}
+
+async function fetchYoutubeVideos(params: {
+  apiKey: string
+  videoIds: string[]
+}): Promise<{ items: YoutubeVideoItem[]; quotaExceeded: boolean }> {
+  if (params.videoIds.length === 0) return { items: [], quotaExceeded: false }
+  const videoParams = new URLSearchParams({
+    part: "statistics,contentDetails",
+    id: params.videoIds.join(","),
+    key: params.apiKey,
+  })
+  const res = await fetch(`https://www.googleapis.com/youtube/v3/videos?${videoParams}`)
+  if (!res.ok) {
+    const quotaExceeded = await parseQuotaExceeded(res)
+    if (quotaExceeded) return { items: [], quotaExceeded: true }
+    throw new Error(`YouTube videos failed: HTTP ${res.status}`)
+  }
+  const json = (await res.json()) as { items?: YoutubeVideoItem[] }
+  return { items: json.items ?? [], quotaExceeded: false }
+}
+
+function mergeVideoData(
+  searchItems: YoutubeSearchItem[],
+  detailItems: YoutubeVideoItem[]
+): Array<{
+  youtube_id: string
+  title: string | null
+  channel_title: string | null
+  thumbnail_url: string | null
+  published_at: string | null
+  description: string | null
+  view_count: number | null
+  duration: string | null
+}> {
+  const byId = new Map<string, YoutubeVideoItem>()
+  for (const item of detailItems) {
+    if (item.id) byId.set(item.id, item)
+  }
+
+  const rows: Array<{
+    youtube_id: string
+    title: string | null
+    channel_title: string | null
+    thumbnail_url: string | null
+    published_at: string | null
+    description: string | null
+    view_count: number | null
+    duration: string | null
+  }> = []
+
+  for (const item of searchItems) {
+    const videoId = item.id?.videoId
+    if (!videoId) continue
+    const detail = byId.get(videoId)
+    const rawViewCount = detail?.statistics?.viewCount
+    const parsedViewCount =
+      typeof rawViewCount === "string" && rawViewCount.trim()
+        ? Number(rawViewCount)
+        : null
+
+    rows.push({
+      youtube_id: videoId,
+      title: item.snippet?.title?.trim() || null,
+      channel_title: item.snippet?.channelTitle?.trim() || null,
+      thumbnail_url: pickThumbnail(item),
+      published_at: item.snippet?.publishedAt ?? null,
+      description: item.snippet?.description?.trim() || null,
+      view_count:
+        typeof parsedViewCount === "number" && Number.isFinite(parsedViewCount)
+          ? parsedViewCount
+          : null,
+      duration: detail?.contentDetails?.duration ?? null,
+    })
+  }
+
+  return rows
+}
+
+export async function collectVideosForChair(params: {
+  supabase: SupabaseClient
+  product: ProductRow
+}): Promise<CollectSingleResult> {
+  const apiKey = process.env.YOUTUBE_API_KEY?.trim()
+  if (!apiKey) throw new Error("YOUTUBE_API_KEY is not set")
+
+  const sourceQuery = buildYoutubeSearchQuery(params.product.name)
+  const brand = extractBrandName(params.product)
+
+  const searchResult = await fetchYoutubeSearch({ apiKey, query: sourceQuery })
+  if (searchResult.quotaExceeded) {
+    return {
+      chairId: params.product.id,
+      chairSlug: params.product.slug,
+      chairName: params.product.name,
+      sourceQuery,
+      fetchedVideos: 0,
+      insertedVideos: 0,
+      skippedDuplicates: 0,
+      quotaExceeded: true,
+    }
+  }
+
+  const videoIds = searchResult.items
+    .map((item) => item.id?.videoId)
+    .filter((id): id is string => Boolean(id))
+
+  const detailsResult = await fetchYoutubeVideos({ apiKey, videoIds })
+  if (detailsResult.quotaExceeded) {
+    return {
+      chairId: params.product.id,
+      chairSlug: params.product.slug,
+      chairName: params.product.name,
+      sourceQuery,
+      fetchedVideos: 0,
+      insertedVideos: 0,
+      skippedDuplicates: 0,
+      quotaExceeded: true,
+    }
+  }
+
+  const merged = mergeVideoData(searchResult.items, detailsResult.items)
+  if (merged.length === 0) {
+    return {
+      chairId: params.product.id,
+      chairSlug: params.product.slug,
+      chairName: params.product.name,
+      sourceQuery,
+      fetchedVideos: 0,
+      insertedVideos: 0,
+      skippedDuplicates: 0,
+      quotaExceeded: false,
+    }
+  }
+
+  const youtubeIds = merged.map((row) => row.youtube_id)
+  const { data: existingRows, error: existingError } = await params.supabase
+    .from("videos")
+    .select("youtube_id")
+    .in("youtube_id", youtubeIds)
+
+  if (existingError) {
+    throw new Error(existingError.message)
+  }
+
+  const existingSet = new Set((existingRows ?? []).map((row) => row.youtube_id))
+
+  const upsertRows = merged.map((row) => ({
+    ...row,
+    chair_id: params.product.id,
+    brand,
+    status: "published" as const,
+    source_query: sourceQuery,
+  }))
+
+  const { error: upsertError } = await params.supabase
+    .from("videos")
+    .upsert(upsertRows, { onConflict: "youtube_id" })
+
+  if (upsertError) {
+    throw new Error(upsertError.message)
+  }
+
+  const insertedVideos = merged.filter((row) => !existingSet.has(row.youtube_id)).length
+  const skippedDuplicates = merged.length - insertedVideos
+
+  return {
+    chairId: params.product.id,
+    chairSlug: params.product.slug,
+    chairName: params.product.name,
+    sourceQuery,
+    fetchedVideos: merged.length,
+    insertedVideos,
+    skippedDuplicates,
+    quotaExceeded: false,
+  }
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+export async function collectVideosForPublishedChairs(params: {
+  supabase: SupabaseClient
+  options: CollectBatchOptions
+}): Promise<CollectBatchResult> {
+  const { supabase, options } = params
+
+  const { data: products, error } = await supabase
+    .from("products")
+    .select("id, slug, name, published, track, brands(name)")
+    .eq("track", "chair")
+    .eq("published", true)
+    .order("name")
+    .limit(Math.max(1, Math.min(options.maxChairs, 200)))
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  const list = (products ?? []) as ProductRow[]
+  let processedChairs = 0
+  let skippedChairs = 0
+  let totalFetchedVideos = 0
+  let totalInsertedVideos = 0
+  let totalDuplicateSkips = 0
+  let quotaExceeded = false
+
+  for (let idx = 0; idx < list.length; idx++) {
+    const product = list[idx]
+
+    if (options.skipChairsWithVideos) {
+      const { count, error: countError } = await supabase
+        .from("videos")
+        .select("id", { count: "exact", head: true })
+        .eq("chair_id", product.id)
+
+      if (countError) throw new Error(countError.message)
+      if ((count ?? 0) > 0) {
+        skippedChairs += 1
+        continue
+      }
+    }
+
+    const one = await collectVideosForChair({ supabase, product })
+    if (one.quotaExceeded) {
+      quotaExceeded = true
+      break
+    }
+
+    processedChairs += 1
+    totalFetchedVideos += one.fetchedVideos
+    totalInsertedVideos += one.insertedVideos
+    totalDuplicateSkips += one.skippedDuplicates
+
+    if (idx < list.length - 1 && options.delayMs > 0) {
+      await sleep(options.delayMs)
+    }
+  }
+
+  return {
+    processedChairs,
+    skippedChairs,
+    totalFetchedVideos,
+    totalInsertedVideos,
+    totalDuplicateSkips,
+    quotaExceeded,
+    message: quotaExceeded
+      ? "quota exceeded"
+      : "completed",
+  }
+}
