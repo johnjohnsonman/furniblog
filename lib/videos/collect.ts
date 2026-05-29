@@ -85,6 +85,25 @@ export type SummaryBackfillResult = {
   failed: number
 }
 
+/** Decode the HTML entities YouTube commonly returns in titles/descriptions. */
+export function decodeHtmlEntities(input: string | null): string | null {
+  if (!input) return input
+  return input
+    .replace(/&#39;/g, "'")
+    .replace(/&#x27;/gi, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&#34;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#(\d+);/g, (_, dec: string) => String.fromCodePoint(Number(dec)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex: string) =>
+      String.fromCodePoint(parseInt(hex, 16))
+    )
+    .replace(/&amp;/g, "&")
+}
+
 export function buildYoutubeSearchQuery(
   chairName: string,
   brandName?: string | null
@@ -218,11 +237,11 @@ function mergeVideoData(
 
     rows.push({
       youtube_id: videoId,
-      title: item.snippet?.title?.trim() || null,
-      channel_title: item.snippet?.channelTitle?.trim() || null,
+      title: decodeHtmlEntities(item.snippet?.title?.trim() || null),
+      channel_title: decodeHtmlEntities(item.snippet?.channelTitle?.trim() || null),
       thumbnail_url: pickThumbnail(item),
       published_at: item.snippet?.publishedAt ?? null,
-      description: item.snippet?.description?.trim() || null,
+      description: decodeHtmlEntities(item.snippet?.description?.trim() || null),
       view_count:
         typeof parsedViewCount === "number" && Number.isFinite(parsedViewCount)
           ? parsedViewCount
@@ -464,6 +483,69 @@ export async function backfillMissingVideoSummaries(params: {
   }
 
   return { processed, updated, failed }
+}
+
+export type FixTitlesResult = {
+  scanned: number
+  updated: number
+}
+
+/** One-off backfill: re-decode HTML entities in already-stored video titles/channels/descriptions. */
+export async function fixVideoTitleEntities(params: {
+  supabase: SupabaseClient
+}): Promise<FixTitlesResult> {
+  const { supabase } = params
+  const batchSize = 500
+  let offset = 0
+  let scanned = 0
+  let updated = 0
+
+  while (true) {
+    const { data, error } = await supabase
+      .from("videos")
+      .select("id, title, channel_title, description")
+      .order("created_at", { ascending: false })
+      .range(offset, offset + batchSize - 1)
+
+    if (error) throw new Error(error.message)
+    const rows = data ?? []
+    if (rows.length === 0) break
+
+    for (const row of rows) {
+      scanned += 1
+      const title = typeof row.title === "string" ? row.title : null
+      const channel = typeof row.channel_title === "string" ? row.channel_title : null
+      const description = typeof row.description === "string" ? row.description : null
+
+      const nextTitle = decodeHtmlEntities(title)
+      const nextChannel = decodeHtmlEntities(channel)
+      const nextDescription = decodeHtmlEntities(description)
+
+      if (
+        nextTitle === title &&
+        nextChannel === channel &&
+        nextDescription === description
+      ) {
+        continue
+      }
+
+      const { error: updateError } = await supabase
+        .from("videos")
+        .update({
+          title: nextTitle,
+          channel_title: nextChannel,
+          description: nextDescription,
+        })
+        .eq("id", row.id)
+
+      if (!updateError) updated += 1
+    }
+
+    if (rows.length < batchSize) break
+    offset += batchSize
+  }
+
+  return { scanned, updated }
 }
 
 function sleep(ms: number) {

@@ -325,6 +325,11 @@ export default function AdminPipelinePage() {
   const [videoCleanupRunning, setVideoCleanupRunning] = useState(false)
   const [videoCleanupResult, setVideoCleanupResult] =
     useState<VideoCleanupResult | null>(null)
+  const [fixTitlesRunning, setFixTitlesRunning] = useState(false)
+  const [fixTitlesResult, setFixTitlesResult] = useState<{
+    scanned: number
+    updated: number
+  } | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
 
   const [history, setHistory] = useState<HistoryRow[]>([])
@@ -1096,6 +1101,28 @@ export default function AdminPipelinePage() {
     }
   }
 
+  async function runFixVideoTitles() {
+    setFixTitlesRunning(true)
+    setVideoError(null)
+    setFixTitlesResult(null)
+    try {
+      const res = await fetchJson<{ scanned: number; updated: number }>(
+        "/api/admin/videos/fix-titles",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }
+      )
+      if (!res.ok) throw new Error(res.error)
+      setFixTitlesResult(res.data)
+    } catch (err) {
+      setVideoError(err instanceof Error ? err.message : "Fix titles failed")
+    } finally {
+      setFixTitlesRunning(false)
+    }
+  }
+
   async function runVideoSummaryBackfill() {
     setSummaryBackfillRunning(true)
     setVideoError(null)
@@ -1458,6 +1485,23 @@ export default function AdminPipelinePage() {
           ) : null}
           Generate Video Summaries
         </Button>
+        <Button
+          variant="outline"
+          onClick={() => void runFixVideoTitles()}
+          disabled={videoRunning || fixTitlesRunning || running}
+        >
+          {fixTitlesRunning ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : null}
+          Fix video titles
+        </Button>
+
+        {fixTitlesResult && (
+          <p className="text-sm text-foreground">
+            Fixed titles: {fixTitlesResult.updated} updated / {fixTitlesResult.scanned}{" "}
+            scanned
+          </p>
+        )}
 
         <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50/40 p-4 space-y-3 dark:border-amber-900/40 dark:bg-amber-950/20">
           <div>
