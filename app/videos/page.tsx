@@ -88,12 +88,18 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
     query = query.order("published_at", { ascending: false, nullsFirst: false })
   }
 
-  const [{ data: videosData, count }, filterOptions] = await Promise.all([
-    query.range(from, to),
-    fetchVideoFilterOptions(supabase),
-  ])
+  const popularQuery = supabase
+    .from("videos")
+    .select("id, youtube_id, title, channel_title, view_count, thumbnail_url, products(slug, name)")
+    .eq("status", "published")
+    .order("view_count", { ascending: false, nullsFirst: false })
+    .limit(12)
+
+  const [{ data: videosData, count }, filterOptions, { data: popularData }] =
+    await Promise.all([query.range(from, to), fetchVideoFilterOptions(supabase), popularQuery])
 
   const videos = (videosData ?? []) as VideoRow[]
+  const popular = (popularData ?? []) as VideoRow[]
   const total = count ?? 0
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
 
@@ -109,10 +115,115 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
     return `/videos?${qs.toString()}`
   }
 
+  const selectClass =
+    "h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+
+  function FilterForm() {
+    return (
+      <form method="get" className="space-y-3">
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Brand
+          </label>
+          <select name="brand" defaultValue={selectedBrand} className={selectClass}>
+            <option value="">All brands</option>
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Chair
+          </label>
+          <select name="chair" defaultValue={selectedChairId} className={selectClass}>
+            <option value="">All chairs</option>
+            {chairOptions.map((chair) => (
+              <option key={chair.id} value={chair.id}>
+                {chair.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Sort by
+          </label>
+          <select name="sort" defaultValue={sort} className={selectClass}>
+            <option value="latest">Latest</option>
+            <option value="views">Most viewed</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          className="h-10 w-full rounded-md border border-border bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90"
+        >
+          Apply filters
+        </button>
+      </form>
+    )
+  }
+
+  function PopularList() {
+    if (popular.length === 0) return null
+    return (
+      <ul className="space-y-4">
+        {popular.map((video) => {
+          const title = video.title?.trim() || "Untitled video"
+          const product = getProductRef(video)
+          return (
+            <li key={video.id} className="flex gap-3">
+              <a
+                href={`https://www.youtube.com/watch?v=${video.youtube_id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative block h-[54px] w-[96px] shrink-0 overflow-hidden rounded-md border border-border bg-muted"
+              >
+                {video.thumbnail_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={video.thumbnail_url}
+                    alt={title}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </a>
+              <div className="min-w-0 flex-1">
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.youtube_id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="line-clamp-2 text-sm font-medium text-foreground hover:underline"
+                >
+                  {title}
+                </a>
+                <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                  {video.channel_title || "Unknown channel"} ·{" "}
+                  {formatViewCount(video.view_count)}
+                </p>
+                {product ? (
+                  <Link
+                    href={`/products/${product.slug}`}
+                    className="mt-0.5 inline-block truncate text-xs text-foreground underline underline-offset-2"
+                  >
+                    {product.name} →
+                  </Link>
+                ) : null}
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    )
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <main className="flex-1 mx-auto w-full max-w-6xl px-4 py-12">
+      <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-12">
         <header className="mb-8">
           <h1 className="font-serif text-3xl md:text-4xl font-medium text-foreground tracking-tight">
             Chair Videos
@@ -123,128 +234,129 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
           </p>
         </header>
 
-        <form method="get" className="mb-8 grid gap-3 md:grid-cols-4">
-          <select
-            name="brand"
-            defaultValue={selectedBrand}
-            className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          >
-            <option value="">All brands</option>
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
-          <select
-            name="chair"
-            defaultValue={selectedChairId}
-            className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          >
-            <option value="">All chairs</option>
-            {chairOptions.map((chair) => (
-              <option key={chair.id} value={chair.id}>
-                {chair.name}
-              </option>
-            ))}
-          </select>
-          <select
-            name="sort"
-            defaultValue={sort}
-            className="h-10 rounded-md border border-input bg-background px-3 text-sm"
-          >
-            <option value="latest">Latest</option>
-            <option value="views">Most viewed</option>
-          </select>
-          <button
-            type="submit"
-            className="h-10 rounded-md border border-border bg-foreground px-4 text-sm text-background"
-          >
-            Apply filters
-          </button>
-        </form>
+        <div className="grid gap-8 lg:grid-cols-[220px_1fr_300px]">
+          {/* Left: filters */}
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            {/* Mobile collapsible */}
+            <details className="lg:hidden rounded-xl border border-border bg-card p-4">
+              <summary className="cursor-pointer text-sm font-medium text-foreground">
+                Filters
+              </summary>
+              <div className="mt-4">
+                <FilterForm />
+              </div>
+            </details>
+            {/* Desktop sidebar */}
+            <div className="hidden lg:block">
+              <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                Filters
+              </h2>
+              <FilterForm />
+            </div>
+          </aside>
 
-        {videos.length === 0 ? (
-          <div className="rounded-xl border border-border bg-card p-10 text-center">
-            <p className="text-foreground">No published videos found.</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Try changing the filters or run video collection from the admin panel.
-            </p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {videos.map((video) => {
-              const title = video.title?.trim() || "Untitled video"
-              const product = getProductRef(video)
-              return (
-                <article
-                  key={video.id}
-                  className="rounded-xl border border-border bg-card p-4 shadow-sm"
-                >
-                  <VideoEmbedFacade
-                    youtubeId={video.youtube_id}
-                    title={title}
-                    thumbnailUrl={video.thumbnail_url}
-                  />
-                  <div className="mt-4 space-y-2">
-                    <h2 className="line-clamp-2 text-base font-medium text-foreground">
-                      {title}
-                    </h2>
-                    <p className="text-xs text-muted-foreground">
-                      {video.channel_title || "Unknown channel"} ·{" "}
-                      {formatViewCount(video.view_count)} · {formatDate(video.published_at)}
-                    </p>
-                    {video.summary?.trim() ? (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {video.summary.trim()}
-                      </p>
-                    ) : null}
-                    {product ? (
-                      <Link
-                        href={`/products/${product.slug}`}
-                        className="inline-flex text-sm text-foreground underline underline-offset-4"
-                      >
-                        About: {product.name} →
-                      </Link>
-                    ) : null}
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-        )}
-
-        {totalPages > 1 && (
-          <div className="mt-10 flex items-center justify-center gap-3">
-            {page > 1 ? (
-              <Link
-                href={pageHref(page - 1)}
-                className="rounded-md border border-border px-3 py-2 text-sm"
-              >
-                Previous
-              </Link>
+          {/* Center: grid */}
+          <div>
+            {videos.length === 0 ? (
+              <div className="rounded-xl border border-border bg-card p-10 text-center">
+                <p className="text-foreground">No published videos found.</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Try changing the filters or run video collection from the admin panel.
+                </p>
+              </div>
             ) : (
-              <span className="rounded-md border border-border px-3 py-2 text-sm opacity-40">
-                Previous
-              </span>
+              <div className="grid gap-6 sm:grid-cols-2">
+                {videos.map((video) => {
+                  const title = video.title?.trim() || "Untitled video"
+                  const product = getProductRef(video)
+                  return (
+                    <article
+                      key={video.id}
+                      id={`video-${video.youtube_id}`}
+                      className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm scroll-mt-24"
+                    >
+                      <VideoEmbedFacade
+                        youtubeId={video.youtube_id}
+                        title={title}
+                        thumbnailUrl={video.thumbnail_url}
+                      />
+                      <div className="mt-4 flex flex-1 flex-col space-y-2">
+                        <h2 className="line-clamp-2 text-base font-medium text-foreground">
+                          {title}
+                        </h2>
+                        <p className="text-xs text-muted-foreground">
+                          {video.channel_title || "Unknown channel"} ·{" "}
+                          {formatViewCount(video.view_count)} ·{" "}
+                          {formatDate(video.published_at)}
+                        </p>
+                        {video.summary?.trim() ? (
+                          <p className="text-sm text-muted-foreground line-clamp-2">
+                            {video.summary.trim()}
+                          </p>
+                        ) : null}
+                        {product ? (
+                          <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-3">
+                            <span className="min-w-0 truncate text-xs text-muted-foreground">
+                              {product.name}
+                            </span>
+                            <Link
+                              href={`/products/${product.slug}`}
+                              className="inline-flex shrink-0 items-center gap-1 rounded-md border border-foreground bg-foreground px-3 py-1.5 text-xs font-medium text-background transition-colors hover:bg-background hover:text-foreground"
+                            >
+                              View this chair →
+                            </Link>
+                          </div>
+                        ) : null}
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
             )}
-            <span className="text-sm text-muted-foreground">
-              Page {page} / {totalPages}
-            </span>
-            {page < totalPages ? (
-              <Link
-                href={pageHref(page + 1)}
-                className="rounded-md border border-border px-3 py-2 text-sm"
-              >
-                More
-              </Link>
-            ) : (
-              <span className="rounded-md border border-border px-3 py-2 text-sm opacity-40">
-                More
-              </span>
+
+            {totalPages > 1 && (
+              <div className="mt-10 flex items-center justify-center gap-3">
+                {page > 1 ? (
+                  <Link
+                    href={pageHref(page - 1)}
+                    className="rounded-md border border-border px-3 py-2 text-sm"
+                  >
+                    Previous
+                  </Link>
+                ) : (
+                  <span className="rounded-md border border-border px-3 py-2 text-sm opacity-40">
+                    Previous
+                  </span>
+                )}
+                <span className="text-sm text-muted-foreground">
+                  Page {page} / {totalPages}
+                </span>
+                {page < totalPages ? (
+                  <Link
+                    href={pageHref(page + 1)}
+                    className="rounded-md border border-border px-3 py-2 text-sm"
+                  >
+                    More
+                  </Link>
+                ) : (
+                  <span className="rounded-md border border-border px-3 py-2 text-sm opacity-40">
+                    More
+                  </span>
+                )}
+              </div>
             )}
           </div>
-        )}
+
+          {/* Right: popular videos */}
+          {popular.length > 0 && (
+            <aside className="lg:sticky lg:top-24 lg:self-start">
+              <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-muted-foreground">
+                Popular videos
+              </h2>
+              <PopularList />
+            </aside>
+          )}
+        </div>
       </main>
       <Footer />
     </div>

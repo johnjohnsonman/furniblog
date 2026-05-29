@@ -28,6 +28,13 @@ import { ChairSearchCombobox } from "@/components/admin/pipeline/chair-search-co
 import { Switch } from "@/components/ui/switch"
 
 type ProductOption = { id: string; slug: string; name: string }
+type VideoProduct = {
+  id: string
+  slug: string
+  name: string
+  brand: string
+  brandSlug: string
+}
 
 type VideoSingleResponse = {
   mode: "single"
@@ -291,7 +298,10 @@ export default function AdminPipelinePage() {
   const [error, setError] = useState<string | null>(null)
   const [videoError, setVideoError] = useState<string | null>(null)
   const [videoRunning, setVideoRunning] = useState(false)
-  const [videoMode, setVideoMode] = useState<"single" | "all">("single")
+  const [videoMode, setVideoMode] = useState<"single" | "brand" | "all">("single")
+  const [videoChairSlug, setVideoChairSlug] = useState("")
+  const [videoBrand, setVideoBrand] = useState("")
+  const [publishedProducts, setPublishedProducts] = useState<VideoProduct[]>([])
   const [videoSkipExisting, setVideoSkipExisting] = useState(true)
   const [videoMaxChairs, setVideoMaxChairs] = useState(50)
   const [videoDelayMs, setVideoDelayMs] = useState(1000)
@@ -399,6 +409,26 @@ export default function AdminPipelinePage() {
       if (list[0] && !chairSlug) setChairSlug(list[0].slug)
     })()
   }, [chairSlug])
+
+  useEffect(() => {
+    void (async () => {
+      const result = await fetchJson<{ products?: VideoProduct[] }>(
+        "/api/admin/products?published=true&limit=300"
+      )
+      if (!result.ok) {
+        console.error("Failed to load published products:", result.error)
+        return
+      }
+      const list = (result.data.products ?? []).map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        name: p.name,
+        brand: p.brand ?? "",
+        brandSlug: p.brandSlug ?? "",
+      }))
+      setPublishedProducts(list)
+    })()
+  }, [])
 
   useEffect(() => {
     void loadHistory()
@@ -891,9 +921,81 @@ export default function AdminPipelinePage() {
     })
   }
 
+  async function orchestrateVideoCollection(
+    targets: { slug: string; name: string }[]
+  ) {
+    const total = targets.length
+
+    let processedChairs = 0
+    let skippedChairs = 0
+    let totalFetchedVideos = 0
+    let totalInsertedVideos = 0
+    let totalDuplicateSkips = 0
+    let totalSkippedIrrelevant = 0
+    let quotaExceeded = false
+
+    for (let i = 0; i < total; i++) {
+      if (stopVideoRef.current) break
+
+      const product = targets[i]
+      setVideoProgress({ index: i + 1, total, currentChair: product.name })
+
+      try {
+        const res = await collectVideosForOneChair(product.slug, videoSkipExisting)
+        if (res.ok) {
+          const d = res.data
+          if (d.skipped) {
+            skippedChairs += 1
+          } else if (d.quotaExceeded) {
+            quotaExceeded = true
+            break
+          } else {
+            processedChairs += 1
+            totalFetchedVideos += d.fetchedVideos ?? 0
+            totalInsertedVideos += d.insertedVideos ?? 0
+            totalDuplicateSkips += d.skippedDuplicates ?? 0
+            totalSkippedIrrelevant += d.skippedIrrelevant ?? 0
+          }
+        }
+      } catch {
+        /* skip this chair, continue */
+      }
+
+      setVideoResult({
+        mode: "all",
+        quotaExceeded,
+        processedChairs,
+        skippedChairs,
+        totalFetchedVideos,
+        totalInsertedVideos,
+        totalDuplicateSkips,
+        totalSkippedIrrelevant,
+      })
+
+      if (i < total - 1 && !stopVideoRef.current && videoDelayMs > 0) {
+        await new Promise((r) => setTimeout(r, videoDelayMs))
+      }
+    }
+
+    setVideoResult({
+      mode: "all",
+      quotaExceeded,
+      processedChairs,
+      skippedChairs,
+      totalFetchedVideos,
+      totalInsertedVideos,
+      totalDuplicateSkips,
+      totalSkippedIrrelevant,
+    })
+  }
+
   async function runVideoCollection() {
-    if (videoMode === "single" && !chairSlug) {
+    if (videoMode === "single" && !videoChairSlug) {
       setVideoError("Select a chair")
+      return
+    }
+    if (videoMode === "brand" && !videoBrand) {
+      setVideoError("Select a brand")
       return
     }
 
@@ -905,7 +1007,7 @@ export default function AdminPipelinePage() {
 
     try {
       if (videoMode === "single") {
-        const res = await collectVideosForOneChair(chairSlug, false)
+        const res = await collectVideosForOneChair(videoChairSlug, false)
         if (!res.ok) throw new Error(res.error)
         const d = res.data
         setVideoResult({
@@ -919,80 +1021,25 @@ export default function AdminPipelinePage() {
         return
       }
 
-      // "all" mode: orchestrate sequentially from the browser (avoids serverless timeout).
-      const productsResult = await fetchJson<{ products?: ProductOption[] }>(
-        "/api/admin/products?limit=200&published=true"
-      )
-      if (!productsResult.ok) throw new Error(productsResult.error)
-
-      const targets = (productsResult.data.products ?? []).slice(0, videoMaxChairs)
-      const total = targets.length
-
-      let processedChairs = 0
-      let skippedChairs = 0
-      let totalFetchedVideos = 0
-      let totalInsertedVideos = 0
-      let totalDuplicateSkips = 0
-      let totalSkippedIrrelevant = 0
-      let quotaExceeded = false
-
-      for (let i = 0; i < total; i++) {
-        if (stopVideoRef.current) break
-
-        const product = targets[i]
-        setVideoProgress({
-          index: i + 1,
-          total,
-          currentChair: product.name,
-        })
-
-        try {
-          const res = await collectVideosForOneChair(product.slug, videoSkipExisting)
-          if (res.ok) {
-            const d = res.data
-            if (d.skipped) {
-              skippedChairs += 1
-            } else if (d.quotaExceeded) {
-              quotaExceeded = true
-              break
-            } else {
-              processedChairs += 1
-              totalFetchedVideos += d.fetchedVideos ?? 0
-              totalInsertedVideos += d.insertedVideos ?? 0
-              totalDuplicateSkips += d.skippedDuplicates ?? 0
-              totalSkippedIrrelevant += d.skippedIrrelevant ?? 0
-            }
-          }
-        } catch {
-          /* skip this chair, continue */
-        }
-
-        setVideoResult({
-          mode: "all",
-          quotaExceeded,
-          processedChairs,
-          skippedChairs,
-          totalFetchedVideos,
-          totalInsertedVideos,
-          totalDuplicateSkips,
-          totalSkippedIrrelevant,
-        })
-
-        if (i < total - 1 && !stopVideoRef.current && videoDelayMs > 0) {
-          await new Promise((r) => setTimeout(r, videoDelayMs))
-        }
+      // brand / all: orchestrate sequentially from the browser (avoids serverless timeout).
+      let targets: { slug: string; name: string }[]
+      if (videoMode === "brand") {
+        targets = publishedProducts
+          .filter((p) => p.brand === videoBrand)
+          .slice(0, videoMaxChairs)
+          .map((p) => ({ slug: p.slug, name: p.name }))
+      } else {
+        targets = publishedProducts
+          .slice(0, videoMaxChairs)
+          .map((p) => ({ slug: p.slug, name: p.name }))
       }
 
-      setVideoResult({
-        mode: "all",
-        quotaExceeded,
-        processedChairs,
-        skippedChairs,
-        totalFetchedVideos,
-        totalInsertedVideos,
-        totalDuplicateSkips,
-        totalSkippedIrrelevant,
-      })
+      if (targets.length === 0) {
+        setVideoError("No published chairs to process")
+        return
+      }
+
+      await orchestrateVideoCollection(targets)
     } catch (err) {
       setVideoError(err instanceof Error ? err.message : "Video collection failed")
     } finally {
@@ -1262,28 +1309,73 @@ export default function AdminPipelinePage() {
           Summaries are generated per video (null if generation fails).
         </p>
 
-        <div className="flex flex-wrap items-center gap-6">
-          <label className="flex items-center gap-2 text-sm">
-            <Switch
-              checked={videoMode === "all"}
-              onCheckedChange={(checked) =>
-                setVideoMode(checked ? "all" : "single")
-              }
+        <div className="space-y-2 max-w-xs">
+          <Label htmlFor="video-mode">Mode</Label>
+          <Select
+            value={videoMode}
+            onValueChange={(value) =>
+              setVideoMode(value as "single" | "brand" | "all")
+            }
+            disabled={videoRunning}
+          >
+            <SelectTrigger id="video-mode">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="single">Single chair</SelectItem>
+              <SelectItem value="brand">Single brand</SelectItem>
+              <SelectItem value="all">All published chairs</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {videoMode === "single" && (
+          <ChairSearchCombobox
+            products={products}
+            value={videoChairSlug}
+            onChange={setVideoChairSlug}
+            disabled={videoRunning}
+          />
+        )}
+
+        {videoMode === "brand" && (
+          <div className="space-y-2 max-w-xs">
+            <Label htmlFor="video-brand">Brand</Label>
+            <Select
+              value={videoBrand}
+              onValueChange={setVideoBrand}
               disabled={videoRunning}
-            />
-            Run all published chairs
-          </label>
+            >
+              <SelectTrigger id="video-brand">
+                <SelectValue placeholder="Select a brand" />
+              </SelectTrigger>
+              <SelectContent>
+                {[...new Set(publishedProducts.map((p) => p.brand))]
+                  .filter(Boolean)
+                  .sort((a, b) => a.localeCompare(b))
+                  .map((brand) => (
+                    <SelectItem key={brand} value={brand}>
+                      {brand} (
+                      {publishedProducts.filter((p) => p.brand === brand).length})
+                    </SelectItem>
+                  ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+
+        {videoMode !== "single" && (
           <label className="flex items-center gap-2 text-sm">
             <Switch
               checked={videoSkipExisting}
               onCheckedChange={(checked) => setVideoSkipExisting(Boolean(checked))}
-              disabled={videoRunning || videoMode !== "all"}
+              disabled={videoRunning}
             />
             Skip chairs with existing videos
           </label>
-        </div>
+        )}
 
-        {videoMode === "all" && (
+        {videoMode !== "single" && (
           <div className="flex flex-wrap items-end gap-4">
             <div className="space-y-2">
               <Label htmlFor="video-max-chairs">maxChairs</Label>
@@ -1333,7 +1425,7 @@ export default function AdminPipelinePage() {
           {videoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
           Run Video Collection
         </Button>
-        {videoRunning && videoMode === "all" && (
+        {videoRunning && videoMode !== "single" && (
           <Button type="button" variant="destructive" onClick={stopVideoCollection}>
             Stop
           </Button>
