@@ -29,6 +29,16 @@ import { Switch } from "@/components/ui/switch"
 
 type ProductOption = { id: string; slug: string; name: string }
 
+type VideoSingleResponse = {
+  mode: "single"
+  skipped?: boolean
+  quotaExceeded?: boolean
+  fetchedVideos?: number
+  insertedVideos?: number
+  skippedDuplicates?: number
+  skippedIrrelevant?: number
+}
+
 type VideoCollectResult = {
   mode: "single" | "all"
   message?: string
@@ -43,6 +53,12 @@ type VideoCollectResult = {
   insertedVideos?: number
   skippedDuplicates?: number
   skippedIrrelevant?: number
+}
+
+type VideoProgress = {
+  index: number
+  total: number
+  currentChair: string
 }
 
 type VideoCleanupResult = {
@@ -280,6 +296,8 @@ export default function AdminPipelinePage() {
   const [videoMaxChairs, setVideoMaxChairs] = useState(50)
   const [videoDelayMs, setVideoDelayMs] = useState(1000)
   const [videoResult, setVideoResult] = useState<VideoCollectResult | null>(null)
+  const [videoProgress, setVideoProgress] = useState<VideoProgress | null>(null)
+  const stopVideoRef = useRef(false)
   const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
   const [summaryBackfillResult, setSummaryBackfillResult] =
     useState<VideoSummaryBackfillResult | null>(null)
@@ -861,40 +879,130 @@ export default function AdminPipelinePage() {
     stopAllRef.current = true
   }
 
+  async function collectVideosForOneChair(slug: string, skipIfExisting: boolean) {
+    return fetchJson<VideoSingleResponse>("/api/admin/videos/collect", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "single",
+        chairSlug: slug,
+        skipIfExisting,
+      }),
+    })
+  }
+
   async function runVideoCollection() {
-    if (!chairSlug && videoMode === "single") {
+    if (videoMode === "single" && !chairSlug) {
       setVideoError("Select a chair")
       return
     }
 
+    stopVideoRef.current = false
     setVideoRunning(true)
     setVideoError(null)
     setVideoResult(null)
+    setVideoProgress(null)
 
     try {
-      const body =
-        videoMode === "single"
-          ? { mode: "single" as const, chairSlug }
-          : {
-              mode: "all" as const,
-              maxChairs: videoMaxChairs,
-              delayMs: videoDelayMs,
-              skipChairsWithVideos: videoSkipExisting,
+      if (videoMode === "single") {
+        const res = await collectVideosForOneChair(chairSlug, false)
+        if (!res.ok) throw new Error(res.error)
+        const d = res.data
+        setVideoResult({
+          mode: "single",
+          quotaExceeded: d.quotaExceeded,
+          fetchedVideos: d.fetchedVideos,
+          insertedVideos: d.insertedVideos,
+          skippedDuplicates: d.skippedDuplicates,
+          skippedIrrelevant: d.skippedIrrelevant,
+        })
+        return
+      }
+
+      // "all" mode: orchestrate sequentially from the browser (avoids serverless timeout).
+      const productsResult = await fetchJson<{ products?: ProductOption[] }>(
+        "/api/admin/products?limit=200&published=true"
+      )
+      if (!productsResult.ok) throw new Error(productsResult.error)
+
+      const targets = (productsResult.data.products ?? []).slice(0, videoMaxChairs)
+      const total = targets.length
+
+      let processedChairs = 0
+      let skippedChairs = 0
+      let totalFetchedVideos = 0
+      let totalInsertedVideos = 0
+      let totalDuplicateSkips = 0
+      let totalSkippedIrrelevant = 0
+      let quotaExceeded = false
+
+      for (let i = 0; i < total; i++) {
+        if (stopVideoRef.current) break
+
+        const product = targets[i]
+        setVideoProgress({
+          index: i + 1,
+          total,
+          currentChair: product.name,
+        })
+
+        try {
+          const res = await collectVideosForOneChair(product.slug, videoSkipExisting)
+          if (res.ok) {
+            const d = res.data
+            if (d.skipped) {
+              skippedChairs += 1
+            } else if (d.quotaExceeded) {
+              quotaExceeded = true
+              break
+            } else {
+              processedChairs += 1
+              totalFetchedVideos += d.fetchedVideos ?? 0
+              totalInsertedVideos += d.insertedVideos ?? 0
+              totalDuplicateSkips += d.skippedDuplicates ?? 0
+              totalSkippedIrrelevant += d.skippedIrrelevant ?? 0
             }
+          }
+        } catch {
+          /* skip this chair, continue */
+        }
 
-      const res = await fetchJson<VideoCollectResult>("/api/admin/videos/collect", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        setVideoResult({
+          mode: "all",
+          quotaExceeded,
+          processedChairs,
+          skippedChairs,
+          totalFetchedVideos,
+          totalInsertedVideos,
+          totalDuplicateSkips,
+          totalSkippedIrrelevant,
+        })
+
+        if (i < total - 1 && !stopVideoRef.current && videoDelayMs > 0) {
+          await new Promise((r) => setTimeout(r, videoDelayMs))
+        }
+      }
+
+      setVideoResult({
+        mode: "all",
+        quotaExceeded,
+        processedChairs,
+        skippedChairs,
+        totalFetchedVideos,
+        totalInsertedVideos,
+        totalDuplicateSkips,
+        totalSkippedIrrelevant,
       })
-
-      if (!res.ok) throw new Error(res.error)
-      setVideoResult(res.data)
     } catch (err) {
       setVideoError(err instanceof Error ? err.message : "Video collection failed")
     } finally {
       setVideoRunning(false)
+      setVideoProgress(null)
     }
+  }
+
+  function stopVideoCollection() {
+    stopVideoRef.current = true
   }
 
   async function runVideoCleanup(mode: "all" | "clear_summaries" | "generic_summaries") {
@@ -1225,6 +1333,11 @@ export default function AdminPipelinePage() {
           {videoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
           Run Video Collection
         </Button>
+        {videoRunning && videoMode === "all" && (
+          <Button type="button" variant="destructive" onClick={stopVideoCollection}>
+            Stop
+          </Button>
+        )}
         <Button
           variant="outline"
           onClick={() => void runVideoSummaryBackfill()}
@@ -1235,6 +1348,22 @@ export default function AdminPipelinePage() {
           ) : null}
           Generate Video Summaries
         </Button>
+
+        {videoProgress && (
+          <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
+            <p className="text-sm font-medium">
+              {videoProgress.index} / {videoProgress.total} chairs done
+            </p>
+            <progress
+              className="w-full h-2 rounded"
+              value={videoProgress.index}
+              max={videoProgress.total}
+            />
+            <p className="text-sm text-muted-foreground">
+              Current: {videoProgress.currentChair || "—"}
+            </p>
+          </div>
+        )}
 
         {videoError && (
           <p className="text-sm text-red-600 dark:text-red-400">{videoError}</p>

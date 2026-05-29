@@ -14,6 +14,7 @@ type RequestBody = {
   maxChairs?: number
   delayMs?: number
   skipChairsWithVideos?: boolean
+  skipIfExisting?: boolean
 }
 
 export async function POST(request: NextRequest) {
@@ -49,6 +50,33 @@ export async function POST(request: NextRequest) {
       }
       if (!product) {
         return NextResponse.json({ error: "Product not found" }, { status: 404 })
+      }
+
+      if (body.skipIfExisting) {
+        const { count, error: countError } = await supabase
+          .from("videos")
+          .select("id", { count: "exact", head: true })
+          .eq("chair_id", product.id)
+
+        if (countError) {
+          return NextResponse.json({ error: countError.message }, { status: 500 })
+        }
+        if ((count ?? 0) > 0) {
+          return NextResponse.json({
+            success: true,
+            mode: "single",
+            skipped: true,
+            chairId: product.id,
+            chairSlug: product.slug,
+            chairName: product.name,
+            fetchedVideos: 0,
+            insertedVideos: 0,
+            skippedDuplicates: 0,
+            skippedIrrelevant: 0,
+            quotaExceeded: false,
+            message: "skipped (already has videos)",
+          })
+        }
       }
 
       const result = await collectVideosForChair({

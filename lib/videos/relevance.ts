@@ -1,8 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk"
-import { CONFIDENCE_MIN } from "@/lib/pipeline/processor"
 
 const CLAUDE_MODEL =
   process.env.CLAUDE_MODEL?.trim() || "claude-sonnet-4-5"
+
+/** Stricter than the generic pipeline minimum: a video must be clearly chair-focused. */
+export const VIDEO_RELEVANCE_MIN = 0.5
 
 export type VideoRelevanceResult = {
   relevant: boolean
@@ -22,28 +24,36 @@ function stripJsonMarkdown(text: string): string {
     .trim()
 }
 
-/** Keyword pre-check before Claude (saves API calls on obvious mismatches). */
+function hasWord(haystack: string, word: string): boolean {
+  if (!word) return false
+  const escaped = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+  return new RegExp(`\\b${escaped}\\b`, "i").test(haystack)
+}
+
+/**
+ * Keyword pre-check before Claude (saves API calls on obvious mismatches).
+ * Uses word-boundary matching so "Mera" does not match "camera", etc.
+ */
 function passesKeywordGate(
   title: string,
   description: string,
   chairName: string,
   brandName?: string | null
 ): boolean {
-  const haystack = `${title} ${description}`.toLowerCase()
+  const haystack = `${title} ${description}`
   const chairTokens = chairName
     .toLowerCase()
     .split(/\s+/)
     .filter((t) => t.length >= 3)
   const brand = brandName?.trim().toLowerCase() ?? ""
 
-  const hasChairToken = chairTokens.some((token) => haystack.includes(token))
-  const hasBrand = brand ? haystack.includes(brand) : false
+  const matchedChairTokens = chairTokens.filter((token) => hasWord(haystack, token))
+  const hasBrand = brand ? hasWord(haystack, brand) : false
 
-  if (brand && hasBrand && hasChairToken) return true
-  if (chairTokens.length >= 2 && chairTokens.filter((t) => haystack.includes(t)).length >= 2) {
-    return true
-  }
-  return hasChairToken && chairTokens.some((t) => t.length >= 5)
+  // Require brand + model token, or at least two distinct model tokens.
+  if (brand && hasBrand && matchedChairTokens.length >= 1) return true
+  if (matchedChairTokens.length >= 2) return true
+  return false
 }
 
 export async function checkVideoRelevance(params: {
@@ -63,28 +73,35 @@ export async function checkVideoRelevance(params: {
 
   const client = getClient()
   if (!client) {
-    return passesKeywordGate(title, description, chairName, brandName)
-      ? { relevant: true, confidence: 0.5 }
-      : { relevant: false, confidence: 0 }
+    // Without Claude we cannot verify topic focus — be conservative and reject.
+    return { relevant: false, confidence: 0 }
   }
 
   const targetLabel = brandName ? `${brandName} ${chairName}` : chairName
 
-  const prompt = `You judge whether a YouTube video is specifically about this exact office chair model.
+  const prompt = `You are a strict relevance judge for an office-chair video library.
+Decide whether a YouTube video's MAIN SUBJECT is this exact office chair model.
 
 Target chair: "${targetLabel}" (exact model: "${chairName}"${brandName ? `, brand: "${brandName}"` : ""})
 
 Respond ONLY with valid JSON:
-{"confidence": 0.0-1.0}
+{"isChairVideo": true|false, "isThisModel": true|false, "confidence": 0.0-1.0}
 
-confidence scale:
-- 0.7-1.0: Video is clearly a review, comparison, setup, or long-term use focused on this exact chair model
-- 0.4-0.7: Video mentions this model with useful chair-specific detail
-- 0.2-0.4: Vague mention, roundup where this chair is minor, or mostly about another product
-- Below 0.2: Wrong chair model, brand-only roundup, gaming/streaming unrelated content, desk accessories, or unrelated topic
+Rules:
+- isChairVideo: true ONLY if the video is primarily about a physical office/desk/ergonomic chair.
+  If the video is mainly about makeup, electronics, phones, VR/AR headsets (e.g. Apple Vision Pro),
+  sunglasses/smart glasses (e.g. Meta Ray-Bans), gaming, software, vlogs, or any non-chair topic,
+  set isChairVideo=false and confidence below 0.2.
+- isThisModel: true ONLY if "${chairName}" (the exact model) is the central focus of the video,
+  not a different model or a brand-wide roundup.
+- confidence: how certain you are that this video is specifically about the "${chairName}" chair.
+  - 0.8-1.0: Dedicated review/comparison/setup/long-term use of this exact chair model
+  - 0.5-0.8: Clearly about this chair model with chair-specific detail
+  - 0.2-0.5: Chair video but a different model, or this model only mentioned in passing
+  - Below 0.2: Not a chair video at all, or wrong product entirely
 
-CRITICAL: If the video is NOT specifically about "${chairName}", set confidence below 0.2.
-Same-brand different models (e.g. Leap vs Gesture) must be below 0.2 unless "${chairName}" is the main subject.
+A keyword match alone is NOT enough — the chair itself must be the core subject.
+If isChairVideo is false, confidence MUST be below 0.2 regardless of keyword matches.
 
 Title: ${title || "(empty)"}
 Description: ${description.slice(0, 1500) || "(empty)"}
@@ -93,7 +110,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
   try {
     const response = await client.messages.create({
       model: CLAUDE_MODEL,
-      max_tokens: 80,
+      max_tokens: 120,
       messages: [{ role: "user", content: prompt }],
     })
     const block = response.content.find((b) => b.type === "text")
@@ -102,13 +119,21 @@ Description: ${description.slice(0, 1500) || "(empty)"}
     }
 
     const parsed = JSON.parse(stripJsonMarkdown(block.text)) as {
+      isChairVideo?: boolean
+      isThisModel?: boolean
       confidence?: number
     }
-    const confidence =
+
+    const rawConfidence =
       typeof parsed.confidence === "number" ? parsed.confidence : 0
+    // Hard gates: must be a chair video AND this exact model.
+    const confidence =
+      parsed.isChairVideo === false || parsed.isThisModel === false
+        ? Math.min(rawConfidence, 0.19)
+        : rawConfidence
 
     return {
-      relevant: confidence >= CONFIDENCE_MIN,
+      relevant: confidence >= VIDEO_RELEVANCE_MIN,
       confidence,
     }
   } catch {
