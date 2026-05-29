@@ -38,9 +38,17 @@ type VideoCollectResult = {
   totalFetchedVideos?: number
   totalInsertedVideos?: number
   totalDuplicateSkips?: number
+  totalSkippedIrrelevant?: number
   fetchedVideos?: number
   insertedVideos?: number
   skippedDuplicates?: number
+  skippedIrrelevant?: number
+}
+
+type VideoCleanupResult = {
+  mode: string
+  deleted: number
+  summariesCleared: number
 }
 
 type VideoSummaryBackfillResult = {
@@ -275,6 +283,9 @@ export default function AdminPipelinePage() {
   const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
   const [summaryBackfillResult, setSummaryBackfillResult] =
     useState<VideoSummaryBackfillResult | null>(null)
+  const [videoCleanupRunning, setVideoCleanupRunning] = useState(false)
+  const [videoCleanupResult, setVideoCleanupResult] =
+    useState<VideoCleanupResult | null>(null)
   const [historyError, setHistoryError] = useState<string | null>(null)
 
   const [history, setHistory] = useState<HistoryRow[]>([])
@@ -886,6 +897,32 @@ export default function AdminPipelinePage() {
     }
   }
 
+  async function runVideoCleanup(mode: "all" | "clear_summaries" | "generic_summaries") {
+    const labels: Record<typeof mode, string> = {
+      all: "Delete ALL videos from the database",
+      clear_summaries: "Clear ALL video summaries (set to null)",
+      generic_summaries: "Clear only generic placeholder summaries",
+    }
+    if (!window.confirm(`${labels[mode]}. Continue?`)) return
+
+    setVideoCleanupRunning(true)
+    setVideoError(null)
+    setVideoCleanupResult(null)
+    try {
+      const res = await fetchJson<VideoCleanupResult>("/api/admin/videos/cleanup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, confirm: true }),
+      })
+      if (!res.ok) throw new Error(res.error)
+      setVideoCleanupResult(res.data)
+    } catch (err) {
+      setVideoError(err instanceof Error ? err.message : "Video cleanup failed")
+    } finally {
+      setVideoCleanupRunning(false)
+    }
+  }
+
   async function runVideoSummaryBackfill() {
     setSummaryBackfillRunning(true)
     setVideoError(null)
@@ -1112,8 +1149,9 @@ export default function AdminPipelinePage() {
       <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
         <h2 className="text-lg font-medium">Video Collection</h2>
         <p className="text-sm text-muted-foreground">
-          Collect YouTube videos to the <code>videos</code> table. Uses server-side
-          API key and auto-publishes with status=published.
+          Collect YouTube videos to the <code>videos</code> table. Search uses
+          brand + model queries; Claude relevance filter runs before save.
+          Summaries are generated per video (null if generation fails).
         </p>
 
         <div className="flex flex-wrap items-center gap-6">
@@ -1177,7 +1215,11 @@ export default function AdminPipelinePage() {
         <Button
           onClick={() => void runVideoCollection()}
           disabled={
-            videoRunning || summaryBackfillRunning || running || autoState.running
+            videoRunning ||
+            summaryBackfillRunning ||
+            videoCleanupRunning ||
+            running ||
+            autoState.running
           }
         >
           {videoRunning ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
@@ -1209,6 +1251,7 @@ export default function AdminPipelinePage() {
                 <p>Collected videos: {videoResult.fetchedVideos ?? 0}</p>
                 <p>Inserted videos: {videoResult.insertedVideos ?? 0}</p>
                 <p>Duplicate skip: {videoResult.skippedDuplicates ?? 0}</p>
+                <p>Irrelevant skip: {videoResult.skippedIrrelevant ?? 0}</p>
               </>
             ) : (
               <>
@@ -1217,7 +1260,19 @@ export default function AdminPipelinePage() {
                 <p>Collected videos: {videoResult.totalFetchedVideos ?? 0}</p>
                 <p>Inserted videos: {videoResult.totalInsertedVideos ?? 0}</p>
                 <p>Duplicate skip: {videoResult.totalDuplicateSkips ?? 0}</p>
+                <p>Irrelevant skip: {videoResult.totalSkippedIrrelevant ?? 0}</p>
               </>
+            )}
+          </div>
+        )}
+        {videoCleanupResult && (
+          <div className="rounded-lg border border-amber-200 bg-amber-50/50 p-4 text-sm space-y-1">
+            <p>Cleanup ({videoCleanupResult.mode}) completed</p>
+            {videoCleanupResult.deleted > 0 && (
+              <p>Deleted videos: {videoCleanupResult.deleted}</p>
+            )}
+            {videoCleanupResult.summariesCleared > 0 && (
+              <p>Summaries cleared: {videoCleanupResult.summariesCleared}</p>
             )}
           </div>
         )}

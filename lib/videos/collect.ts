@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { generateVideoSummary } from "@/lib/videos/summary"
+import { checkVideoRelevance } from "@/lib/videos/relevance"
 
 type ProductRow = {
   id: string
@@ -48,6 +49,7 @@ export type CollectSingleResult = {
   fetchedVideos: number
   insertedVideos: number
   skippedDuplicates: number
+  skippedIrrelevant: number
   quotaExceeded: boolean
 }
 
@@ -63,6 +65,7 @@ export type CollectBatchResult = {
   totalFetchedVideos: number
   totalInsertedVideos: number
   totalDuplicateSkips: number
+  totalSkippedIrrelevant: number
   quotaExceeded: boolean
   message: string
 }
@@ -73,9 +76,23 @@ export type SummaryBackfillResult = {
   failed: number
 }
 
-export function buildYoutubeSearchQuery(chairName: string): string {
+export function buildYoutubeSearchQuery(
+  chairName: string,
+  brandName?: string | null
+): string {
   const name = chairName.trim().replace(/"/g, "")
-  return `${name} review`
+  const brand = brandName?.trim().replace(/"/g, "") ?? ""
+
+  if (brand) {
+    const brandLower = brand.toLowerCase()
+    const nameLower = name.toLowerCase()
+    if (nameLower.startsWith(brandLower)) {
+      return `"${name}" office chair review`
+    }
+    return `"${brand} ${name}" office chair review`
+  }
+
+  return `"${name}" office chair review`
 }
 
 function extractBrandName(row: ProductRow): string | null {
@@ -207,6 +224,40 @@ function mergeVideoData(
   return rows
 }
 
+async function filterRelevantVideos(
+  rows: ReturnType<typeof mergeVideoData>,
+  chairName: string,
+  brand: string | null
+): Promise<{
+  relevant: ReturnType<typeof mergeVideoData>
+  skippedIrrelevant: number
+}> {
+  const relevant: ReturnType<typeof mergeVideoData> = []
+  let skippedIrrelevant = 0
+
+  for (const row of rows) {
+    const relevance = await checkVideoRelevance({
+      title: row.title ?? "",
+      description: row.description ?? "",
+      chairName,
+      brandName: brand,
+    })
+
+    if (!relevance.relevant) {
+      skippedIrrelevant += 1
+      console.log(
+        `[videos] Skipped irrelevant (confidence ${relevance.confidence}):`,
+        row.title
+      )
+      continue
+    }
+
+    relevant.push(row)
+  }
+
+  return { relevant, skippedIrrelevant }
+}
+
 export async function collectVideosForChair(params: {
   supabase: SupabaseClient
   product: ProductRow
@@ -214,8 +265,8 @@ export async function collectVideosForChair(params: {
   const apiKey = process.env.YOUTUBE_API_KEY?.trim()
   if (!apiKey) throw new Error("YOUTUBE_API_KEY is not set")
 
-  const sourceQuery = buildYoutubeSearchQuery(params.product.name)
   const brand = extractBrandName(params.product)
+  const sourceQuery = buildYoutubeSearchQuery(params.product.name, brand)
 
   const searchResult = await fetchYoutubeSearch({ apiKey, query: sourceQuery })
   if (searchResult.quotaExceeded) {
@@ -227,6 +278,7 @@ export async function collectVideosForChair(params: {
       fetchedVideos: 0,
       insertedVideos: 0,
       skippedDuplicates: 0,
+      skippedIrrelevant: 0,
       quotaExceeded: true,
     }
   }
@@ -245,25 +297,33 @@ export async function collectVideosForChair(params: {
       fetchedVideos: 0,
       insertedVideos: 0,
       skippedDuplicates: 0,
+      skippedIrrelevant: 0,
       quotaExceeded: true,
     }
   }
 
   const merged = mergeVideoData(searchResult.items, detailsResult.items)
-  if (merged.length === 0) {
+  const { relevant, skippedIrrelevant } = await filterRelevantVideos(
+    merged,
+    params.product.name,
+    brand
+  )
+
+  if (relevant.length === 0) {
     return {
       chairId: params.product.id,
       chairSlug: params.product.slug,
       chairName: params.product.name,
       sourceQuery,
-      fetchedVideos: 0,
+      fetchedVideos: merged.length,
       insertedVideos: 0,
       skippedDuplicates: 0,
+      skippedIrrelevant,
       quotaExceeded: false,
     }
   }
 
-  const youtubeIds = merged.map((row) => row.youtube_id)
+  const youtubeIds = relevant.map((row) => row.youtube_id)
   const { data: existingRows, error: existingError } = await params.supabase
     .from("videos")
     .select("youtube_id")
@@ -275,12 +335,13 @@ export async function collectVideosForChair(params: {
 
   const existingSet = new Set((existingRows ?? []).map((row) => row.youtube_id))
 
-  const upsertRows = merged.map((row) => ({
+  const upsertRows = relevant.map((row) => ({
     ...row,
     chair_id: params.product.id,
     brand,
     status: "published" as const,
     source_query: sourceQuery,
+    summary: null as string | null,
   }))
 
   const { error: upsertError } = await params.supabase
@@ -291,16 +352,23 @@ export async function collectVideosForChair(params: {
     throw new Error(upsertError.message)
   }
 
-  const insertedVideos = merged.filter((row) => !existingSet.has(row.youtube_id)).length
-  const skippedDuplicates = merged.length - insertedVideos
+  const insertedRows = relevant.filter((row) => !existingSet.has(row.youtube_id))
+  const insertedVideos = insertedRows.length
+  const skippedDuplicates = relevant.length - insertedVideos
 
-  const insertedRows = merged.filter((row) => !existingSet.has(row.youtube_id))
   for (const row of insertedRows) {
-    const summary = await generateVideoSummary(row.title ?? "", row.description ?? "")
+    const summary = await generateVideoSummary(
+      row.title ?? "",
+      row.description ?? "",
+      params.product.name
+    )
+    if (!summary) continue
+
     const { error: summaryError } = await params.supabase
       .from("videos")
       .update({ summary })
       .eq("youtube_id", row.youtube_id)
+
     if (summaryError) {
       console.warn(
         "[videos] failed to save summary:",
@@ -318,6 +386,7 @@ export async function collectVideosForChair(params: {
     fetchedVideos: merged.length,
     insertedVideos,
     skippedDuplicates,
+    skippedIrrelevant,
     quotaExceeded: false,
   }
 }
@@ -329,7 +398,7 @@ export async function backfillMissingVideoSummaries(params: {
   const limit = Math.max(1, Math.min(params.maxItems, 200))
   const { data, error } = await params.supabase
     .from("videos")
-    .select("id, title, description")
+    .select("id, title, description, products(name)")
     .is("summary", null)
     .order("created_at", { ascending: false })
     .limit(limit)
@@ -342,15 +411,26 @@ export async function backfillMissingVideoSummaries(params: {
 
   for (const row of data ?? []) {
     processed += 1
+    const product = Array.isArray(row.products) ? row.products[0] : row.products
+    const chairName =
+      typeof product?.name === "string" ? product.name : undefined
+
     try {
       const summary = await generateVideoSummary(
         typeof row.title === "string" ? row.title : "",
-        typeof row.description === "string" ? row.description : ""
+        typeof row.description === "string" ? row.description : "",
+        chairName
       )
+      if (!summary) {
+        failed += 1
+        continue
+      }
+
       const { error: updateError } = await params.supabase
         .from("videos")
         .update({ summary })
         .eq("id", row.id)
+
       if (updateError) {
         failed += 1
         continue
@@ -392,6 +472,7 @@ export async function collectVideosForPublishedChairs(params: {
   let totalFetchedVideos = 0
   let totalInsertedVideos = 0
   let totalDuplicateSkips = 0
+  let totalSkippedIrrelevant = 0
   let quotaExceeded = false
 
   for (let idx = 0; idx < list.length; idx++) {
@@ -420,6 +501,7 @@ export async function collectVideosForPublishedChairs(params: {
     totalFetchedVideos += one.fetchedVideos
     totalInsertedVideos += one.insertedVideos
     totalDuplicateSkips += one.skippedDuplicates
+    totalSkippedIrrelevant += one.skippedIrrelevant
 
     if (idx < list.length - 1 && options.delayMs > 0) {
       await sleep(options.delayMs)
@@ -432,9 +514,8 @@ export async function collectVideosForPublishedChairs(params: {
     totalFetchedVideos,
     totalInsertedVideos,
     totalDuplicateSkips,
+    totalSkippedIrrelevant,
     quotaExceeded,
-    message: quotaExceeded
-      ? "quota exceeded"
-      : "completed",
+    message: quotaExceeded ? "quota exceeded" : "completed",
   }
 }

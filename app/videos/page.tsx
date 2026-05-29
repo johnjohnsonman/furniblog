@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { VideoEmbedFacade } from "@/components/videos/video-embed-facade"
+import { fetchVideoFilterOptions } from "@/lib/videos/filter-options"
 
 export const metadata = {
   title: "Chair Videos | Furniblog",
@@ -87,39 +88,17 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
     query = query.order("published_at", { ascending: false, nullsFirst: false })
   }
 
-  const [{ data: videosData, count }, { data: brandsData }, { data: chairsData }] =
-    await Promise.all([
-      query.range(from, to),
-      supabase
-        .from("videos")
-        .select("brand")
-        .eq("status", "published")
-        .not("brand", "is", null)
-        .limit(500),
-      supabase
-        .from("videos")
-        .select("chair_id, products(slug, name)")
-        .eq("status", "published")
-        .not("chair_id", "is", null)
-        .limit(500),
-    ])
+  const [{ data: videosData, count }, filterOptions] = await Promise.all([
+    query.range(from, to),
+    fetchVideoFilterOptions(supabase),
+  ])
 
   const videos = (videosData ?? []) as VideoRow[]
   const total = count ?? 0
   const totalPages = Math.max(1, Math.ceil(total / pageSize))
 
-  const brands = [...new Set((brandsData ?? []).map((row) => row.brand).filter(Boolean))]
-    .map((name) => String(name))
-    .sort((a, b) => a.localeCompare(b))
-
-  const chairs = new Map<string, { id: string; slug: string; name: string }>()
-  for (const row of chairsData ?? []) {
-    const chairId = row.chair_id as string | null
-    const p = Array.isArray(row.products) ? row.products[0] : row.products
-    if (!chairId || !p?.slug || !p?.name) continue
-    chairs.set(chairId, { id: chairId, slug: p.slug, name: p.name })
-  }
-  const chairOptions = [...chairs.values()].sort((a, b) => a.name.localeCompare(b.name))
+  const brands = filterOptions.brands
+  const chairOptions = filterOptions.chairs
 
   function pageHref(nextPage: number): string {
     const qs = new URLSearchParams()
@@ -215,10 +194,11 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
                       {video.channel_title || "Unknown channel"} ·{" "}
                       {formatViewCount(video.view_count)} · {formatDate(video.published_at)}
                     </p>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {video.summary?.trim() ||
-                        "This video covers chair usage experience and key comfort points."}
-                    </p>
+                    {video.summary?.trim() ? (
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {video.summary.trim()}
+                      </p>
+                    ) : null}
                     {product ? (
                       <Link
                         href={`/products/${product.slug}`}
