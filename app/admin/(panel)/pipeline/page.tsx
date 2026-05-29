@@ -1441,6 +1441,53 @@ export default function AdminPipelinePage() {
           Generate Video Summaries
         </Button>
 
+        <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50/40 p-4 space-y-3 dark:border-amber-900/40 dark:bg-amber-950/20">
+          <div>
+            <h3 className="text-sm font-medium text-foreground">Cleanup</h3>
+            <p className="text-xs text-muted-foreground">
+              Destructive actions. Each asks for confirmation before running.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => void runVideoCleanup("generic_summaries")}
+              disabled={videoRunning || summaryBackfillRunning || videoCleanupRunning}
+            >
+              {videoCleanupRunning ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : null}
+              Clear generic summaries
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => void runVideoCleanup("clear_summaries")}
+              disabled={videoRunning || summaryBackfillRunning || videoCleanupRunning}
+            >
+              {videoCleanupRunning ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : null}
+              Clear all summaries
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              onClick={() => void runVideoCleanup("all")}
+              disabled={videoRunning || summaryBackfillRunning || videoCleanupRunning}
+            >
+              {videoCleanupRunning ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : null}
+              Delete all videos
+            </Button>
+          </div>
+        </div>
+
         {videoProgress && (
           <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
             <p className="text-sm font-medium">
