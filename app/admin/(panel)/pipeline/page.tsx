@@ -36,6 +36,15 @@ type VideoProduct = {
   brandSlug: string
 }
 
+type RejectedVideo = {
+  chairName?: string
+  title: string
+  confidence: number
+  isChairVideo: boolean
+  isThisModel: boolean
+  reason: string
+}
+
 type VideoSingleResponse = {
   mode: "single"
   skipped?: boolean
@@ -44,6 +53,7 @@ type VideoSingleResponse = {
   insertedVideos?: number
   skippedDuplicates?: number
   skippedIrrelevant?: number
+  rejectedVideos?: RejectedVideo[]
 }
 
 type VideoCollectResult = {
@@ -60,6 +70,7 @@ type VideoCollectResult = {
   insertedVideos?: number
   skippedDuplicates?: number
   skippedIrrelevant?: number
+  rejectedVideos?: RejectedVideo[]
 }
 
 type VideoProgress = {
@@ -933,6 +944,7 @@ export default function AdminPipelinePage() {
     let totalDuplicateSkips = 0
     let totalSkippedIrrelevant = 0
     let quotaExceeded = false
+    const rejectedVideos: RejectedVideo[] = []
 
     for (let i = 0; i < total; i++) {
       if (stopVideoRef.current) break
@@ -955,6 +967,9 @@ export default function AdminPipelinePage() {
             totalInsertedVideos += d.insertedVideos ?? 0
             totalDuplicateSkips += d.skippedDuplicates ?? 0
             totalSkippedIrrelevant += d.skippedIrrelevant ?? 0
+            for (const rej of d.rejectedVideos ?? []) {
+              rejectedVideos.push({ ...rej, chairName: product.name })
+            }
           }
         }
       } catch {
@@ -970,6 +985,7 @@ export default function AdminPipelinePage() {
         totalInsertedVideos,
         totalDuplicateSkips,
         totalSkippedIrrelevant,
+        rejectedVideos: rejectedVideos.slice(-50),
       })
 
       if (i < total - 1 && !stopVideoRef.current && videoDelayMs > 0) {
@@ -986,6 +1002,7 @@ export default function AdminPipelinePage() {
       totalInsertedVideos,
       totalDuplicateSkips,
       totalSkippedIrrelevant,
+      rejectedVideos: rejectedVideos.slice(-50),
     })
   }
 
@@ -1017,6 +1034,7 @@ export default function AdminPipelinePage() {
           insertedVideos: d.insertedVideos,
           skippedDuplicates: d.skippedDuplicates,
           skippedIrrelevant: d.skippedIrrelevant,
+          rejectedVideos: d.rejectedVideos,
         })
         return
       }
@@ -1530,6 +1548,34 @@ export default function AdminPipelinePage() {
                 <p>Duplicate skip: {videoResult.totalDuplicateSkips ?? 0}</p>
                 <p>Irrelevant skip: {videoResult.totalSkippedIrrelevant ?? 0}</p>
               </>
+            )}
+
+            {videoResult.rejectedVideos && videoResult.rejectedVideos.length > 0 && (
+              <div className="mt-3 border-t border-border pt-3">
+                <p className="font-medium">
+                  Rejected videos ({videoResult.rejectedVideos.length}
+                  {videoResult.mode === "all" ? ", last 50" : ""}):
+                </p>
+                <ul className="mt-2 space-y-2">
+                  {videoResult.rejectedVideos.map((rej, i) => (
+                    <li
+                      key={`${rej.title}-${i}`}
+                      className="rounded-md border border-border bg-background/60 p-2 text-xs"
+                    >
+                      <p className="font-medium text-foreground line-clamp-1">
+                        {rej.chairName ? `[${rej.chairName}] ` : ""}
+                        {rej.title}
+                      </p>
+                      <p className="text-muted-foreground">
+                        confidence={rej.confidence.toFixed(2)} · chairVideo=
+                        {String(rej.isChairVideo)} · thisModel=
+                        {String(rej.isThisModel)}
+                      </p>
+                      <p className="text-muted-foreground">reason: {rej.reason}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </div>
         )}

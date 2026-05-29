@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import { generateVideoSummary } from "@/lib/videos/summary"
-import { checkVideoRelevance } from "@/lib/videos/relevance"
+import { checkVideoRelevance, stripVariantSuffix } from "@/lib/videos/relevance"
 
 type ProductRow = {
   id: string
@@ -41,6 +41,14 @@ type YoutubeErrorPayload = {
   }
 }
 
+export type RejectedVideo = {
+  title: string
+  confidence: number
+  isChairVideo: boolean
+  isThisModel: boolean
+  reason: string
+}
+
 export type CollectSingleResult = {
   chairId: string
   chairSlug: string
@@ -51,6 +59,7 @@ export type CollectSingleResult = {
   skippedDuplicates: number
   skippedIrrelevant: number
   quotaExceeded: boolean
+  rejectedVideos: RejectedVideo[]
 }
 
 export type CollectBatchOptions = {
@@ -80,7 +89,8 @@ export function buildYoutubeSearchQuery(
   chairName: string,
   brandName?: string | null
 ): string {
-  const name = chairName.trim().replace(/"/g, "")
+  // Search by base model name, dropping "(Size B)", "(V2)" etc.
+  const name = stripVariantSuffix(chairName.trim()).replace(/"/g, "")
   const brand = brandName?.trim().replace(/"/g, "") ?? ""
 
   if (brand) {
@@ -231,8 +241,10 @@ async function filterRelevantVideos(
 ): Promise<{
   relevant: ReturnType<typeof mergeVideoData>
   skippedIrrelevant: number
+  rejectedVideos: RejectedVideo[]
 }> {
   const relevant: ReturnType<typeof mergeVideoData> = []
+  const rejectedVideos: RejectedVideo[] = []
   let skippedIrrelevant = 0
 
   for (const row of rows) {
@@ -245,9 +257,15 @@ async function filterRelevantVideos(
 
     if (!relevance.relevant) {
       skippedIrrelevant += 1
+      rejectedVideos.push({
+        title: row.title ?? "(untitled)",
+        confidence: relevance.confidence,
+        isChairVideo: relevance.isChairVideo,
+        isThisModel: relevance.isThisModel,
+        reason: relevance.reason,
+      })
       console.log(
-        `[videos] Skipped irrelevant (confidence ${relevance.confidence}):`,
-        row.title
+        `[videos] Rejected "${row.title}" — confidence=${relevance.confidence}, chairVideo=${relevance.isChairVideo}, thisModel=${relevance.isThisModel}, reason=${relevance.reason}`
       )
       continue
     }
@@ -255,7 +273,7 @@ async function filterRelevantVideos(
     relevant.push(row)
   }
 
-  return { relevant, skippedIrrelevant }
+  return { relevant, skippedIrrelevant, rejectedVideos }
 }
 
 export async function collectVideosForChair(params: {
@@ -280,6 +298,7 @@ export async function collectVideosForChair(params: {
       skippedDuplicates: 0,
       skippedIrrelevant: 0,
       quotaExceeded: true,
+      rejectedVideos: [],
     }
   }
 
@@ -299,11 +318,12 @@ export async function collectVideosForChair(params: {
       skippedDuplicates: 0,
       skippedIrrelevant: 0,
       quotaExceeded: true,
+      rejectedVideos: [],
     }
   }
 
   const merged = mergeVideoData(searchResult.items, detailsResult.items)
-  const { relevant, skippedIrrelevant } = await filterRelevantVideos(
+  const { relevant, skippedIrrelevant, rejectedVideos } = await filterRelevantVideos(
     merged,
     params.product.name,
     brand
@@ -320,6 +340,7 @@ export async function collectVideosForChair(params: {
       skippedDuplicates: 0,
       skippedIrrelevant,
       quotaExceeded: false,
+      rejectedVideos,
     }
   }
 
@@ -388,6 +409,7 @@ export async function collectVideosForChair(params: {
     skippedDuplicates,
     skippedIrrelevant,
     quotaExceeded: false,
+    rejectedVideos,
   }
 }
 
