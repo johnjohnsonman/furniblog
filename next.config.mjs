@@ -16,6 +16,20 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/products/herman-miller-aeron-b",
+        destination: "/products/herman-miller-aeron",
+        permanent: true,
+      },
+      {
+        source: "/products/herman-miller-aeron-c",
+        destination: "/products/herman-miller-aeron",
+        permanent: true,
+      },
+    ]
+  },
 }
 
 export default nextConfig
