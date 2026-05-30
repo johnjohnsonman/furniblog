@@ -4,6 +4,7 @@ import { ArrowRight, Check, X, ExternalLink, MapPin, Star, ChevronRight } from "
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { products, bestLists, listProductMap, getAverageScore } from "@/lib/data"
+import { buildAffiliateUrl } from "@/lib/affiliate/links"
 
 interface BestListPageProps {
   params: Promise<{ slug: string }>
@@ -185,7 +186,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
                             </a>
                           )}
                           {product.amazonUrl && (
-                            <a href={product.amazonUrl} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-lg text-sm font-medium text-foreground hover:bg-muted/80 transition-colors">
+                            <a href={buildAffiliateUrl(product.amazonUrl, "amazon", "US")} target="_blank" rel="sponsored nofollow noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-lg text-sm font-medium text-foreground hover:bg-muted/80 transition-colors">
                               Amazon <ExternalLink className="h-3.5 w-3.5" />
                             </a>
                           )}
