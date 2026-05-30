@@ -20,7 +20,6 @@ import { ProductImageGallery } from "@/components/chairs/ProductImageGallery"
 import { ProductVideosSection } from "@/components/videos/product-videos-section"
 import { fetchProductVideos } from "@/lib/videos/product-videos"
 import { BuyButtonGroup } from "@/components/affiliate/BuyButton"
-import { AdSlot } from "@/components/common/AdSlot"
 import {
   generateBreadcrumbSchema,
   generateChairSchema,
@@ -230,10 +229,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   ) : null
                 }
               />
-
-              <div className="mt-10 flex justify-center">
-                <AdSlot position="in-content" />
-              </div>
             </div>
 
             <div className="hidden lg:block">
@@ -295,8 +290,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <Link href={`/compare?products=${product.id}`} className="flex items-center justify-center gap-2 p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
                   <span className="font-medium text-sm text-foreground">Add to Compare</span>
                 </Link>
-
-                <AdSlot position="sidebar" />
               </div>
             </div>
           </div>
