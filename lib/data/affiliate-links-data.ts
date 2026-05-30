@@ -17,7 +17,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+aeron+size+b&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+aeron+size+b",
       isOfficial: false,
       priceUsd: 1395,
     },
@@ -37,7 +37,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+aeron+size+c&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+aeron+size+c",
       isOfficial: false,
       priceUsd: 1535,
     },
@@ -57,7 +57,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+embody&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+embody",
       isOfficial: false,
       priceUsd: 1695,
     },
@@ -71,7 +71,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+cosm+high+back&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+cosm+high+back",
       isOfficial: false,
       priceUsd: 1695,
     },
@@ -85,7 +85,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+cosm+low+back&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+cosm+low+back",
       isOfficial: false,
       priceUsd: 1395,
     },
@@ -99,7 +99,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+sayl&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+sayl",
       isOfficial: false,
       priceUsd: 545,
     },
@@ -119,7 +119,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=herman+miller+lino&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=herman+miller+lino",
       isOfficial: false,
       priceUsd: 745,
     },
@@ -133,7 +133,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+leap+v2&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=steelcase+leap+v2",
       isOfficial: false,
       priceUsd: 1299,
     },
@@ -153,7 +153,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+gesture&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=steelcase+gesture",
       isOfficial: false,
       priceUsd: 1199,
     },
@@ -173,7 +173,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+think+v2&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=steelcase+think+v2",
       isOfficial: false,
       priceUsd: 999,
     },
@@ -187,7 +187,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+series+1&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=steelcase+series+1",
       isOfficial: false,
       priceUsd: 649,
     },
@@ -195,7 +195,7 @@ export const AFFILIATE_LINKS_DATA: Record<
   "steelcase-respawn-gaming": [
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+gaming+chair&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=steelcase+gaming+chair",
       isOfficial: false,
       priceUsd: 499,
     },
@@ -265,7 +265,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=humanscale+freedom&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=humanscale+freedom",
       isOfficial: false,
       priceUsd: 1399,
     },
@@ -279,7 +279,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=humanscale+world+one&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=humanscale+world+one",
       isOfficial: false,
       priceUsd: 1795,
     },
@@ -293,7 +293,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=haworth+fern+chair&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=haworth+fern+chair",
       isOfficial: false,
       priceUsd: 1999,
     },
@@ -307,7 +307,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=haworth+comforto&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=haworth+comforto",
       isOfficial: false,
       priceUsd: 1100,
     },
@@ -329,7 +329,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=hag+capisco&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=hag+capisco",
       isOfficial: false,
       priceUsd: 1395,
     },
@@ -349,7 +349,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=hag+capisco+puls&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=hag+capisco+puls",
       isOfficial: false,
       priceUsd: 1195,
     },
@@ -371,7 +371,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=rh+logic+400&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=rh+logic+400",
       isOfficial: false,
       priceUsd: 1199,
     },
@@ -481,7 +481,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=vitra+id+chair&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=vitra+id+chair",
       isOfficial: false,
       priceUsd: 1700,
     },
@@ -511,7 +511,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=eames+aluminium+group&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=eames+aluminium+group",
       isOfficial: false,
       priceUsd: 2100,
     },
@@ -533,7 +533,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=wilkhahn+on+chair&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=wilkhahn+on+chair",
       isOfficial: false,
       priceUsd: 1700,
     },
@@ -579,7 +579,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=interstuhl+silver&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=interstuhl+silver",
       isOfficial: false,
       priceUsd: 1100,
     },
@@ -601,7 +601,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=autonomous+ergochair+pro&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=autonomous+ergochair+pro",
       isOfficial: false,
       priceUsd: 449,
     },
@@ -615,7 +615,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=bambach+saddle+seat&tag=furniblog0e-20",
+      url: "https://www.amazon.com/s?k=bambach+saddle+seat",
       isOfficial: false,
       priceUsd: 845,
     },

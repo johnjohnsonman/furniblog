@@ -15,7 +15,8 @@ export function getDefaultAffiliateLinks(
   return [
     {
       retailer: "Amazon",
-      url: `https://www.amazon.com/s?k=${encodeURIComponent(name)}&tag=furniblog0e-20`,
+      // No tag here — buildAffiliateUrl injects NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG at render time.
+      url: `https://www.amazon.com/s?k=${encodeURIComponent(name)}`,
       isOfficial: false,
     },
   ]

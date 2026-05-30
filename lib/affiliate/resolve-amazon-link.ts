@@ -1,6 +1,7 @@
 import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links-data"
 
-const DEFAULT_TAG = "furniblog0e-20"
+// Minimal fallback only — the real tag lives in NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG.
+const FALLBACK_TAG = "furniblog0e-20"
 
 export type ResolvedAmazonLink = {
   retailerName: string
@@ -11,7 +12,18 @@ export type ResolvedAmazonLink = {
 }
 
 function amazonAssociateTag(): string {
-  return process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || DEFAULT_TAG
+  return process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || FALLBACK_TAG
+}
+
+/** Apply the env affiliate tag to any Amazon URL (catalog URLs are now stored tagless). */
+function withAmazonTag(rawUrl: string): string {
+  try {
+    const url = new URL(rawUrl)
+    url.searchParams.set("tag", amazonAssociateTag())
+    return url.toString()
+  } catch {
+    return rawUrl
+  }
 }
 
 export function buildAmazonSearchUrl(query: string): string {
@@ -36,7 +48,7 @@ export function resolveAmazonAffiliateLink(
   if (fromCatalog) {
     return {
       retailerName: "Amazon",
-      url: fromCatalog.url,
+      url: withAmazonTag(fromCatalog.url),
       priceUsd: fromCatalog.priceUsd,
       isOfficial: false,
       source: "catalog",
