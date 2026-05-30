@@ -1,6 +1,8 @@
 import Link from "next/link"
 import { ExternalLink } from "lucide-react"
 import { VideoEmbedFacade } from "@/components/videos/video-embed-facade"
+import { ReviewsTabLink } from "@/components/videos/reviews-tab-link"
+import { buildAffiliateUrl } from "@/lib/affiliate/links"
 import type { ProductVideo } from "@/lib/videos/product-videos"
 
 type Props = {
@@ -8,6 +10,8 @@ type Props = {
   total: number
   chairName: string
   chairId: string
+  amazonUrl?: string | null
+  reviewCount?: number
 }
 
 function formatViewCount(value: number | null): string {
@@ -33,8 +37,14 @@ export function ProductVideosSection({
   total,
   chairName,
   chairId,
+  amazonUrl,
+  reviewCount = 0,
 }: Props) {
   if (videos.length === 0) return null
+
+  const hasAmazon = Boolean(amazonUrl)
+  const hasReviews = reviewCount > 0
+  const showCta = hasAmazon || hasReviews
 
   return (
     <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-2">
@@ -90,6 +100,29 @@ export function ProductVideosSection({
             View all {total.toLocaleString()} videos for {chairName} →
           </Link>
         </div>
+      )}
+
+      {showCta && (
+        <p className="sm:col-span-2 text-sm text-muted-foreground">
+          Liked what you saw?{" "}
+          {hasAmazon && (
+            <a
+              href={buildAffiliateUrl(amazonUrl as string, "amazon", "US")}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+              className="font-medium text-foreground underline underline-offset-4 hover:text-foreground/80"
+            >
+              Check the current price on Amazon →
+            </a>
+          )}
+          {hasAmazon && hasReviews ? " or " : null}
+          {hasReviews && (
+            <ReviewsTabLink
+              reviewCount={reviewCount}
+              className="font-medium text-foreground underline underline-offset-4 hover:text-foreground/80"
+            />
+          )}
+        </p>
       )}
     </div>
   )

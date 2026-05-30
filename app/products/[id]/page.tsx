@@ -225,6 +225,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       total={productVideoTotal}
                       chairName={product.name}
                       chairId={productVideoChairId ?? product.id}
+                      amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                      reviewCount={reviewCount}
                     />
                   ) : null
                 }

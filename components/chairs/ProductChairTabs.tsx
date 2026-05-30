@@ -38,7 +38,7 @@ export function ProductChairTabs({
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="specs">Specs</TabsTrigger>
         {hasVideos && <TabsTrigger value="videos">Videos ({videoCount})</TabsTrigger>}
-        <TabsTrigger value="reviews">Reviews ({reviewCount})</TabsTrigger>
+        <TabsTrigger value="reviews" data-product-tab="reviews">Reviews ({reviewCount})</TabsTrigger>
         <TabsTrigger value="purchase">Where to buy</TabsTrigger>
       </TabsList>
 
