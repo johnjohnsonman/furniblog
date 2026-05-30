@@ -26,8 +26,6 @@ import {
   getFeaturedProducts,
   getProducts,
 } from "@/lib/supabase/queries"
-import { AdSlot } from "@/components/common/AdSlot"
-
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   office: Briefcase,
   executive: Crown,
@@ -107,12 +105,6 @@ export default async function HomePage() {
                 </Link>
               ))}
             </div>
-          </div>
-        </section>
-
-        <section className="py-6 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4 flex justify-center">
-            <AdSlot position="header" />
           </div>
         </section>
 
@@ -242,12 +234,6 @@ export default async function HomePage() {
                 )
               })}
             </div>
-          </div>
-        </section>
-
-        <section className="py-8 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4 flex justify-center">
-            <AdSlot position="in-content" />
           </div>
         </section>
 
