@@ -105,6 +105,8 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
 
   const brands = filterOptions.brands
   const chairOptions = filterOptions.chairs
+  const totalVideos = filterOptions.total
+  const isFiltered = Boolean(selectedBrand || selectedChairId)
 
   function pageHref(nextPage: number): string {
     const qs = new URLSearchParams()
@@ -126,10 +128,10 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
             Brand
           </label>
           <select name="brand" defaultValue={selectedBrand} className={selectClass}>
-            <option value="">All brands</option>
+            <option value="">All brands ({totalVideos.toLocaleString()})</option>
             {brands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
+              <option key={brand.name} value={brand.name}>
+                {brand.name} ({brand.count})
               </option>
             ))}
           </select>
@@ -139,10 +141,10 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
             Chair
           </label>
           <select name="chair" defaultValue={selectedChairId} className={selectClass}>
-            <option value="">All chairs</option>
+            <option value="">All chairs ({totalVideos.toLocaleString()})</option>
             {chairOptions.map((chair) => (
               <option key={chair.id} value={chair.id}>
-                {chair.name}
+                {chair.name} ({chair.count})
               </option>
             ))}
           </select>
@@ -229,9 +231,17 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
             Chair Videos
           </h1>
           <p className="mt-3 text-muted-foreground max-w-3xl">
-            Explore chair-focused YouTube videos with AI one-line summaries. Filter
-            by brand or model, then compare channels, view counts, and publish dates.
+            Explore {totalVideos.toLocaleString()} chair-focused YouTube{" "}
+            {totalVideos === 1 ? "video" : "videos"} with AI one-line summaries.
+            Filter by brand or model, then compare channels, view counts, and
+            publish dates.
           </p>
+          {isFiltered && (
+            <p className="mt-2 text-sm text-muted-foreground">
+              Showing {total.toLocaleString()} of {totalVideos.toLocaleString()}{" "}
+              videos
+            </p>
+          )}
         </header>
 
         <div className="grid gap-8 lg:grid-cols-[220px_1fr_300px]">
