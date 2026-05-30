@@ -17,6 +17,8 @@ import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
 import { ChairProductSpecs } from "@/components/chairs/ChairProductSpecs"
 import { ProductImageGallery } from "@/components/chairs/ProductImageGallery"
+import { ProductVideosSection } from "@/components/videos/product-videos-section"
+import { fetchProductVideos } from "@/lib/videos/product-videos"
 import { BuyButtonGroup } from "@/components/affiliate/BuyButton"
 import { AdSlot } from "@/components/common/AdSlot"
 import {
@@ -75,6 +77,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const supabaseReviews = isSupabaseConfigured()
     ? await getProductReviews(product.id)
     : []
+  const { videos: productVideos, total: productVideoTotal } = isSupabaseConfigured()
+    ? await fetchProductVideos(product.id)
+    : { videos: [], total: 0 }
   const chairReviews =
     supabaseReviews.length > 0
       ? supabaseReviews
@@ -209,6 +214,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   />
                 }
                 specs={<ChairProductSpecs product={productWithLinks} />}
+                videoCount={productVideos.length}
+                videos={
+                  productVideos.length > 0 ? (
+                    <ProductVideosSection
+                      videos={productVideos}
+                      total={productVideoTotal}
+                      chairName={product.name}
+                      chairId={product.id}
+                    />
+                  ) : null
+                }
               />
 
               <div className="mt-10 flex justify-center">
