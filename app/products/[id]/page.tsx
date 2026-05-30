@@ -77,9 +77,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const supabaseReviews = isSupabaseConfigured()
     ? await getProductReviews(product.id)
     : []
-  const { videos: productVideos, total: productVideoTotal } = isSupabaseConfigured()
+  const {
+    videos: productVideos,
+    total: productVideoTotal,
+    chairId: productVideoChairId,
+  } = isSupabaseConfigured()
     ? await fetchProductVideos(product.id)
-    : { videos: [], total: 0 }
+    : { videos: [], total: 0, chairId: null }
   const chairReviews =
     supabaseReviews.length > 0
       ? supabaseReviews
@@ -221,7 +225,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       videos={productVideos}
                       total={productVideoTotal}
                       chairName={product.name}
-                      chairId={product.id}
+                      chairId={productVideoChairId ?? product.id}
                     />
                   ) : null
                 }

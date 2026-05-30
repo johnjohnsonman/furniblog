@@ -334,7 +334,7 @@ function productListQuery(
     })
 }
 
-async function resolveProductUuid(slug: string): Promise<string | null> {
+export async function resolveProductUuid(slug: string): Promise<string | null> {
   const supabase = createPublicServerClient()
   const { data } = await supabase
     .from("products")
