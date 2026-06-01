@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 type ExperienceReview = {
   id: string
   created_at: string
-  status: "pending" | "published"
+  status: "pending" | "approved" | "rejected"
   source: string
   gender: string | null
   height: string | null
@@ -37,7 +37,7 @@ type ExperienceReview = {
 
 const TABS = [
   { value: "pending", label: "검토 대기" },
-  { value: "published", label: "게시됨" },
+  { value: "approved", label: "승인됨" },
   { value: "all", label: "전체" },
 ] as const
 
@@ -67,7 +67,7 @@ export default function AdminExperiencePage() {
   const { toast } = useToast()
   const [tab, setTab] = useState<(typeof TABS)[number]["value"]>("pending")
   const [reviews, setReviews] = useState<ExperienceReview[]>([])
-  const [counts, setCounts] = useState({ pending: 0, published: 0 })
+  const [counts, setCounts] = useState({ pending: 0, approved: 0 })
   const [loading, setLoading] = useState(true)
   const [needsMigration, setNeedsMigration] = useState(false)
   const [busy, setBusy] = useState<string | null>(null)
@@ -93,7 +93,7 @@ export default function AdminExperiencePage() {
 
   async function toggleStatus(r: ExperienceReview) {
     setBusy(r.id)
-    const next = r.status === "published" ? "pending" : "published"
+    const next = r.status === "approved" ? "pending" : "approved"
     const res = await fetch(`/api/admin/experience/${r.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -105,7 +105,7 @@ export default function AdminExperiencePage() {
       toast({ title: "변경 실패", description: d.error, variant: "destructive" })
       return
     }
-    toast({ title: next === "published" ? "게시되었습니다" : "검토 대기로 변경" })
+    toast({ title: next === "approved" ? "승인되었습니다" : "검토 대기로 변경" })
     void load()
   }
 
@@ -128,7 +128,7 @@ export default function AdminExperiencePage() {
       <div className="mb-6">
         <h1 className="font-serif text-2xl font-medium">체험 후기</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          매장 체험 후기를 검토하고 게시 여부를 관리합니다. 검토 대기 {counts.pending} · 게시 {counts.published}
+          매장 체험 후기를 검토하고 게시 여부를 관리합니다. 검토 대기 {counts.pending} · 승인 {counts.approved}
         </p>
       </div>
 
@@ -171,12 +171,12 @@ export default function AdminExperiencePage() {
                   <span
                     className={cn(
                       "rounded-full px-2 py-0.5 text-xs font-medium",
-                      r.status === "published"
+                      r.status === "approved"
                         ? "bg-emerald-600/10 text-emerald-700"
                         : "bg-muted text-muted-foreground"
                     )}
                   >
-                    {r.status === "published" ? "게시됨" : "검토 대기"}
+                    {r.status === "approved" ? "승인됨" : "검토 대기"}
                   </span>
                   <span className="text-xs text-muted-foreground">
                     {new Date(r.created_at).toLocaleString("ko-KR")}
@@ -200,13 +200,13 @@ export default function AdminExperiencePage() {
                     disabled={busy === r.id}
                     onClick={() => void toggleStatus(r)}
                   >
-                    {r.status === "published" ? (
+                    {r.status === "approved" ? (
                       <>
-                        <EyeOff className="mr-1 h-3.5 w-3.5" /> 숨기기
+                        <EyeOff className="mr-1 h-3.5 w-3.5" /> 검토 대기로
                       </>
                     ) : (
                       <>
-                        <Eye className="mr-1 h-3.5 w-3.5" /> 게시
+                        <Eye className="mr-1 h-3.5 w-3.5" /> 승인
                       </>
                     )}
                   </Button>
