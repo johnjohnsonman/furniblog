@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { deleteStorageObject } from "@/lib/supabase/storage-server"
 
 export const runtime = "nodejs"
 
@@ -48,11 +49,24 @@ export async function DELETE(request: NextRequest, context: RouteContext) {
   const { id } = await context.params
   try {
     const supabase = createAdminClient()
+
+    const { data: existing } = await supabase
+      .from("review_sessions")
+      .select("photo_url")
+      .eq("id", id)
+      .maybeSingle()
+
     // review_rankings rows cascade-delete via FK (on delete cascade).
     const { error } = await supabase.from("review_sessions").delete().eq("id", id)
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
+
+    const photoUrl = (existing as { photo_url: string | null } | null)?.photo_url
+    if (photoUrl) {
+      await deleteStorageObject("gallery", photoUrl).catch(() => {})
+    }
+
     return NextResponse.json({ ok: true })
   } catch (error) {
     return jsonInternalError(error)

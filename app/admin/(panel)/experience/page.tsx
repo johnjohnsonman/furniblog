@@ -153,8 +153,8 @@ export default function AdminExperiencePage() {
 
       {needsMigration && (
         <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-800">
-          experience_reviews 테이블이 아직 없습니다. Supabase SQL Editor에서{" "}
-          <code>020_experience_reviews_store.sql</code> 마이그레이션을 먼저 실행하세요.
+          review_sessions 관련 마이그레이션이 적용되지 않았습니다. Supabase SQL Editor에서{" "}
+          <code>016 · 021 · 023 · 024</code> 마이그레이션을 먼저 실행하세요.
         </div>
       )}
 

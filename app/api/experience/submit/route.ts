@@ -9,6 +9,9 @@ type Payload = {
   rank1_chair?: string | null
   rank2_chair?: string | null
   rank3_chair?: string | null
+  rank1_chair_id?: string | null
+  rank2_chair_id?: string | null
+  rank3_chair_id?: string | null
   gender?: string | null
   height?: string | null
   weight_or_body?: string | null
@@ -22,7 +25,6 @@ type Payload = {
   rating?: unknown
   review_text?: string | null
   selection_reasons?: unknown
-  purchase_reason?: string | null
   store_location?: string | null
   comparing_chairs?: string | null
   nickname?: string | null
@@ -52,6 +54,13 @@ function clampRating(value: unknown): number | null {
   return r
 }
 
+function mapSex(value: string | null): string | null {
+  if (!value) return null
+  if (/남|male/i.test(value)) return "male"
+  if (/여|female/i.test(value)) return "female"
+  return null
+}
+
 export async function POST(request: NextRequest) {
   let payload: Payload
   let photo: File | null = null
@@ -71,20 +80,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "잘못된 요청 형식입니다." }, { status: 400 })
   }
 
-  const rank1 = str(payload.rank1_chair, 200)
+  const rank1Name = str(payload.rank1_chair, 200)
   const reviewText = str(payload.review_text, 2000)
 
-  if (!rank1) {
-    return NextResponse.json(
-      { error: "1위 의자를 선택해 주세요." },
-      { status: 400 }
-    )
+  if (!rank1Name) {
+    return NextResponse.json({ error: "1위 의자를 선택해 주세요." }, { status: 400 })
   }
   if (!reviewText) {
-    return NextResponse.json(
-      { error: "한 줄 후기를 입력해 주세요." },
-      { status: 400 }
-    )
+    return NextResponse.json({ error: "한 줄 후기를 입력해 주세요." }, { status: 400 })
   }
 
   // Optional photo upload to the existing public `gallery` bucket.
@@ -94,45 +97,81 @@ export async function POST(request: NextRequest) {
       photoUrl = await uploadGalleryImageServer(photo, "experience")
     } catch (err) {
       const message =
-        err instanceof StorageValidationError
-          ? err.message
-          : "사진 업로드에 실패했습니다."
+        err instanceof StorageValidationError ? err.message : "사진 업로드에 실패했습니다."
       return NextResponse.json({ error: message }, { status: 400 })
     }
   }
 
-  const row = {
+  const supabase = createAdminClient()
+
+  // Resolve ranked chairs -> product ids (ids preferred; names as fallback).
+  const rankInputs = [
+    { rank: 1, id: str(payload.rank1_chair_id, 64), name: rank1Name },
+    { rank: 2, id: str(payload.rank2_chair_id, 64), name: str(payload.rank2_chair, 200) },
+    { rank: 3, id: str(payload.rank3_chair_id, 64), name: str(payload.rank3_chair, 200) },
+  ]
+  const namesToResolve = rankInputs.filter((r) => !r.id && r.name).map((r) => r.name as string)
+  const nameToId = new Map<string, string>()
+  if (namesToResolve.length) {
+    const { data: matched } = await supabase
+      .from("products")
+      .select("id, name")
+      .in("name", namesToResolve)
+    for (const p of (matched ?? []) as Array<{ id: string; name: string }>) {
+      nameToId.set(p.name, p.id)
+    }
+  }
+
+  const session = {
     status: "pending" as const,
     source: "store_form" as const,
-    gender: str(payload.gender, 20),
-    height: str(payload.height, 40),
-    weight_or_body: str(payload.weight_or_body, 40),
-    age_group: str(payload.age_group, 20),
+    sex: mapSex(str(payload.gender, 20)),
+    height_band: str(payload.height, 40),
+    body: str(payload.weight_or_body, 40),
+    age_band: str(payload.age_group, 20),
     job: str(payload.job, 60),
-    main_purpose: str(payload.main_purpose, 60),
-    sitting_hours: str(payload.sitting_hours, 40),
+    uses: payload.main_purpose ? [str(payload.main_purpose, 60) as string].filter(Boolean) : [],
+    sit_hours: str(payload.sitting_hours, 40),
     previous_chair: str(payload.previous_chair, 200),
-    pain_areas: cleanArray(payload.pain_areas),
+    pain: cleanArray(payload.pain_areas),
     standing_desk: str(payload.standing_desk, 20),
-    rank1_chair: rank1,
-    rank2_chair: str(payload.rank2_chair, 200),
-    rank3_chair: str(payload.rank3_chair, 200),
+    reasons: cleanArray(payload.selection_reasons),
+    comment: reviewText,
     rating: clampRating(payload.rating),
-    review_text: reviewText,
-    selection_reasons: cleanArray(payload.selection_reasons),
-    purchase_reason: str(payload.purchase_reason, 500),
     photo_url: photoUrl,
     store_location: str(payload.store_location, 40),
     comparing_chairs: str(payload.comparing_chairs, 300),
     nickname: str(payload.nickname, 60),
-    phone: str(payload.phone, 40),
+    contact: str(payload.phone, 40),
   }
 
-  const supabase = createAdminClient()
-  const { error } = await supabase.from("experience_reviews").insert(row)
+  const { data: inserted, error } = await supabase
+    .from("review_sessions")
+    .insert(session)
+    .select("id")
+    .single()
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  if (error || !inserted) {
+    return NextResponse.json({ error: error?.message ?? "저장에 실패했습니다." }, { status: 500 })
+  }
+
+  // Rankings (matched chairs only, deduped by chair_id).
+  const seen = new Set<string>()
+  const rankingRows: Array<{ session_id: string; chair_id: string; rank: number }> = []
+  for (const r of rankInputs) {
+    const chairId = r.id ?? (r.name ? nameToId.get(r.name) : undefined)
+    if (!chairId || seen.has(chairId)) continue
+    seen.add(chairId)
+    rankingRows.push({ session_id: inserted.id, chair_id: chairId, rank: r.rank })
+  }
+
+  if (rankingRows.length) {
+    const { error: rErr } = await supabase.from("review_rankings").insert(rankingRows)
+    if (rErr) {
+      // Avoid an orphan session if rankings fail.
+      await supabase.from("review_sessions").delete().eq("id", inserted.id)
+      return NextResponse.json({ error: rErr.message }, { status: 500 })
+    }
   }
 
   return NextResponse.json({ success: true })

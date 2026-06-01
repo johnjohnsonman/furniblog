@@ -30,6 +30,12 @@ type SessionRow = {
   comment: string | null
   contact: string | null
   previous_chair: string | null
+  rating: number | null
+  photo_url: string | null
+  store_location: string | null
+  comparing_chairs: string | null
+  nickname: string | null
+  standing_desk: string | null
 }
 
 export async function GET(request: NextRequest) {
@@ -95,18 +101,18 @@ export async function GET(request: NextRequest) {
         sitting_hours: s.sit_hours ? SIT_KO[s.sit_hours] ?? s.sit_hours : null,
         previous_chair: s.previous_chair ?? null,
         pain_areas: s.pain ?? [],
-        standing_desk: null,
+        standing_desk: s.standing_desk ?? null,
         rank1_chair: m[1] ?? null,
         rank2_chair: m[2] ?? null,
         rank3_chair: m[3] ?? null,
-        rating: null,
+        rating: s.rating ?? null,
         review_text: s.comment ?? null,
         selection_reasons: s.reasons ?? [],
         purchase_reason: null,
-        photo_url: null,
-        store_location: null,
-        comparing_chairs: null,
-        nickname: null,
+        photo_url: s.photo_url ?? null,
+        store_location: s.store_location ?? null,
+        comparing_chairs: s.comparing_chairs ?? null,
+        nickname: s.nickname ?? null,
         phone: s.contact ?? null,
       }
     })
