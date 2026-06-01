@@ -1,11 +1,13 @@
 /**
- * Import the unified store experience workbook into experience_reviews.
+ * Import the unified store experience workbook into the normalized
+ * review_sessions (1 row/respondent) + review_rankings (1 row/ranked chair).
  *
  *   node scripts/import-experience.mjs --dry-run   # no DB writes, prints plan
  *   node scripts/import-experience.mjs             # translate + insert
  *
  * Requires .env.local: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
- * ANTHROPIC_API_KEY. Run migrations 020 + 021 + 022 first.
+ * ANTHROPIC_API_KEY. Run migrations 016 + 021 + 023 first (023 adds
+ * source='import_614' + _ko/previous_chair columns).
  */
 import { readFileSync, existsSync, writeFileSync } from "node:fs"
 import path from "node:path"
@@ -89,50 +91,55 @@ function detectColumns(headers) {
 }
 
 /* --------------------------- value normalization --------------------------- */
-const HEIGHT_BANDS = ["~160", "161-165", "166-170", "171-175", "176-180", "181+"]
-
-function normGender(v) {
+// review_sessions CHECK encodings (016): sex male/female, sit_hours under2/2to6/over6.
+// height_band / age_band CHECKs were dropped (021); we still use the 016 vocab.
+function normSex(v) {
   const s = String(v ?? "").trim()
   if (!s) return null
-  if (/남|male|m\b/i.test(s)) return "남성"
-  if (/여|female|f\b/i.test(s)) return "여성"
+  if (/남|male/i.test(s)) return "male"
+  if (/여|female/i.test(s)) return "female"
   return null
 }
-function normHeight(v) {
+function normHeightBand(v) {
   const s = String(v ?? "").trim()
   if (!s) return null
   const num = parseInt(s.replace(/[^0-9]/g, ""), 10)
-  if (Number.isFinite(num) && num >= 130 && num <= 210) {
+  if (Number.isFinite(num) && num >= 120 && num <= 220) {
     if (num <= 160) return "~160"
-    if (num <= 165) return "161-165"
-    if (num <= 170) return "166-170"
-    if (num <= 175) return "171-175"
-    if (num <= 180) return "176-180"
-    return "181+"
+    if (num <= 169) return "160s"
+    if (num <= 179) return "170s"
+    if (num <= 184) return "180s"
+    return "185+"
   }
-  if (HEIGHT_BANDS.includes(s)) return s
+  if (["~160", "160s", "170s", "180s", "185+"].includes(s)) return s
   return null
 }
-function normAge(v) {
+function normAgeBand(v) {
   const s = String(v ?? "").trim()
   if (!s) return null
   const num = parseInt(s.replace(/[^0-9]/g, ""), 10)
   if (Number.isFinite(num)) {
-    if (num >= 60) return "60대+"
-    if (num >= 50) return "50대"
-    if (num >= 40) return "40대"
-    if (num >= 30) return "30대"
-    if (num >= 20) return "20대"
-    if (num >= 10) return "10대"
+    if (num >= 50) return "50s+"
+    if (num >= 40) return "40s"
+    if (num >= 30) return "30s"
+    if (num >= 20) return "20s"
+    if (num >= 10) return "10s"
   }
+  if (["10s", "20s", "30s", "40s", "50s+"].includes(s)) return s
   return null
 }
-function normStanding(v) {
+function normSitHours(v) {
   const s = String(v ?? "").trim()
   if (!s) return null
-  if (/사용|쓰|yes|있|o\b/i.test(s)) return "사용"
-  if (/안|미사용|no|없|x\b/i.test(s)) return "안 함"
-  return s.slice(0, 20)
+  const nums = (s.match(/\d+/g) || []).map(Number)
+  if (nums.length === 0) return null
+  const maxN = Math.max(...nums)
+  const openEnded = /이상|초과|over|\+/.test(s)
+  if (maxN < 2) return "under2"
+  if (maxN === 2 && !openEnded) return "under2"
+  if (openEnded && maxN >= 6) return "over6"
+  if (maxN > 6) return "over6"
+  return "2to6"
 }
 function splitArray(v) {
   const s = String(v ?? "").trim()
@@ -337,54 +344,62 @@ async function main() {
     for (const [ko] of unmatched) console.log(`     "${ko}"`)
   }
 
-  // sample rows
-  function mapRow(r) {
-    const c1 = canonicalizeChair(cell(r, "rank1"), productIndex)
-    const c2 = canonicalizeChair(cell(r, "rank2"), productIndex)
-    const c3 = canonicalizeChair(cell(r, "rank3"), productIndex)
+  // Excel columns with no review_sessions home — intentionally dropped.
+  const DROPPED = ["weight_or_body", "purchase_reason", "nickname", "store_location"]
+  const droppedPresent = DROPPED.filter((f) => cols[f] != null)
+
+  // one respondent -> one review_sessions row (Korean originals + English text)
+  function mapSession(r) {
+    const mainPurpose = cleanText(cell(r, "main_purpose"), 80)
     return {
-      gender: normGender(cell(r, "gender")),
-      height: normHeight(cell(r, "height")),
-      weight_or_body: cleanText(cell(r, "weight_or_body"), 40),
-      age_group: normAge(cell(r, "age_group")),
-      job_ko: cleanText(cell(r, "job"), 60),
-      main_purpose: cleanText(cell(r, "main_purpose"), 60),
-      sitting_hours: cleanText(cell(r, "sitting_hours"), 40),
+      sex: normSex(cell(r, "gender")),
+      height_band: normHeightBand(cell(r, "height")),
+      body: null, // no reliable below/normal/above source in the workbook
+      age_band: normAgeBand(cell(r, "age_group")),
+      sit_hours: normSitHours(cell(r, "sitting_hours")),
+      job_ko: cleanText(cell(r, "job"), 80),
+      uses_ko: mainPurpose ? [mainPurpose] : [], // stored as-is (not translated)
+      pain_ko: splitArray(cell(r, "pain_areas")),
+      reasons_ko: splitArray(cell(r, "selection_reasons")),
+      comment_ko: cleanText(cell(r, "review_text")),
       previous_chair_ko: cleanText(cell(r, "previous_chair"), 200),
-      pain_areas_ko: splitArray(cell(r, "pain_areas")),
-      standing_desk: normStanding(cell(r, "standing_desk")),
-      rank1_chair: c1.en ?? c1.ko,
-      rank2_chair: c2.en ?? c2.ko,
-      rank3_chair: c3.en ?? c3.ko,
-      rank1_product_id: c1.productId,
-      rank2_product_id: c2.productId,
-      rank3_product_id: c3.productId,
-      rating: normRating(cell(r, "rating")),
-      review_text_ko: cleanText(cell(r, "review_text")),
-      selection_reasons_ko: splitArray(cell(r, "selection_reasons")),
-      purchase_reason: cleanText(cell(r, "purchase_reason"), 500),
-      store_location: cleanText(cell(r, "store_location"), 40),
-      comparing_chairs: cleanText(cell(r, "comparing_chairs"), 300),
-      nickname: cleanText(cell(r, "nickname"), 60),
-      phone: cleanText(cell(r, "phone"), 40),
+      contact: cleanText(cell(r, "phone"), 40),
     }
   }
 
-  console.log("\n=== Sample mapped rows (first 5, pre-translation) ===")
-  for (const r of dataRows.slice(0, 5)) {
-    console.log(JSON.stringify(mapRow(r)))
+  // one respondent -> up to 3 review_rankings rows (matched chairs only, deduped)
+  function mapRankings(r) {
+    const out = []
+    const seen = new Set()
+    for (const [f, rank] of [["rank1", 1], ["rank2", 2], ["rank3", 3]]) {
+      const c = canonicalizeChair(cell(r, f), productIndex)
+      if (!c.productId || seen.has(c.productId)) continue
+      seen.add(c.productId)
+      out.push({ rank, chair_id: c.productId, chair_ko: c.ko, chair_en: c.en })
+    }
+    return out
   }
 
-  // unique strings to translate
+  let rankingsTotal = 0
+  for (const r of dataRows) rankingsTotal += mapRankings(r).length
+
+  console.log("\n=== Sample review_sessions rows (first 5, pre-translation) ===")
+  for (const r of dataRows.slice(0, 5)) console.log(JSON.stringify(mapSession(r)))
+  console.log("\n=== Sample review_rankings (first 5 respondents) ===")
+  dataRows.slice(0, 5).forEach((r, i) => {
+    console.log(`  #${i + 1}: ` + mapRankings(r).map((x) => `[${x.rank}] ${x.chair_en} (${x.chair_id})`).join("  |  "))
+  })
+
+  // unique strings to translate (comment + short text elements)
   const tReview = new Set()
-  const tElems = new Set() // reasons + pain + job + previous chair (short)
+  const tElems = new Set()
   for (const r of dataRows) {
-    const m = mapRow(r)
-    if (m.review_text_ko) tReview.add(m.review_text_ko)
+    const m = mapSession(r)
+    if (m.comment_ko) tReview.add(m.comment_ko)
     if (m.job_ko) tElems.add(m.job_ko)
     if (m.previous_chair_ko) tElems.add(m.previous_chair_ko)
-    for (const x of m.selection_reasons_ko) tElems.add(x)
-    for (const x of m.pain_areas_ko) tElems.add(x)
+    for (const x of m.reasons_ko) tElems.add(x)
+    for (const x of m.pain_ko) tElems.add(x)
   }
 
   if (DRY) {
@@ -395,7 +410,9 @@ async function main() {
         {
           headers,
           columns: cols,
-          totalRows: dataRows.length,
+          droppedColumns: droppedPresent,
+          totalSessions: dataRows.length,
+          totalRankings: rankingsTotal,
           chairProducts: products
             .map((p) => ({ id: p.id, name: p.name, slug: p.slug }))
             .sort((a, b) => a.name.localeCompare(b.name)),
@@ -405,6 +422,8 @@ async function main() {
             productId: i.productId,
             count: i.count,
           })),
+          sessionSample: dataRows.slice(0, 5).map(mapSession),
+          rankingsSample: dataRows.slice(0, 5).map(mapRankings),
         },
         null,
         2
@@ -413,6 +432,8 @@ async function main() {
     )
     console.log(`\nWrote UTF-8 report: ${reportPath}`)
     console.log(`\n=== DRY RUN ===`)
+    if (droppedPresent.length)
+      console.log(`  Dropped (no review_sessions column): ${droppedPresent.join(", ")}`)
     console.log(`  unique review texts: ${tReview.size}, unique short elements: ${tElems.size}`)
     console.log("  Testing translation on up to 2 samples each…")
     try {
@@ -423,12 +444,15 @@ async function main() {
     } catch (e) {
       console.log(`  (translation test skipped: ${e.message})`)
     }
-    console.log(`\n  Would INSERT ${dataRows.length} rows (source=import_614, status=pending). No DB writes made.`)
+    console.log(
+      `\n  Would INSERT ${dataRows.length} review_sessions + ${rankingsTotal} review_rankings ` +
+        `(source=import_614, status=pending). No DB writes made.`
+    )
     return
   }
 
   // real run: translate everything
-  console.log("\nTranslating review texts…")
+  console.log("\nTranslating review comments…")
   const reviewMap = await buildTranslationMap(tReview)
   console.log("Translating short elements…")
   const elemMap = await buildTranslationMap(tElems)
@@ -436,57 +460,73 @@ async function main() {
   const tr = (ko) => (ko ? elemMap.get(ko) ?? ko : null)
   const trArr = (arr) => arr.map((x) => elemMap.get(x) ?? x)
 
-  const records = dataRows.map((r) => {
-    const m = mapRow(r)
+  const buildSession = (r) => {
+    const m = mapSession(r)
     return {
       source: "import_614",
       status: "pending",
-      gender: m.gender,
-      height: m.height,
-      weight_or_body: m.weight_or_body,
-      age_group: m.age_group,
+      sex: m.sex,
+      height_band: m.height_band,
+      body: m.body,
+      age_band: m.age_band,
+      sit_hours: m.sit_hours,
       job: tr(m.job_ko),
       job_ko: m.job_ko,
-      main_purpose: m.main_purpose,
-      sitting_hours: m.sitting_hours,
+      uses: m.uses_ko,
+      pain: trArr(m.pain_ko),
+      pain_ko: m.pain_ko,
+      reasons: trArr(m.reasons_ko),
+      reasons_ko: m.reasons_ko,
+      comment: m.comment_ko ? reviewMap.get(m.comment_ko) ?? m.comment_ko : null,
+      comment_ko: m.comment_ko,
       previous_chair: tr(m.previous_chair_ko),
       previous_chair_ko: m.previous_chair_ko,
-      pain_areas: trArr(m.pain_areas_ko),
-      pain_areas_ko: m.pain_areas_ko,
-      standing_desk: m.standing_desk,
-      rank1_chair: m.rank1_chair,
-      rank2_chair: m.rank2_chair,
-      rank3_chair: m.rank3_chair,
-      rank1_product_id: m.rank1_product_id,
-      rank2_product_id: m.rank2_product_id,
-      rank3_product_id: m.rank3_product_id,
-      rating: m.rating,
-      review_text: m.review_text_ko ? reviewMap.get(m.review_text_ko) ?? m.review_text_ko : null,
-      review_text_ko: m.review_text_ko,
-      selection_reasons: trArr(m.selection_reasons_ko),
-      selection_reasons_ko: m.selection_reasons_ko,
-      purchase_reason: m.purchase_reason,
-      store_location: m.store_location,
-      comparing_chairs: m.comparing_chairs,
-      nickname: m.nickname,
-      phone: m.phone,
+      purchased: null,
+      contact: m.contact,
     }
-  })
+  }
 
-  console.log(`\nInserting ${records.length} rows…`)
+  console.log(`\nInserting ${dataRows.length} review_sessions + rankings…`)
   const CHUNK = 100
-  let inserted = 0
-  for (let i = 0; i < records.length; i += CHUNK) {
-    const chunk = records.slice(i, i + CHUNK)
-    const { error } = await supabase.from("experience_reviews").insert(chunk)
+  let insertedS = 0
+  let insertedR = 0
+  for (let i = 0; i < dataRows.length; i += CHUNK) {
+    const slice = dataRows.slice(i, i + CHUNK)
+    const sessionRows = slice.map(buildSession)
+    const { data: ins, error } = await supabase
+      .from("review_sessions")
+      .insert(sessionRows)
+      .select("id")
     if (error) {
-      console.error(`✗ insert failed at chunk ${i}:`, error.message)
+      console.error(`✗ review_sessions insert failed at row ${i}:`, error.message)
       process.exit(1)
     }
-    inserted += chunk.length
-    console.log(`  inserted ${inserted}/${records.length}`)
+    if (!ins || ins.length !== slice.length) {
+      console.error(`✗ returned id count ${ins?.length} != ${slice.length} (order unsafe). Aborting.`)
+      process.exit(1)
+    }
+    const rankingRows = []
+    slice.forEach((r, j) => {
+      const sid = ins[j].id
+      for (const rk of mapRankings(r)) {
+        rankingRows.push({ session_id: sid, chair_id: rk.chair_id, rank: rk.rank })
+      }
+    })
+    if (rankingRows.length) {
+      const { error: rErr } = await supabase.from("review_rankings").insert(rankingRows)
+      if (rErr) {
+        console.error(`✗ review_rankings insert failed near row ${i}:`, rErr.message)
+        process.exit(1)
+      }
+      insertedR += rankingRows.length
+    }
+    insertedS += slice.length
+    console.log(`  sessions ${insertedS}/${dataRows.length}, rankings ${insertedR}`)
   }
-  console.log(`\n✓ Done. Inserted ${inserted} rows (status=pending). Review them in /admin/experience.`)
+  console.log(
+    `\n✓ Done. Inserted ${insertedS} review_sessions + ${insertedR} review_rankings ` +
+      `(status=pending). Approve them in the admin review queue.`
+  )
 }
 
 main().catch((e) => {
