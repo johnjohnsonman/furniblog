@@ -13,6 +13,7 @@ import {
   Settings2,
   LogOut,
   Images,
+  MessageSquareHeart,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -21,6 +22,7 @@ const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Armchair },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
+  { href: "/admin/experience", label: "체험 후기", icon: MessageSquareHeart },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/pipeline", label: "Pipeline", icon: Settings2 },
   { href: "/admin/affiliate", label: "Affiliate Links", icon: Link2 },
