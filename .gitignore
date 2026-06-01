@@ -16,3 +16,7 @@ node_modules
 *.tsbuildinfo
 furniblog-website-design.zip
 .vercel
+
+# Raw import data (may contain PII — keep local only)
+/data/
+*.xlsx

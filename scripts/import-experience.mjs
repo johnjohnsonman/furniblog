@@ -7,7 +7,7 @@
  * Requires .env.local: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
  * ANTHROPIC_API_KEY. Run migrations 020 + 021 + 022 first.
  */
-import { readFileSync, existsSync } from "node:fs"
+import { readFileSync, existsSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import xlsx from "xlsx"
@@ -41,6 +41,7 @@ const HEADER_MATCHERS = {
   rating: ["별점", "평점", "점수", "star"],
   gender: ["성별"],
   height: ["키", "신장"],
+  weight_or_body: ["몸무게", "체중", "체형"],
   age_group: ["연령", "나이"],
   job: ["직업"],
   main_purpose: ["주 사용", "주목적", "주 목적", "용도", "사용 목적", "목적"],
@@ -48,6 +49,7 @@ const HEADER_MATCHERS = {
   previous_chair: ["기존", "이전 의자", "쓰던", "사용하던"],
   pain_areas: ["불편", "통증", "아픈"],
   standing_desk: ["스탠딩", "스탠드", "standing"],
+  purchase_reason: ["구매"],
   selection_reasons: ["선정", "선택 이유", "선택이유", "이유"],
   review_text: ["후기", "리뷰", "코멘트", "의견", "내용", "한줄", "한 줄"],
   store_location: ["매장", "지점", "체험 매장"],
@@ -57,10 +59,10 @@ const HEADER_MATCHERS = {
 }
 // resolve order: specific fields first so generic ones (이유/후기/이름) don't steal columns.
 const RESOLVE_ORDER = [
-  "rank1", "rank2", "rank3", "rating", "gender", "height", "age_group", "job",
-  "main_purpose", "sitting_hours", "previous_chair", "pain_areas", "standing_desk",
-  "store_location", "comparing_chairs", "phone", "nickname", "selection_reasons",
-  "review_text",
+  "rank1", "rank2", "rank3", "rating", "gender", "height", "weight_or_body",
+  "age_group", "job", "main_purpose", "sitting_hours", "previous_chair",
+  "pain_areas", "standing_desk", "store_location", "comparing_chairs", "phone",
+  "nickname", "purchase_reason", "selection_reasons", "review_text",
 ]
 
 function detectColumns(headers) {
@@ -152,50 +154,58 @@ function normRating(v) {
 }
 
 /* --------------------------- chair normalization --------------------------- */
-// Korean source name -> canonical furniblog product English name.
-const EXPLICIT_RULES = [
+// Exact Korean source name (parenthetical variant + comma tail stripped)
+// -> canonical furniblog product name (must match products.name exactly).
+const MANUAL_ALIASES = {
+  "스틸케이스-립체어": "Steelcase Leap V2",
+  "휴먼스케일-프리덤": "Humanscale Freedom Headrest",
+  "오카무라-콘테사2": "Okamura Contessa II",
+  "오까무라-콘테사2": "Okamura Contessa II",
+  "스틸케이스-제스처": "Steelcase Gesture",
+  "놀-제너레이션": "Knoll ReGeneration",
+  "허먼밀러-엠바디 게이밍": "Herman Miller x Logitech G Embody Gaming Chair",
+  "허먼밀러-코즘": "Herman Miller Cosm High Back",
+  "휴먼스케일-월드원": "Humanscale World One",
+  "하워스-펀체어": "Haworth Fern",
+  "오카무라-실피": "Okamura Sylphy",
+  "오까무라-실피": "Okamura Sylphy",
+  "스틸케이스-씽크": "Steelcase Think V2",
+  "세두스-오픈업 모던 클래식": "Sedus open up",
+  "빌크한-On": "Wilkhahn ON",
+  "글로벌-콩코드 프레지덴셜": "Global Concorde Presidential",
+  "이토키-액트 2 텍스처드 메쉬": "Itoki ACT2",
+  "허먼밀러-세일": "Herman Miller Sayl",
+  // Unresolved (no matching product yet) — left null on purpose:
+  //   "놀-뉴슨 테스크 체어"  (no Knoll Newson product)
+  //   "오카무라-레전더"       (ambiguous)
+}
+// Regex rules for families with variant suffixes (B-size / C-size etc.)
+const REGEX_RULES = [
   [/에어론|aeron/i, "Herman Miller Aeron"],
-  [/엠바디|embody/i, "Herman Miller Embody"],
-  [/세이?라|sayl/i, "Herman Miller Sayl"],
-  [/립\s*체어|립체어|leap/i, "Steelcase Leap"],
-  [/제스처|gesture/i, "Steelcase Gesture"],
-  [/콘테사|contessa/i, "Okamura Contessa 2"],
-  [/실피?스|sylphy/i, "Okamura Sylphy"],
-  [/프리덤|freedom/i, "Humanscale Freedom"],
-  [/디퓨리언트|diffrient/i, "Humanscale Diffrient"],
 ]
-// Extend this as dry-run surfaces unmatched names.
-const MANUAL_ALIASES = {}
 
-function stripBrandPrefix(s) {
-  return s
-    .replace(/^.*?[-–—]\s*/, "") // "허먼밀러-뉴 에어론" -> "뉴 에어론"
-    .replace(/\s*\(.*?\)\s*/g, " ")
-    .trim()
+function canonicalKey(raw) {
+  // take the first chair if several are comma-joined in one cell,
+  // then drop a trailing "(메쉬)/(패브릭)/(가죽)" style variant note.
+  const first = String(raw ?? "").split(/[,，]/)[0].trim()
+  return first.replace(/\s*\(.*?\)\s*$/g, "").trim()
 }
 
 function canonicalizeChair(raw, productIndex) {
-  const ko = String(raw ?? "").trim()
+  const ko = canonicalKey(raw)
   if (!ko) return { ko: null, en: null, productId: null }
 
-  if (MANUAL_ALIASES[ko]) {
-    const en = MANUAL_ALIASES[ko]
-    return { ko, en, productId: productIndex.byName.get(en.toLowerCase())?.id ?? null }
-  }
-  for (const [re, en] of EXPLICIT_RULES) {
-    if (re.test(ko)) {
-      return { ko, en, productId: productIndex.byName.get(en.toLowerCase())?.id ?? null }
+  let en = MANUAL_ALIASES[ko] ?? null
+  if (!en) {
+    for (const [re, name] of REGEX_RULES) {
+      if (re.test(ko)) {
+        en = name
+        break
+      }
     }
   }
-  // fallback: try direct/substring match against product names
-  const stripped = stripBrandPrefix(ko).toLowerCase()
-  for (const p of productIndex.all) {
-    const pn = p.name.toLowerCase()
-    if (pn === stripped || pn.includes(stripped) || stripped.includes(pn)) {
-      return { ko, en: p.name, productId: p.id }
-    }
-  }
-  return { ko, en: null, productId: null }
+  const productId = en ? productIndex.byName.get(en.toLowerCase())?.id ?? null : null
+  return { ko, en, productId }
 }
 
 /* --------------------------- translation --------------------------- */
@@ -335,6 +345,7 @@ async function main() {
     return {
       gender: normGender(cell(r, "gender")),
       height: normHeight(cell(r, "height")),
+      weight_or_body: cleanText(cell(r, "weight_or_body"), 40),
       age_group: normAge(cell(r, "age_group")),
       job_ko: cleanText(cell(r, "job"), 60),
       main_purpose: cleanText(cell(r, "main_purpose"), 60),
@@ -351,6 +362,7 @@ async function main() {
       rating: normRating(cell(r, "rating")),
       review_text_ko: cleanText(cell(r, "review_text")),
       selection_reasons_ko: splitArray(cell(r, "selection_reasons")),
+      purchase_reason: cleanText(cell(r, "purchase_reason"), 500),
       store_location: cleanText(cell(r, "store_location"), 40),
       comparing_chairs: cleanText(cell(r, "comparing_chairs"), 300),
       nickname: cleanText(cell(r, "nickname"), 60),
@@ -376,6 +388,30 @@ async function main() {
   }
 
   if (DRY) {
+    const reportPath = path.join(ROOT, "data", "_dry-run-report.json")
+    writeFileSync(
+      reportPath,
+      JSON.stringify(
+        {
+          headers,
+          columns: cols,
+          totalRows: dataRows.length,
+          chairProducts: products
+            .map((p) => ({ id: p.id, name: p.name, slug: p.slug }))
+            .sort((a, b) => a.name.localeCompare(b.name)),
+          chairMatches: sorted.map(([ko, i]) => ({
+            ko,
+            en: i.en,
+            productId: i.productId,
+            count: i.count,
+          })),
+        },
+        null,
+        2
+      ),
+      "utf8"
+    )
+    console.log(`\nWrote UTF-8 report: ${reportPath}`)
     console.log(`\n=== DRY RUN ===`)
     console.log(`  unique review texts: ${tReview.size}, unique short elements: ${tElems.size}`)
     console.log("  Testing translation on up to 2 samples each…")
@@ -407,6 +443,7 @@ async function main() {
       status: "pending",
       gender: m.gender,
       height: m.height,
+      weight_or_body: m.weight_or_body,
       age_group: m.age_group,
       job: tr(m.job_ko),
       job_ko: m.job_ko,
@@ -428,6 +465,7 @@ async function main() {
       review_text_ko: m.review_text_ko,
       selection_reasons: trArr(m.selection_reasons_ko),
       selection_reasons_ko: m.selection_reasons_ko,
+      purchase_reason: m.purchase_reason,
       store_location: m.store_location,
       comparing_chairs: m.comparing_chairs,
       nickname: m.nickname,
