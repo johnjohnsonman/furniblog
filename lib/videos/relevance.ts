@@ -6,6 +6,9 @@ const CLAUDE_MODEL =
 /** A video must be reasonably chair-focused, but variants/sizes of a model still count. */
 export const VIDEO_RELEVANCE_MIN = 0.4
 
+const CJK_REGEX =
+  /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af]/
+
 export type VideoRelevanceResult = {
   relevant: boolean
   confidence: number
@@ -33,6 +36,10 @@ export function stripVariantSuffix(name: string): string {
     .replace(/\s*\([^)]*\)\s*/g, " ")
     .replace(/\s+/g, " ")
     .trim()
+}
+
+function hasCjkText(text: string): boolean {
+  return CJK_REGEX.test(text)
 }
 
 function hasWord(haystack: string, word: string): boolean {
@@ -79,7 +86,11 @@ export async function checkVideoRelevance(params: {
   const chairName = stripVariantSuffix(params.chairName.trim())
   const brandName = params.brandName?.trim() || null
 
-  if (!passesKeywordGate(title, description, chairName, brandName)) {
+  const haystack = `${title} ${description}`
+  if (
+    !passesKeywordGate(title, description, chairName, brandName) &&
+    !hasCjkText(haystack)
+  ) {
     return {
       relevant: false,
       confidence: 0,
@@ -129,6 +140,7 @@ Rules:
 
 If isChairVideo is true and the base model is meaningfully the subject, prefer confidence >= 0.4.
 A keyword match alone is NOT enough — the chair itself must be the core subject.
+The title/description may be in Japanese, Korean, or Chinese. Judge by meaning — e.g. イトーキ = Itoki, スピナ = Spina. Phonetic/script variants of the brand and model count.
 
 Title: ${title || "(empty)"}
 Description: ${description.slice(0, 1500) || "(empty)"}
