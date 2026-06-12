@@ -20,3 +20,4 @@ furniblog-website-design.zip
 # Raw import data (may contain PII — keep local only)
 /data/
 *.xlsx
+.env*
