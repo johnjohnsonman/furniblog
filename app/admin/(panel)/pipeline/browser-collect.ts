@@ -6,34 +6,6 @@ export type BrowserCollectItem = {
   collectedAt: string
 }
 
-export function getKoreanName(chairName: string): string {
-  const lower = chairName.toLowerCase()
-  const map: Record<string, string> = {
-    "herman miller aeron": "허먼밀러 에어론",
-    "herman miller embody": "허먼밀러 엠바디",
-    "herman miller cosm": "허먼밀러 코즘",
-    "herman miller sayl": "허먼밀러 세일",
-    "steelcase leap": "스틸케이스 립체어",
-    "steelcase gesture": "스틸케이스 제스처",
-    "steelcase think": "스틸케이스 씽크",
-    "okamura contessa": "오카무라 콘테사",
-    "okamura sylphy": "오카무라 실피",
-    "humanscale freedom": "휴먼스케일 프리덤",
-    "haworth fern": "하워스 펀체어",
-    "hag capisco": "HÅG 카피스코",
-    "kokuyo ing": "코쿠요 잉",
-    "itoki act2": "이토키 ACT2",
-    "itoki leala": "이토키 리알라",
-    interstuhl: "인터스툴",
-    wilkhahn: "빌칸",
-    sidiz: "시디즈",
-  }
-  for (const [en, ko] of Object.entries(map)) {
-    if (lower.includes(en)) return ko
-  }
-  return chairName
-}
-
 export function getJapaneseName(chairName: string): string {
   const lower = chairName.toLowerCase()
   const map: Record<string, string> = {
