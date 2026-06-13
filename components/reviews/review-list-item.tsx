@@ -1,41 +1,12 @@
 import Link from "next/link"
-import { ExternalLink, Star } from "lucide-react"
 import type { ReviewFeedItem } from "@/lib/reviews/feed-types"
 import { SourceBadge } from "./source-badge"
-import { cn } from "@/lib/utils"
-
-function getOverall(scores: ReviewFeedItem["scores"]): number {
-  return "overall" in scores ? Number(scores.overall) || 0 : 0
-}
-
-function StarRating({ score }: { score: number }) {
-  const rounded = Math.round(score)
-  return (
-    <div className="flex items-center gap-1 shrink-0">
-      <div className="flex">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              "h-3.5 w-3.5",
-              i < rounded
-                ? "fill-foreground text-foreground"
-                : "fill-muted text-muted"
-            )}
-          />
-        ))}
-      </div>
-      <span className="text-sm font-semibold tabular-nums">{score.toFixed(1)}</span>
-    </div>
-  )
-}
 
 type ReviewListItemProps = {
   review: ReviewFeedItem
 }
 
 export function ReviewListItem({ review }: ReviewListItemProps) {
-  const overall = getOverall(review.scores)
   const topPros = review.pros.slice(0, 2)
   const topCons = review.cons.slice(0, 1)
 
@@ -78,10 +49,7 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
               {review.productCategoryLabel}
             </p>
           </div>
-          <div className="flex items-center gap-2">
-            <SourceBadge source={review.source} variant="compact" />
-            <StarRating score={overall} />
-          </div>
+          <SourceBadge source={review.source} variant="compact" />
         </div>
 
         <p className="mt-2 text-sm text-gray-600 line-clamp-2">{review.summary}</p>
@@ -113,17 +81,12 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
           ) : (
             <span />
           )}
-          {review.sourceUrl && (
-            <a
-              href={review.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-medium text-foreground hover:underline"
-            >
-              View source
-              <ExternalLink className="h-3 w-3" />
-            </a>
-          )}
+          <Link
+            href={`/reviews/${review.id}`}
+            className="inline-flex items-center gap-1 font-medium text-foreground hover:underline"
+          >
+            Read full review →
+          </Link>
         </div>
       </div>
     </article>

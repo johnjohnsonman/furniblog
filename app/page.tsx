@@ -219,13 +219,6 @@ export default async function HomePage() {
                         )}
                       </div>
                     </div>
-                    <div className="text-right hidden sm:block">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3.5 w-3.5 fill-foreground text-foreground" />
-                        <span className="font-semibold text-foreground">{product.rating}</span>
-                      </div>
-                      {score && <p className="text-xs text-muted-foreground mt-0.5">{score}/100</p>}
-                    </div>
                     <div className="text-right shrink-0">
                       <p className="font-medium text-foreground">{product.price}</p>
                     </div>

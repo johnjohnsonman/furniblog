@@ -127,13 +127,6 @@ export default async function BestListPage({ params }: BestListPageProps) {
                               <Link href={`/products/${product.id}`} className="hover:underline">{product.name}</Link>
                             </h2>
                             <div className="flex items-center gap-3 mt-2">
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 fill-foreground text-foreground" />
-                                <span className="font-semibold text-foreground">{product.rating}</span>
-                              </div>
-                              {score && (
-                                <span className="px-2 py-0.5 bg-foreground text-background rounded text-xs font-semibold">{score}/100</span>
-                              )}
                               <span className="text-lg font-semibold text-foreground">{product.price}</span>
                             </div>
                           </div>
