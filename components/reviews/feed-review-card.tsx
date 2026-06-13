@@ -145,10 +145,6 @@ export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
         </div>
       </header>
 
-      <div className="mt-3">
-        <StarRating score={overall} />
-      </div>
-
       {hasProfile && (
         <div className="mt-3 space-y-1.5 p-3 rounded-lg bg-muted/40 border border-border/60">
           {bodyLine.length > 0 && (
@@ -206,19 +202,12 @@ export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
       )}
 
       <footer className="mt-4 pt-3 border-t border-border space-y-1.5">
-        {review.sourceUrl ? (
-          <a
-            href={review.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:underline"
-          >
-            View source →
-            <ExternalLink className="h-3 w-3 opacity-60" />
-          </a>
-        ) : (
-          <span className="text-sm text-muted-foreground">No source link</span>
-        )}
+        <Link
+          href={`/reviews/${review.id}`}
+          className="inline-flex items-center gap-1 text-sm font-medium text-foreground hover:underline"
+        >
+          Read full review →
+        </Link>
         <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
           AI summary
         </p>

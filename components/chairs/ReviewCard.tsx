@@ -1,6 +1,6 @@
 "use client"
 
-import { ExternalLink } from "lucide-react"
+import Link from "next/link"
 import type { Review } from "@/types/review"
 import { getReviewOverall } from "./review-utils"
 import { SourceBadge } from "@/components/reviews/source-badge"
@@ -155,21 +155,12 @@ export function ReviewCard({
 
       <footer className="mt-4 pt-3 border-t border-border flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">AI-generated summary</p>
-        {review.sourceUrl ? (
-          <a
-            href={review.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "inline-flex items-center gap-1 text-xs font-medium text-foreground hover:underline"
-            )}
-          >
-            View source
-            <ExternalLink className="h-3 w-3" />
-          </a>
-        ) : (
-          <span className="text-xs text-muted-foreground">No source link</span>
-        )}
+        <Link
+          href={`/reviews/${review.id}`}
+          className="inline-flex items-center gap-1 text-xs font-medium text-foreground hover:underline"
+        >
+          Read full review →
+        </Link>
       </footer>
     </article>
   )
