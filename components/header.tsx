@@ -13,7 +13,6 @@ const mainNav = [
   { name: "News", href: "/news" },
   { name: "Videos", href: "/videos" },
   { name: "Gallery", href: "/gallery" },
-  { name: "Compare", href: "/compare" },
 ]
 
 export function Header() {

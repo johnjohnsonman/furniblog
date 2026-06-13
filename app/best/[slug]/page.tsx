@@ -193,9 +193,6 @@ export default async function BestListPage({ params }: BestListPageProps) {
                           <Link href={`/products/${product.id}`} className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
                             Full Review
                           </Link>
-                          <Link href={`/compare?products=${product.id}`} className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-                            Compare
-                          </Link>
                           {product.tryAtChairpark && (
                             <a href={product.chairparkUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
                               <MapPin className="h-3.5 w-3.5" /> Try at Chairpark

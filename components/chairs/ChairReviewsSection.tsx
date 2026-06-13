@@ -4,7 +4,6 @@ import { useMemo, useState } from "react"
 import type { Review, ReviewSource } from "@/types/review"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ReviewCard } from "./ReviewCard"
-import { ChairScoreRadar } from "./ChairScoreRadar"
 import {
   SOURCE_LABELS,
   averageOverall,
@@ -101,11 +100,6 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
           </div>
         </div>
       </div>
-
-      <section>
-        <h3 className="font-medium text-foreground mb-4">Scores by source</h3>
-        <ChairScoreRadar reviews={reviews} />
-      </section>
 
       <ReviewerProfileFilters
         filters={profileFilters}
