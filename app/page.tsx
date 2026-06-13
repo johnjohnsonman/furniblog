@@ -391,32 +391,6 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="py-14 lg:py-16 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="p-8 bg-foreground text-background rounded-xl lg:p-10">
-              <div className="max-w-2xl">
-                <p className="text-xs font-medium uppercase tracking-wider text-background/60 mb-2">
-                  Available in Korea
-                </p>
-                <h2 className="font-serif text-2xl font-medium lg:text-3xl">Try before you buy at Chairpark</h2>
-                <p className="mt-3 text-background/70 leading-relaxed">
-                  Experience premium chairs in person at Chairpark. Compare models side by side and get expert sizing advice before you buy.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a
-                    href="https://chairpark.co.kr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-background/90 transition-colors"
-                  >
-                    Book Showroom Visit
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
       </main>
 
