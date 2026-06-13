@@ -37,6 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     url("", now, "daily", 1),
     url("/products", now, "daily", 0.9),
+    url("/amazon-picks", now, "weekly", 0.9),
     url("/reviews", now, "daily", 0.9),
     url("/videos", now, "daily", 0.8),
     url("/news", now, "daily", 0.8),

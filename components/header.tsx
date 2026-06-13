@@ -10,6 +10,7 @@ import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 const mainNav = [
   { name: "Brands", href: "/brands" },
   { name: "Reviews", href: "/reviews" },
+  { name: "Amazon Picks", href: "/amazon-picks" },
   { name: "News", href: "/news" },
   { name: "Videos", href: "/videos" },
   { name: "Gallery", href: "/gallery" },

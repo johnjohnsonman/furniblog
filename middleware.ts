@@ -14,6 +14,7 @@ const KNOWN_ROUTES = new Set([
   "brands",
   "videos",
   "gallery",
+  "amazon-picks",
   "about",
   "contact",
   "designers",
