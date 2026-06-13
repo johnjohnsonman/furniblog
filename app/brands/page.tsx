@@ -1,8 +1,16 @@
+import type { Metadata } from "next"
 import { Suspense } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BrandsPageClient } from "@/components/brands/brands-page-client"
 import { getBrandsWithCounts } from "@/lib/supabase/queries"
+
+export const metadata: Metadata = {
+  title: "Chair Brands — Herman Miller, Steelcase & More",
+  description:
+    "Explore premium office and ergonomic chair brands — Herman Miller, Steelcase, Okamura, Humanscale and more. Specs, reviews and prices.",
+  alternates: { canonical: "/brands" },
+}
 
 export const dynamic = "force-dynamic"
 

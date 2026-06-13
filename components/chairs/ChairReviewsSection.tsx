@@ -6,7 +6,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ReviewCard } from "./ReviewCard"
 import {
   SOURCE_LABELS,
-  averageOverall,
   averageBodyStats,
   countBySource,
   getSourceBadgeClass,
@@ -56,7 +55,6 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
     [profileFiltered, sourceFilter]
   )
 
-  const overall = averageOverall(reviews)
   const bySource = countBySource(reviews)
   const body = averageBodyStats(reviews)
 
@@ -66,11 +64,14 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
         <div className="flex flex-col sm:flex-row sm:items-end gap-6">
           <div>
             <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-              Overall rating
+              Reviews
             </p>
-            <p className="text-5xl font-bold text-foreground tabular-nums">{overall}</p>
+            <p className="text-5xl font-bold text-foreground tabular-nums">
+              {reviews.length}
+            </p>
             <p className="text-sm text-muted-foreground mt-1">
-              / 5.0 · {reviews.length} reviews
+              from {Object.keys(bySource).length} source
+              {Object.keys(bySource).length === 1 ? "" : "s"}
             </p>
           </div>
           <div className="flex-1 space-y-3">

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight, Check, X, ExternalLink, MapPin, Star, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
@@ -12,6 +13,23 @@ interface BestListPageProps {
 
 export function generateStaticParams() {
   return bestLists.map((list) => ({ slug: list.id }))
+}
+
+export async function generateMetadata({
+  params,
+}: BestListPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const list = bestLists.find((l) => l.id === slug)
+  if (!list) return {}
+  const description =
+    (list as { description?: string }).description ??
+    `${list.title} — expert-curated picks with specs, real reviews and prices.`
+  return {
+    title: list.title,
+    description,
+    alternates: { canonical: `/best/${slug}` },
+    openGraph: { title: list.title, description, url: `/best/${slug}` },
+  }
 }
 
 export default async function BestListPage({ params }: BestListPageProps) {
@@ -127,13 +145,6 @@ export default async function BestListPage({ params }: BestListPageProps) {
                               <Link href={`/products/${product.id}`} className="hover:underline">{product.name}</Link>
                             </h2>
                             <div className="flex items-center gap-3 mt-2">
-                              <div className="flex items-center gap-1">
-                                <Star className="h-4 w-4 fill-foreground text-foreground" />
-                                <span className="font-semibold text-foreground">{product.rating}</span>
-                              </div>
-                              {score && (
-                                <span className="px-2 py-0.5 bg-foreground text-background rounded text-xs font-semibold">{score}/100</span>
-                              )}
                               <span className="text-lg font-semibold text-foreground">{product.price}</span>
                             </div>
                           </div>
@@ -193,11 +204,6 @@ export default async function BestListPage({ params }: BestListPageProps) {
                           <Link href={`/products/${product.id}`} className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
                             Full Review
                           </Link>
-                          {product.tryAtChairpark && (
-                            <a href={product.chairparkUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
-                              <MapPin className="h-3.5 w-3.5" /> Try at Chairpark
-                            </a>
-                          )}
                         </div>
                       </div>
                     </div>

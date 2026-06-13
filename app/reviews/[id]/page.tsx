@@ -5,6 +5,10 @@ import { ArrowLeft, ExternalLink, Check, X } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import {
+  generateArticleSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
 
@@ -112,8 +116,27 @@ export default async function ReviewDetailPage(props: {
     profile.push(`${review.usage_hours_per_day} h/day`)
   if (review.usage_purpose) profile.push(review.usage_purpose)
 
+  const jsonLd = [
+    generateArticleSchema({
+      headline: `${product.name} review (${sourceLabel(review.source)})`,
+      description: review.summary_ko,
+      path: `/reviews/${review.id}`,
+      datePublished: review.created_at,
+      image: product.thumbnail_url,
+      authorName: sourceLabel(review.source),
+    }),
+    generateBreadcrumbSchema([
+      { name: "Reviews", url: "/reviews" },
+      { name: product.name, url: `/products/${product.slug}` },
+    ]),
+  ]
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
         <Link

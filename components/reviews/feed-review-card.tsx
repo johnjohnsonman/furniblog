@@ -1,8 +1,7 @@
 import Link from "next/link"
-import { ExternalLink, Star, Briefcase, User } from "lucide-react"
+import { Briefcase, User } from "lucide-react"
 import type { FeedReview } from "@/lib/data/reviews"
 import { SourceBadge } from "./source-badge"
-import { getReviewOverall } from "@/components/chairs/review-utils"
 import type { ProfileHighlight } from "@/lib/reviews/review-filters"
 import {
   BACK_ISSUE_LABELS,
@@ -15,30 +14,6 @@ import { cn } from "@/lib/utils"
 interface FeedReviewCardProps {
   review: FeedReview
   highlights?: ProfileHighlight
-}
-
-function StarRating({ score }: { score: number }) {
-  const rounded = Math.round(score)
-  return (
-    <div className="flex items-center gap-1.5">
-      <div className="flex">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star
-            key={i}
-            className={cn(
-              "h-3.5 w-3.5",
-              i < rounded
-                ? "fill-foreground text-foreground"
-                : "fill-muted text-muted"
-            )}
-          />
-        ))}
-      </div>
-      <span className="text-sm font-semibold text-foreground tabular-nums">
-        {score.toFixed(1)}
-      </span>
-    </div>
-  )
 }
 
 function HighlightChip({
@@ -74,7 +49,6 @@ function joinChips(chips: React.ReactNode[]) {
 }
 
 export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
-  const overall = getReviewOverall(review.scores)
   const topPros = review.pros.slice(0, 2)
   const topCons = review.cons.slice(0, 1)
 

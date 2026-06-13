@@ -9,6 +9,10 @@ import { ChairCard } from "@/components/chairs/ChairCard"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { getBrands, getProductsByBrandSlug } from "@/lib/supabase/queries"
 import { formatNewsDate, brandGradient } from "@/components/news/news-card"
+import {
+  generateArticleSchema,
+  generateBreadcrumbSchema,
+} from "@/lib/seo/schemas"
 import type { ProductView } from "@/lib/data/mappers"
 
 export const dynamic = "force-dynamic"
@@ -77,8 +81,27 @@ export default async function NewsDetailPage(props: {
   const title = news.title?.trim() || "Untitled article"
   const date = formatNewsDate(news.published_at)
 
+  const jsonLd = [
+    generateArticleSchema({
+      headline: title,
+      description: news.summary,
+      path: `/news/${news.slug}`,
+      datePublished: news.published_at,
+      image: news.image_url,
+      authorName: news.source_name ?? "Furniblog",
+    }),
+    generateBreadcrumbSchema([
+      { name: "News", url: "/news" },
+      { name: title, url: `/news/${news.slug}` },
+    ]),
+  ]
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
         <Link

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
@@ -26,6 +27,25 @@ interface BrandPageProps {
 export async function generateStaticParams() {
   const brands = await getBrandsWithCounts()
   return brands.map((brand) => ({ id: brand.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: BrandPageProps): Promise<Metadata> {
+  const { id } = await params
+  const brand = await getBrandBySlug(id)
+  if (!brand) return {}
+  const description = `${brand.name} office chairs — specs, real reviews, videos and prices. ${brand.country ? `From ${brand.country}.` : ""}`.trim()
+  return {
+    title: `${brand.name} Chairs — Reviews & Specs`,
+    description,
+    alternates: { canonical: `/brands/${brand.slug}` },
+    openGraph: {
+      title: `${brand.name} Chairs — Reviews & Specs`,
+      description,
+      url: `/brands/${brand.slug}`,
+    },
+  }
 }
 
 export default async function BrandPage({ params }: BrandPageProps) {

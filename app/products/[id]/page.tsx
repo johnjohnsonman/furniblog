@@ -153,14 +153,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   alt={product.name}
                   category={product.category}
                   className="w-full md:w-80 shrink-0"
-                  badge={
-                    product.availableInKorea ? (
-                      <div className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-foreground px-2.5 py-1 text-xs font-medium text-background">
-                        <MapPin className="h-3 w-3" />
-                        Available in Korea
-                      </div>
-                    ) : undefined
-                  }
                 />
 
                 <div className="flex-1">
@@ -266,21 +258,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   />
                 </div>
 
-                {product.tryAtChairpark && product.chairparkUrl && (
-                  <div className="p-5 bg-foreground text-background rounded-xl">
-                    <div className="flex items-center gap-2 mb-2">
-                      <MapPin className="h-4 w-4" />
-                      <span className="text-xs font-medium uppercase tracking-wider">Available in Korea</span>
-                    </div>
-                    <h3 className="font-serif text-lg font-medium mb-2">Try at Chairpark</h3>
-                    <p className="text-sm text-background/70 mb-4">
-                      Experience this chair in person at Chairpark showroom before you buy.
-                    </p>
-                    <a href={product.chairparkUrl} target="_blank" rel="noopener noreferrer" className="block w-full p-3 bg-background text-foreground rounded-lg text-center font-medium text-sm hover:bg-background/90 transition-colors">
-                      Book Showroom Visit
-                    </a>
-                  </div>
-                )}
               </div>
             </div>
           </div>

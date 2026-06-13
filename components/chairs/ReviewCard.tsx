@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import type { Review } from "@/types/review"
-import { getReviewOverall } from "./review-utils"
 import { SourceBadge } from "@/components/reviews/source-badge"
 import type { ProfileHighlight } from "@/lib/reviews/review-filters"
 import {
@@ -45,7 +44,6 @@ export function ReviewCard({
   highlights,
   showBackBadges = false,
 }: ReviewCardProps) {
-  const overall = getReviewOverall(review.scores)
   const backSentiment =
     showBackBadges || highlights?.backSentiment
       ? getBackIssueSentiment(review)
@@ -77,7 +75,6 @@ export function ReviewCard({
             Mentions back
           </span>
         )}
-        <span className="text-sm font-semibold text-foreground ml-auto">{overall}/5</span>
       </header>
 
       <p className="text-sm text-muted-foreground leading-relaxed">{review.summary}</p>

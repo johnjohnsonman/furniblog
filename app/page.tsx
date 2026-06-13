@@ -11,12 +11,13 @@ import {
   Users,
   Armchair,
   ArrowUpFromLine,
-  CheckCircle2,
+  Play,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { bestLists, getAverageScore } from "@/lib/data"
+import { NewsCard } from "@/components/news/news-card"
+import { bestLists } from "@/lib/data"
 import {
   CHAIR_CATEGORIES,
   countByChairCategory,
@@ -26,6 +27,17 @@ import {
   getFeaturedProducts,
   getProducts,
 } from "@/lib/supabase/queries"
+import {
+  getLatestReviews,
+  getLatestVideos,
+  getLatestNews,
+} from "@/lib/home/feeds"
+import {
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+} from "@/lib/seo/schemas"
+
+export const dynamic = "force-dynamic"
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   office: Briefcase,
   executive: Crown,
@@ -47,10 +59,20 @@ const HOME_BEST_LIST_IDS = [
 ] as const
 
 export default async function HomePage() {
-  const [stats, featuredProducts, allProducts] = await Promise.all([
+  const [
+    stats,
+    featuredProducts,
+    allProducts,
+    latestReviews,
+    latestVideos,
+    latestNews,
+  ] = await Promise.all([
     getSiteStats(),
     getFeaturedProducts(6),
     getProducts(),
+    getLatestReviews(9),
+    getLatestVideos(8),
+    getLatestNews(4),
   ])
   const categoryCounts = countByChairCategory(allProducts)
   const homeBestLists = bestLists.filter((list) =>
@@ -61,20 +83,29 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            generateOrganizationSchema(),
+            generateWebsiteSchema(),
+          ]),
+        }}
+      />
       <Header />
 
       <main className="flex-1">
-        <section className="py-20 lg:py-32">
+        <section className="py-10 lg:py-14">
           <div className="mx-auto max-w-3xl px-4 text-center">
-            <h1 className="font-serif text-4xl font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl text-balance">
-              Find Your Perfect Chair
+            <h1 className="font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
+              Real reviews, videos &amp; news for premium chairs
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground leading-relaxed">
-              The world&apos;s most complete database for premium seating. Real
-              specs, real reviews, real comparisons.
+            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground leading-relaxed">
+              Everything about office &amp; ergonomic chairs in one place —
+              updated daily.
             </p>
 
-            <form action="/products" className="mt-10">
+            <form action="/products" className="mt-7">
               <div className="relative max-w-xl mx-auto">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <input
@@ -139,26 +170,122 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="py-14 lg:py-16 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4">
-            <h2 className="font-serif text-2xl font-medium text-foreground mb-8">
-              Why Furniblog?
-            </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                "Real user data from 688+ in-person chair tests (Chairpark)",
-                "Specs for height, weight & posture matching",
-                "Global reviews: Reddit, YouTube, Japanese communities",
-                "Side-by-side comparison tool",
-              ].map((text) => (
-                <li key={text} className="flex gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-foreground shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground leading-relaxed">{text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {latestReviews.length > 0 && (
+          <section className="py-12 lg:py-16 border-t border-border">
+            <div className="mx-auto max-w-6xl px-4">
+              <div className="mb-6 flex items-end justify-between">
+                <h2 className="font-serif text-2xl font-medium text-foreground">
+                  Latest reviews
+                </h2>
+                <Link
+                  href="/reviews"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  View all →
+                </Link>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {latestReviews.map((r) => (
+                  <Link
+                    key={r.id}
+                    href={`/reviews/${r.id}`}
+                    className="group flex flex-col rounded-xl border border-border bg-card p-4 transition-shadow hover:shadow-md"
+                  >
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      {r.brandName && (
+                        <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
+                          {r.brandName}
+                        </span>
+                      )}
+                      <span className="truncate">{r.productName}</span>
+                    </div>
+                    <p className="mt-2 line-clamp-3 text-sm text-foreground">
+                      {r.summary}
+                    </p>
+                    <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
+                      Read full review →
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {latestVideos.length > 0 && (
+          <section className="py-12 lg:py-16 border-t border-border bg-muted/20">
+            <div className="mx-auto max-w-6xl px-4">
+              <div className="mb-6 flex items-end justify-between">
+                <h2 className="font-serif text-2xl font-medium text-foreground">
+                  New videos
+                </h2>
+                <Link
+                  href="/videos"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  View all →
+                </Link>
+              </div>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                {latestVideos.map((v) => (
+                  <a
+                    key={v.id}
+                    href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex flex-col"
+                  >
+                    <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-muted">
+                      {v.thumbnailUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={v.thumbnailUrl}
+                          alt={v.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      ) : null}
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <span className="rounded-full bg-black/55 p-2.5 backdrop-blur-sm transition-colors group-hover:bg-black/70">
+                          <Play className="h-4 w-4 fill-white text-white" />
+                        </span>
+                      </span>
+                    </div>
+                    <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">
+                      {v.title}
+                    </p>
+                    {v.brand && (
+                      <p className="text-xs text-muted-foreground">{v.brand}</p>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {latestNews.length > 0 && (
+          <section className="py-12 lg:py-16 border-t border-border">
+            <div className="mx-auto max-w-6xl px-4">
+              <div className="mb-6 flex items-end justify-between">
+                <h2 className="font-serif text-2xl font-medium text-foreground">
+                  Latest news
+                </h2>
+                <Link
+                  href="/news"
+                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  View all →
+                </Link>
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {latestNews.map((n) => (
+                  <NewsCard key={n.id} item={n} />
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="py-8 border-y border-border bg-card">
           <div className="mx-auto max-w-6xl px-4">
@@ -193,7 +320,6 @@ export default async function HomePage() {
             </div>
             <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
               {featuredProducts.map((product, index) => {
-                const score = getAverageScore(product)
                 return (
                   <Link
                     key={product.id}
@@ -218,13 +344,6 @@ export default async function HomePage() {
                           </>
                         )}
                       </div>
-                    </div>
-                    <div className="text-right hidden sm:block">
-                      <div className="flex items-center gap-1">
-                        <Star className="h-3.5 w-3.5 fill-foreground text-foreground" />
-                        <span className="font-semibold text-foreground">{product.rating}</span>
-                      </div>
-                      {score && <p className="text-xs text-muted-foreground mt-0.5">{score}/100</p>}
                     </div>
                     <div className="text-right shrink-0">
                       <p className="font-medium text-foreground">{product.price}</p>
@@ -285,50 +404,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="py-14 lg:py-16 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="p-8 bg-foreground text-background rounded-xl lg:p-10">
-              <div className="max-w-2xl">
-                <p className="text-xs font-medium uppercase tracking-wider text-background/60 mb-2">
-                  Available in Korea
-                </p>
-                <h2 className="font-serif text-2xl font-medium lg:text-3xl">Try before you buy at Chairpark</h2>
-                <p className="mt-3 text-background/70 leading-relaxed">
-                  Experience premium chairs in person at Chairpark. Compare models side by side and get expert sizing advice before you buy.
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a
-                    href="https://chairpark.co.kr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-lg bg-background px-5 py-2.5 text-sm font-medium text-foreground hover:bg-background/90 transition-colors"
-                  >
-                    Book Showroom Visit
-                    <ArrowRight className="h-4 w-4" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="py-14 lg:py-16 border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 text-center">
-            <h2 className="font-serif text-2xl font-medium text-foreground">Ready to find your perfect chair?</h2>
-            <p className="mx-auto mt-3 max-w-md text-muted-foreground">
-              Browse specs, community reviews, and head-to-head comparisons.
-            </p>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/products"
-                className="inline-flex items-center gap-2 rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background hover:bg-foreground/90 transition-colors"
-              >
-                Browse Chairs
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </section>
       </main>
 
       <Footer />

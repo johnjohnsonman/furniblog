@@ -24,17 +24,6 @@ export function SmartRecommendationBanner({
             </span>
           </>
         )}
-        {highestRated && (
-          <>
-            <br />
-            <span className="text-muted-foreground">→ Highest rated: </span>
-            <span className="font-medium">{highestRated.productName}</span>
-            <span className="text-muted-foreground">
-              {" "}
-              ({highestRated.avgRating} avg from similar users)
-            </span>
-          </>
-        )}
       </p>
     </div>
   )
