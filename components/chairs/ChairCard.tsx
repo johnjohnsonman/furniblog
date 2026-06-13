@@ -3,7 +3,6 @@ import { Armchair } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import type { ChairCategory } from "@/types/product"
 import { ChairProductImage } from "./ChairProductImage"
-import { StarRating } from "./StarRating"
 import { cn } from "@/lib/utils"
 
 const PLACEHOLDER_BG: Partial<Record<ChairCategory, string>> = {
@@ -19,10 +18,8 @@ interface ChairCardProps {
   avgScore?: number
 }
 
-export function ChairCard({ product, reviewCount, avgScore }: ChairCardProps) {
+export function ChairCard({ product, reviewCount }: ChairCardProps) {
   const displayCount = reviewCount ?? product.reviewCount ?? 0
-  const displayRating =
-    avgScore != null && avgScore > 0 ? avgScore : product.rating ?? 0
   const hasReviews = displayCount > 0
   const imageBg =
     PLACEHOLDER_BG[product.category as ChairCategory] ?? "var(--premium-cream)"
@@ -84,17 +81,10 @@ export function ChairCard({ product, reviewCount, avgScore }: ChairCardProps) {
 
         <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-premium-text-secondary">
           {hasReviews ? (
-            <>
-              <StarRating rating={displayRating} />
-              <span className="font-medium text-premium-text">
-                {displayRating.toFixed(1)}
-              </span>
-              <span className="text-premium-text-tertiary">·</span>
-              <span>
-                {displayCount.toLocaleString()}{" "}
-                {displayCount === 1 ? "review" : "reviews"}
-              </span>
-            </>
+            <span>
+              {displayCount.toLocaleString()}{" "}
+              {displayCount === 1 ? "review" : "reviews"}
+            </span>
           ) : (
             <span className="text-premium-text-tertiary">
               Be the first to review

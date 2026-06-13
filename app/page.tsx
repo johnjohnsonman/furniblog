@@ -56,9 +56,8 @@ export default async function HomePage() {
   const homeBestLists = bestLists.filter((list) =>
     HOME_BEST_LIST_IDS.includes(list.id as (typeof HOME_BEST_LIST_IDS)[number])
   )
-  const { comparisons, brands } = await import("@/lib/data")
+  const { brands } = await import("@/lib/data")
   const topBrands = brands.slice(0, 6)
-  const popularComparisons = comparisons.slice(0, 3)
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -288,41 +287,6 @@ export default async function HomePage() {
 
         <section className="py-14 lg:py-16 border-t border-border">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-6">
-              <h2 className="font-serif text-2xl font-medium text-foreground">Popular Comparisons</h2>
-              <Link href="/compare" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Compare chairs
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {popularComparisons.map((comparison) => (
-                <Link
-                  key={comparison.id}
-                  href={`/compare?products=${comparison.products.map((p) => p.id).join(",")}`}
-                  className="p-5 bg-card rounded-lg border border-border hover:border-foreground/20 transition-all"
-                >
-                  <div className="flex items-center justify-center gap-3">
-                    {comparison.products.map((p, idx) => (
-                      <div key={p.id} className="flex items-center">
-                        <div className="h-12 w-12 rounded-lg overflow-hidden bg-muted">
-                          <img src={p.image} alt={p.name} className="h-full w-full object-cover" />
-                        </div>
-                        {idx === 0 && <span className="mx-3 text-muted-foreground text-xs font-medium">vs</span>}
-                      </div>
-                    ))}
-                  </div>
-                  <h3 className="mt-4 text-center font-medium text-foreground text-sm">{comparison.title}</h3>
-                  <p className="mt-1 text-center text-xs text-muted-foreground">
-                    {comparison.views.toLocaleString()} views
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-14 lg:py-16 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4">
             <div className="p-8 bg-foreground text-background rounded-xl lg:p-10">
               <div className="max-w-2xl">
                 <p className="text-xs font-medium uppercase tracking-wider text-background/60 mb-2">
@@ -361,12 +325,6 @@ export default async function HomePage() {
               >
                 Browse Chairs
                 <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/compare"
-                className="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-              >
-                Start Comparing
               </Link>
             </div>
           </div>

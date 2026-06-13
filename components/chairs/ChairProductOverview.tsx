@@ -1,18 +1,15 @@
 import Link from "next/link"
 import { Check, X, ExternalLink } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
-import { getAverageScore } from "@/lib/data/queries"
 
 interface ChairProductOverviewProps {
   product: ProductView
   similarProducts: ProductView[]
-  avgScore: number | null
 }
 
 export function ChairProductOverview({
   product,
   similarProducts,
-  avgScore,
 }: ChairProductOverviewProps) {
   return (
     <>
@@ -76,28 +73,6 @@ export function ChairProductOverview({
         </section>
       ) : null}
 
-      {product.scores && (
-        <section className="mt-10 pt-8 border-t border-border">
-          <h2 className="font-serif text-xl font-medium text-foreground mb-6">Review Scores</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {Object.entries(product.scores).map(([key, value]) => (
-              <div key={key} className="p-4 bg-card rounded-lg border border-border">
-                <p className="text-2xl font-bold text-foreground">{value}</p>
-                <p className="text-xs text-muted-foreground mt-1 capitalize">
-                  {key.replace(/([A-Z])/g, " $1").trim()}
-                </p>
-                <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-foreground rounded-full transition-all"
-                    style={{ width: `${value}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {product.reviewSummary && (
         <section className="mt-10 pt-8 border-t border-border">
           <h2 className="font-serif text-xl font-medium text-foreground mb-4">Review Summary</h2>
@@ -109,14 +84,8 @@ export function ChairProductOverview({
 
       {similarProducts.length > 0 && (
         <section className="mt-10 pt-8 border-t border-border">
-          <div className="flex items-end justify-between mb-6">
-            <h2 className="font-serif text-xl font-medium text-foreground">Compare with Similar</h2>
-            <Link
-              href={`/compare?products=${product.id},${similarProducts.map((p) => p.id).join(",")}`}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Compare all
-            </Link>
+          <div className="mb-6">
+            <h2 className="font-serif text-xl font-medium text-foreground">Similar chairs</h2>
           </div>
           <div className="overflow-x-auto -mx-4 px-4">
             <table className="w-full border-collapse min-w-[600px]">
@@ -124,12 +93,6 @@ export function ChairProductOverview({
                 <tr className="border-b border-border">
                   <th className="text-left py-3 px-3 text-xs font-medium text-muted-foreground uppercase">
                     Product
-                  </th>
-                  <th className="text-center py-3 px-3 text-xs font-medium text-muted-foreground uppercase">
-                    Rating
-                  </th>
-                  <th className="text-center py-3 px-3 text-xs font-medium text-muted-foreground uppercase">
-                    Score
                   </th>
                   <th className="text-center py-3 px-3 text-xs font-medium text-muted-foreground uppercase">
                     Price
@@ -154,13 +117,10 @@ export function ChairProductOverview({
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-center font-semibold text-sm">{product.rating}</td>
-                  <td className="py-3 px-3 text-center font-semibold text-sm">{avgScore || "-"}</td>
                   <td className="py-3 px-3 text-center font-medium text-sm">{product.price}</td>
                   <td className="py-3 px-3 text-right text-xs text-muted-foreground">Current</td>
                 </tr>
                 {similarProducts.map((p) => {
-                  const pScore = getAverageScore(p)
                   return (
                     <tr
                       key={p.id}
@@ -179,8 +139,6 @@ export function ChairProductOverview({
                           </div>
                         </Link>
                       </td>
-                      <td className="py-3 px-3 text-center font-semibold text-sm">{p.rating}</td>
-                      <td className="py-3 px-3 text-center font-semibold text-sm">{pScore || "-"}</td>
                       <td className="py-3 px-3 text-center font-medium text-sm">{p.price}</td>
                       <td className="py-3 px-3 text-right">
                         {p.officialUrl && (

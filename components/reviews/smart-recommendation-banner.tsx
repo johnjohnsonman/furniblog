@@ -1,6 +1,3 @@
-import Link from "next/link"
-import { Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import type { FeedRecommendation } from "@/lib/reviews/feed-recommendations"
 
 interface SmartRecommendationBannerProps {
@@ -39,12 +36,6 @@ export function SmartRecommendationBanner({
           </>
         )}
       </p>
-      <Button variant="outline" size="sm" className="bg-background" asChild>
-        <Link href="/compare">
-          <Sparkles className="h-4 w-4 mr-2" />
-          Get AI chair recommendation for my profile →
-        </Link>
-      </Button>
     </div>
   )
 }

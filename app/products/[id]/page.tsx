@@ -4,7 +4,7 @@ import Link from "next/link"
 import { MapPin, Star, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { products, getAverageScore, getSimilarProducts } from "@/lib/data"
+import { products, getSimilarProducts } from "@/lib/data"
 import { getChairReviewsForProduct } from "@/lib/data/chair-reviews"
 import {
   getProductBySlug,
@@ -94,12 +94,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = getSimilarProducts(productWithLinks, 3)
-  const avgScore = getAverageScore(productWithLinks)
   const reviewCount =
     chairReviews.length > 0
       ? chairReviews.length
       : product.reviewCount ?? 0
-  const rating = product.rating ?? 0
   const galleryImages =
     product.images && product.images.length > 0
       ? product.images
@@ -174,18 +172,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                   <h1 className="font-serif text-3xl font-medium text-foreground mt-2">{product.name}</h1>
 
-                  <div className="flex items-center gap-3 mt-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xl font-bold text-foreground">{rating}</span>
-                      <div className="flex">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} className={`h-4 w-4 ${i < Math.floor(rating) ? "fill-foreground text-foreground" : "fill-muted text-muted"}`} />
-                        ))}
-                      </div>
-                    </div>
-                    <span className="text-sm text-muted-foreground">{reviewCount.toLocaleString()} reviews</span>
-                    {avgScore != null && (
-                      <span className="px-2 py-0.5 bg-foreground text-background rounded text-sm font-semibold">{avgScore}/100</span>
+                  <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
+                    <span>
+                      {reviewCount.toLocaleString()}{" "}
+                      {reviewCount === 1 ? "review" : "reviews"}
+                    </span>
+                    {productVideos.length > 0 && (
+                      <>
+                        <span>·</span>
+                        <span>
+                          {productVideos.length}{" "}
+                          {productVideos.length === 1 ? "video" : "videos"}
+                        </span>
+                      </>
                     )}
                   </div>
 
@@ -213,7 +212,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ChairProductOverview
                     product={productWithLinks}
                     similarProducts={similarProducts}
-                    avgScore={avgScore}
                   />
                 }
                 specs={<ChairProductSpecs product={productWithLinks} />}
@@ -236,11 +234,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="hidden lg:block">
               <div className="sticky top-6 space-y-6">
                 <div className="p-5 bg-card rounded-xl border border-border">
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-sm text-muted-foreground">Overall Score</span>
-                    {avgScore != null && <span className="text-2xl font-bold text-foreground">{avgScore}/100</span>}
-                  </div>
-
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Price Range</span>
@@ -288,10 +281,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </a>
                   </div>
                 )}
-
-                <Link href={`/compare?products=${product.id}`} className="flex items-center justify-center gap-2 p-3 bg-muted rounded-lg hover:bg-muted/80 transition-colors">
-                  <span className="font-medium text-sm text-foreground">Add to Compare</span>
-                </Link>
               </div>
             </div>
           </div>
@@ -300,12 +289,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="flex gap-3">
               {(buyUrls.officialUrl ?? product.officialUrl) && (
                 <a href={buyUrls.officialUrl ?? product.officialUrl} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex-1 p-3 bg-foreground text-background rounded-lg text-center font-medium text-sm">
-                  Buy Now
+                  Check price
                 </a>
               )}
-              <Link href={`/compare?products=${product.id}`} className="p-3 bg-muted rounded-lg text-foreground font-medium text-sm">
-                Compare
-              </Link>
             </div>
           </div>
 

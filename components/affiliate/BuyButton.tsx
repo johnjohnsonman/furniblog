@@ -18,9 +18,9 @@ const VARIANT_STYLES: Record<BuyButtonVariant, string> = {
 }
 
 const VARIANT_LABELS: Record<BuyButtonVariant, string> = {
-  amazon: "Buy on Amazon",
-  coupang: "Buy on Coupang",
-  official: "Official Store",
+  amazon: "Check price on Amazon",
+  coupang: "Check price on Coupang",
+  official: "Visit official store",
 }
 
 function readCountryCookie(): AffiliateCountry {
