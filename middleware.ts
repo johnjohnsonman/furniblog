@@ -1,7 +1,57 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
+// Legacy Korean WordPress content moved to the Chairpark blog. Catch-all 301 so
+// old furniblog.com URLs don't 404 once the domain points at the new site.
+const LEGACY_BLOG_HOME = "https://blog.chairpark.com/blog"
+
+// Top-level routes that belong to the new (English) Furniblog site.
+const KNOWN_ROUTES = new Set([
+  "products",
+  "reviews",
+  "news",
+  "best",
+  "brands",
+  "videos",
+  "gallery",
+  "about",
+  "contact",
+  "designers",
+  "experience",
+  "affiliate-disclosure",
+  "editorial-policy",
+  "privacy",
+  "terms",
+  "admin",
+  "api",
+  "sitemap.xml",
+  "robots.txt",
+])
+
+function isLegacyWordpressPath(pathname: string): boolean {
+  // Old WordPress category archives.
+  if (
+    pathname === "/category" ||
+    pathname.startsWith("/category/") ||
+    pathname.startsWith("/category-2/")
+  ) {
+    return true
+  }
+  // Old WordPress flat post slugs: a single path segment that isn't a known new
+  // route and isn't a file.
+  const segments = pathname.split("/").filter(Boolean)
+  if (segments.length === 1) {
+    const seg = segments[0]
+    if (!KNOWN_ROUTES.has(seg) && !seg.includes(".")) return true
+  }
+  return false
+}
+
 export function middleware(request: NextRequest) {
+  if (isLegacyWordpressPath(request.nextUrl.pathname)) {
+    return NextResponse.redirect(LEGACY_BLOG_HOME, 301)
+  }
+
   const geoCountry =
     request.headers.get("x-vercel-ip-country") ??
     (request as NextRequest & { geo?: { country?: string } }).geo?.country ??
