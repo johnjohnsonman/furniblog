@@ -1,8 +1,16 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { bestLists } from "@/lib/data"
+
+export const metadata: Metadata = {
+  title: "Best Office Chairs — Curated Lists",
+  description:
+    "Expert-curated best office chair lists — for back pain, tall people, long hours, and under budget. Specs, reviews and prices.",
+  alternates: { canonical: "/best" },
+}
 
 export default function BestListsPage() {
   return (

@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductsPageContent } from "./products-content"
@@ -9,6 +10,13 @@ import {
   getReviewCounts,
   getCategoryCounts,
 } from "@/lib/supabase/queries"
+
+export const metadata: Metadata = {
+  title: "Office & Ergonomic Chairs Database",
+  description:
+    "Browse premium office, gaming and ergonomic chairs — specs, real reviews, videos and prices, all in one place.",
+  alternates: { canonical: "/products" },
+}
 
 type ProductsPageProps = {
   searchParams: Promise<{ category?: string; search?: string }>

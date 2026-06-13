@@ -25,6 +25,59 @@ export function generateBreadcrumbSchema(
   }
 }
 
+export function generateArticleSchema(params: {
+  headline: string
+  description?: string | null
+  path: string
+  datePublished?: string | null
+  image?: string | null
+  authorName?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: params.headline,
+    ...(params.description ? { description: params.description } : {}),
+    url: `${SITE_URL}${params.path}`,
+    mainEntityOfPage: `${SITE_URL}${params.path}`,
+    ...(params.datePublished ? { datePublished: params.datePublished } : {}),
+    ...(params.image ? { image: params.image } : {}),
+    author: {
+      "@type": "Organization",
+      name: params.authorName ?? "Furniblog",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Furniblog",
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` },
+    },
+  }
+}
+
+export function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Furniblog",
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon.svg`,
+  }
+}
+
+export function generateWebsiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Furniblog",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/products?search={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  }
+}
+
 export function generateChairSchema(
   product: ProductView,
   reviews: Review[],
@@ -78,16 +131,6 @@ export function generateChairSchema(
     url: productUrl,
     sku: product.slug ?? product.id,
     category: product.categoryLabel ?? product.category,
-  }
-
-  if (product.rating > 0) {
-    schema.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount ?? reviews.length,
-      bestRating: 5,
-      worstRating: 1,
-    }
   }
 
   if (reviews.length > 0) {

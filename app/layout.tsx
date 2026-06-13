@@ -14,11 +14,46 @@ const inter = Inter({
   variable: "--font-sans"
 })
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://furniblog.vercel.app'
+
 export const metadata: Metadata = {
-  title: 'Furniblog — Premium Chair Reviews & Database',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Furniblog — Premium Chair Reviews, Videos & News',
+    template: '%s | Furniblog',
+  },
   description:
-    "The world's most comprehensive database for premium office, gaming and ergonomic chairs. Real specs, 688+ in-person reviews, global insights.",
-  generator: 'v0.app',
+    "The world's most comprehensive database for premium office, gaming and ergonomic chairs. Real specs, global reviews, videos and news — updated daily.",
+  applicationName: 'Furniblog',
+  keywords: [
+    'office chair reviews',
+    'ergonomic chair',
+    'gaming chair',
+    'Herman Miller',
+    'Steelcase',
+    'chair comparison',
+  ],
+  alternates: { canonical: '/' },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+  openGraph: {
+    type: 'website',
+    siteName: 'Furniblog',
+    title: 'Furniblog — Premium Chair Reviews, Videos & News',
+    description:
+      'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
+    url: SITE_URL,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Furniblog — Premium Chair Reviews, Videos & News',
+    description:
+      'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
+  },
   icons: {
     icon: [
       {

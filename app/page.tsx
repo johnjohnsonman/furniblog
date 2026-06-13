@@ -32,6 +32,10 @@ import {
   getLatestVideos,
   getLatestNews,
 } from "@/lib/home/feeds"
+import {
+  generateOrganizationSchema,
+  generateWebsiteSchema,
+} from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -79,6 +83,15 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            generateOrganizationSchema(),
+            generateWebsiteSchema(),
+          ]),
+        }}
+      />
       <Header />
 
       <main className="flex-1">

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight, Check, X, ExternalLink, MapPin, Star, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
@@ -12,6 +13,23 @@ interface BestListPageProps {
 
 export function generateStaticParams() {
   return bestLists.map((list) => ({ slug: list.id }))
+}
+
+export async function generateMetadata({
+  params,
+}: BestListPageProps): Promise<Metadata> {
+  const { slug } = await params
+  const list = bestLists.find((l) => l.id === slug)
+  if (!list) return {}
+  const description =
+    (list as { description?: string }).description ??
+    `${list.title} — expert-curated picks with specs, real reviews and prices.`
+  return {
+    title: list.title,
+    description,
+    alternates: { canonical: `/best/${slug}` },
+    openGraph: { title: list.title, description, url: `/best/${slug}` },
+  }
 }
 
 export default async function BestListPage({ params }: BestListPageProps) {
