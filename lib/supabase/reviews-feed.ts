@@ -185,6 +185,7 @@ function filterLocalFeed(
     search,
     sortBy = "recent",
     period = "all",
+    seed,
   } = params
 
   let list = [...all]
@@ -210,7 +211,7 @@ function filterLocalFeed(
   }
 
   if (sortBy === "random") {
-    list = seededShuffle(list, hourSeed())
+    list = seededShuffle(list, seed ?? hourSeed())
   } else if (sortBy === "rating") {
     list.sort(
       (a, b) => getOverallScore(b.scores) - getOverallScore(a.scores)
@@ -347,7 +348,7 @@ export async function getReviews(
       }
 
       if (sortBy === "random") {
-        items = seededShuffle(items, hourSeed())
+        items = seededShuffle(items, params.seed ?? hourSeed())
       } else if (sortBy === "rating") {
         items.sort(
           (a, b) => getOverallScore(b.scores) - getOverallScore(a.scores)

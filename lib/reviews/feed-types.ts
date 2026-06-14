@@ -12,6 +12,8 @@ export type GetReviewsParams = {
   search?: string
   sortBy?: ReviewFeedSort
   period?: ReviewFeedPeriod
+  /** Shuffle seed for random sort — same seed = same order (keeps pagination stable). */
+  seed?: number
 }
 
 export type ReviewFeedItem = {

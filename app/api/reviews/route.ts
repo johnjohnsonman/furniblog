@@ -15,6 +15,11 @@ export async function GET(request: NextRequest) {
     searchParams.get("sortBy") ??
     "random") as ReviewFeedSort
   const period = (searchParams.get("period") ?? "all") as ReviewFeedPeriod
+  const seedParam = searchParams.get("seed")
+  const seed =
+    seedParam !== null && Number.isFinite(Number(seedParam))
+      ? Number(seedParam)
+      : undefined
 
   try {
     const result = await getReviews({
@@ -26,6 +31,7 @@ export async function GET(request: NextRequest) {
       search,
       sortBy,
       period,
+      seed,
     })
 
     return NextResponse.json(result)

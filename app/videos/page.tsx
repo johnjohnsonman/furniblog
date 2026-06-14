@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { VideoEmbedFacade } from "@/components/videos/video-embed-facade"
 import { fetchVideoFilterOptions } from "@/lib/videos/filter-options"
+import { shuffle } from "@/lib/utils/shuffle"
 
 export const metadata = {
   title: "Chair Videos | Furniblog",
@@ -16,7 +17,7 @@ export const dynamic = "force-dynamic"
 type SearchParams = {
   brand?: string
   chair?: string
-  sort?: "latest" | "views"
+  sort?: "latest" | "views" | "random"
   page?: string
 }
 
@@ -66,7 +67,14 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
   const supabase = createPublicServerClient()
   const selectedBrand = searchParams.brand?.trim() || ""
   const selectedChairId = searchParams.chair?.trim() || ""
-  const sort = searchParams.sort === "views" ? "views" : "latest"
+  const sort =
+    searchParams.sort === "views"
+      ? "views"
+      : searchParams.sort === "latest"
+        ? "latest"
+        : "random"
+  const isRandom = sort === "random"
+  const RANDOM_POOL = 48
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1)
   const pageSize = 12
   const from = (page - 1) * pageSize
@@ -95,13 +103,22 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
     .order("view_count", { ascending: false, nullsFirst: false })
     .limit(12)
 
-  const [{ data: videosData, count }, filterOptions, { data: popularData }] =
-    await Promise.all([query.range(from, to), fetchVideoFilterOptions(supabase), popularQuery])
+  // Random: pull a wider recent pool and shuffle per request (fresh each visit);
+  // otherwise page through with a DB range.
+  const mainFetch = isRandom ? query.limit(RANDOM_POOL) : query.range(from, to)
 
-  const videos = (videosData ?? []) as VideoRow[]
+  const [{ data: videosData, count }, filterOptions, { data: popularData }] =
+    await Promise.all([mainFetch, fetchVideoFilterOptions(supabase), popularQuery])
+
+  let videos = (videosData ?? []) as VideoRow[]
+  if (isRandom) {
+    videos = shuffle(videos).slice(from, from + pageSize)
+  }
   const popular = (popularData ?? []) as VideoRow[]
   const total = count ?? 0
-  const totalPages = Math.max(1, Math.ceil(total / pageSize))
+  const totalPages = isRandom
+    ? Math.max(1, Math.ceil(Math.min(total, RANDOM_POOL) / pageSize))
+    : Math.max(1, Math.ceil(total / pageSize))
 
   const brands = filterOptions.brands
   const chairOptions = filterOptions.chairs
@@ -112,7 +129,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
     const qs = new URLSearchParams()
     if (selectedBrand) qs.set("brand", selectedBrand)
     if (selectedChairId) qs.set("chair", selectedChairId)
-    if (sort !== "latest") qs.set("sort", sort)
+    if (sort !== "random") qs.set("sort", sort)
     qs.set("page", String(nextPage))
     return `/videos?${qs.toString()}`
   }
@@ -154,6 +171,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
             Sort by
           </label>
           <select name="sort" defaultValue={sort} className={selectClass}>
+            <option value="random">Surprise me</option>
             <option value="latest">Latest</option>
             <option value="views">Most viewed</option>
           </select>

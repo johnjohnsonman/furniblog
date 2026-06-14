@@ -98,6 +98,8 @@ export function ReviewsPageClient({
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // New random order on each page load (stable across "load more" within a visit).
+  const [randomSeed] = useState(() => Math.floor(Math.random() * 2_147_483_647))
 
   const category = searchParams.get("category") ?? "all"
   const brand = searchParams.get("brand") ?? "all"
@@ -151,6 +153,7 @@ export function ReviewsPageClient({
           period,
         })
         if (search) params.set("search", search)
+        if (sort === "random") params.set("seed", String(randomSeed))
 
         const res = await fetch(`/api/reviews?${params.toString()}`)
         const data = await res.json()
@@ -171,7 +174,7 @@ export function ReviewsPageClient({
         setLoadingMore(false)
       }
     },
-    [category, brand, source, sort, period, search]
+    [category, brand, source, sort, period, search, randomSeed]
   )
 
   useEffect(() => {
