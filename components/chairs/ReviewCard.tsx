@@ -3,6 +3,7 @@
 import Link from "next/link"
 import type { Review } from "@/types/review"
 import { SourceBadge } from "@/components/reviews/source-badge"
+import { SOURCE_LABELS } from "@/components/chairs/review-utils"
 import type { ProfileHighlight } from "@/lib/reviews/review-filters"
 import {
   BACK_ISSUE_LABELS,
@@ -151,7 +152,9 @@ export function ReviewCard({
       )}
 
       <footer className="mt-4 pt-3 border-t border-border flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs text-muted-foreground">AI-generated summary</p>
+        <p className="text-xs text-muted-foreground">
+          Summarized from {SOURCE_LABELS[review.source] ?? "the original review"}
+        </p>
         <Link
           href={`/reviews/${review.id}`}
           className="inline-flex items-center gap-1 text-xs font-medium text-foreground hover:underline"

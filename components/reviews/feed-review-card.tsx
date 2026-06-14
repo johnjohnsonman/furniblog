@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Briefcase, User } from "lucide-react"
 import type { FeedReview } from "@/lib/data/reviews"
 import { SourceBadge } from "./source-badge"
+import { SOURCE_LABELS } from "@/components/chairs/review-utils"
 import type { ProfileHighlight } from "@/lib/reviews/review-filters"
 import {
   BACK_ISSUE_LABELS,
@@ -183,7 +184,7 @@ export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
           Read full review →
         </Link>
         <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
-          AI summary
+          Summarized from {SOURCE_LABELS[review.source] ?? "the original review"}
         </p>
       </footer>
     </article>

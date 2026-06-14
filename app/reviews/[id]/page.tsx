@@ -93,7 +93,7 @@ export async function generateMetadata(props: {
     title: `${name} review (${sourceLabel(review.source)}) | Furniblog`,
     description:
       review.summary_ko?.trim().slice(0, 160) ||
-      `A user review of the ${name} office chair, summarized by Furniblog.`,
+      `A user review of the ${name} office chair, with a link to the original.`,
   }
 }
 
@@ -166,7 +166,7 @@ export default async function ReviewDetailPage(props: {
           review
         </h1>
 
-        {/* AI summary */}
+        {/* Summary (links out to the original below) */}
         {review.summary_ko?.trim() ? (
           <p className="mt-6 text-lg leading-relaxed text-foreground">
             {review.summary_ko.trim()}

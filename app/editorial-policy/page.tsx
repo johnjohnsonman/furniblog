@@ -37,6 +37,11 @@ export default function EditorialPolicyPage() {
               Every product we review is tested by our team of ergonomics experts. We evaluate products across six key criteria: Comfort, Ergonomics, Build Quality, Design, Value, and Long-Hour Use. Each score is based on objective measurements and hands-on testing.
             </p>
             
+            <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Summaries &amp; Sources</h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Many review summaries on Furniblog condense real, publicly available reviews and videos so you can scan them quickly. These summaries are produced with AI assistance and reviewed by our team, and every one links back to its original source so you can read it in full. The opinions in a summary belong to the original author, not to Furniblog.
+            </p>
+
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Updates</h2>
             <p className="text-muted-foreground leading-relaxed">
               We regularly update our content to reflect product changes, new releases, and updated pricing. Articles are marked with their last update date.

@@ -9,7 +9,7 @@ import { shuffle } from "@/lib/utils/shuffle"
 export const metadata = {
   title: "Chair Videos | Furniblog",
   description:
-    "Browse curated chair videos with AI summaries, including model links, channel details, and viewing stats.",
+    "Browse curated chair videos with concise summaries, model links, channel details, and viewing stats.",
 }
 
 export const dynamic = "force-dynamic"
