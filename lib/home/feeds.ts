@@ -1,5 +1,12 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import { shuffle } from "@/lib/utils/shuffle"
 import type { NewsItem } from "@/components/news/news-card"
+
+// Pull a wider recent pool, then show a random slice so the homepage feels
+// fresh on each visit (homepage is force-dynamic, so this reshuffles per load).
+function poolSize(limit: number): number {
+  return Math.min(60, Math.max(limit * 6, limit))
+}
 
 export type HomeReview = {
   id: string
@@ -47,9 +54,9 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
       .from("reviews")
       .select("id, summary_ko, source, products!inner(slug, name, brands(name))")
       .order("created_at", { ascending: false })
-      .limit(limit)
+      .limit(poolSize(limit))
 
-    return (data ?? [])
+    const items = (data ?? [])
       .map((row): HomeReview | null => {
         const product = first(row.products as ProductRel)
         if (!product?.slug || !product?.name) return null
@@ -63,6 +70,7 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
         }
       })
       .filter((r): r is HomeReview => r !== null)
+    return shuffle(items).slice(0, limit)
   } catch {
     return []
   }
@@ -78,9 +86,9 @@ export async function getLatestVideos(limit = 8): Promise<HomeVideo[]> {
       .select("id, youtube_id, title, thumbnail_url, brand, products(slug, name)")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(limit)
+      .limit(poolSize(limit))
 
-    return (data ?? [])
+    const items = (data ?? [])
       .map((row): HomeVideo | null => {
         const youtubeId = row.youtube_id as string | null
         if (!youtubeId) return null
@@ -96,6 +104,7 @@ export async function getLatestVideos(limit = 8): Promise<HomeVideo[]> {
         }
       })
       .filter((v): v is HomeVideo => v !== null)
+    return shuffle(items).slice(0, limit)
   } catch {
     return []
   }
