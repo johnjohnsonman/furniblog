@@ -8,6 +8,33 @@ export const AFFILIATE_LINKS_DATA: Record<
     priceKrw?: number
   }>
 > = {
+  // Direct Amazon product (ASIN) links for chairs actually buyable on Amazon.
+  // No tag here — buildAffiliateUrl injects NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG at
+  // render time. ASINs verified June 2026; refresh periodically.
+  "sihoo-doro-c300": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0C3T865C2", isOfficial: false }],
+  "sihoo-m18": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07GNDDNMW", isOfficial: false }],
+  "nouhaus-ergo3d": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07L4ZQMDX", isOfficial: false }],
+  "hbada-p5": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0BWDQX8RH", isOfficial: false }],
+  "flexispot-c7": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0DPQQ2L22", isOfficial: false }],
+  "ticova-ergonomic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B08LBJXVSP", isOfficial: false }],
+  "branch-ergonomic-chair": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0C15B3HN1", isOfficial: false }],
+  "branch-verve": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0C15BD9XV", isOfficial: false }],
+  "gabrylly-ergonomic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07Y8BXBX8", isOfficial: false }],
+  "mimoglad-high-back": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B09N93L2RQ", isOfficial: false }],
+  "hon-ignition-2": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07ZGFPQNW", isOfficial: false }],
+  "duramont-ergonomic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0797HZ8W1", isOfficial: false }],
+  "sweetcrispy-high-back-mesh": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CSK1LN4M", isOfficial: false }],
+  "modway-articulate": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B006IY89ZA", isOfficial: false }],
+  "bestoffice-mesh-task": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0147WIC7E", isOfficial: false }],
+  "razer-iskur-v2": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CPH72BMN", isOfficial: false }],
+  "razer-iskur-v2-x": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0DP5SY554", isOfficial: false }],
+  "razer-enki": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CGGT138N", isOfficial: false }],
+  "corsair-tc100-relaxed": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0BN6RRD5V", isOfficial: false }],
+  "gtracing-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0F2J176C2", isOfficial: false }],
+  "homall-racing": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07TXNYS5J", isOfficial: false }],
+  "furmax-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01LXXM5EK", isOfficial: false }],
+  "dowinx-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07VXPWCN8", isOfficial: false }],
+  "serta-fairbanks": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00AVUQQES", isOfficial: false }],
   "herman-miller-aeron-b": [
     {
       retailer: "Herman Miller Official",
@@ -187,7 +214,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+series+1",
+      url: "https://www.amazon.com/dp/B08M42B334",
       isOfficial: false,
       priceUsd: 649,
     },
@@ -601,7 +628,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=autonomous+ergochair+pro",
+      url: "https://www.amazon.com/dp/B0FL2F3W34",
       isOfficial: false,
       priceUsd: 449,
     },

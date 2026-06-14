@@ -12,13 +12,13 @@ import {
 type BuyButtonVariant = "amazon" | "coupang" | "official"
 
 const VARIANT_STYLES: Record<BuyButtonVariant, string> = {
-  amazon: "bg-[#FF9900] hover:bg-[#e88b00] text-white",
+  amazon: "bg-foreground hover:bg-foreground/90 text-background",
   coupang: "bg-[#C0392B] hover:bg-[#a93226] text-white",
-  official: "bg-foreground hover:bg-foreground/90 text-background",
+  official: "border border-border bg-background hover:bg-muted text-foreground",
 }
 
 const VARIANT_LABELS: Record<BuyButtonVariant, string> = {
-  amazon: "Check price on Amazon",
+  amazon: "View details & price",
   coupang: "Check price on Coupang",
   official: "Visit official store",
 }

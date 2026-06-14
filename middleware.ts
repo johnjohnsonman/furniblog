@@ -49,6 +49,11 @@ function isLegacyWordpressPath(pathname: string): boolean {
 }
 
 export function middleware(request: NextRequest) {
+  // Retired standalone money page — its chairs are now regular products.
+  if (request.nextUrl.pathname === "/amazon-picks") {
+    return NextResponse.redirect(new URL("/products", request.url), 308)
+  }
+
   if (isLegacyWordpressPath(request.nextUrl.pathname)) {
     return NextResponse.redirect(LEGACY_BLOG_HOME, 301)
   }
