@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { ADMIN_COOKIE, verifyAdminToken } from "@/lib/admin/auth"
 
 // First-party pageview logging (no Google Analytics). Fired by a small client
 // beacon on every route change. Visitor identity is a first-party cookie only.
@@ -18,6 +19,12 @@ export async function POST(request: NextRequest) {
   const ua = request.headers.get("user-agent") ?? ""
   if (BOT_RE.test(ua)) {
     return NextResponse.json({ ok: true, bot: true })
+  }
+
+  // Don't count the site owner's own browsing — anyone with a valid admin
+  // session cookie is excluded (no IP needed).
+  if (verifyAdminToken(request.cookies.get(ADMIN_COOKIE)?.value)) {
+    return NextResponse.json({ ok: true, owner: true })
   }
 
   let body: { path?: string; referrer?: string | null }
