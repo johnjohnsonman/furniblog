@@ -39,6 +39,20 @@ export default function BestListsPage() {
 
         {/* Lists */}
         <div className="mx-auto max-w-5xl px-4 pb-16">
+          <Link
+            href="/best/best-chairs-to-buy"
+            className="mb-4 block rounded-xl border border-foreground/15 bg-card p-6 transition-all hover:border-foreground/30"
+          >
+            <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Editor&apos;s pick
+            </span>
+            <h2 className="mt-1 font-serif text-xl font-medium text-foreground">
+              Best Office &amp; Gaming Chairs You Can Buy Online
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Budget to premium — the ergonomic chairs you can actually buy today, with specs and prices.
+            </p>
+          </Link>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {bestLists.map((list) => (
               <Link key={list.id} href={`/best/${list.id}`} className="p-6 bg-card rounded-xl border border-border hover:border-foreground/20 transition-all">

@@ -42,6 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/news", now, "daily", 0.8),
     url("/brands", now, "weekly", 0.7),
     url("/best", now, "weekly", 0.8),
+    url("/best/best-chairs-to-buy", now, "weekly", 0.9),
     url("/designers", now, "monthly", 0.5),
     url("/gallery", now, "monthly", 0.5),
     url("/about", now, "yearly", 0.3),
