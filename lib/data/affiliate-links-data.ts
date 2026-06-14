@@ -11,6 +11,11 @@ export const AFFILIATE_LINKS_DATA: Record<
   // Direct Amazon product (ASIN) links for chairs actually buyable on Amazon.
   // No tag here — buildAffiliateUrl injects NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG at
   // render time. ASINs verified June 2026; refresh periodically.
+  "ergohuman-elite": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B003Y5BF7A", isOfficial: false }],
+  "ergohuman-classic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B002LK1YNO", isOfficial: false }],
+  "duorest-alpha": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07Y3X1H5J", isOfficial: false }],
+  "duorest-gold-plus": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07Y3Y13HN", isOfficial: false }],
+  "sidiz-t50": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B083FBN9BH", isOfficial: false }],
   "sihoo-doro-c300": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0C3T865C2", isOfficial: false }],
   "sihoo-m18": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07GNDDNMW", isOfficial: false }],
   "nouhaus-ergo3d": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07L4ZQMDX", isOfficial: false }],
