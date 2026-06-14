@@ -30,15 +30,23 @@ export async function GET(request: NextRequest) {
   const startOfMonth = new Date(now)
   startOfMonth.setDate(now.getDate() - 30)
 
-  const { data, error } = await supabase
-    .from("affiliate_clicks")
-    .select("product_id, retailer_name, country, clicked_at, products(slug, name)")
-    .gte("clicked_at", startOfMonth.toISOString())
-    .order("clicked_at", { ascending: false })
+  const [clicksRes, trafficRes] = await Promise.all([
+    supabase
+      .from("affiliate_clicks")
+      .select("product_id, retailer_name, country, clicked_at, products(slug, name)")
+      .gte("clicked_at", startOfMonth.toISOString())
+      .order("clicked_at", { ascending: false }),
+    supabase.rpc("get_traffic_stats"),
+  ])
+
+  const { data, error } = clicksRes
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
+
+  // First-party site traffic (null if the migration has not run / no data yet).
+  const visitors = trafficRes.error ? null : trafficRes.data
 
   const rows = (data ?? []) as ClickRow[]
 
@@ -84,5 +92,6 @@ export async function GET(request: NextRequest) {
     topProducts,
     byRetailer: Object.fromEntries(retailerCounts),
     byCountry: Object.fromEntries(countryCounts),
+    visitors,
   })
 }

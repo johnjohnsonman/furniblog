@@ -4,6 +4,18 @@ import { useCallback, useEffect, useState } from "react"
 import { Loader2, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
+type TrafficStats = {
+  pv_today: number
+  pv_week: number
+  pv_month: number
+  uv_today: number
+  uv_week: number
+  uv_month: number
+  top_pages: { path: string; views: number }[]
+  top_referrers: { referrer: string; views: number }[]
+  by_country: { country: string; views: number }[]
+}
+
 type AnalyticsData = {
   today: number
   week: number
@@ -11,6 +23,7 @@ type AnalyticsData = {
   topProducts: { slug: string; name: string; count: number }[]
   byRetailer: Record<string, number>
   byCountry: Record<string, number>
+  visitors: TrafficStats | null
 }
 
 export default function AdminAnalyticsPage() {
@@ -57,6 +70,83 @@ export default function AdminAnalyticsPage() {
 
       {data && (
         <>
+          {/* ---- Site traffic (first-party pageviews) ---- */}
+          <h2 className="text-lg font-medium mb-4">Site traffic</h2>
+          {data.visitors ? (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+                {[
+                  { label: "Visitors today", value: data.visitors.uv_today, sub: `${data.visitors.pv_today} views` },
+                  { label: "Visitors · 7 days", value: data.visitors.uv_week, sub: `${data.visitors.pv_week} views` },
+                  { label: "Visitors · 30 days", value: data.visitors.uv_month, sub: `${data.visitors.pv_month} views` },
+                ].map((stat) => (
+                  <div
+                    key={stat.label}
+                    className="p-5 bg-card rounded-xl border border-border text-center"
+                  >
+                    <p className="text-3xl font-semibold">{stat.value}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{stat.label}</p>
+                    <p className="text-xs text-muted-foreground/70 mt-0.5">{stat.sub}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-12">
+                <section>
+                  <h3 className="text-sm font-medium mb-3 text-muted-foreground">Top pages (7d)</h3>
+                  <ul className="space-y-1.5 text-sm">
+                    {data.visitors.top_pages.length === 0 ? (
+                      <li className="text-muted-foreground">No data yet.</li>
+                    ) : (
+                      data.visitors.top_pages.map((p) => (
+                        <li key={p.path} className="flex justify-between gap-2 py-1.5 border-b border-border">
+                          <span className="truncate font-mono text-xs">{p.path}</span>
+                          <span className="font-medium shrink-0">{p.views}</span>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </section>
+                <section>
+                  <h3 className="text-sm font-medium mb-3 text-muted-foreground">Top referrers (7d)</h3>
+                  <ul className="space-y-1.5 text-sm">
+                    {data.visitors.top_referrers.length === 0 ? (
+                      <li className="text-muted-foreground">No data yet.</li>
+                    ) : (
+                      data.visitors.top_referrers.map((r) => (
+                        <li key={r.referrer} className="flex justify-between gap-2 py-1.5 border-b border-border">
+                          <span className="truncate">{r.referrer}</span>
+                          <span className="font-medium shrink-0">{r.views}</span>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </section>
+                <section>
+                  <h3 className="text-sm font-medium mb-3 text-muted-foreground">Visitors by country (7d)</h3>
+                  <ul className="space-y-1.5 text-sm">
+                    {data.visitors.by_country.length === 0 ? (
+                      <li className="text-muted-foreground">No data yet.</li>
+                    ) : (
+                      data.visitors.by_country.map((c) => (
+                        <li key={c.country} className="flex justify-between gap-2 py-1.5 border-b border-border">
+                          <span>{c.country}</span>
+                          <span className="font-medium shrink-0">{c.views}</span>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </section>
+              </div>
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground mb-12">
+              No traffic recorded yet — data appears once visitors browse the live site.
+            </p>
+          )}
+
+          {/* ---- Affiliate clicks ---- */}
+          <h2 className="text-lg font-medium mb-4">Affiliate clicks</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
             {[
               { label: "Today", value: data.today },

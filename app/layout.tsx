@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { PageviewTracker } from '@/components/analytics/PageviewTracker'
 import './globals.css'
 
 const playfair = Playfair_Display({ 
@@ -92,6 +93,7 @@ export default function RootLayout({
           />
         )}
         {children}
+        <PageviewTracker />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
