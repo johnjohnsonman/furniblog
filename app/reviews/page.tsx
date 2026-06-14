@@ -5,6 +5,7 @@ import { ReviewsTabbedClient } from "@/components/reviews/reviews-tabbed-client"
 import { ReviewsFeedSkeleton } from "@/components/reviews/reviews-feed-skeleton"
 import { getBrands, getReviewsFeedMeta } from "@/lib/supabase/queries"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import { shuffle } from "@/lib/utils/shuffle"
 import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
 export const metadata = {
@@ -59,7 +60,7 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
 
     if (error || !data) return []
 
-    return (data as SessionRow[]).map((row) => ({
+    const cards = (data as SessionRow[]).map((row) => ({
       id: row.id,
       createdAt: row.created_at,
       sex: row.sex,
@@ -86,6 +87,7 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
         )
         .sort((a, b) => a.rank - b.rank),
     }))
+    return shuffle(cards)
   } catch {
     return []
   }

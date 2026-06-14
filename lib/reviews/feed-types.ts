@@ -1,6 +1,6 @@
 import type { ReviewSource, ChairScores, FurnitureScores } from "@/types/review"
 
-export type ReviewFeedSort = "recent" | "rating" | "relevance"
+export type ReviewFeedSort = "recent" | "rating" | "relevance" | "random"
 export type ReviewFeedPeriod = "all" | "week" | "month" | "year"
 
 export type GetReviewsParams = {

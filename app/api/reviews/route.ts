@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const search = searchParams.get("search") ?? ""
   const sortBy = (searchParams.get("sort") ??
     searchParams.get("sortBy") ??
-    "recent") as ReviewFeedSort
+    "random") as ReviewFeedSort
   const period = (searchParams.get("period") ?? "all") as ReviewFeedPeriod
 
   try {

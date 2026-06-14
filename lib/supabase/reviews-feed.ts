@@ -12,6 +12,7 @@ import type {
 } from "@/lib/reviews/feed-types"
 import { createPublicServerClient } from "./public-server"
 import type { Review } from "@/types/review"
+import { seededShuffle, hourSeed } from "@/lib/utils/shuffle"
 
 function isSupabaseConfigured(): boolean {
   return Boolean(
@@ -208,7 +209,9 @@ function filterLocalFeed(
     list = list.filter((r) => matchesSearch(r, search.trim()))
   }
 
-  if (sortBy === "rating") {
+  if (sortBy === "random") {
+    list = seededShuffle(list, hourSeed())
+  } else if (sortBy === "rating") {
     list.sort(
       (a, b) => getOverallScore(b.scores) - getOverallScore(a.scores)
     )
@@ -328,6 +331,7 @@ export async function getReviews(
 
     const needsWideFetch =
       sortBy === "rating" ||
+      sortBy === "random" ||
       (sortBy === "relevance" && Boolean(searchTerm)) ||
       (searchTerm.length > 0 && nameSearchIds.length > 0)
 
@@ -342,7 +346,9 @@ export async function getReviews(
         items = items.filter((r) => matchesSearch(r, searchTerm))
       }
 
-      if (sortBy === "rating") {
+      if (sortBy === "random") {
+        items = seededShuffle(items, hourSeed())
+      } else if (sortBy === "rating") {
         items.sort(
           (a, b) => getOverallScore(b.scores) - getOverallScore(a.scores)
         )

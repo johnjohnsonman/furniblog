@@ -43,6 +43,7 @@ const SOURCE_OPTIONS = [
 ] as const
 
 const SORT_OPTIONS = [
+  { label: "Surprise me", value: "random" },
   { label: "Most Recent", value: "recent" },
   { label: "Highest Rated", value: "rating" },
   { label: "Most Relevant", value: "relevance" },
@@ -74,7 +75,7 @@ function buildQueryString(params: {
   if (params.category !== "all") q.set("category", params.category)
   if (params.brand !== "all") q.set("brand", params.brand)
   if (params.source !== "all") q.set("source", params.source)
-  if (params.sort !== "recent") q.set("sort", params.sort)
+  if (params.sort !== "random") q.set("sort", params.sort)
   if (params.period !== "all") q.set("period", params.period)
   return q.toString()
 }
@@ -101,7 +102,7 @@ export function ReviewsPageClient({
   const category = searchParams.get("category") ?? "all"
   const brand = searchParams.get("brand") ?? "all"
   const source = searchParams.get("source") ?? "all"
-  const sort = searchParams.get("sort") ?? "recent"
+  const sort = searchParams.get("sort") ?? "random"
   const period = searchParams.get("period") ?? "all"
   const search = searchParams.get("search") ?? ""
 
