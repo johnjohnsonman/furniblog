@@ -6,6 +6,12 @@ import { ReviewsFeedSkeleton } from "@/components/reviews/reviews-feed-skeleton"
 import { getBrands, getReviewsFeedMeta } from "@/lib/supabase/queries"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { shuffle } from "@/lib/utils/shuffle"
+import {
+  canonicalJob,
+  canonicalPain,
+  canonicalReason,
+  normalizeList,
+} from "@/lib/reviews/normalize"
 import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
 export const metadata = {
@@ -69,10 +75,10 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
       heightBand: row.height_band,
       body: row.body,
       ageBand: row.age_band,
-      job: row.job,
+      job: canonicalJob(row.job),
       sitHours: row.sit_hours,
-      pain: row.pain ?? [],
-      reasons: row.reasons ?? [],
+      pain: normalizeList(row.pain, canonicalPain),
+      reasons: normalizeList(row.reasons, canonicalReason),
       comment: row.comment,
       rankings: (row.review_rankings ?? [])
         .map((r) => {

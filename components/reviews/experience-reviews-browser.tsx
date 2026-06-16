@@ -28,6 +28,12 @@ const SIT_LABELS: Record<string, string> = {
 
 const EMPTY: Record<FacetKey, string[]> = { age: [], job: [], sit: [], pain: [] }
 
+// Keep catch-all buckets at the end of a facet row.
+const SINK = new Set(["Other", "None"])
+function facetSort(a: string, b: string) {
+  return (SINK.has(a) ? 1 : 0) - (SINK.has(b) ? 1 : 0) || a.localeCompare(b)
+}
+
 /**
  * "Find reviews from people like you" — tap age / job / sitting-time / pain
  * chips to filter the experience reviews to reviewers who match. Chips within a
@@ -61,8 +67,8 @@ export function ExperienceReviewsBrowser({
         value: s,
         label: SIT_LABELS[s],
       })),
-      job: [...jobs].sort().map((j) => ({ value: j, label: j })),
-      pain: [...pains].sort().map((p) => ({ value: p, label: p })),
+      job: [...jobs].sort(facetSort).map((j) => ({ value: j, label: j })),
+      pain: [...pains].sort(facetSort).map((p) => ({ value: p, label: p })),
     }
   }, [items])
 
