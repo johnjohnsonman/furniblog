@@ -20,7 +20,27 @@ import type {
   UseCase,
 } from "@/lib/recommend/engine"
 
-const ACCENT = "#f0a830"
+// A curated, harmonious palette — the accent shifts hue as you move through
+// the journey (warm → cool), giving the experience colour and momentum.
+const THEME = {
+  intro: "#F6B17A", // apricot
+  use: "#F6B17A", // apricot
+  budget: "#7FD8BE", // mint
+  body: "#9BA7F4", // periwinkle
+  hours: "#F58C7B", // coral
+  pain: "#E58FB0", // rose
+  material: "#E0B15C", // gold
+  style: "#B79BE8", // lavender
+  priorities: "#6FC5E8", // sky
+  analyzing: "#F6B17A",
+  results: "#7FD8BE",
+} as const
+
+function hexToTriplet(hex: string): string {
+  const h = hex.replace("#", "")
+  const n = parseInt(h, 16)
+  return `${(n >> 16) & 255} ${(n >> 8) & 255} ${n & 255}`
+}
 
 // ---- option data (values must match the engine) ----
 const USE: { v: UseCase; t: string; d: string }[] = [
@@ -133,12 +153,20 @@ export function Quiz() {
     })
   }
 
+  const accent = THEME[step] ?? THEME.intro
+  const accentRgb = hexToTriplet(accent)
+
   return (
-    <div className="relative min-h-[100dvh] overflow-hidden bg-[#0b0a08] text-[#f4efe6]">
-      {/* ambient cinematic glow */}
+    <div
+      className="relative min-h-[100dvh] overflow-hidden bg-[#0a0a0f] text-[#f4efe6]"
+      style={{ ["--accent"]: accentRgb } as React.CSSProperties}
+    >
+      <Aurora />
+      <CursorGlow />
+      {/* step accent glow — morphs hue per step */}
       <div
-        className="pointer-events-none absolute left-1/2 top-0 h-[60vh] w-[120vw] -translate-x-1/2 rounded-full opacity-[0.10] blur-[120px]"
-        style={{ background: ACCENT }}
+        className="pointer-events-none absolute left-1/2 top-[-12%] h-[62vh] w-[130vw] -translate-x-1/2 rounded-full opacity-[0.16] blur-[130px] transition-[background] duration-700"
+        style={{ background: "rgb(var(--accent))" }}
       />
 
       {/* top chrome: back + progress */}
@@ -164,7 +192,7 @@ export function Quiz() {
                 animate={{
                   width: i === qIndex ? 26 : 7,
                   backgroundColor:
-                    i <= qIndex ? ACCENT : "rgba(255,255,255,0.18)",
+                    i <= qIndex ? accent : "rgba(255,255,255,0.18)",
                 }}
                 transition={{ duration: 0.4 }}
               />
@@ -182,18 +210,19 @@ export function Quiz() {
           transition={stepTransition}
           className="relative z-10 mx-auto flex min-h-[calc(100dvh-72px)] w-full max-w-5xl flex-col items-center justify-center px-6 pb-16"
         >
-          {step === "intro" && <Intro onStart={next} />}
+          {step === "intro" && <Intro onStart={next} accent={accent} />}
 
           {step === "use" && (
             <Question title="Where will you spend your hours?" hint="Pick the closest fit.">
               <div className="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {USE.map((o) => (
+                {USE.map((o, i) => (
                   <TiltCard
                     key={o.v}
                     active={answers.useCase === o.v}
                     onClick={() => choose("useCase", o.v)}
                     title={o.t}
                     desc={o.d}
+                    index={i}
                   />
                 ))}
               </div>
@@ -203,13 +232,14 @@ export function Quiz() {
           {step === "budget" && (
             <Question title="What's your budget?" hint="We'll keep value picks in the mix.">
               <div className="flex w-full max-w-2xl flex-col gap-3 sm:flex-row">
-                {BUDGET.map((o) => (
+                {BUDGET.map((o, i) => (
                   <Segment
                     key={o.v}
                     active={answers.budget === o.v}
                     onClick={() => choose("budget", o.v)}
                     big={o.t}
                     desc={o.d}
+                    index={i}
                   />
                 ))}
               </div>
@@ -253,13 +283,14 @@ export function Quiz() {
           {step === "hours" && (
             <Question title="How long do you sit each day?">
               <div className="grid w-full max-w-2xl gap-3">
-                {HOURS.map((o) => (
+                {HOURS.map((o, i) => (
                   <Row
                     key={o.v}
                     active={answers.sitHours === o.v}
                     onClick={() => choose("sitHours", o.v)}
                     title={o.t}
                     desc={o.d}
+                    index={i}
                   />
                 ))}
               </div>
@@ -274,6 +305,7 @@ export function Quiz() {
               <BodyMap
                 selected={answers.pain ?? []}
                 onToggle={(id) => toggleArray("pain", id)}
+                accent={accent}
               />
               <ContinueBar
                 onContinue={() => {
@@ -288,7 +320,7 @@ export function Quiz() {
           {step === "material" && (
             <Question title="Preferred feel?" hint="The surface against your back.">
               <div className="grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
-                {MATERIALS.map((o) => (
+                {MATERIALS.map((o, i) => (
                   <Swatch
                     key={o.v}
                     active={answers.material === o.v}
@@ -296,6 +328,7 @@ export function Quiz() {
                     title={o.t}
                     desc={o.d}
                     bg={o.bg}
+                    index={i}
                   />
                 ))}
               </div>
@@ -305,7 +338,7 @@ export function Quiz() {
           {step === "style" && (
             <Question title="What's your taste?">
               <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-                {STYLE.map((o) => (
+                {STYLE.map((o, i) => (
                   <TiltCard
                     key={o.v}
                     active={answers.style === o.v}
@@ -313,6 +346,7 @@ export function Quiz() {
                     title={o.t}
                     desc={o.d}
                     compact
+                    index={i}
                   />
                 ))}
               </div>
@@ -348,6 +382,7 @@ export function Quiz() {
 
           {step === "analyzing" && (
             <Analyzing
+              accent={accent}
               answers={{ ...answers, seed }}
               onDone={(r) => {
                 setResults(r)
@@ -362,6 +397,7 @@ export function Quiz() {
 
           {step === "results" && (
             <Results
+              accent={accent}
               results={results}
               error={error}
               onRestart={() => {
@@ -380,7 +416,7 @@ export function Quiz() {
 
 /* ---------------- pieces ---------------- */
 
-function Intro({ onStart }: { onStart: () => void }) {
+function Intro({ onStart, accent }: { onStart: () => void; accent: string }) {
   return (
     <div className="flex flex-col items-center text-center">
       <motion.svg
@@ -401,7 +437,7 @@ function Intro({ onStart }: { onStart: () => void }) {
             key={i}
             d={d}
             fill="none"
-            stroke={ACCENT}
+            stroke={accent}
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -444,7 +480,7 @@ function Intro({ onStart }: { onStart: () => void }) {
         <Magnetic>
           <button
             onClick={onStart}
-            className="group inline-flex items-center gap-2 rounded-full bg-[#f0a830] px-8 py-4 text-base font-medium text-[#1a1206] transition-transform hover:scale-[1.02]"
+            className="group inline-flex items-center gap-2 rounded-full bg-[rgb(var(--accent))] px-8 py-4 text-base font-medium text-[#1a1206] transition-transform hover:scale-[1.02]"
           >
             Begin
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -486,12 +522,14 @@ function TiltCard({
   title,
   desc,
   compact,
+  index = 0,
 }: {
   active: boolean
   onClick: () => void
   title: string
   desc: string
   compact?: boolean
+  index?: number
 }) {
   const rx = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 })
   const ry = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 })
@@ -510,13 +548,16 @@ function TiltCard({
         rx.set(0)
         ry.set(0)
       }}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       style={{ rotateX: rx, rotateY: ry, transformPerspective: 700 }}
       whileTap={{ scale: 0.97 }}
       className={`flex flex-col items-start rounded-2xl border p-5 text-left transition-colors ${
         compact ? "min-h-[96px]" : "min-h-[120px]"
       } ${
         active
-          ? "border-[#f0a830] bg-[#f0a830]/10"
+          ? "border-[rgb(var(--accent))] bg-[rgb(var(--accent))]/10"
           : "border-white/10 bg-white/[0.03] hover:border-white/25"
       }`}
     >
@@ -531,24 +572,29 @@ function Segment({
   onClick,
   big,
   desc,
+  index = 0,
 }: {
   active: boolean
   onClick: () => void
   big: string
   desc: string
+  index?: number
 }) {
   return (
     <motion.button
       onClick={onClick}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.06, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -4 }}
       whileTap={{ scale: 0.97 }}
       className={`flex flex-1 flex-col items-center gap-1 rounded-2xl border px-5 py-6 transition-colors ${
         active
-          ? "border-[#f0a830] bg-[#f0a830]/10"
+          ? "border-[rgb(var(--accent))] bg-[rgb(var(--accent))]/10"
           : "border-white/10 bg-white/[0.03] hover:border-white/25"
       }`}
     >
-      <span className="font-serif text-2xl font-medium text-[#f0a830]">{big}</span>
+      <span className="font-serif text-2xl font-medium text-[rgb(var(--accent))]">{big}</span>
       <span className="text-center text-xs text-white/50">{desc}</span>
     </motion.button>
   )
@@ -559,20 +605,25 @@ function Row({
   onClick,
   title,
   desc,
+  index = 0,
 }: {
   active: boolean
   onClick: () => void
   title: string
   desc: string
+  index?: number
 }) {
   return (
     <motion.button
       onClick={onClick}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.06, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ x: 4 }}
       whileTap={{ scale: 0.98 }}
       className={`flex items-center justify-between rounded-2xl border px-6 py-5 text-left transition-colors ${
         active
-          ? "border-[#f0a830] bg-[#f0a830]/10"
+          ? "border-[rgb(var(--accent))] bg-[rgb(var(--accent))]/10"
           : "border-white/10 bg-white/[0.03] hover:border-white/25"
       }`}
     >
@@ -602,7 +653,7 @@ function Chip({
       animate={active ? { scale: 1.04 } : { scale: 1 }}
       className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-colors ${
         active
-          ? "border-[#f0a830] bg-[#f0a830] text-[#1a1206]"
+          ? "border-[rgb(var(--accent))] bg-[rgb(var(--accent))] text-[#1a1206]"
           : disabled
             ? "cursor-not-allowed border-white/5 bg-white/[0.02] text-white/25"
             : "border-white/15 bg-white/[0.03] text-white/80 hover:border-white/35"
@@ -639,7 +690,7 @@ function Slider({
           key={value}
           initial={{ scale: 1.12 }}
           animate={{ scale: 1 }}
-          className="font-serif text-3xl font-medium text-[#f0a830]"
+          className="font-serif text-3xl font-medium text-[rgb(var(--accent))]"
         >
           {value}
           <span className="ml-1 text-base text-white/40">{unit}</span>
@@ -647,11 +698,11 @@ function Slider({
       </div>
       <div className="relative h-2 rounded-full bg-white/10">
         <div
-          className="absolute inset-y-0 left-0 rounded-full bg-[#f0a830]"
+          className="absolute inset-y-0 left-0 rounded-full bg-[rgb(var(--accent))]"
           style={{ width: `${pct}%` }}
         />
         <div
-          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f0a830] shadow-[0_0_16px_rgba(240,168,48,0.6)]"
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[rgb(var(--accent))] shadow-[0_0_18px_rgb(var(--accent)/0.7)]"
           style={{ left: `${pct}%` }}
         />
         <input
@@ -674,20 +725,25 @@ function Swatch({
   title,
   desc,
   bg,
+  index = 0,
 }: {
   active: boolean
   onClick: () => void
   title: string
   desc: string
   bg: string
+  index?: number
 }) {
   return (
     <motion.button
       onClick={onClick}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.07, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       whileHover={{ y: -5 }}
       whileTap={{ scale: 0.97 }}
       className={`overflow-hidden rounded-2xl border text-left transition-colors ${
-        active ? "border-[#f0a830]" : "border-white/10 hover:border-white/30"
+        active ? "border-[rgb(var(--accent))]" : "border-white/10 hover:border-white/30"
       }`}
     >
       <div className="h-24 w-full" style={{ background: bg }} />
@@ -712,7 +768,7 @@ function ContinueBar({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
       onClick={onContinue}
-      className="group mt-9 inline-flex items-center gap-2 rounded-full bg-white/10 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#f0a830] hover:text-[#1a1206]"
+      className="group mt-9 inline-flex items-center gap-2 rounded-full bg-white/10 px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[rgb(var(--accent))] hover:text-[#1a1206]"
     >
       {label}
       <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -746,10 +802,12 @@ function Analyzing({
   answers,
   onDone,
   onError,
+  accent,
 }: {
   answers: QuizAnswers
   onDone: (r: Recommendation[]) => void
   onError: (e: string) => void
+  accent: string
 }) {
   const started = useRef(false)
   useEffect(() => {
@@ -778,7 +836,7 @@ function Analyzing({
           <motion.span
             key={i}
             className="absolute inset-0 rounded-full border-2"
-            style={{ borderColor: ACCENT }}
+            style={{ borderColor: accent }}
             initial={{ scale: 0.4, opacity: 0.8 }}
             animate={{ scale: 1.4, opacity: 0 }}
             transition={{ duration: 2, repeat: Infinity, delay: i * 0.6, ease: "easeOut" }}
@@ -786,7 +844,7 @@ function Analyzing({
         ))}
         <motion.div
           className="absolute inset-0 m-auto h-3 w-3 rounded-full"
-          style={{ background: ACCENT }}
+          style={{ background: accent }}
           animate={{ scale: [1, 1.6, 1] }}
           transition={{ duration: 1.2, repeat: Infinity }}
         />
@@ -805,7 +863,7 @@ function Analyzing({
   )
 }
 
-function MatchRing({ value }: { value: number }) {
+function MatchRing({ value, accent }: { value: number; accent: string }) {
   const r = 32
   const c = 2 * Math.PI * r
   return (
@@ -816,7 +874,7 @@ function MatchRing({ value }: { value: number }) {
         cy="40"
         r={r}
         fill="none"
-        stroke={ACCENT}
+        stroke={accent}
         strokeWidth="6"
         strokeLinecap="round"
         transform="rotate(-90 40 40)"
@@ -843,10 +901,12 @@ function Results({
   results,
   error,
   onRestart,
+  accent,
 }: {
   results: Recommendation[] | null
   error: string | null
   onRestart: () => void
+  accent: string
 }) {
   if (error || !results) {
     return (
@@ -855,7 +915,7 @@ function Results({
         <p className="mt-2 text-sm text-white/50">{error ?? "Please try again."}</p>
         <button
           onClick={onRestart}
-          className="mt-8 rounded-full bg-[#f0a830] px-7 py-3 text-sm font-medium text-[#1a1206]"
+          className="mt-8 rounded-full bg-[rgb(var(--accent))] px-7 py-3 text-sm font-medium text-[#1a1206]"
         >
           Start over
         </button>
@@ -870,7 +930,7 @@ function Results({
         animate={{ opacity: 1, y: 0 }}
         className="mb-8 text-center"
       >
-        <p className="text-sm uppercase tracking-[0.2em] text-[#f0a830]">
+        <p className="text-sm uppercase tracking-[0.2em] text-[rgb(var(--accent))]">
           Your matches
         </p>
         <h2 className="mt-2 font-serif text-3xl font-medium sm:text-5xl">
@@ -888,7 +948,7 @@ function Results({
           >
             <Link
               href={`/products/${r.slug}`}
-              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-[#f0a830]/50 sm:gap-5 sm:p-5"
+              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-[rgb(var(--accent))]/50 sm:gap-5 sm:p-5"
             >
               <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-white/10 to-white/[0.02] sm:h-24 sm:w-24">
                 {r.image ? (
@@ -903,7 +963,7 @@ function Results({
                     <Armchair className="h-8 w-8 text-white/25" />
                   </div>
                 )}
-                <span className="absolute left-1 top-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[11px] font-semibold text-[#f0a830] backdrop-blur">
+                <span className="absolute left-1 top-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[11px] font-semibold text-[rgb(var(--accent))] backdrop-blur">
                   #{i + 1}
                 </span>
               </div>
@@ -913,7 +973,7 @@ function Results({
                     {r.name}
                   </span>
                   {r.tag && (
-                    <span className="rounded-full bg-[#f0a830]/15 px-2.5 py-0.5 text-xs font-medium text-[#f0a830]">
+                    <span className="rounded-full bg-[rgb(var(--accent))]/15 px-2.5 py-0.5 text-xs font-medium text-[rgb(var(--accent))]">
                       {TAG_LABEL[r.tag] ?? r.tag}
                     </span>
                   )}
@@ -927,7 +987,7 @@ function Results({
                   </p>
                 )}
               </div>
-              <MatchRing value={r.match} />
+              <MatchRing value={r.match} accent={accent} />
             </Link>
           </motion.div>
         ))}
@@ -948,5 +1008,66 @@ function Results({
         </Link>
       </div>
     </div>
+  )
+}
+
+/** Slowly drifting multi-hue aurora — sets the refined, colourful base mood. */
+function Aurora() {
+  const blobs = [
+    { c: "#F58C7B", x: "6%", y: "10%", s: 520 },
+    { c: "#7FD8BE", x: "76%", y: "6%", s: 480 },
+    { c: "#9BA7F4", x: "60%", y: "70%", s: 580 },
+    { c: "#B79BE8", x: "14%", y: "76%", s: 440 },
+  ]
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {blobs.map((b, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full blur-[120px]"
+          style={{
+            background: b.c,
+            width: b.s,
+            height: b.s,
+            left: b.x,
+            top: b.y,
+            opacity: 0.13,
+          }}
+          animate={{
+            x: [0, 30, -22, 0],
+            y: [0, -26, 18, 0],
+            scale: [1, 1.12, 0.94, 1],
+          }}
+          transition={{
+            duration: 18 + i * 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+/** Soft glow that trails the cursor in the current step's accent colour. */
+function CursorGlow() {
+  const x = useMotionValue(-1000)
+  const y = useMotionValue(-1000)
+  const sx = useSpring(x, { stiffness: 120, damping: 22 })
+  const sy = useSpring(y, { stiffness: 120, damping: 22 })
+  useEffect(() => {
+    const handle = (e: MouseEvent) => {
+      x.set(e.clientX)
+      y.set(e.clientY)
+    }
+    window.addEventListener("mousemove", handle)
+    return () => window.removeEventListener("mousemove", handle)
+  }, [x, y])
+  return (
+    <motion.div
+      aria-hidden
+      className="pointer-events-none fixed z-0 hidden h-[440px] w-[440px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-[0.07] blur-[90px] transition-[background] duration-700 sm:block"
+      style={{ left: sx, top: sy, background: "rgb(var(--accent))" }}
+    />
   )
 }

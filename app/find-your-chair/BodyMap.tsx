@@ -11,15 +11,16 @@ const ZONES = [
   { id: "Legs & lower body", label: "Legs", cx: 110, cy: 246 },
 ] as const
 
-const ACCENT = "#f0a830"
-
 export function BodyMap({
   selected,
   onToggle,
+  accent = "#E58FB0",
 }: {
   selected: string[]
   onToggle: (id: string) => void
+  accent?: string
 }) {
+  const ACCENT = accent
   return (
     <svg
       viewBox="0 0 240 290"
