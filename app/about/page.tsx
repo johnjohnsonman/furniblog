@@ -1,7 +1,15 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "About Furniblog",
+  description:
+    "Furniblog is an independent database of premium office, gaming and ergonomic chairs — real specs, global reviews, videos and news, curated and updated daily.",
+  alternates: { canonical: "/about" },
+}
 
 export default function AboutPage() {
   return (

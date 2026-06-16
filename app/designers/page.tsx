@@ -1,8 +1,16 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { designers } from "@/lib/data"
+
+export const metadata: Metadata = {
+  title: "Legendary Furniture Designers",
+  description:
+    "Meet the legendary designers behind the world's most iconic chairs — from Charles & Ray Eames to Bill Stumpf. Explore their stories and signature seating.",
+  alternates: { canonical: "/designers" },
+}
 
 export default function DesignersPage() {
   return (
