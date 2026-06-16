@@ -30,11 +30,13 @@ const KNOWN_ROUTES = new Set([
 ])
 
 function isLegacyWordpressPath(pathname: string): boolean {
-  // Old WordPress category archives.
+  // Old WordPress category & tag archives (incl. /tag/x/page/2/ pagination).
   if (
     pathname === "/category" ||
     pathname.startsWith("/category/") ||
-    pathname.startsWith("/category-2/")
+    pathname.startsWith("/category-2/") ||
+    pathname === "/tag" ||
+    pathname.startsWith("/tag/")
   ) {
     return true
   }
