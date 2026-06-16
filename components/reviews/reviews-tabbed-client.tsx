@@ -6,10 +6,8 @@ import type { Brand } from "@/types/brand"
 import type { ReviewsFeedMeta } from "@/lib/reviews/feed-types"
 import { Button } from "@/components/ui/button"
 import { ReviewsPageClient } from "@/components/reviews/reviews-page-client"
-import {
-  ExperienceReviewsList,
-  type ExperienceReviewCard,
-} from "@/components/reviews/experience-reviews-list"
+import { ExperienceReviewsBrowser } from "@/components/reviews/experience-reviews-browser"
+import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
 export function ReviewsTabbedClient({
   initialMeta,
@@ -43,7 +41,7 @@ export function ReviewsTabbedClient({
         </TabsList>
 
         <TabsContent value="experience">
-          <ExperienceReviewsList items={experienceItems} />
+          <ExperienceReviewsBrowser items={experienceItems} />
         </TabsContent>
 
         <TabsContent value="web">
