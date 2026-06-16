@@ -1,0 +1,733 @@
+<!--
+  CHAIRPARK 제품 상세 페이지 — Herman Miller Aeron (Remastered / 뉴 에어론)
+  · 카페24 / chairpark.com 제품 상세 영역에 그대로 붙여넣어 사용하는 자체완결형 단일 파일.
+  · 외부 JS / 외부 CSS / iframe 사용 안 함. 모든 스타일은 아래 <style> 블록에 포함.
+  · 카페24 전역 스타일과 충돌하지 않도록 모든 선택자를 ".cp-aeron" 네임스페이스로 한정.
+  · 폰트: 본문은 Pretendard(설치 시) → 시스템 산세리프 폴백, 제목은 시스템 세리프 스택.
+        (외부 폰트 로딩 금지 제약에 따라 Google Fonts 링크는 사용하지 않음)
+  · 이미지: 실제 운영 시 src의 "이미지위치/파일명"을 교체. alt는 한국어로 내용 명시.
+-->
+<div class="cp-aeron">
+<style>
+/* ===== CHAIRPARK Aeron 상세 — 네임스페이스 한정 스타일 ===== */
+.cp-aeron *{box-sizing:border-box;margin:0;padding:0}
+.cp-aeron{
+  --charcoal:#16181B;
+  --offwhite:#F6F4EF;
+  --white:#ffffff;
+  --green:#0C6B5B;
+  --graphite:#2A2D31;
+  --line:#E4E0D8;
+  --muted:#6A6D72;
+  font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+  color:var(--charcoal);
+  background:var(--white);
+  line-height:1.85;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:-0.01em;
+}
+.cp-aeron .serif{
+  font-family:"Iropke Batang","Nanum Myeongjo",Georgia,"Times New Roman","Apple SD Gothic Neo",serif;
+  letter-spacing:-0.02em;
+}
+.cp-aeron img{display:block;width:100%;height:auto;background:var(--offwhite)}
+.cp-aeron figure{margin:0}
+.cp-aeron figcaption{
+  font-size:13px;color:var(--muted);text-align:center;
+  padding:12px 16px;background:var(--offwhite);
+}
+.cp-aeron .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.cp-aeron .section{padding:74px 0}
+.cp-aeron .section--tight{padding:54px 0}
+.cp-aeron .eyebrow{
+  display:inline-block;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--green);font-weight:700;margin-bottom:18px;
+}
+.cp-aeron h2.title{font-size:32px;font-weight:700;line-height:1.3;margin-bottom:22px}
+.cp-aeron h3.sub{font-size:22px;font-weight:700;line-height:1.4;margin:38px 0 14px}
+.cp-aeron p{margin-bottom:18px;color:#26292E}
+.cp-aeron p.lead{font-size:19px;color:var(--charcoal)}
+.cp-aeron .dim{color:var(--muted)}
+
+/* 헤더 */
+.cp-aeron .hd{
+  position:sticky;top:0;z-index:50;background:rgba(246,244,239,0.92);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.cp-aeron .hd .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.cp-aeron .logo{font-size:20px;font-weight:800;letter-spacing:0.18em}
+.cp-aeron .nav{display:flex;gap:22px}
+.cp-aeron .nav a{color:var(--charcoal);text-decoration:none;font-size:14px;font-weight:600;opacity:.78}
+.cp-aeron .nav a:hover{opacity:1;color:var(--green)}
+
+/* 히어로 */
+.cp-aeron .hero{background:var(--charcoal);color:var(--offwhite)}
+.cp-aeron .hero .wrap{padding-top:84px;padding-bottom:84px}
+.cp-aeron .hero .eyebrow{color:#7FC9BC}
+.cp-aeron .hero h1{font-size:46px;line-height:1.18;font-weight:800;margin-bottom:20px}
+.cp-aeron .hero .hsub{font-size:19px;color:#C9C7C1;margin-bottom:40px}
+.cp-aeron .hero blockquote{
+  border-left:3px solid var(--green);padding:6px 0 6px 22px;margin:0 0 46px;
+  font-size:19px;line-height:1.7;color:#EDEBE6;max-width:760px;
+}
+.cp-aeron .hero blockquote cite{display:block;margin-top:14px;font-style:normal;font-size:15px;color:#9A9D9C}
+.cp-aeron .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+.cp-aeron .stat{border-top:1px solid #3A3D42;padding-top:16px}
+.cp-aeron .stat b{display:block;font-size:30px;font-weight:800;color:var(--white)}
+.cp-aeron .stat span{font-size:13px;color:#9A9D9C;letter-spacing:.02em}
+.cp-aeron .hero figure{margin-top:54px;border-radius:6px;overflow:hidden}
+
+/* 강조 인용 (본문용) */
+.cp-aeron .pull{
+  background:var(--offwhite);border-left:4px solid var(--green);
+  padding:34px 36px;margin:40px 0;border-radius:4px;
+}
+.cp-aeron .pull p{font-size:21px;line-height:1.7;color:var(--charcoal);margin:0}
+.cp-aeron .pull cite{display:block;margin-top:16px;font-style:normal;font-size:15px;color:var(--muted)}
+
+/* 포인트 리스트 */
+.cp-aeron .points{list-style:none;display:grid;gap:16px;margin:26px 0}
+.cp-aeron .points li{position:relative;padding-left:30px;color:#26292E}
+.cp-aeron .points li::before{
+  content:"";position:absolute;left:4px;top:11px;width:9px;height:9px;border-radius:50%;
+  background:var(--green);
+}
+
+/* 기술 카드 */
+.cp-aeron .tech{display:grid;gap:28px}
+.cp-aeron .tech .card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--white)}
+.cp-aeron .tech .card .body{padding:30px 30px 34px}
+.cp-aeron .tech .num{
+  display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
+  background:var(--charcoal);color:var(--white);font-weight:700;font-size:16px;margin-bottom:16px;
+}
+.cp-aeron .tech h3{font-size:21px;font-weight:700;margin-bottom:12px}
+
+/* 타임라인 */
+.cp-aeron .timeline{position:relative;margin-top:30px;padding-left:8px}
+.cp-aeron .timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.cp-aeron .tl{position:relative;padding:0 0 30px 40px}
+.cp-aeron .tl::before{
+  content:"";position:absolute;left:1px;top:4px;width:16px;height:16px;border-radius:50%;
+  background:var(--white);border:3px solid var(--green);
+}
+.cp-aeron .tl .yr{font-weight:800;font-size:18px;color:var(--green);margin-bottom:4px}
+.cp-aeron .tl .ev{color:#26292E}
+
+/* 인증 배지 */
+.cp-aeron .certs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.cp-aeron .cert{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:20px}
+.cp-aeron .cert .ic{flex:0 0 auto;width:40px;height:40px;border-radius:8px;background:var(--offwhite);display:flex;align-items:center;justify-content:center}
+.cp-aeron .cert .ic svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.8}
+.cp-aeron .cert b{display:block;font-size:16px;margin-bottom:3px}
+.cp-aeron .cert span{font-size:14px;color:var(--muted)}
+
+/* 사이즈 카드 */
+.cp-aeron .sizes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.cp-aeron .size{border:1px solid var(--line);border-radius:10px;padding:26px 22px;text-align:center}
+.cp-aeron .size.mid{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}
+.cp-aeron .size .tag{font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--green);text-transform:uppercase}
+.cp-aeron .size .h{font-size:30px;font-weight:800;margin:10px 0 6px}
+.cp-aeron .size .d{font-size:14px;color:var(--muted)}
+.cp-aeron .size .badge{display:inline-block;margin-top:12px;font-size:12px;background:var(--green);color:#fff;padding:3px 10px;border-radius:20px}
+
+/* 사양 표 */
+.cp-aeron .spec{width:100%;border-collapse:collapse;margin-top:24px;font-size:15px}
+.cp-aeron .spec th,.cp-aeron .spec td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.cp-aeron .spec th{width:32%;background:var(--offwhite);font-weight:700;color:var(--charcoal)}
+.cp-aeron .spec td{color:#26292E}
+
+/* FAQ */
+.cp-aeron .faq{margin-top:20px}
+.cp-aeron .faq details{border-bottom:1px solid var(--line);padding:6px 0}
+.cp-aeron .faq summary{
+  list-style:none;cursor:pointer;padding:18px 36px 18px 4px;position:relative;
+  font-size:17px;font-weight:700;color:var(--charcoal);
+}
+.cp-aeron .faq summary::-webkit-details-marker{display:none}
+.cp-aeron .faq summary::after{content:"+";position:absolute;right:6px;top:16px;font-size:22px;color:var(--green);font-weight:400}
+.cp-aeron .faq details[open] summary::after{content:"–"}
+.cp-aeron .faq .ans{padding:0 4px 22px;color:#3A3D42}
+.cp-aeron .faq .ans p{margin-bottom:10px}
+
+/* CTA */
+.cp-aeron .cta{background:var(--charcoal);color:var(--offwhite);text-align:center}
+.cp-aeron .cta .wrap{padding:78px 24px}
+.cp-aeron .cta h2{font-size:32px;font-weight:800;color:#fff;margin-bottom:14px}
+.cp-aeron .cta p{color:#C9C7C1;margin-bottom:30px}
+.cp-aeron .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cp-aeron .btn{
+  display:inline-block;text-decoration:none;font-weight:700;font-size:16px;
+  padding:15px 30px;border-radius:8px;transition:.15s;
+}
+.cp-aeron .btn--primary{background:var(--green);color:#fff}
+.cp-aeron .btn--primary:hover{background:#0a594c}
+.cp-aeron .btn--ghost{background:transparent;color:#fff;border:1px solid #4A4D52}
+.cp-aeron .btn--ghost:hover{border-color:#fff}
+
+/* 푸터 */
+.cp-aeron .ft{background:var(--offwhite);border-top:1px solid var(--line)}
+.cp-aeron .ft .wrap{padding:56px 24px 40px}
+.cp-aeron .ft .top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px}
+.cp-aeron .ft h4{font-size:14px;font-weight:800;letter-spacing:.04em;margin-bottom:14px}
+.cp-aeron .ft p,.cp-aeron .ft li{font-size:14px;color:var(--muted);line-height:1.9}
+.cp-aeron .ft ul{list-style:none}
+.cp-aeron .ft .copy{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+/* 반응형 */
+@media (max-width:760px){
+  .cp-aeron{font-size:16px}
+  .cp-aeron .nav{display:none}
+  .cp-aeron .hero h1{font-size:32px}
+  .cp-aeron h2.title{font-size:26px}
+  .cp-aeron .stats{grid-template-columns:repeat(2,1fr);gap:14px}
+  .cp-aeron .tech,.cp-aeron .certs,.cp-aeron .sizes,.cp-aeron .ft .top{grid-template-columns:1fr}
+  .cp-aeron .section{padding:56px 0}
+  .cp-aeron .pull p{font-size:18px}
+}
+</style>
+
+<!-- ====================== CHAIRPARK 공통 헤더 (다른 제품에 재사용) ====================== -->
+<header class="hd">
+  <div class="wrap">
+    <div class="logo">CHAIRPARK</div>
+    <nav class="nav">
+      <a href="#design">디자인</a>
+      <a href="#tech">기술</a>
+      <a href="#size">사이즈</a>
+      <a href="#spec">스펙</a>
+      <a href="#qa">Q&amp;A</a>
+      <a href="#cta">문의</a>
+    </nav>
+  </div>
+</header>
+<!-- ==================== /CHAIRPARK 공통 헤더 ==================== -->
+
+<!-- ====================== 제품 상세: Herman Miller Aeron (Remastered) ====================== -->
+<main>
+
+  <!-- [1] 히어로 -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Herman Miller · 1994</span>
+      <h1 class="serif">30년 전에 만들어진,<br>여전히 기준이 되는 의자</h1>
+      <p class="hsub">1994년, 세상에 없던 의자 — Herman Miller Aeron</p>
+      <blockquote class="serif">
+        “과제를 받았을 때 엄청난 도전이었다. 빌과 나는 허먼밀러가 그때까지 만든 모든 것을 뛰어넘어야 했으니까.”
+        <cite>— 돈 채드윅 (Don Chadwick)</cite>
+      </blockquote>
+      <div class="stats">
+        <div class="stat"><b>1994</b><span>최초 출시</span></div>
+        <div class="stat"><b>800만+</b><span>전 세계 누적 판매</span></div>
+        <div class="stat"><b>MoMA</b><span>영구 소장품</span></div>
+        <div class="stat"><b>12년</b><span>품질 보증</span></div>
+      </div>
+      <figure>
+        <img src="이미지위치/aeron-hero-graphite.jpg" alt="에어론 리마스터드 정면 그래파이트 대표컷 — 메쉬 등판과 팔걸이가 보이는 전신 컷">
+        <figcaption>Herman Miller Aeron Remastered — Graphite</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- [2] 왜 에어론인가 -->
+  <section class="section" id="why">
+    <div class="wrap">
+      <span class="eyebrow">Why Aeron</span>
+      <h2 class="title serif">왜, 아직도 에어론인가</h2>
+      <p class="lead">
+        사무용 의자의 세계에는 유행이 있다. 해마다 새로운 곡선과 새로운 소재가 등장하고, 또 그만큼 빠르게 잊힌다.
+        그 흐름 속에서 에어론은 예외다. 1994년에 정해진 설계 원칙이 30년이 지난 지금도 거의 그대로 유효하기 때문이다.
+        업계는 이 의자를 흔히 ‘골드 스탠더드(gold standard)’, 즉 다른 모든 의자가 비교 대상으로 삼는 기준점이라 부른다.
+        새 의자가 나올 때마다 평가의 첫 문장이 “에어론과 비교하면”으로 시작되는 일이 드물지 않다.
+      </p>
+      <p>
+        에어론이 처음 등장했을 때 사람들이 가장 먼저 놀란 것은 ‘쿠션이 없다’는 사실이었다.
+        그때까지 좋은 의자란 두툼한 폼과 고급 천으로 몸을 감싸는 것이라는 통념이 지배적이었다.
+        에어론은 그 통념을 정면으로 거슬렀다. 폼과 천 대신 팽팽하게 짠 통기성 메쉬 — 펠리클(Pellicle) — 로 몸을 떠받치는,
+        당시 시장에 존재하지 않던 방식을 처음으로 제품화한 의자였다. 처음에는 “뼈대만 남은 의자”라는 농담을 들었지만,
+        한 번 앉아본 사람들의 평가가 통념을 빠르게 뒤집었다.
+      </p>
+      <p>
+        그 가치는 시간이 지나며 권위로 자리 잡았다. 에어론은 의자가 ‘산업 디자인의 정점’으로 인정받은 사례로,
+        뉴욕 현대미술관(MoMA)의 영구 소장품에 등재되어 있다. 1999년에는 미국 산업디자이너협회(IDSA)와 비즈니스위크가 공동 선정한
+        ‘Design of the Decade(10년의 디자인)’에 이름을 올렸다. 그리고 전 세계적으로 800만 대 이상이 판매되며,
+        수십 년에 걸친 실사용 데이터로 그 신뢰성이 검증됐다. 이쯤 되면 에어론을 고르는 일은 모험이 아니라,
+        이미 충분히 증명된 답을 선택하는 일에 가깝다.
+      </p>
+      <ul class="points">
+        <li>유행이 아니라 1994년의 설계 원칙이 지금도 유효해 ‘업계 표준’으로 통한다.</li>
+        <li>폼·천 대신 통기성 메쉬(펠리클)를 처음 도입한 의자다.</li>
+        <li>뉴욕 현대미술관(MoMA) 영구 소장품으로 등재됐다.</li>
+        <li>1999년 IDSA·비즈니스위크 ‘Design of the Decade’를 수상했다.</li>
+        <li>전 세계 800만 대 이상 판매, 수십 년의 사용 데이터로 검증됐다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- [3] 디자이너 스토리 (핵심) -->
+  <section class="section" id="design" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">The Designers</span>
+      <h2 class="title serif">두 사람이 20년에 걸쳐 도달한 의자</h2>
+      <p class="lead">
+        에어론은 어느 날 갑자기 그려진 스케치가 아니다. 두 디자이너가 20년 가까이 쌓아 올린 연구와 실패,
+        그리고 끈질긴 실험이 1994년에 하나로 수렴한 결과물이다. 그 서사의 심장에 빌 스텀프와 돈 채드윅이 있다.
+      </p>
+
+      <figure style="margin:34px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/aeron-designers-stumpf-chadwick.jpg" alt="에어론을 디자인한 빌 스텀프와 돈 채드윅 흑백 인물 사진">
+        <figcaption>Bill Stumpf (1935–2006) &amp; Don Chadwick (1936– )</figcaption>
+      </figure>
+
+      <h3 class="sub serif">빌 스텀프 — ‘어떻게 앉아야 하는가’를 의학에서 배운 사람</h3>
+      <p>
+        모든 것은 위스콘신 대학원 시절로 거슬러 올라간다. 빌 스텀프(Bill Stumpf, 1935–2006)는 위스콘신대학교의 환경디자인센터에서
+        디자이너로서는 흔치 않은 동료들과 함께 일했다. 정형외과 의사, 혈관의학 전문가 같은 사람들이었다.
+        그는 그들과 함께 단순히 ‘어떻게 하면 편안한가’가 아니라 ‘사람의 몸은 어떻게 앉고, 또 어떻게 앉아야 하는가’라는
+        더 근본적인 질문을 파고들었다. 의자를 가구가 아니라 인체와 맞물려 작동하는 하나의 의료적 도구처럼 바라본 것이다.
+        오래 앉으면 어디에 압력이 쏠리는지, 혈류는 어떻게 막히는지, 척추는 어느 순간 무너지는지를 데이터로 들여다봤다.
+      </p>
+      <p>
+        이 시기의 경험은 그의 디자인 철학 전체를 결정했다. 그는 훗날 이렇게 말했다.
+      </p>
+      <div class="pull">
+        <p class="serif">“모든 것은 그 시절에서 비롯됐다 — 몸을 자유롭게 하고, 제약을 설계로 없애는 일.”</p>
+        <cite>— 빌 스텀프</cite>
+      </div>
+      <p>
+        그는 일하는 방식에 대해서도 솔직했다. “나는 한계까지 내몰릴 때, 자존심이 가라앉고 다시 순수해지는 그 지점에서
+        가장 잘 일한다”고 말한 적이 있다. 쉽게 만족하지 않고 스스로를 막다른 곳까지 밀어붙여,
+        디자이너의 허영이 사라지고 문제만 남는 자리에서 답을 찾으려 한 사람이었다.
+      </p>
+      <p>
+        1974년, 허먼밀러는 스텀프의 이 연구를 사무용 의자에 적용해 달라고 의뢰한다. 그 결과가 1976년의 에르곤(Ergon)이다.
+        에르곤은 흔히 ‘세계 최초의 인체공학 사무용 의자’로 기록된다. 그는 에르곤에 앞서 ‘편안함이란 무엇인가’에 대한 기준 자체를 새로 세웠고,
+        이 정의는 이후 허먼밀러가 ‘고성능 시팅(high-performance seating)’을 말할 때의 출발점이 되었다.
+        다시 말해 스텀프는 좋은 의자를 한 번 만든 디자이너가 아니라, 좋은 의자의 ‘채점 기준’을 만든 디자이너였다.
+      </p>
+
+      <h3 class="sub serif">돈 채드윅 — 소재와 메커니즘의 장인</h3>
+      <p>
+        만약 스텀프가 ‘사람의 몸’을 담당했다면, 돈 채드윅(Don Chadwick, 1936~ )은 ‘그것을 실현할 물성’을 담당했다.
+        로스앤젤레스 출신의 채드윅은 소재와 메커니즘에 관한 한 손에 꼽히는 장인이다.
+        회전성형 플라스틱, 경질 우레탄, 셀프스키닝 폼, 그리고 천을 팽팽히 걸어 몸을 받치는 슬링 서스펜션까지 —
+        그는 새로운 소재가 등장할 때마다 거의 자가발전식으로 실험을 거듭하며 자기 것으로 만들어 온 디자이너다.
+      </p>
+      <p>
+        이 집요함의 뿌리는 어린 시절의 호기심이다. 그는 어릴 때부터 기계가 어떻게 움직이는지, 무엇으로 만들어졌는지를
+        궁금해했고, 그 궁금증이 평생에 걸친 소재 탐구로 이어졌다. 그에게 디자인은 멋진 형태를 그리는 일이 아니라,
+        재료가 무엇을 할 수 있고 무엇을 할 수 없는지를 끝까지 밀어붙여 알아내는 일이었다.
+      </p>
+
+      <h3 class="sub serif">두 사람의 협업 계보 — 에어론은 맨땅에서 나오지 않았다</h3>
+      <p>
+        스텀프와 채드윅의 협업은 단발성이 아니었다. 두 사람은 에어론에 이르기까지 여러 의자를 함께 만들며,
+        말 그대로 한 걸음씩 에어론을 향해 다가갔다.
+      </p>
+      <p>
+        그 첫 이정표가 1984년의 에쿠아(Equa)다. 두 사람은 이 의자를 두고 “가만히 앉아 있지 못하는 사람을 위한 의자”라고 설명했다.
+        사람은 본래 한 자세로 굳어 있지 않고 끊임없이 몸을 움직이는데, 의자가 그 움직임을 막는 대신 따라가 줘야 한다는 생각이었다.
+        에쿠아는 그 발상을 구현해 타임지의 ‘Best of the Decade’에 선정됐고, 1984년 미니애폴리스 워커아트센터에서 열린
+        ‘A Serious Chair’ 전시에 포함되며 디자인계의 진지한 논의 대상이 되었다.
+      </p>
+      <p>
+        그 다음 단계는 일반에 널리 알려지지 않은 실험작, 사라 체어(Sarah Chair)였다. 노인을 위한 시범 프로그램에서 출발한 이 의자는
+        직물 서스펜션과, 사람의 움직임에 맞춰 좌·등판이 함께 움직이는 진보된 키네마틱(kinematic) 구조를 시험하는 무대였다.
+        사라 체어는 끝내 상용화되지 않았지만, 여기서 검증한 ‘천으로 몸을 받친다’와 ‘구조가 사람과 함께 움직인다’는 두 가지 아이디어가
+        그대로 에어론의 토대가 되었다. 실패한 듯 보였던 프로젝트가 사실은 다음 명작의 설계도였던 셈이다.
+      </p>
+      <div class="pull">
+        <p class="serif">“에어론은 맨땅에서 나온 게 아니라, 수십 년 연구의 집약이다.”</p>
+      </div>
+      <p>
+        이 모든 연구가 1994년 에어론으로 모였다. 특히 핵심 소재인 펠리클은 1992~93년에 집중적으로 다듬어졌다.
+        이 시기 스텀프는 서스펜션을 프레임에 거는 방식과 직물을 부착하는 기법을 거듭 스케치했고,
+        채드윅과 함께 수많은 펠리클 소재 샘플을 만들어 장력과 통기성, 내구성을 일일이 시험했다.
+        ‘앉는 면을 천으로 짠다’는 단순해 보이는 아이디어를, 수백만 번 앉아도 늘어지지 않는 산업 제품으로 끌어올리는 과정이었다.
+      </p>
+      <p>
+        흥미롭게도 이 계보에는 훨씬 더 먼 선조가 있다. 1849년, 토마스 워런(Thomas E. Warren)이 만든 ‘구심 스프링 의자
+        (Centripetal Spring Chair)’가 그것이다. 스프링으로 몸을 떠받쳐 움직임을 흡수하려 한 이 19세기의 시도는,
+        약 150년 뒤 등장한 에어론의 정신적 선조라 할 만하다. 단단히 고정해 버티는 의자가 아니라,
+        몸의 움직임을 받아내는 ‘서스펜션’의 계보가 그렇게 한 세기 반을 건너 이어진 것이다.
+      </p>
+      <p>
+        가장 정직한 증언은 디자이너 자신의 습관에서 나온다. 돈 채드윅은 지금도 1994년 자신이 만든 오리지널 에어론을 포함해
+        여러 에디션을 번갈아 사용한다. 자기 디자인을 30년째 매일 앉아 검증하는 디자이너만큼 설득력 있는 보증은 없다.
+        그는 디자이너의 역할을 이렇게 정의했다.
+      </p>
+      <div class="pull">
+        <p class="serif">“제품 디자이너의 일은 과학자이자 엔지니어이자 기록자의 일이다.”</p>
+        <cite>— 돈 채드윅</cite>
+      </div>
+      <p>
+        관찰하고(과학자), 구현하고(엔지니어), 그 과정을 남긴다(기록자). 에어론은 바로 그 세 가지 태도가
+        20년에 걸쳐 한 의자로 응축된 결과다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [4] 4대 핵심 기술 -->
+  <section class="section" id="tech">
+    <div class="wrap">
+      <span class="eyebrow">Engineering</span>
+      <h2 class="title serif">에어론을 에어론으로 만드는 네 가지</h2>
+      <p class="lead">
+        에어론의 명성은 추상적인 디자인 감각이 아니라, 구체적인 네 가지 기술 위에 서 있다.
+        각각은 ‘오래 앉는 사람의 몸에 무슨 일이 일어나는가’라는 질문에 대한 공학적 대답이다.
+      </p>
+
+      <figure style="margin:30px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/aeron-8z-pellicle-detail.jpg" alt="8Z 펠리클 메쉬 등판 클로즈업 — 구역별 장력 차이가 보이는 디테일 컷">
+        <figcaption>8Z Pellicle — 8개 구역으로 장력을 다르게 짠 서스펜션 메쉬</figcaption>
+      </figure>
+
+      <div class="tech">
+        <div class="card">
+          <div class="body">
+            <span class="num">1</span>
+            <h3>8Z 펠리클(8Z Pellicle) 서스펜션</h3>
+            <p>
+              에어론의 출발점이자 정체성이다. 폼과 천을 걷어내고, 팽팽하게 짠 통기성 메쉬로 몸을 떠받친다.
+              출시 당시 어떤 의자에도 없던 소재 혁신이었고, 지금의 ‘8Z’는 이 개념을 한층 더 정교하게 다듬은 버전이다.
+            </p>
+            <p>
+              핵심은 ‘8개의 위도 방향 구역(zone)’이다. 등판과 좌판을 위아래로 여덟 구역으로 나눠 각 구역의 장력을 다르게 짰다.
+              가장자리는 팽팽하게 잡아 몸을 안정적으로 가두고, 가운데는 부드럽게 풀어 좌골(엉덩이뼈)과 어깨뼈처럼
+              압력이 집중되는 부위를 감싸듯 받친다. 그 결과 한 점에 하중이 쏠리는 ‘압력점’이 사라지고,
+              체중이 면 전체로 분산되어 무중력에 가까운 착좌감이 만들어진다.
+            </p>
+            <p>
+              통기성도 그대로다. 공기와 체열, 그리고 수증기가 좌판과 등판을 자유롭게 통과하기 때문에,
+              여름에는 등이 땀으로 젖지 않고 겨울에도 차갑게 식지 않는다. 사계절 내내 닿는 면의 온도가 균일하게 유지되는 것은,
+              막힌 폼 쿠션이 결코 줄 수 없는 감각이다.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="body">
+            <span class="num">2</span>
+            <h3>포스처핏 SL(PostureFit SL)</h3>
+            <p>
+              대부분의 의자가 신경 쓰는 것은 ‘요추(lumbar)’ 하나다. 에어론은 여기에 더해 척추의 맨 아래,
+              천추(sacrum)까지 동시에 받친다. 천추와 요추를 함께 지지하는 이 구조가 포스처핏 SL이며, 허먼밀러의 특허 기술이다.
+            </p>
+            <p>
+              차이는 단순한 ‘받침’과 ‘교정’의 차이다. 평범한 요추 패드가 허리를 뒤에서 밀어주는 수동적 받침이라면,
+              포스처핏 SL은 천추를 받쳐 골반 자체를 자연스럽게 앞으로 회전시킨다. 골반이 바로 서면 그 위의 척추가 따라서
+              건강한 S자 곡선으로 정렬된다. 가슴이 열리고 어깨가 펴지며 골반이 살짝 앞으로 기운, 우리가 ‘바른 자세’라 부르는
+              그 모양이 의자에 의해 능동적으로 유도되는 것이다.
+            </p>
+            <p>
+              게다가 천추 패드와 요추 패드는 서로 독립적으로 작동하며, 깊이와 높이를 조절할 수 있다.
+              요추 지지는 약 11cm 범위에서 위치를 맞출 수 있어, 사람마다 다른 허리 곡선에 정확히 대응한다.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="body">
+            <span class="num">3</span>
+            <h3>하모닉 틸트(Harmonic Tilt) · 키네마트(Kinemat) 메커니즘</h3>
+            <p>
+              사람이 뒤로 기댈 때 몸의 관절은 동시에, 그러나 각기 다른 속도로 움직인다.
+              하모닉 틸트는 목·어깨·엉덩이·무릎·발목이 자연스럽게 회전하도록 연동해, 기대는 동작을 한 덩어리의 부드러운 움직임으로 만든다.
+              체중에 맞춰 매끄럽게 리클라인되며, 구형 의자 특유의 ‘덜컥’이는 단차가 없다.
+            </p>
+            <p>
+              좌판 앞부분은 ‘폭포(waterfall)’ 형상으로 부드럽게 떨어진다. 허벅지 뒤쪽을 압박하지 않아 다리로 가는 혈류가 막히지 않고,
+              그 덕분에 다리가 저리지 않아 오래 앉아도 집중력이 흐트러지지 않는다.
+            </p>
+            <p class="dim">
+              솔직히 말하면, 에어론은 ‘깊게 드러눕는’ 리클라이너 성격의 의자는 아니다. 틸트는 3단으로 제한적으로 고정되고,
+              의자 전체가 사용자를 다시 직립 자세로 되돌리려는 경향을 갖는다. 즉 ‘편하게 눕기’보다 ‘바른 자세를 유지하기’에
+              강점이 있는 의자다. 작업 집중형 사용자에게는 이 점이 오히려 장점이 된다.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="body">
+            <span class="num">4</span>
+            <h3>세 가지 사이즈(A · B · C)</h3>
+            <p>
+              에어론은 한 가지 크기를 모두에게 강요하지 않는다. A·B·C 세 사이즈가 있으며, 단순히 좌판만 커지는 것이 아니라
+              등받이 높이, 좌판 폭, 틸트 메커니즘, 심지어 베이스(다리)의 크기까지 사이즈별로 다르게 설계됐다.
+              사실상 ‘세 종류의 의자’에 가깝다.
+            </p>
+            <p>
+              그래서 만족의 핵심은 의외로 단순하다. ‘내 몸에 맞는 사이즈를 고르는 것’이다.
+              아무리 좋은 의자라도 사이즈가 맞지 않으면 첫날의 감동은 길어야 이틀을 넘기지 못하고 불편으로 바뀐다.
+              에어론을 제대로 누리려면, 화려한 옵션보다 정확한 사이즈가 먼저다.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [5] 타임라인 -->
+  <section class="section" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">Timeline</span>
+      <h2 class="title serif">하나의 의자가 만들어지기까지</h2>
+      <div class="timeline">
+        <div class="tl"><div class="yr">1976</div><div class="ev">빌 스텀프, 에르곤(Ergon) 발표 — 세계 최초의 인체공학 사무용 의자.</div></div>
+        <div class="tl"><div class="yr">1984</div><div class="ev">스텀프 × 채드윅, 에쿠아(Equa) 발표 — 타임지 ‘Best of the Decade’ 선정.</div></div>
+        <div class="tl"><div class="yr">1994</div><div class="ev">에어론(Aeron) 출시 — 폼·천을 걷어낸 메쉬 서스펜션으로 사무용 의자의 판도를 바꾸다.</div></div>
+        <div class="tl"><div class="yr">1999</div><div class="ev">IDSA·비즈니스위크 ‘Design of the Decade’ 수상.</div></div>
+        <div class="tl"><div class="yr">2010s</div><div class="ev">뉴욕 현대미술관(MoMA) 영구 소장품으로 등재.</div></div>
+        <div class="tl"><div class="yr">2016</div><div class="ev">돈 채드윅이 직접 리마스터 — 8Z 펠리클·포스처핏 SL 재설계.</div></div>
+        <div class="tl"><div class="yr">2021</div><div class="ev">해양 회수 플라스틱(ocean-bound plastic) 적용.</div></div>
+        <div class="tl"><div class="yr">현재</div><div class="ev">전 세계 800만 대 이상 판매, 업계의 기준점으로 자리매김.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [6] 리마스터드(뉴 에어론)란 -->
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Remastered, 2016</span>
+      <h2 class="title serif">리마스터드 — 페이스리프트가 아니라, 재엔지니어링</h2>
+      <p class="lead">
+        2016년, 돈 채드윅은 자신이 22년 전에 만든 에어론으로 다시 돌아왔다. 그러나 그것은 외형을 손보는
+        ‘페이스리프트’가 아니었다. 본인의 표현을 빌리면 “완전한 재엔지니어링”이었다.
+        오리지널의 정신은 그대로 둔 채, 그 사이 쌓인 인간공학 데이터와 소재 기술을 의자 안쪽에 다시 채워 넣은 것이다.
+      </p>
+      <figure style="margin:30px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/aeron-remastered-side.jpg" alt="에어론 리마스터드 측면 컷 — 포스처핏 SL 등판 구조와 틸트 메커니즘이 보이는 사진">
+        <figcaption>Remastered Aeron — 측면에서 본 포스처핏 SL과 틸트 구조</figcaption>
+      </figure>
+      <p>
+        가장 큰 변화는 8Z 펠리클이다. 클래식 메쉬는 통기성과 분산 면에서 이미 뛰어났지만, 부위별로 미세한 압력점까지 잡아내지는 못했다.
+        리마스터드는 메쉬를 8개의 장력 구역으로 다시 짜, 클래식이 놓치던 압력점을 제거했다. 같은 메쉬처럼 보여도 앉는 느낌의 균일함이 다르다.
+      </p>
+      <p>
+        프레임은 더 가벼워졌고, 틸트는 한층 부드럽고 반응이 좋아졌다. 등 지지는 포스처핏 SL로 강화되어 천추와 요추를 동시에 받친다.
+        여기에 그래파이트(짙은 차콜), 카본(중간 톤 그레이), 미네랄 같은 컬러 선택지가 더해져, 사무실뿐 아니라 모던한 주거 공간에도
+        자연스럽게 어울린다. 성능은 더 깊어지고, 표정은 더 차분해진 셈이다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [7] 권위·인정 -->
+  <section class="section" style="background:var(--offwhite)" id="authority">
+    <div class="wrap">
+      <span class="eyebrow">Recognition</span>
+      <h2 class="title serif">의자가 받을 수 있는 거의 모든 인정</h2>
+      <div class="certs">
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6"/></svg></div>
+          <div><b>MoMA 영구 소장품</b><span>뉴욕 현대미술관이 인정한 ‘예술로서의 의자’.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 5 5.6.6-4.2 3.8 1.2 5.6L12 19l-5 3 1.2-5.6L4 12.6 9.6 12 12 2z"/></svg></div>
+          <div><b>Design of the Decade</b><span>1999 IDSA·비즈니스위크 공동 선정.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="6"/><path d="M9 14l-2 7 5-3 5 3-2-7"/></svg></div>
+          <div><b>Good Design Award 금상</b><span>일본 통상산업성(MITI) 수상.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5m4 14V9m4 10V7m4 12v-6m4 6V4"/></svg></div>
+          <div><b>800만 대+ 누적 판매</b><span>수십 년의 실사용으로 검증된 신뢰성.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div><b>12년 품질 보증</b><span>3교대 사용 기준, 부품과 공임을 모두 포함.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [8] 지속가능성 -->
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Sustainability</span>
+      <h2 class="title serif">가장 친환경적인 의자는, 오래 쓰는 의자다</h2>
+      <p class="lead">
+        에어론은 재활용 알루미늄과 재활용 폴리머를 광범위하게 사용한다. 2021년부터는 바다로 흘러들 뻔한
+        해양 회수 플라스틱(ocean-bound plastic)을 소재에 적용해, 폐기물을 제품으로 되돌리는 흐름에 동참하고 있다.
+      </p>
+      <p>
+        그러나 에어론의 진짜 친환경성은 소재 목록보다 ‘수명’에 있다. 한 번 사면 십수 년, 길게는 수십 년을 쓰도록 설계된 내구성 자체가
+        가장 강력한 환경 전략이다. 자주 사지 않는 물건은 자주 버려지지도 않는다. 돈 채드윅이 1994년산 오리지널을 30년째 사용하고 있다는 사실은,
+        이 의자가 ‘버리지 않아도 되는 물건’이라는 가장 구체적인 증거다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [9] 사용 가이드 -->
+  <section class="section" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">How to Adjust</span>
+      <h2 class="title serif">처음 앉는 날, 5분이면 충분하다</h2>
+      <p class="lead">좋은 의자는 ‘맞춰 쓰는’ 의자다. 아래 순서대로 한 번만 맞춰두면, 그 다음부터는 몸이 먼저 기억한다.</p>
+      <ul class="points">
+        <li><b>좌면 높이</b> — 우측 패들 레버를 당겨 높이를 조절한다. 발바닥이 바닥에 닿고 허벅지가 바닥과 수평이 되는 지점이 기준이다.</li>
+        <li><b>포스처핏 SL</b> — 깊이와 높이를 조절해 천추·요추 지지가 내 척추 곡선에 닿도록 맞춘다. 허리가 ‘받쳐진다’는 느낌이 드는 위치가 정답이다.</li>
+        <li><b>틸트</b> — 틸트 텐션으로 기대는 강도를 조절하고, 3단 틸트 락으로 원하는 각도에 고정한다. 작업할 때는 직립에 가깝게, 잠시 쉴 때는 한 단 풀어주면 좋다.</li>
+        <li><b>팔걸이</b> — 4D(높이·깊이·각도·폭) 조절로 팔꿈치가 자연스럽게 얹히는 위치를 찾는다. 어깨에 힘이 빠지는 높이가 기준이다.</li>
+        <li><b>관리</b> — 프레임·베이스·팔패드는 중성세제를 적신 부드러운 천으로 닦는다. 펠리클 메쉬는 진공청소기로 가볍게 흡입하고, 얼룩은 부분적으로만 제거한다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- [10] 사이즈 가이드 -->
+  <section class="section" id="size">
+    <div class="wrap">
+      <span class="eyebrow">Size Guide</span>
+      <h2 class="title serif">에어론의 만족은, 사이즈에서 시작된다</h2>
+      <p class="lead">A·B·C는 단순한 크기 표기가 아니라 서로 다른 설계다. 아래 키 범위를 기준으로 고르되, 경계에 걸친다면 더 큰 쪽을 권한다.</p>
+      <div class="sizes">
+        <div class="size">
+          <div class="tag">A · Small</div>
+          <div class="h">147–163cm</div>
+          <div class="d">체구가 작은 사용자에게 적합한 가장 작은 사이즈.</div>
+        </div>
+        <div class="size mid">
+          <div class="tag">B · Medium</div>
+          <div class="h">157–183cm</div>
+          <div class="d">대부분의 성인에게 적합한 표준 사이즈.</div>
+          <div class="badge">가장 보편적</div>
+        </div>
+        <div class="size">
+          <div class="tag">C · Large</div>
+          <div class="h">178–198cm</div>
+          <div class="d">키가 크거나 체구가 넉넉한 사용자에게 적합.</div>
+        </div>
+      </div>
+      <p class="dim" style="margin-top:22px">
+        ※ A/B 또는 B/C 경계에 해당한다면 B를 권장한다. 다만 키만으로 완벽한 핏을 단정하기는 어렵다 —
+        가장 정확한 방법은 체어파크 쇼룸에서 A·B·C에 직접 앉아 보는 것이다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [11] 제품 사양 -->
+  <section class="section" style="background:var(--offwhite)" id="spec">
+    <div class="wrap">
+      <span class="eyebrow">Specification</span>
+      <h2 class="title serif">제품 사양</h2>
+      <table class="spec">
+        <tbody>
+          <tr><th>제조</th><td>Herman Miller (미국)</td></tr>
+          <tr><th>디자이너</th><td>Bill Stumpf &amp; Don Chadwick (Remastered by Don Chadwick, 2016)</td></tr>
+          <tr><th>서스펜션</th><td>8Z Pellicle 메쉬 (8개 장력 구역)</td></tr>
+          <tr><th>등 지지</th><td>PostureFit SL (천추 + 요추 동시 지지) / 조절식 요추</td></tr>
+          <tr><th>틸트</th><td>Harmonic Tilt, 3단 틸트 락, 틸트 텐션 조절</td></tr>
+          <tr><th>팔걸이</th><td>4D 조절 — 높이·깊이·각도·폭 (옵션)</td></tr>
+          <tr><th>사이즈</th><td>A (Small) / B (Medium) / C (Large)</td></tr>
+          <tr><th>최대 하중</th><td>B 사이즈 기준 약 159kg (350lb)</td></tr>
+          <tr><th>소재</th><td>재활용 알루미늄·폴리머, 해양 회수 플라스틱 적용</td></tr>
+          <tr><th>보증</th><td>12년 (부품 + 공임)</td></tr>
+          <tr><th>가격</th><td>옵션·환율에 따라 변동 — 정확한 견적은 쇼룸 방문 또는 문의 바랍니다.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- [12] FAQ -->
+  <section class="section" id="qa">
+    <div class="wrap">
+      <span class="eyebrow">Q&amp;A</span>
+      <h2 class="title serif">자주 묻는 질문</h2>
+      <div class="faq">
+        <details open>
+          <summary>클래식과 리마스터드(뉴 에어론)의 차이는 무엇인가요?</summary>
+          <div class="ans">
+            <p>리마스터드는 2016년 돈 채드윅이 직접 진행한 ‘재엔지니어링’ 버전입니다. 외형 변경이 아니라 내부 설계를 다시 짠 것입니다.</p>
+            <p>가장 큰 차이는 8개 장력 구역으로 다시 짠 8Z 펠리클로, 클래식이 못 잡던 미세 압력점을 제거했습니다. 또한 더 가벼운 프레임, 더 부드러운 틸트, 천추+요추를 동시에 받치는 포스처핏 SL이 적용됐습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>사이즈 A/B/C는 어떻게 고르나요?</summary>
+          <div class="ans">
+            <p>대략 A는 키 147–163cm, B는 157–183cm, C는 178–198cm가 기준입니다. 대부분의 성인은 B가 적합합니다.</p>
+            <p>경계에 걸친다면 더 큰 쪽(예: A/B면 B)을 권합니다. 키 외에 체형도 영향을 주므로, 가능하면 쇼룸에서 직접 앉아 확인하시는 것이 가장 정확합니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>포스처핏 SL과 일반 요추 지지는 어떻게 다른가요?</summary>
+          <div class="ans">
+            <p>일반 요추 패드는 허리를 뒤에서 밀어주는 수동적 받침에 가깝습니다. 포스처핏 SL은 척추 맨 아래 천추까지 함께 받쳐 골반을 자연스럽게 앞으로 회전시킵니다.</p>
+            <p>골반이 바로 서면 그 위 척추가 건강한 S자로 정렬되어, 가슴이 열리고 어깨가 펴지는 바른 자세가 능동적으로 유도됩니다. 깊이·높이 조절도 가능합니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>장시간 작업이나 게이밍에도 좋은가요?</summary>
+          <div class="ans">
+            <p>네. 통기성 메쉬로 장시간 앉아도 열이 차지 않고, 좌판 앞 폭포 형상이 허벅지 혈류를 막지 않아 다리 저림이 적습니다.</p>
+            <p>다만 에어론은 깊게 눕는 리클라이너형이 아니라 바른 자세를 유지시키는 작업 집중형 의자입니다. 누워서 쉬는 시간이 많은 용도라면 이 성격을 참고하시는 것이 좋습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>보증은 어떻게 되나요?</summary>
+          <div class="ans">
+            <p>하루 3교대(약 24시간) 사용을 기준으로 12년간 보증됩니다. 부품과 공임을 모두 포함하는 보증입니다.</p>
+            <p>일반적인 가정·사무 환경에서는 그보다 훨씬 오래 사용할 수 있도록 설계되어 있습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>직접 앉아볼 수 있나요?</summary>
+          <div class="ans">
+            <p>물론입니다. 체어파크는 한남·강남·일산·마포 네 곳의 쇼룸을 운영합니다. A·B·C 사이즈에 직접 앉아 보고 내 몸에 맞는 핏을 확인하실 수 있습니다.</p>
+            <p>방문 전 예약을 남겨주시면 더 여유롭게 안내해 드립니다.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- [13] CTA -->
+  <section class="cta" id="cta">
+    <div class="wrap">
+      <h2 class="serif">직접 앉아보고, 내 사이즈를 찾으세요</h2>
+      <p>같은 에어론도 사이즈가 맞아야 비로소 ‘내 의자’가 됩니다. 한남 쇼룸에서 A·B·C를 모두 경험해 보세요.</p>
+      <div class="btns">
+        <a class="btn btn--primary" href="#">한남 쇼룸 예약하기</a>
+        <a class="btn btn--ghost" href="#">제품 문의하기</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<!-- ==================== /제품 상세: Herman Miller Aeron ==================== -->
+
+<!-- ====================== CHAIRPARK 공통 푸터 (다른 제품에 재사용) ====================== -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h4>CHAIRPARK</h4>
+        <p>688개 이상의 의자를 직접 테스트한 프리미엄 체어 셀렉트샵. 우리는 ‘가장 비싼 의자’가 아니라 ‘당신에게 맞는 의자’를 찾아드립니다.</p>
+      </div>
+      <div>
+        <h4>쇼룸</h4>
+        <ul>
+          <li>한남 쇼룸</li>
+          <li>강남 쇼룸</li>
+          <li>일산 쇼룸</li>
+          <li>마포 쇼룸</li>
+        </ul>
+      </div>
+      <div>
+        <h4>문의</h4>
+        <ul>
+          <li>hello@chairpark.com</li>
+          <li>02-532-1113</li>
+          <li>쇼룸 방문 예약</li>
+          <li>B2B 대량 구매 문의</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      © 2026 CHAIRPARK · 서울특별시 용산구 한남대로 55, 2층
+    </div>
+  </div>
+</footer>
+<!-- ==================== /CHAIRPARK 공통 푸터 ==================== -->
+</div>
