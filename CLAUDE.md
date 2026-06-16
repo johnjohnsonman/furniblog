@@ -98,6 +98,15 @@ npm run test:pipeline      # 파이프라인 테스트
   - 주의: `create policy`는 `if not exists` 미지원이라 재실행 시 42710 에러 → `drop policy if exists ... ; create policy ...`로 처리. 통합본 `lib/supabase/migrations/_apply_025-029.sql` 참고.
 - 메모: Claude 로컬 메모리는 컴퓨터마다 따로라 PC 옮기면 안 따라옴 → 작업 맥락은 이 `CLAUDE.md`에 적고 커밋하는 게 맞음(원래 규칙대로).
 
+### 2026-06-16 뉴스 썸네일 하이브리드 + 어드민 업로드
+- **프로모션 뉴스 22건 삭제**(`npm run clean:promo-news -- --apply`). 이후는 수집 단계 AI 필터가 자동 차단.
+- **뉴스 이미지 시스템**(신규 `lib/news/thumbnail.ts`, `lib/news/brand-images.ts`):
+  - 수집 시 `브랜드 이미지 → 그라데이션` 폴백. 백필: `npm run backfill:news-images [-- --apply]`.
+  - 실제 기사 썸네일 디코더(Google News batchexecute)는 **현재 Google이 차단(`[3]`)** → 베스트에포트로만 남김. 정책 바뀌면 자동 동작.
+- **어드민 직접 썸네일 업로드**: `app/api/admin/news/[id]/thumbnail` + 어드민 News 목록에 Thumbnail 칸(업로드/교체/삭제). gallery 버킷 사용. 업로드 동작 확인됨.
+- 상세페이지(`/news/[slug]`)·원본가기 버튼은 기존에 이미 존재. 기존 111건 슬러그도 이미 채워져 있어 카드→상세 연결 정상.
+- **데이터 현실**: brands/products에 이미지가 거의 없음(브랜드 0, 제품 썸네일 1/141). 그래서 자동 폴백이 채울 게 없음 → 브랜드 `hero_image_url`을 채우면 그 브랜드 전체 뉴스에 자동 적용됨(고효율).
+
 ### 남은 과제 (TODO)
 - [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
 - [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.

@@ -2,6 +2,11 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { fetchGoogleNews } from "@/lib/news/sources/google-news"
 import { checkNewsRelevance } from "@/lib/news/relevance"
 import { newsSlug } from "@/lib/news/slug"
+import {
+  loadBrandImages,
+  pickBrandImage,
+  type BrandImageMap,
+} from "@/lib/news/brand-images"
 
 /** Max articles considered per brand per run (keeps Claude calls bounded). */
 const DEFAULT_MAX_PER_BRAND = 10
@@ -73,11 +78,13 @@ export async function collectNewsForBrand(params: {
   supabase: SupabaseClient
   brand: string
   knownBrands?: string[]
+  brandImages?: BrandImageMap
   maxItems?: number
 }): Promise<CollectNewsSingleResult> {
   const { supabase, brand } = params
   const knownBrands =
     params.knownBrands ?? (await loadKnownBrands(supabase))
+  const brandImages = params.brandImages ?? (await loadBrandImages(supabase))
   const maxItems = Math.max(1, params.maxItems ?? DEFAULT_MAX_PER_BRAND)
 
   const { query, items: allItems } = await fetchGoogleNews(brand)
@@ -134,14 +141,17 @@ export async function collectNewsForBrand(params: {
       continue
     }
 
+    const resolvedBrand = relevance.brand ?? brand
     rows.push({
       url: item.url,
       slug: newsSlug(item.title, item.url),
       title: item.title,
       source_name: item.sourceName,
-      image_url: item.imageUrl,
+      // Google News RSS has no image, so fall back to the brand's image.
+      // Real article thumbnails are filled in later by the backfill script.
+      image_url: item.imageUrl ?? pickBrandImage(brandImages, resolvedBrand),
       published_at: item.publishedAt,
-      brand: relevance.brand ?? brand,
+      brand: resolvedBrand,
       summary: relevance.summary,
       why_it_matters: relevance.whyItMatters,
       status: "published",
@@ -188,6 +198,7 @@ export async function collectNewsForAllBrands(params: {
 }): Promise<CollectNewsBatchResult> {
   const { supabase, options } = params
   const knownBrands = await loadKnownBrands(supabase)
+  const brandImages = await loadBrandImages(supabase)
   const targets = knownBrands.slice(0, Math.max(1, options.maxBrands))
 
   let processedBrands = 0
@@ -217,6 +228,7 @@ export async function collectNewsForAllBrands(params: {
       supabase,
       brand,
       knownBrands,
+      brandImages,
       maxItems: options.maxPerBrand,
     })
 

@@ -1,16 +1,18 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
 type Brand = { slug: string; name: string }
 
 type NewsItem = {
   id: string
+  slug: string | null
   url: string
   title: string | null
   source_name: string | null
   brand: string | null
   summary: string | null
+  image_url: string | null
   published_at: string | null
   status: "published" | "hidden"
   featured: boolean
@@ -123,6 +125,39 @@ export default function AdminNewsPage() {
     }
   }
 
+  async function uploadThumbnail(id: string, file: File) {
+    const form = new FormData()
+    form.append("file", file)
+    const res = await fetch(`/api/admin/news/${id}/thumbnail`, {
+      method: "POST",
+      credentials: "include",
+      body: form,
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      addLog(`❌ thumbnail upload failed: ${data.error ?? "error"}`)
+      return
+    }
+    setNews((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, image_url: data.image_url } : n))
+    )
+    addLog("✅ thumbnail updated")
+  }
+
+  async function clearThumbnail(id: string) {
+    const res = await fetch(`/api/admin/news/${id}/thumbnail`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+    if (!res.ok) {
+      addLog("❌ thumbnail clear failed")
+      return
+    }
+    setNews((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, image_url: null } : n))
+    )
+  }
+
   const featuredCount = news.filter((n) => n.featured && n.status === "published")
     .length
 
@@ -217,6 +252,7 @@ export default function AdminNewsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/40 text-left">
+              <th className="w-32 px-4 py-3">Thumbnail</th>
               <th className="px-4 py-3">Article</th>
               <th className="px-4 py-3">Brand</th>
               <th className="w-24 px-4 py-3">Featured</th>
@@ -227,7 +263,7 @@ export default function AdminNewsPage() {
             {news.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={5}
                   className="px-4 py-8 text-center text-muted-foreground"
                 >
                   No news collected yet. Run a collection above.
@@ -237,8 +273,15 @@ export default function AdminNewsPage() {
               news.map((n) => (
                 <tr key={n.id} className="border-b border-border align-top">
                   <td className="px-4 py-3">
+                    <NewsThumbCell
+                      item={n}
+                      onUpload={uploadThumbnail}
+                      onClear={clearThumbnail}
+                    />
+                  </td>
+                  <td className="px-4 py-3">
                     <a
-                      href={n.url}
+                      href={n.slug ? `/news/${n.slug}` : n.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-foreground hover:underline"
@@ -296,6 +339,81 @@ export default function AdminNewsPage() {
           </tbody>
         </table>
       </div>
+    </div>
+  )
+}
+
+function NewsThumbCell({
+  item,
+  onUpload,
+  onClear,
+}: {
+  item: NewsItem
+  onUpload: (id: string, file: File) => Promise<void>
+  onClear: (id: string) => Promise<void>
+}) {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [busy, setBusy] = useState(false)
+
+  async function handleFile(file: File) {
+    setBusy(true)
+    await onUpload(item.id, file)
+    setBusy(false)
+  }
+
+  return (
+    <div className="w-28 space-y-1.5">
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={busy}
+        className="relative block aspect-[16/9] w-full overflow-hidden rounded-md border border-border bg-muted transition-opacity hover:opacity-80 disabled:opacity-50"
+        title="Click to upload a thumbnail"
+      >
+        {item.image_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={item.image_url}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+            {busy ? "Uploading…" : "No image"}
+          </span>
+        )}
+      </button>
+      <div className="flex items-center justify-between text-[10px]">
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={busy}
+          className="text-muted-foreground hover:text-foreground disabled:opacity-50"
+        >
+          {item.image_url ? "Replace" : "Upload"}
+        </button>
+        {item.image_url ? (
+          <button
+            type="button"
+            onClick={() => void onClear(item.id)}
+            disabled={busy}
+            className="text-red-600 hover:underline disabled:opacity-50"
+          >
+            Clear
+          </button>
+        ) : null}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0]
+          if (file) void handleFile(file)
+          e.target.value = ""
+        }}
+      />
     </div>
   )
 }

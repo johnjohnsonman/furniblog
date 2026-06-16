@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase
       .from("news")
       .select(
-        "id, url, title, source_name, brand, summary, published_at, status, featured, created_at"
+        "id, slug, url, title, source_name, brand, summary, image_url, published_at, status, featured, created_at"
       )
       .order("featured", { ascending: false })
       .order("published_at", { ascending: false, nullsFirst: false })
