@@ -82,3 +82,18 @@ npm run test:pipeline      # 파이프라인 테스트
 
 - 2026-06-16: 데스크탑(`C:\Users\bizandlife\Desktop\park\furniblog`)에 새로 clone, 의존성 설치, 개발 서버 구동 확인. `CLAUDE.md` 추가.
 - 최근 작업(~6/14): 국제 구매 가능 의자(Ergohuman, Duorest, Sidiz T50) 아마존 직접 링크 추가, 리뷰/영상 랜덤 정렬, 자체 방문자 분석 등.
+
+### 2026-06-16 SEO 점검 & 파이프라인 개선 (커밋 fbc3f03 ~ 5ebe75e)
+- **SEO 점검 결과**: 구글 서치 콘솔 기준 색인됨 33 / 색인안됨 207.
+  - noindex 84개 = 전부 옛 WordPress `/tag/...` 보관함 URL → middleware에 `/tag` 레거시 301 추가로 해결(커밋 24ee33c).
+  - 404 38개 = 옛 한국어 글주소(이미 단일세그먼트 리다이렉트로 처리됨, 재크롤링 대기) + `/wp-content/*` 이미지(404 정상). **추가 수정 불필요.**
+  - `/about`, `/designers`에 고유 메타데이터 추가(fbc3f03). 구글 인증 태그는 `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` env로 받게 했으나, 서치콘솔이 이미 도메인 인증돼 있어 **불필요**.
+- **뉴스 필터 강화**(5ebe75e): `lib/news/relevance.ts`에 `isPromotional` 게이트 추가 → 할인/세일/딜/쇼핑 기사 자동 거부, 공식·편집 뉴스만 통과.
+- **크론 리뷰 비중 ↑**(5ebe75e): `lib/cron/run.ts` DEFAULT_CRON_OPTIONS — maxReviewChairs 8→16, reviewBudget 80→120s, maxNewsBrands 20→15.
+- **프로모션 뉴스 정리 스크립트**: `npm run clean:promo-news`(dry-run) / `-- --apply`(삭제). `scripts/cleanup-promo-news.ts`.
+
+### 남은 과제 (TODO)
+- [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
+- [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
+- [ ] **서치 콘솔 유효성 검사**: 배포 후 NOINDEX(84)·404(38) 화면에서 "유효성 검사 시작" 클릭 → 재크롤링 요청.
+- [ ] (확인) `https://www.furniblog.com/tag/서재의자/` 가 chairpark 블로그로 301 되는지 배포 후 점검.
