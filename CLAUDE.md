@@ -118,6 +118,11 @@ npm run test:pipeline      # 파이프라인 테스트
 - **코드**: `components/affiliate/AmazonOneLink.tsx` 추가 → 루트 레이아웃에서 OneLink 스크립트 로드(방문자 현지 아마존으로 자동 라우팅, ASIN 현지 미존재 시 폴백). **`NEXT_PUBLIC_AMAZON_ONELINK_ID`(adInstanceId UUID) 환경변수 필요** — Associates Central > Tools > OneLink > "Get the OneTag Script"에서 받아 .env.local + Vercel에 설정해야 실제 동작.
 - `buildAffiliateUrl`: 이제 모든 아마존 링크에 태그를 항상 부여(이전엔 US/JP만 부여, KR/기타는 누락). OneLink가 그 위에서 현지화.
 
+### 2026-06-16 인터랙티브 의자 추천 ("The Sit Test")
+- **추천 엔진** `lib/recommend/` (`engine.ts` 순수 점수+MMR, `data.ts` DB로더): 리프트 기반 리뷰 친화도 + 에디토리얼 평점 신뢰도 블렌딩 + 구매용이성(/dp/) + MMR 분산/브랜드캡/가격대 슬롯. `POST /api/recommend` (답변→TOP5). 100% 데이터 주도(신규 제품/리뷰 자동 편입).
+- **에디토리얼 평점 어드민** `/admin/editorial` — 쇼룸 평가(Overall/Comfort/Ergo 0–10)로 신상 콜드스타트 보정. 마이그레이션 030(rating 컬럼 numeric(4,1)) 필요.
+- **퀴즈 UI** `app/find-your-chair/` (framer-motion, 다크 시네마틱): 풀스크린 6질문(용도/예산/시간/통증 바디맵/스타일/기능) → 분석 리빌 → TOP5(매치링·태그). 시그니처 인터랙션(바디맵 물리·드래그 다이얼)은 추후 폴리시 예정.
+
 ### 남은 과제 (TODO)
 - [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
 - [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
