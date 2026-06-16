@@ -25,6 +25,28 @@ export type UseCase =
   | "lounge"
 export type SitHours = "under2" | "2to6" | "over6"
 export type Style = "minimal" | "classic" | "sporty" | "premium" | "ergonomic"
+export type Material = "mesh" | "leather" | "fabric"
+/** Priority keys the user can flag as "most important". */
+export type Priority =
+  | "lumbar"
+  | "arms"
+  | "recline"
+  | "headrest"
+  | "mesh"
+  | "design"
+  | "brand"
+  | "warranty"
+
+export type ChairSpecs = {
+  recommendedHeightMin?: number
+  recommendedHeightMax?: number
+  weightCapacityKg?: number
+  armrestType?: string
+  hasHeadrest?: boolean
+  hasLumbarSupport?: boolean
+  reclineRange?: number
+  warrantyYears?: number
+}
 
 export type QuizAnswers = {
   useCase?: UseCase
@@ -32,7 +54,10 @@ export type QuizAnswers = {
   sitHours?: SitHours
   pain?: string[]
   style?: Style
-  features?: string[]
+  material?: Material
+  priorities?: Priority[]
+  heightCm?: number
+  weightKg?: number
   seed?: number
 }
 
@@ -54,6 +79,12 @@ export type ProductFeature = {
   hasDirectBuy: boolean
   /** Total #1 picks across experience reviews (popularity). */
   picks: number
+  /** Real product image, or null. */
+  image: string | null
+  /** Derived upholstery material, or null if unknown. */
+  material: Material | null
+  /** Structured chair_specs (subset), or null. */
+  specs: ChairSpecs | null
 }
 
 export type Affinity = {
@@ -76,6 +107,7 @@ export type Recommendation = {
   brand: string | null
   priceRange: Budget | null
   priceUsd: number | null
+  image: string | null
   match: number
   why: string[]
   tag: RecTag | null
@@ -84,13 +116,16 @@ export type Recommendation = {
 
 // ---- weights (tunable) ----
 const W = {
+  priority: 2.6, // user-flagged "most important" — strongest
   use: 2.2,
   budget: 2.0,
-  pain: 1.8,
-  sit: 0.8,
-  style: 0.9,
-  feature: 0.7,
-  quality: 1.2, // review popularity + editorial, confidence-blended
+  pain: 1.6,
+  material: 1.0,
+  height: 0.9,
+  weight: 0.9,
+  sit: 0.7,
+  style: 0.8,
+  quality: 1.1, // review popularity + editorial, confidence-blended
   buyBase: 1.0,
   buyBudgetBoost: 0.8, // extra when the user is budget-conscious
 }
@@ -133,11 +168,40 @@ const STYLE_RULES: Record<
   },
 }
 
-const FEATURE_KEYWORDS: Record<string, string[]> = {
-  headrest: ["headrest", "head support"],
-  armrest: ["armrest", "adjustable arm", "arms", "4d arm"],
-  recline: ["recline", "tilt", "lean"],
-  lumbar: ["lumbar", "back support"],
+const PRIORITY_LABELS: Record<Priority, string> = {
+  lumbar: "lumbar support",
+  arms: "adjustable arms",
+  recline: "deep recline",
+  headrest: "a headrest",
+  mesh: "breathable mesh",
+  design: "standout design",
+  brand: "a trusted brand",
+  warranty: "a long warranty",
+}
+
+function satisfiesPriority(pr: Priority, p: ProductFeature, text: string): boolean {
+  const s = p.specs
+  switch (pr) {
+    case "lumbar":
+      return s?.hasLumbarSupport === true || hit(text, ["lumbar"])
+    case "arms":
+      return (
+        ["3D", "4D"].includes(s?.armrestType ?? "") ||
+        hit(text, ["4d arm", "adjustable arm"])
+      )
+    case "recline":
+      return (s?.reclineRange ?? 0) >= 125 || hit(text, ["recline", "tilt"])
+    case "headrest":
+      return s?.hasHeadrest === true || hit(text, ["headrest"])
+    case "mesh":
+      return p.material === "mesh"
+    case "design":
+      return hit(text, ["sleek", "design", "minimal", "iconic", "award", "distinctive"])
+    case "brand":
+      return p.picks >= 20
+    case "warranty":
+      return (s?.warrantyYears ?? 0) >= 10
+  }
 }
 
 function seeded(id: string, seed: number): number {
@@ -162,7 +226,11 @@ type Fits = {
   painLabel: string | null
   sit: number
   style: number
-  feature: number
+  priority: number
+  prSatisfied: Priority[]
+  material: number
+  height: number
+  weight: number
   quality: number
   reviewDriven: boolean
 }
@@ -234,12 +302,43 @@ function scoreProduct(
     style = Math.min(1, s)
   }
 
-  // features
-  let feature = 0.5
-  if (a.features?.length) {
-    let matched = 0
-    for (const f of a.features) if (hit(text, FEATURE_KEYWORDS[f] ?? [f])) matched++
-    feature = matched / a.features.length
+  // priorities — user-flagged "most important" factors, spec-backed
+  let priority = 0.5
+  const prSatisfied: Priority[] = []
+  if (a.priorities?.length) {
+    for (const pr of a.priorities) {
+      if (satisfiesPriority(pr, p, text)) prSatisfied.push(pr)
+    }
+    priority = prSatisfied.length / a.priorities.length
+  }
+
+  // material preference
+  let material = 0.5
+  if (a.material) {
+    material = p.material === a.material ? 1 : p.material ? 0.2 : 0.5
+  }
+
+  // height fit (against the chair's recommended height range)
+  let height = 1
+  if (a.heightCm) {
+    const lo = p.specs?.recommendedHeightMin
+    const hi = p.specs?.recommendedHeightMax
+    if (lo != null && hi != null) {
+      if (a.heightCm >= lo && a.heightCm <= hi) height = 1
+      else if (a.heightCm >= lo - 6 && a.heightCm <= hi + 6) height = 0.6
+      else height = 0.22
+    } else height = 0.6
+  }
+
+  // weight / capacity fit (big & tall support)
+  let weight = 1
+  if (a.weightKg) {
+    const cap = p.specs?.weightCapacityKg
+    if (cap != null) {
+      if (cap >= a.weightKg * 1.3) weight = 1
+      else if (cap >= a.weightKg * 1.1) weight = 0.55
+      else weight = 0.1
+    } else weight = 0.55
   }
 
   // quality = review popularity (capped, log) blended with editorial by confidence
@@ -254,12 +353,15 @@ function scoreProduct(
   const buy = p.hasDirectBuy ? 1 : 0
 
   let score =
+    W.priority * priority +
     W.use * use +
     W.budget * budget +
     W.pain * pain +
+    W.material * material +
+    W.height * height +
+    W.weight * weight +
     W.sit * sit +
     W.style * style +
-    W.feature * feature +
     W.quality * quality +
     buyWeight * buy
 
@@ -268,7 +370,21 @@ function scoreProduct(
 
   return {
     score,
-    fits: { use, budget, pain, painLabel, sit, style, feature, quality, reviewDriven },
+    fits: {
+      use,
+      budget,
+      pain,
+      painLabel,
+      sit,
+      style,
+      priority,
+      prSatisfied,
+      material,
+      height,
+      weight,
+      quality,
+      reviewDriven,
+    },
   }
 }
 
@@ -282,8 +398,18 @@ function similarity(a: ProductFeature, b: ProductFeature): number {
 
 function buildWhy(p: ProductFeature, a: QuizAnswers, f: Fits): string[] {
   const why: string[] = []
-  if (a.useCase && f.use >= 0.55) why.push(`Great for ${a.useCase} use`)
+  // Lead with the user's flagged priorities when satisfied.
+  if (f.prSatisfied.length) {
+    why.push(
+      `Has ${f.prSatisfied.slice(0, 2).map((pr) => PRIORITY_LABELS[pr]).join(" & ")}`
+    )
+  }
   if (f.painLabel && f.pain >= 0.4) why.push(`Strong ${f.painLabel.toLowerCase()} support`)
+  if (a.useCase && f.use >= 0.55) why.push(`Great for ${a.useCase} use`)
+  if (a.material && f.material >= 1) why.push(`${a.material[0].toUpperCase()}${a.material.slice(1)} build`)
+  if (a.weightKg && a.weightKg >= 100 && f.weight >= 1) why.push("Big & tall ready")
+  if (a.heightCm && f.height >= 1 && p.specs?.recommendedHeightMin != null)
+    why.push("Sized to fit you")
   if (a.sitHours === "over6" && f.sit >= 0.4) why.push("Built for long hours")
   if (a.budget && f.budget >= 1) why.push("Within your budget")
   if (f.reviewDriven) why.push("A favorite among reviewers like you")
@@ -371,6 +497,7 @@ export function recommend(
       brand: s.p.brand,
       priceRange: s.p.priceRange,
       priceUsd: s.p.priceUsd,
+      image: s.p.image,
       match: Math.max(60, Math.min(99, match)),
       why: buildWhy(s.p, answers, s.fits),
       tag: tagFor(s.p, i === 0, s.p.editorial != null && s.p.picks < 5),

@@ -1,7 +1,13 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links"
 import { canonicalJob, canonicalPain } from "@/lib/reviews/normalize"
-import type { Affinity, Budget, ProductFeature } from "@/lib/recommend/engine"
+import type {
+  Affinity,
+  Budget,
+  ChairSpecs,
+  Material,
+  ProductFeature,
+} from "@/lib/recommend/engine"
 
 const MIN_SUPPORT = 3 // need this many picks in a segment before we trust a lift
 const ALPHA = 0.02 // smoothing
@@ -31,7 +37,51 @@ type ProductRow = {
   rating_build_quality: number | null
   rating_design: number | null
   rating_value: number | null
+  thumbnail_url: string | null
+  chair_specs: Record<string, unknown> | null
   brands: { name: string } | { name: string }[] | null
+}
+
+function num(v: unknown): number | undefined {
+  return typeof v === "number" && Number.isFinite(v) ? v : undefined
+}
+
+function extractSpecs(raw: Record<string, unknown> | null): ChairSpecs | null {
+  if (!raw || typeof raw !== "object") return null
+  const s: ChairSpecs = {
+    recommendedHeightMin: num(raw.recommendedHeightMin),
+    recommendedHeightMax: num(raw.recommendedHeightMax),
+    weightCapacityKg: num(raw.weightCapacityKg),
+    armrestType: typeof raw.armrestType === "string" ? raw.armrestType : undefined,
+    hasHeadrest: typeof raw.hasHeadrest === "boolean" ? raw.hasHeadrest : undefined,
+    hasLumbarSupport:
+      typeof raw.hasLumbarSupport === "boolean" ? raw.hasLumbarSupport : undefined,
+    reclineRange: num(raw.reclineRange),
+    warrantyYears: num(raw.warrantyYears),
+  }
+  return s
+}
+
+/** Derive upholstery material from chair_type + text keywords. */
+function deriveMaterial(
+  chairType: string | null,
+  text: string
+): Material | null {
+  const ct = (chairType ?? "").toLowerCase()
+  if (ct.includes("mesh")) return "mesh"
+  if (text.includes("leather") || text.includes("pu ") || text.includes("faux"))
+    return "leather"
+  if (ct.includes("mesh")) return "mesh"
+  if (text.includes("mesh") || text.includes("breathable")) return "mesh"
+  if (
+    text.includes("fabric") ||
+    text.includes("upholster") ||
+    text.includes("cushion") ||
+    text.includes("padded") ||
+    text.includes("velvet")
+  )
+    return "fabric"
+  return null
 }
 
 function topChairId(s: SessionRow): string | null {
@@ -103,7 +153,7 @@ export async function loadRecommenderData(): Promise<{
     supabase
       .from("products")
       .select(
-        "id, slug, name, category, chair_type, price_range, price_usd, best_for, pros, cons, rating_overall, rating_comfort, rating_ergonomics, rating_build_quality, rating_design, rating_value, brands(name)"
+        "id, slug, name, category, chair_type, price_range, price_usd, best_for, pros, cons, rating_overall, rating_comfort, rating_ergonomics, rating_build_quality, rating_design, rating_value, thumbnail_url, chair_specs, brands(name)"
       )
       .limit(2000),
   ])
@@ -145,22 +195,29 @@ export async function loadRecommenderData(): Promise<{
   }
 
   // ---- product features ----
-  const features: ProductFeature[] = ((products ?? []) as ProductRow[]).map((p) => ({
-    id: p.id,
-    slug: p.slug,
-    name: p.name,
-    brand: brandName(p.brands),
-    category: p.category,
-    chairType: p.chair_type,
-    priceRange: (p.price_range as Budget | null) ?? null,
-    priceUsd: p.price_usd,
-    bestFor: p.best_for ?? "",
-    pros: Array.isArray(p.pros) ? p.pros : [],
-    cons: Array.isArray(p.cons) ? p.cons : [],
-    editorial: editorialScore(p),
-    hasDirectBuy: hasDirectBuy(p.slug),
-    picks: picks.get(p.id) ?? 0,
-  }))
+  const features: ProductFeature[] = ((products ?? []) as ProductRow[]).map((p) => {
+    const pros = Array.isArray(p.pros) ? p.pros : []
+    const text = `${p.best_for ?? ""} ${pros.join(" ")} ${p.name}`.toLowerCase()
+    return {
+      id: p.id,
+      slug: p.slug,
+      name: p.name,
+      brand: brandName(p.brands),
+      category: p.category,
+      chairType: p.chair_type,
+      priceRange: (p.price_range as Budget | null) ?? null,
+      priceUsd: p.price_usd,
+      bestFor: p.best_for ?? "",
+      pros,
+      cons: Array.isArray(p.cons) ? p.cons : [],
+      editorial: editorialScore(p),
+      hasDirectBuy: hasDirectBuy(p.slug),
+      picks: picks.get(p.id) ?? 0,
+      image: p.thumbnail_url ?? null,
+      material: deriveMaterial(p.chair_type, text),
+      specs: extractSpecs(p.chair_specs),
+    }
+  })
 
   return { products: features, affinity }
 }

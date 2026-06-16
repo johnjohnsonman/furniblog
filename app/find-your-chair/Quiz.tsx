@@ -8,10 +8,12 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion"
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react"
+import { ArrowLeft, ArrowRight, Armchair, RotateCcw } from "lucide-react"
 import { BodyMap } from "./BodyMap"
 import type {
   Budget,
+  Material,
+  Priority,
   QuizAnswers,
   Recommendation,
   Style,
@@ -47,21 +49,33 @@ const STYLE: { v: Style; t: string; d: string }[] = [
   { v: "sporty", t: "Sporty", d: "Racing-inspired, bold" },
   { v: "premium", t: "Premium", d: "Flagship materials" },
 ]
-const FEATURES: { v: string; t: string }[] = [
-  { v: "headrest", t: "Headrest" },
-  { v: "armrest", t: "Adjustable arms" },
-  { v: "recline", t: "Deep recline" },
-  { v: "lumbar", t: "Lumbar support" },
+const MATERIALS: { v: Material; t: string; d: string; bg: string }[] = [
+  { v: "mesh", t: "Mesh", d: "Breathable, cool", bg: "repeating-linear-gradient(45deg,#1b1813,#1b1813 3px,#241f18 3px,#241f18 6px)" },
+  { v: "fabric", t: "Fabric", d: "Soft, cushioned", bg: "radial-gradient(circle at 30% 30%,#2a241b,#171410)" },
+  { v: "leather", t: "Leather", d: "Premium, easy-clean", bg: "linear-gradient(135deg,#2c2118,#191210)" },
 ]
+const PRIORITIES_OPTS: { v: Priority; t: string }[] = [
+  { v: "lumbar", t: "Lower-back relief" },
+  { v: "arms", t: "Adjustable arms (3D/4D)" },
+  { v: "recline", t: "Deep recline / tilt" },
+  { v: "headrest", t: "Headrest" },
+  { v: "mesh", t: "Breathability" },
+  { v: "design", t: "Standout design" },
+  { v: "brand", t: "Trusted brand" },
+  { v: "warranty", t: "Long warranty" },
+]
+const MAX_PRIORITIES = 3
 
 type StepKey =
   | "intro"
   | "use"
   | "budget"
+  | "body"
   | "hours"
   | "pain"
+  | "material"
   | "style"
-  | "features"
+  | "priorities"
   | "analyzing"
   | "results"
 
@@ -69,14 +83,16 @@ const FLOW: StepKey[] = [
   "intro",
   "use",
   "budget",
+  "body",
   "hours",
   "pain",
+  "material",
   "style",
-  "features",
+  "priorities",
   "analyzing",
   "results",
 ]
-const QUESTION_STEPS = FLOW.slice(1, 7) // use..features for the progress dots
+const QUESTION_STEPS = FLOW.slice(1, 9) // the 8 question steps, for progress dots
 
 const TAG_LABEL: Record<string, string> = {
   "best-match": "✓ Best match",
@@ -106,13 +122,14 @@ export function Quiz() {
     setAnswers((a) => ({ ...a, [key]: value }))
     window.setTimeout(next, 320)
   }
-  function toggleArray(key: "pain" | "features", value: string) {
+  function toggleArray(key: "pain" | "priorities", value: string, cap?: number) {
     setAnswers((a) => {
       const cur = (a[key] as string[] | undefined) ?? []
-      const nextArr = cur.includes(value)
-        ? cur.filter((v) => v !== value)
-        : [...cur, value]
-      return { ...a, [key]: nextArr }
+      if (cur.includes(value)) {
+        return { ...a, [key]: cur.filter((v) => v !== value) }
+      }
+      if (cap && cur.length >= cap) return a
+      return { ...a, [key]: [...cur, value] }
     })
   }
 
@@ -159,9 +176,9 @@ export function Quiz() {
       <AnimatePresence mode="wait">
         <motion.main
           key={step}
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -18 }}
+          initial={{ opacity: 0, y: 28, scale: 0.985, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -20, scale: 0.99, filter: "blur(6px)" }}
           transition={stepTransition}
           className="relative z-10 mx-auto flex min-h-[calc(100dvh-72px)] w-full max-w-5xl flex-col items-center justify-center px-6 pb-16"
         >
@@ -196,6 +213,40 @@ export function Quiz() {
                   />
                 ))}
               </div>
+            </Question>
+          )}
+
+          {step === "body" && (
+            <Question title="A bit about you" hint="So we can size the seat and support.">
+              <div className="flex w-full max-w-md flex-col gap-9">
+                <Slider
+                  label="Height"
+                  unit="cm"
+                  min={140}
+                  max={205}
+                  value={answers.heightCm ?? 175}
+                  onChange={(v) => setAnswers((a) => ({ ...a, heightCm: v }))}
+                />
+                <Slider
+                  label="Weight"
+                  unit="kg"
+                  min={40}
+                  max={150}
+                  value={answers.weightKg ?? 70}
+                  onChange={(v) => setAnswers((a) => ({ ...a, weightKg: v }))}
+                />
+              </div>
+              <ContinueBar
+                onContinue={() => {
+                  setAnswers((a) => ({
+                    ...a,
+                    heightCm: a.heightCm ?? 175,
+                    weightKg: a.weightKg ?? 70,
+                  }))
+                  next()
+                }}
+                label="Continue"
+              />
             </Question>
           )}
 
@@ -234,6 +285,23 @@ export function Quiz() {
             </Question>
           )}
 
+          {step === "material" && (
+            <Question title="Preferred feel?" hint="The surface against your back.">
+              <div className="grid w-full max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+                {MATERIALS.map((o) => (
+                  <Swatch
+                    key={o.v}
+                    active={answers.material === o.v}
+                    onClick={() => choose("material", o.v)}
+                    title={o.t}
+                    desc={o.d}
+                    bg={o.bg}
+                  />
+                ))}
+              </div>
+            </Question>
+          )}
+
           {step === "style" && (
             <Question title="What's your taste?">
               <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -251,18 +319,29 @@ export function Quiz() {
             </Question>
           )}
 
-          {step === "features" && (
-            <Question title="Any must-haves?" hint="Optional — pick what matters.">
-              <div className="flex flex-wrap justify-center gap-3">
-                {FEATURES.map((o) => (
-                  <Chip
-                    key={o.v}
-                    active={(answers.features ?? []).includes(o.v)}
-                    onClick={() => toggleArray("features", o.v)}
-                    label={o.t}
-                  />
-                ))}
+          {step === "priorities" && (
+            <Question
+              title="What matters most?"
+              hint={`Pick up to ${MAX_PRIORITIES} — we weight these heavily.`}
+            >
+              <div className="flex max-w-2xl flex-wrap justify-center gap-3">
+                {PRIORITIES_OPTS.map((o) => {
+                  const sel = (answers.priorities ?? []).includes(o.v)
+                  const full = (answers.priorities?.length ?? 0) >= MAX_PRIORITIES
+                  return (
+                    <Chip
+                      key={o.v}
+                      active={sel}
+                      disabled={!sel && full}
+                      onClick={() => toggleArray("priorities", o.v, MAX_PRIORITIES)}
+                      label={o.t}
+                    />
+                  )
+                })}
               </div>
+              <p className="mt-4 text-xs text-white/40">
+                {answers.priorities?.length ?? 0}/{MAX_PRIORITIES} selected
+              </p>
               <ContinueBar onContinue={next} label="See my matches" />
             </Question>
           )}
@@ -507,24 +586,115 @@ function Chip({
   active,
   onClick,
   label,
+  disabled,
 }: {
   active: boolean
   onClick: () => void
   label: string
+  disabled?: boolean
 }) {
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      disabled={disabled}
+      whileHover={disabled ? undefined : { scale: 1.05 }}
+      whileTap={disabled ? undefined : { scale: 0.95 }}
       animate={active ? { scale: 1.04 } : { scale: 1 }}
       className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-colors ${
         active
           ? "border-[#f0a830] bg-[#f0a830] text-[#1a1206]"
-          : "border-white/15 bg-white/[0.03] text-white/80 hover:border-white/35"
+          : disabled
+            ? "cursor-not-allowed border-white/5 bg-white/[0.02] text-white/25"
+            : "border-white/15 bg-white/[0.03] text-white/80 hover:border-white/35"
       }`}
     >
       {label}
+    </motion.button>
+  )
+}
+
+function Slider({
+  label,
+  unit,
+  min,
+  max,
+  value,
+  onChange,
+}: {
+  label: string
+  unit: string
+  min: number
+  max: number
+  value: number
+  onChange: (v: number) => void
+}) {
+  const pct = ((value - min) / (max - min)) * 100
+  return (
+    <div className="w-full">
+      <div className="mb-3 flex items-baseline justify-between">
+        <span className="text-sm uppercase tracking-wide text-white/45">
+          {label}
+        </span>
+        <motion.span
+          key={value}
+          initial={{ scale: 1.12 }}
+          animate={{ scale: 1 }}
+          className="font-serif text-3xl font-medium text-[#f0a830]"
+        >
+          {value}
+          <span className="ml-1 text-base text-white/40">{unit}</span>
+        </motion.span>
+      </div>
+      <div className="relative h-2 rounded-full bg-white/10">
+        <div
+          className="absolute inset-y-0 left-0 rounded-full bg-[#f0a830]"
+          style={{ width: `${pct}%` }}
+        />
+        <div
+          className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f0a830] shadow-[0_0_16px_rgba(240,168,48,0.6)]"
+          style={{ left: `${pct}%` }}
+        />
+        <input
+          type="range"
+          min={min}
+          max={max}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          aria-label={label}
+        />
+      </div>
+    </div>
+  )
+}
+
+function Swatch({
+  active,
+  onClick,
+  title,
+  desc,
+  bg,
+}: {
+  active: boolean
+  onClick: () => void
+  title: string
+  desc: string
+  bg: string
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      whileHover={{ y: -5 }}
+      whileTap={{ scale: 0.97 }}
+      className={`overflow-hidden rounded-2xl border text-left transition-colors ${
+        active ? "border-[#f0a830]" : "border-white/10 hover:border-white/30"
+      }`}
+    >
+      <div className="h-24 w-full" style={{ background: bg }} />
+      <div className="p-4">
+        <div className="font-serif text-lg font-medium">{title}</div>
+        <div className="mt-0.5 text-sm text-white/50">{desc}</div>
+      </div>
     </motion.button>
   )
 }
@@ -718,12 +888,30 @@ function Results({
           >
             <Link
               href={`/products/${r.slug}`}
-              className="flex items-center gap-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition-colors hover:border-[#f0a830]/50"
+              className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-[#f0a830]/50 sm:gap-5 sm:p-5"
             >
-              <MatchRing value={r.match} />
+              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-white/10 to-white/[0.02] sm:h-24 sm:w-24">
+                {r.image ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={r.image}
+                    alt={r.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Armchair className="h-8 w-8 text-white/25" />
+                  </div>
+                )}
+                <span className="absolute left-1 top-1 rounded-md bg-black/55 px-1.5 py-0.5 text-[11px] font-semibold text-[#f0a830] backdrop-blur">
+                  #{i + 1}
+                </span>
+              </div>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-serif text-xl font-medium">{r.name}</span>
+                  <span className="font-serif text-lg font-medium sm:text-xl">
+                    {r.name}
+                  </span>
                   {r.tag && (
                     <span className="rounded-full bg-[#f0a830]/15 px-2.5 py-0.5 text-xs font-medium text-[#f0a830]">
                       {TAG_LABEL[r.tag] ?? r.tag}
@@ -739,7 +927,7 @@ function Results({
                   </p>
                 )}
               </div>
-              <ArrowRight className="h-5 w-5 shrink-0 text-white/30" />
+              <MatchRing value={r.match} />
             </Link>
           </motion.div>
         ))}
