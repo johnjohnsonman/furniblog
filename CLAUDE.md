@@ -1,0 +1,84 @@
+# CLAUDE.md
+
+이 파일은 Claude Code가 이 저장소에서 작업할 때 자동으로 읽는 프로젝트 안내서입니다.
+**여러 컴퓨터(노트북/데스크탑)를 오가며 작업하므로, 작업 맥락은 로컬 메모리가 아니라 이 파일에 git으로 기록합니다.**
+중요한 진행 상황이나 결정사항이 생기면 이 파일의 "진행 상황" 섹션을 갱신하고 커밋하세요.
+
+## 프로젝트 개요
+
+- **이름**: furniblog — 의자(체어) 중심 가구 블로그/리뷰 + 제휴(affiliate) 사이트
+- **배포**: Vercel (프로덕션 도메인 `www.furniblog.com`)
+- **저장소**: https://github.com/johnjohnsonman/furniblog.git
+- **사용자**: 한국어로 소통합니다. 답변은 한국어로 작성하세요.
+
+## 기술 스택
+
+- **Next.js 16.2.6** (App Router, Turbopack), **React 19**, **TypeScript 5.7**
+- **Tailwind CSS v4** + Radix UI (shadcn 계열 컴포넌트, `components.json`)
+- **Supabase** (DB / 인증 / 스토리지) — `lib/supabase/`
+- **Anthropic SDK** (`@anthropic-ai/sdk`) — AI 콘텐츠 파이프라인
+- 데이터 수집: cheerio, axios, node-html-parser, xml2js (`lib/pipeline/sources/`)
+
+## 디렉토리 구조
+
+- `app/` — App Router 라우트
+  - `app/admin/` — 관리자 패널 (`(panel)`, `login`, `queue`)
+  - `app/api/` — API 라우트: `admin`, `affiliate`, `cron`, `experience`, `gallery`, `pipeline`, `reviews`, `track`
+  - 공개 페이지: `products`, `brands`, `designers`, `reviews`, `videos`, `news`, `gallery`, `best`, `experience` 등
+- `lib/` — 핵심 로직
+  - `lib/supabase/` — 클라이언트/서버/스토리지, `schema.sql`, `migrations/`
+  - `lib/pipeline/` — AI 콘텐츠 수집·처리 파이프라인 (`sources/`, `processor.ts`, `chair-names.ts`)
+  - `lib/affiliate/`, `lib/data/`, `lib/seo/`, `lib/reviews/`, `lib/videos/`, `lib/news/`, `lib/home/`, `lib/audit/`
+- `scripts/` — 시드/유지보수 스크립트 (ts-node 실행)
+- `components/`, `hooks/`, `styles/`, `public/`, `types/`
+
+## 자주 쓰는 명령
+
+```bash
+npm run dev        # 개발 서버 (http://localhost:3000)
+npm run build      # 프로덕션 빌드
+npm run start      # 프로덕션 서버
+npm run lint       # ESLint
+
+# 시드/유지보수 (ts-node)
+npm run seed:auto          # 의자 자동 시드
+npm run seed:additional    # 추가 의자 시드
+npm run seed:gallery       # 갤러리 시드
+npm run sync:thumbnails    # 제품 썸네일 동기화
+npm run test:pipeline      # 파이프라인 테스트
+```
+
+## 환경변수 (`.env.local`)
+
+`.env.local.example`를 복사해서 채웁니다. **`.env*.local`과 `.env*`는 gitignore됨(절대 커밋 금지).**
+필수 키:
+- `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
+- `ANTHROPIC_API_KEY`
+- 데이터 소스: `REDDIT_CLIENT_ID/SECRET`, `YOUTUBE_API_KEY`, `NAVER_CLIENT_ID/SECRET`
+- `ADMIN_SECRET`
+- 제휴/분석: `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_ADSENSE_ID`, `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG`(`furniblog0e-20`), `NEXT_PUBLIC_AMAZON_JP_TAG`, `NEXT_PUBLIC_COUPANG_PARTNER_ID`
+- `NEXT_PUBLIC_SITE_URL`
+
+## 주요 기능
+
+- **제품/브랜드/디자이너** 카탈로그 (Supabase 기반)
+- **제휴 링크**: 아마존 직접 `/dp/` 링크 (`lib/data/affiliate-links-data.ts`), 쿠팡 — `/best/best-chairs-to-buy` "온라인 구매 가능 의자" 가이드에 자동 노출
+- **리뷰/영상/뉴스 피드**: 방문할 때마다 랜덤 정렬로 신선하게 노출
+- **AI 콘텐츠 파이프라인**: 외부 소스(Reddit/YouTube/Naver 등) 수집 → 처리 → 관리자 큐(`app/admin/queue`)
+- **Cron** (`vercel.json`): 매일 2회 콘텐츠 수집 — `/api/cron/collect` (morning `0 21 * * *`, evening `0 9 * * *`)
+- **자체 방문자 분석**: 관리자 대시보드, 사이트 소유자 본인 방문은 추적 제외
+- **SEO**: `app/sitemap.ts`, `app/robots.ts`, next-seo, next-sitemap; 레거시 WordPress URL → 301 리다이렉트
+
+## 작업 규칙
+
+- 코드 스타일은 주변 코드를 따릅니다.
+- `next.config.mjs`에 레거시 리다이렉트가 있음(Aeron variant 통합 등). 라우트 변경 시 리다이렉트 영향 확인.
+- 커밋 메시지는 conventional commits 형식 (`feat(scope):`, `fix(scope):`, `chore:` 등) 사용.
+- `images.unoptimized: true` 상태 (Vercel 이미지 최적화 미사용).
+
+## 진행 상황 (수동 갱신)
+
+> 컴퓨터를 옮기거나 큰 작업을 마칠 때 여기에 한두 줄 남기세요. 그래야 다른 컴퓨터에서 이어받을 수 있습니다.
+
+- 2026-06-16: 데스크탑(`C:\Users\bizandlife\Desktop\park\furniblog`)에 새로 clone, 의존성 설치, 개발 서버 구동 확인. `CLAUDE.md` 추가.
+- 최근 작업(~6/14): 국제 구매 가능 의자(Ergohuman, Duorest, Sidiz T50) 아마존 직접 링크 추가, 리뷰/영상 랜덤 정렬, 자체 방문자 분석 등.
