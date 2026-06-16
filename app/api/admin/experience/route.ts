@@ -38,6 +38,33 @@ type SessionRow = {
   standing_desk: string | null
 }
 
+/** Bulk action — currently only "publish_all" (pending -> approved). */
+export async function POST(request: NextRequest) {
+  const denied = requireAdmin(request)
+  if (denied) return denied
+
+  try {
+    const body = await request.json().catch(() => ({}))
+    if (body?.action !== "publish_all") {
+      return NextResponse.json({ error: "Unknown action" }, { status: 400 })
+    }
+
+    const supabase = createAdminClient()
+    const { data, error } = await supabase
+      .from("review_sessions")
+      .update({ status: "approved" })
+      .eq("status", "pending")
+      .select("id")
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ published: data?.length ?? 0 })
+  } catch (error) {
+    return jsonInternalError(error)
+  }
+}
+
 export async function GET(request: NextRequest) {
   const denied = requireAdmin(request)
   if (denied) return denied

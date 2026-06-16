@@ -109,6 +109,29 @@ export default function AdminExperiencePage() {
     void load()
   }
 
+  async function publishAll() {
+    if (
+      !window.confirm(
+        `검토 대기 ${counts.pending}개를 모두 승인(게시)할까요? 나중에 개별 삭제/검토대기로 되돌릴 수 있습니다.`
+      )
+    )
+      return
+    setBusy("__all__")
+    const res = await fetch(`/api/admin/experience`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "publish_all" }),
+    })
+    setBusy(null)
+    const d = await res.json()
+    if (!res.ok) {
+      toast({ title: "일괄 승인 실패", description: d.error, variant: "destructive" })
+      return
+    }
+    toast({ title: `${d.published}개를 승인했습니다` })
+    void load()
+  }
+
   async function remove(r: ExperienceReview) {
     if (!window.confirm("이 후기를 삭제할까요? 되돌릴 수 없습니다.")) return
     setBusy(r.id)
@@ -125,11 +148,24 @@ export default function AdminExperiencePage() {
 
   return (
     <div className="max-w-4xl p-8">
-      <div className="mb-6">
-        <h1 className="font-serif text-2xl font-medium">체험 후기</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          매장 체험 후기를 검토하고 게시 여부를 관리합니다. 검토 대기 {counts.pending} · 승인 {counts.approved}
-        </p>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-serif text-2xl font-medium">체험 후기</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            매장 체험 후기를 검토하고 게시 여부를 관리합니다. 검토 대기 {counts.pending} · 승인 {counts.approved}
+          </p>
+        </div>
+        {counts.pending > 0 && (
+          <Button
+            className="shrink-0"
+            disabled={busy === "__all__"}
+            onClick={() => void publishAll()}
+          >
+            {busy === "__all__"
+              ? "승인 중…"
+              : `검토 대기 ${counts.pending}개 모두 승인`}
+          </Button>
+        )}
       </div>
 
       <div className="mb-6 flex flex-wrap gap-2">
