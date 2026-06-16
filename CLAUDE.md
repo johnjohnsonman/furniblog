@@ -92,6 +92,12 @@ npm run test:pipeline      # 파이프라인 테스트
 - **크론 리뷰 비중 ↑**(5ebe75e): `lib/cron/run.ts` DEFAULT_CRON_OPTIONS — maxReviewChairs 8→16, reviewBudget 80→120s, maxNewsBrands 20→15.
 - **프로모션 뉴스 정리 스크립트**: `npm run clean:promo-news`(dry-run) / `-- --apply`(삭제). `scripts/cleanup-promo-news.ts`.
 
+### 2026-06-16 DB 마이그레이션 025~029 적용 완료 (프로덕션 Supabase)
+- 이 컴퓨터(`C:\Users\p\Desktop\park\furniblog`)에서 `git pull`로 최신 main(85359c8) 받고 `npm install` 완료.
+- **마이그레이션 025~029를 Supabase SQL Editor에서 실행 → 적용 완료**: 025 news 테이블/RLS, 026 news slug+why_it_matters, 027 reviews/videos/news audit 컬럼, 028 page_views 테이블+`get_traffic_stats()` 함수, 029 affiliate_clicks.country 컬럼.
+  - 주의: `create policy`는 `if not exists` 미지원이라 재실행 시 42710 에러 → `drop policy if exists ... ; create policy ...`로 처리. 통합본 `lib/supabase/migrations/_apply_025-029.sql` 참고.
+- 메모: Claude 로컬 메모리는 컴퓨터마다 따로라 PC 옮기면 안 따라옴 → 작업 맥락은 이 `CLAUDE.md`에 적고 커밋하는 게 맞음(원래 규칙대로).
+
 ### 남은 과제 (TODO)
 - [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
 - [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
