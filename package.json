@@ -12,6 +12,7 @@
     "seed:additional": "ts-node --project scripts/tsconfig.json scripts/seed-additional-chairs.ts",
     "seed:gallery": "ts-node --project scripts/tsconfig.json scripts/seed-gallery.ts",
     "sync:thumbnails": "ts-node --project scripts/tsconfig.json scripts/sync-product-thumbnails.ts",
+    "clean:promo-news": "ts-node --project scripts/tsconfig.json scripts/cleanup-promo-news.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },
   "dependencies": {

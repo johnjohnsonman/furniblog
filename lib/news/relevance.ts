@@ -9,6 +9,8 @@ export type NewsRelevanceResult = {
   relevant: boolean
   confidence: number
   isFurnitureNews: boolean
+  /** True when the article is primarily a sale/deal/discount/shopping piece. */
+  isPromotional: boolean
   /** Brand picked from the known list, or null if none clearly applies. */
   brand: string | null
   /** One-line English summary, or null when generation fails. */
@@ -52,6 +54,7 @@ export async function checkNewsRelevance(params: {
       relevant: false,
       confidence: 0,
       isFurnitureNews: false,
+      isPromotional: false,
       brand: null,
       summary: null,
       whyItMatters: null,
@@ -65,6 +68,7 @@ export async function checkNewsRelevance(params: {
       relevant: false,
       confidence: 0,
       isFurnitureNews: false,
+      isPromotional: false,
       brand: null,
       summary: null,
       whyItMatters: null,
@@ -75,20 +79,26 @@ export async function checkNewsRelevance(params: {
   // Keep the brand list bounded so the prompt stays small.
   const brandList = params.knownBrands.slice(0, 200).join(", ")
 
-  const prompt = `You curate a news feed about office/ergonomic chairs and furniture brands.
-Decide whether this news article is genuinely about furniture or office/ergonomic chairs
+  const prompt = `You curate an EDITORIAL news feed about office/ergonomic chairs and furniture brands.
+Decide whether this news article is genuinely editorial coverage of furniture or office/ergonomic chairs
 (product launches, design, reviews, company/industry news for furniture makers, awards, collaborations).
 
 This article came from a search for the brand "${candidateBrand}".
 
 Respond ONLY with valid JSON:
-{"isFurnitureNews": true|false, "brand": "<one brand from the list, or null>", "confidence": 0.0-1.0, "summary": "one English sentence (max 200 chars)", "whyItMatters": "1-2 sentences on why a chair/furniture shopper should care", "reason": "short explanation"}
+{"isFurnitureNews": true|false, "isPromotional": true|false, "brand": "<one brand from the list, or null>", "confidence": 0.0-1.0, "summary": "one English sentence (max 200 chars)", "whyItMatters": "1-2 sentences on why a chair/furniture shopper should care", "reason": "short explanation"}
 
 Rules:
 - isFurnitureNews: true ONLY if the article's MAIN SUBJECT is furniture or office/ergonomic chairs,
   or a furniture brand's product/design/business news. If it is mainly about unrelated topics
   (general finance, sports, politics, a same-named person/place, software, electronics, real estate),
   set isFurnitureNews=false and confidence below 0.2 (HARD REJECT).
+- isPromotional: true if the article is primarily a SALE/DEAL/SHOPPING piece rather than editorial news —
+  e.g. discounts, coupons, "X% off", price drops, "best deals", Black Friday / Cyber Monday / Prime Day
+  roundups, "where to buy cheapest", buying-guide listicles, or retailer/affiliate promotions.
+  We want OFFICIAL / editorial news only (brand announcements, launches, design, business, reviews from
+  reputable publications), so any primarily promotional article must be REJECTED: set isPromotional=true
+  and confidence below 0.2 (HARD REJECT). A genuine product launch that merely mentions a price is NOT promotional.
 - brand: choose the single best-matching brand from this list, or null if none clearly applies:
   ${brandList}
   Prefer "${candidateBrand}" if the article is about it.
@@ -119,6 +129,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
         relevant: false,
         confidence: 0,
         isFurnitureNews: false,
+        isPromotional: false,
         brand: null,
         summary: null,
         whyItMatters: null,
@@ -128,6 +139,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
 
     const parsed = JSON.parse(stripJsonMarkdown(block.text)) as {
       isFurnitureNews?: boolean
+      isPromotional?: boolean
       brand?: string | null
       confidence?: number
       summary?: string
@@ -136,6 +148,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
     }
 
     const isFurnitureNews = parsed.isFurnitureNews === true
+    const isPromotional = parsed.isPromotional === true
     const rawConfidence =
       typeof parsed.confidence === "number" ? parsed.confidence : 0
     const reason =
@@ -143,9 +156,10 @@ Description: ${description.slice(0, 1500) || "(empty)"}
         ? parsed.reason.trim()
         : "(no reason)"
 
-    // Hard gate: non-furniture topics never pass.
+    // Hard gates: non-furniture topics and promotional/deal pieces never pass.
     let confidence = rawConfidence
     if (!isFurnitureNews) confidence = Math.min(confidence, 0.19)
+    if (isPromotional) confidence = Math.min(confidence, 0.19)
 
     // Only accept a brand that is actually in our known list.
     const knownSet = new Set(params.knownBrands.map((b) => b.toLowerCase()))
@@ -172,6 +186,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
       relevant: confidence >= NEWS_RELEVANCE_MIN,
       confidence,
       isFurnitureNews,
+      isPromotional,
       brand,
       summary,
       whyItMatters,
@@ -182,6 +197,7 @@ Description: ${description.slice(0, 1500) || "(empty)"}
       relevant: false,
       confidence: 0,
       isFurnitureNews: false,
+      isPromotional: false,
       brand: null,
       summary: null,
       whyItMatters: null,

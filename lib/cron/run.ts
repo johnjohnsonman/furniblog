@@ -38,13 +38,15 @@ export type CronCollectionOptions = {
   maxReviewChairs: number
 }
 
+// Budgets run sequentially (news → videos → reviews); the sum stays well under
+// the 300s maxDuration. Weighted toward reviews, which were under-collected.
 export const DEFAULT_CRON_OPTIONS: CronCollectionOptions = {
-  newsBudgetMs: 90_000,
-  videoBudgetMs: 90_000,
-  reviewBudgetMs: 80_000,
-  maxNewsBrands: 20,
-  maxVideoChairs: 15,
-  maxReviewChairs: 8,
+  newsBudgetMs: 70_000,
+  videoBudgetMs: 75_000,
+  reviewBudgetMs: 120_000,
+  maxNewsBrands: 15,
+  maxVideoChairs: 12,
+  maxReviewChairs: 16,
 }
 
 /** Build brand|key -> latest created_at (ISO) from a collected table. */
