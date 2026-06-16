@@ -49,6 +49,18 @@ type SessionRow = {
 async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
   try {
     const supabase = createPublicServerClient()
+    const limit = 60
+
+    // Pick a random window each request so visitors don't always see the same
+    // reviews (the page is force-dynamic, so this re-rolls per visit).
+    const { count } = await supabase
+      .from("review_sessions")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "approved")
+    const total = count ?? 0
+    const maxOffset = Math.max(0, total - limit)
+    const offset = maxOffset > 0 ? Math.floor(Math.random() * (maxOffset + 1)) : 0
+
     const { data, error } = await supabase
       .from("review_sessions")
       .select(
@@ -56,7 +68,7 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
       )
       .eq("status", "approved")
       .order("created_at", { ascending: false })
-      .limit(60)
+      .range(offset, offset + limit - 1)
 
     if (error || !data) return []
 
@@ -87,7 +99,8 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
         )
         .sort((a, b) => a.rank - b.rank),
     }))
-    return shuffle(cards)
+    // Drop any card with no ranked chair (no value without a top pick).
+    return shuffle(cards.filter((c) => c.rankings.length > 0))
   } catch {
     return []
   }
