@@ -58,6 +58,12 @@ function extractSpecs(raw: Record<string, unknown> | null): ChairSpecs | null {
       typeof raw.hasLumbarSupport === "boolean" ? raw.hasLumbarSupport : undefined,
     reclineRange: num(raw.reclineRange),
     warrantyYears: num(raw.warrantyYears),
+    seatDepth: num(raw.seatDepth),
+    seatWidth: num(raw.seatWidth),
+    seatHeightMin: num(raw.seatHeightMin),
+    seatHeightMax: num(raw.seatHeightMax),
+    chairWeightKg: num(raw.chairWeightKg),
+    backrestHeight: num(raw.backrestHeight),
   }
   return s
 }

@@ -30,6 +30,8 @@ export default function AdminProductsPage() {
   const [search, setSearch] = useState("")
   const [brand, setBrand] = useState("all")
   const [brands, setBrands] = useState<{ slug: string; name: string }[]>([])
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 25
 
   const load = useCallback(async () => {
     const params = new URLSearchParams()
@@ -38,6 +40,7 @@ export default function AdminProductsPage() {
     const res = await fetch(`/api/admin/products?${params}`)
     const data = await res.json()
     setProducts(data.products ?? [])
+    setPage(1)
   }, [search, brand])
 
   useEffect(() => {
@@ -116,9 +119,13 @@ export default function AdminProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((p, i) => (
+            {products
+              .slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+              .map((p, i) => (
               <tr key={p.id} className="border-b border-border">
-                <td className="py-3 px-4 text-muted-foreground">{i + 1}</td>
+                <td className="py-3 px-4 text-muted-foreground">
+                  {(page - 1) * PAGE_SIZE + i + 1}
+                </td>
                 <td className="py-3 px-4 font-medium">{p.name}</td>
                 <td className="py-3 px-4">{p.brand}</td>
                 <td className="py-3 px-4 capitalize">{p.category}</td>
@@ -148,6 +155,40 @@ export default function AdminProductsPage() {
           </tbody>
         </table>
       </div>
+
+      {products.length > PAGE_SIZE && (
+        <div className="mt-4 flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">
+            Showing {(page - 1) * PAGE_SIZE + 1}–
+            {Math.min(page * PAGE_SIZE, products.length)} of {products.length}
+          </span>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+            >
+              Prev
+            </Button>
+            <span className="text-muted-foreground">
+              {page} / {Math.ceil(products.length / PAGE_SIZE)}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= Math.ceil(products.length / PAGE_SIZE)}
+              onClick={() =>
+                setPage((p) =>
+                  Math.min(Math.ceil(products.length / PAGE_SIZE), p + 1)
+                )
+              }
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

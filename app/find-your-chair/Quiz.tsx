@@ -48,14 +48,13 @@ const USE: { v: UseCase; t: string; d: string }[] = [
   { v: "gaming", t: "Gaming", d: "Long sessions, deep recline" },
   { v: "executive", t: "Executive", d: "Presence and premium feel" },
   { v: "study", t: "Study", d: "Reading and good posture" },
-  { v: "standing", t: "Standing desk", d: "Active, perch-style sitting" },
   { v: "lounge", t: "Lounge", d: "Relax and recline" },
 ]
 const BUDGET: { v: Budget; t: string; d: string }[] = [
-  { v: "$", t: "$", d: "Budget · under ~$300" },
-  { v: "$$", t: "$$", d: "Mid · ~$300–700" },
-  { v: "$$$", t: "$$$", d: "Premium · ~$700–1500" },
-  { v: "$$$$", t: "$$$$", d: "Flagship · $1500+" },
+  { v: "$", t: "$", d: "Budget · under $300" },
+  { v: "$$", t: "$$", d: "Mid · $300–800" },
+  { v: "$$$", t: "$$$", d: "Premium · $800–1600" },
+  { v: "$$$$", t: "$$$$", d: "Flagship · $1600+" },
 ]
 const HOURS: { v: NonNullable<QuizAnswers["sitHours"]>; t: string; d: string }[] = [
   { v: "under2", t: "Under 2 hours", d: "Light use" },
@@ -76,15 +75,31 @@ const MATERIALS: { v: Material; t: string; d: string; bg: string }[] = [
 ]
 const PRIORITIES_OPTS: { v: Priority; t: string }[] = [
   { v: "lumbar", t: "Lower-back relief" },
-  { v: "arms", t: "Adjustable arms (3D/4D)" },
-  { v: "recline", t: "Deep recline / tilt" },
+  { v: "posture", t: "Posture correction" },
+  { v: "arms", t: "Adjustable arms" },
+  { v: "fourd", t: "4D armrests" },
+  { v: "recline", t: "Deep recline" },
+  { v: "tilt", t: "Tilt-lock" },
+  { v: "forward", t: "Forward-tilt / active" },
   { v: "headrest", t: "Headrest" },
+  { v: "neck", t: "Neck support" },
+  { v: "seatdepth", t: "Seat-depth adjust" },
+  { v: "heightrange", t: "Wide height range" },
   { v: "mesh", t: "Breathability" },
+  { v: "cushioned", t: "Cushioned comfort" },
+  { v: "leather", t: "Leather finish" },
+  { v: "tall", t: "For tall people" },
+  { v: "petite", t: "For petite people" },
+  { v: "bigtall", t: "Big & tall capacity" },
+  { v: "light", t: "Lightweight" },
+  { v: "footrest", t: "Footrest" },
   { v: "design", t: "Standout design" },
   { v: "brand", t: "Trusted brand" },
   { v: "warranty", t: "Long warranty" },
+  { v: "value", t: "Great value" },
+  { v: "premium", t: "Premium materials" },
 ]
-const MAX_PRIORITIES = 3
+const MAX_PRIORITIES = 4
 
 type StepKey =
   | "intro"

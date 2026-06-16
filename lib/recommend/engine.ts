@@ -29,13 +29,29 @@ export type Material = "mesh" | "leather" | "fabric"
 /** Priority keys the user can flag as "most important". */
 export type Priority =
   | "lumbar"
+  | "posture"
   | "arms"
+  | "fourd"
   | "recline"
+  | "tilt"
+  | "forward"
   | "headrest"
+  | "neck"
+  | "seatdepth"
+  | "heightrange"
   | "mesh"
+  | "cushioned"
+  | "leather"
+  | "tall"
+  | "petite"
+  | "bigtall"
+  | "light"
+  | "footrest"
   | "design"
   | "brand"
   | "warranty"
+  | "value"
+  | "premium"
 
 export type ChairSpecs = {
   recommendedHeightMin?: number
@@ -46,6 +62,12 @@ export type ChairSpecs = {
   hasLumbarSupport?: boolean
   reclineRange?: number
   warrantyYears?: number
+  seatDepth?: number
+  seatWidth?: number
+  seatHeightMin?: number
+  seatHeightMax?: number
+  chairWeightKg?: number
+  backrestHeight?: number
 }
 
 export type QuizAnswers = {
@@ -170,13 +192,29 @@ const STYLE_RULES: Record<
 
 const PRIORITY_LABELS: Record<Priority, string> = {
   lumbar: "lumbar support",
+  posture: "posture support",
   arms: "adjustable arms",
+  fourd: "4D armrests",
   recline: "deep recline",
+  tilt: "tilt-lock",
+  forward: "forward-tilt",
   headrest: "a headrest",
+  neck: "neck support",
+  seatdepth: "seat-depth adjustment",
+  heightrange: "a wide height range",
   mesh: "breathable mesh",
+  cushioned: "cushioned comfort",
+  leather: "a leather finish",
+  tall: "tall-user sizing",
+  petite: "petite-user sizing",
+  bigtall: "big & tall capacity",
+  light: "a lightweight build",
+  footrest: "a footrest",
   design: "standout design",
   brand: "a trusted brand",
   warranty: "a long warranty",
+  value: "great value",
+  premium: "premium materials",
 }
 
 function satisfiesPriority(pr: Priority, p: ProductFeature, text: string): boolean {
@@ -184,23 +222,69 @@ function satisfiesPriority(pr: Priority, p: ProductFeature, text: string): boole
   switch (pr) {
     case "lumbar":
       return s?.hasLumbarSupport === true || hit(text, ["lumbar"])
+    case "posture":
+      return (
+        s?.hasLumbarSupport === true ||
+        hit(text, ["posture", "ergonomic", "spine", "alignment"])
+      )
     case "arms":
       return (
-        ["3D", "4D"].includes(s?.armrestType ?? "") ||
-        hit(text, ["4d arm", "adjustable arm"])
+        ["2D", "3D", "4D"].includes(s?.armrestType ?? "") ||
+        hit(text, ["adjustable arm", "armrest"])
       )
+    case "fourd":
+      return s?.armrestType === "4D" || hit(text, ["4d arm"])
     case "recline":
-      return (s?.reclineRange ?? 0) >= 125 || hit(text, ["recline", "tilt"])
+      return (s?.reclineRange ?? 0) >= 125 || hit(text, ["recline", "lean back"])
+    case "tilt":
+      return (s?.reclineRange ?? 0) >= 110 || hit(text, ["tilt", "lock"])
+    case "forward":
+      return hit(text, ["forward tilt", "forward lean", "active sitting", "perch"])
     case "headrest":
       return s?.hasHeadrest === true || hit(text, ["headrest"])
+    case "neck":
+      return s?.hasHeadrest === true || hit(text, ["neck", "head support"])
+    case "seatdepth":
+      return hit(text, ["seat depth", "sliding seat", "seat slide", "depth adjust"])
+    case "heightrange":
+      return (
+        (s?.seatHeightMax != null &&
+          s?.seatHeightMin != null &&
+          s.seatHeightMax - s.seatHeightMin >= 13) ||
+        hit(text, ["height adjustable", "pneumatic"])
+      )
     case "mesh":
       return p.material === "mesh"
+    case "cushioned":
+      return p.material === "fabric" || hit(text, ["cushion", "padded", "plush", "foam"])
+    case "leather":
+      return p.material === "leather" || hit(text, ["leather"])
+    case "tall":
+      return (s?.recommendedHeightMax ?? 0) >= 190 || hit(text, ["tall"])
+    case "petite":
+      return (s?.recommendedHeightMin ?? 999) <= 158 || hit(text, ["petite", "shorter"])
+    case "bigtall":
+      return (
+        (s?.weightCapacityKg ?? 0) >= 150 ||
+        hit(text, ["big and tall", "heavy", "350 lb", "400 lb"])
+      )
+    case "light":
+      return (s?.chairWeightKg ?? 999) <= 14 || hit(text, ["lightweight"])
+    case "footrest":
+      return hit(text, ["footrest", "leg rest", "legrest", "ottoman"])
     case "design":
       return hit(text, ["sleek", "design", "minimal", "iconic", "award", "distinctive"])
     case "brand":
       return p.picks >= 20
     case "warranty":
       return (s?.warrantyYears ?? 0) >= 10
+    case "value":
+      return p.priceRange != null && TIER[p.priceRange] <= 2
+    case "premium":
+      return (
+        (p.priceRange != null && TIER[p.priceRange] >= 3) ||
+        hit(text, ["premium", "aluminum", "aluminium", "flagship", "high-end"])
+      )
   }
 }
 
