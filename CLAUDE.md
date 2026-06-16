@@ -112,6 +112,12 @@ npm run test:pipeline      # 파이프라인 테스트
 - 모바일 하단바·유사 의자 "Buy"는 공식몰 대신 **수익 링크(아마존, KR은 쿠팡)**로 재연결. 어드민 제휴링크 편집(ProductForm)은 그대로 유지.
 - 참고: 프리미엄 의자의 아마존 링크는 `amazon.com/s?k=` 검색 링크(직판 안 됨), 저가/게이밍은 `/dp/` 직링크. 쿠팡은 `link.coupang.com/a/` 진짜 파트너스 딥링크라 KR 주 수익원. 아마존 태그는 US/JP만 주입됨(KR 미적용) — KR은 쿠팡만 노출됨.
 
+### 2026-06-16 글로벌 수익화: Amazon Earn Globally + OneLink
+- Amazon Associates "Earn Globally" 가입 완료 → 단일 US 스토어 ID(`furniblog0e-20`)가 US/CA/UK/DE/FR/IT/NL/PL/ES/SE 10개국에서 수익. (호주·일본은 별도 프로그램, 추후 가입)
+- 결제: Payoneer USD 수취계좌(검토중) → 승인되면 Amazon Account Settings에 직접입금 등록. 출금은 신한은행 KRW(승인됨). 세금 W-8 인터뷰는 조세협약(reduced withholding) claim으로 제출.
+- **코드**: `components/affiliate/AmazonOneLink.tsx` 추가 → 루트 레이아웃에서 OneLink 스크립트 로드(방문자 현지 아마존으로 자동 라우팅, ASIN 현지 미존재 시 폴백). **`NEXT_PUBLIC_AMAZON_ONELINK_ID`(adInstanceId UUID) 환경변수 필요** — Associates Central > Tools > OneLink > "Get the OneTag Script"에서 받아 .env.local + Vercel에 설정해야 실제 동작.
+- `buildAffiliateUrl`: 이제 모든 아마존 링크에 태그를 항상 부여(이전엔 US/JP만 부여, KR/기타는 누락). OneLink가 그 위에서 현지화.
+
 ### 남은 과제 (TODO)
 - [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
 - [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
