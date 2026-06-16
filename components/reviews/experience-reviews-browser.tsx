@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 import {
   ExperienceReviewsList,
@@ -99,8 +99,30 @@ export function ExperienceReviewsBrowser({
     })
   }
 
+  // Pagination over the filtered list.
+  const PAGE_SIZE = 20
+  const [page, setPage] = useState(1)
+  const topRef = useRef<HTMLDivElement>(null)
+
+  // Back to page 1 whenever the filter changes.
+  useEffect(() => {
+    setPage(1)
+  }, [selected])
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const pageItems = filtered.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  )
+
+  function goToPage(p: number) {
+    setPage(Math.min(Math.max(1, p), totalPages))
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
   return (
-    <div>
+    <div ref={topRef}>
       <div className="mb-5 rounded-xl border border-[#EFEFEF] bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-medium text-foreground">
@@ -149,6 +171,7 @@ export function ExperienceReviewsBrowser({
         {activeCount > 0
           ? `${filtered.length} reviewer${filtered.length === 1 ? "" : "s"} like you`
           : `${items.length} experience review${items.length === 1 ? "" : "s"}`}
+        {totalPages > 1 ? ` · page ${currentPage} of ${totalPages}` : ""}
       </p>
 
       {activeCount > 0 && filtered.length === 0 ? (
@@ -167,9 +190,92 @@ export function ExperienceReviewsBrowser({
           </button>
         </div>
       ) : (
-        <ExperienceReviewsList items={filtered} />
+        <>
+          <ExperienceReviewsList items={pageItems} />
+          {totalPages > 1 && (
+            <Pager current={currentPage} total={totalPages} onGo={goToPage} />
+          )}
+        </>
       )}
     </div>
+  )
+}
+
+function Pager({
+  current,
+  total,
+  onGo,
+}: {
+  current: number
+  total: number
+  onGo: (p: number) => void
+}) {
+  // 1 … (current-1) current (current+1) … total
+  const wanted = new Set([1, total, current - 1, current, current + 1])
+  const valid = [...wanted].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
+  const cells: Array<number | "gap"> = []
+  let prev = 0
+  for (const p of valid) {
+    if (p - prev > 1) cells.push("gap")
+    cells.push(p)
+    prev = p
+  }
+
+  return (
+    <nav
+      className="mt-8 flex flex-wrap items-center justify-center gap-1.5"
+      aria-label="Pagination"
+    >
+      <PagerButton disabled={current <= 1} onClick={() => onGo(current - 1)}>
+        ← Prev
+      </PagerButton>
+      {cells.map((c, i) =>
+        c === "gap" ? (
+          <span key={`gap-${i}`} className="px-1 text-sm text-muted-foreground">
+            …
+          </span>
+        ) : (
+          <button
+            key={c}
+            type="button"
+            onClick={() => onGo(c)}
+            aria-current={c === current ? "page" : undefined}
+            className={cn(
+              "min-w-9 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
+              c === current
+                ? "border-foreground bg-foreground text-background"
+                : "border-[#EFEFEF] bg-white text-foreground hover:border-neutral-300"
+            )}
+          >
+            {c}
+          </button>
+        )
+      )}
+      <PagerButton disabled={current >= total} onClick={() => onGo(current + 1)}>
+        Next →
+      </PagerButton>
+    </nav>
+  )
+}
+
+function PagerButton({
+  disabled,
+  onClick,
+  children,
+}: {
+  disabled: boolean
+  onClick: () => void
+  children: ReactNode
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className="rounded-md border border-[#EFEFEF] bg-white px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-neutral-300 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      {children}
+    </button>
   )
 }
 
