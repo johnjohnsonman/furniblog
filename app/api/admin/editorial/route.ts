@@ -88,7 +88,9 @@ export async function PATCH(request: NextRequest) {
             { status: 400 }
           )
         }
-        update[f] = Math.round(n * 10) / 10
+        // rating_comfort / rating_ergonomics are smallint columns — store whole
+        // numbers (0–10 granularity is plenty for the editorial signal).
+        update[f] = Math.round(n)
       }
     }
 

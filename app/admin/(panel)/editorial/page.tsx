@@ -261,7 +261,7 @@ function RatingInput({
         type="number"
         min={0}
         max={10}
-        step={0.5}
+        step={1}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="–"
