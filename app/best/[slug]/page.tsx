@@ -191,14 +191,9 @@ export default async function BestListPage({ params }: BestListPageProps) {
 
                         {/* CTAs */}
                         <div className="flex flex-wrap gap-2 mt-5">
-                          {product.officialUrl && (
-                            <a href={product.officialUrl} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors">
-                              Buy Now <ExternalLink className="h-3.5 w-3.5" />
-                            </a>
-                          )}
                           {product.amazonUrl && (
-                            <a href={buildAffiliateUrl(product.amazonUrl, "amazon", "US")} target="_blank" rel="sponsored nofollow noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-muted rounded-lg text-sm font-medium text-foreground hover:bg-muted/80 transition-colors">
-                              Amazon <ExternalLink className="h-3.5 w-3.5" />
+                            <a href={buildAffiliateUrl(product.amazonUrl, "amazon", "US")} target="_blank" rel="sponsored nofollow noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors">
+                              View on Amazon <ExternalLink className="h-3.5 w-3.5" />
                             </a>
                           )}
                           <Link href={`/products/${product.id}`} className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">

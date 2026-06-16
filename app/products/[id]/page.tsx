@@ -252,7 +252,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <h3 className="font-medium text-foreground mb-4">Where to Buy</h3>
                   <BuyButtonGroup
                     productId={product.id}
-                    officialUrl={buyUrls.officialUrl ?? product.officialUrl}
                     amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
                     coupangUrl={buyUrls.coupangUrl ?? product.coupangUrl}
                   />
@@ -262,15 +261,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 p-4 bg-background border-t border-border lg:hidden z-50">
-            <div className="flex gap-3">
-              {(buyUrls.officialUrl ?? product.officialUrl) && (
-                <a href={buyUrls.officialUrl ?? product.officialUrl} target="_blank" rel="nofollow sponsored noopener noreferrer" className="flex-1 p-3 bg-foreground text-background rounded-lg text-center font-medium text-sm">
-                  Check price
-                </a>
-              )}
+          {((buyUrls.amazonUrl ?? product.amazonUrl) ||
+            (buyUrls.coupangUrl ?? product.coupangUrl)) && (
+            <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
+              <BuyButtonGroup
+                productId={product.id}
+                amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                coupangUrl={buyUrls.coupangUrl ?? product.coupangUrl}
+              />
             </div>
-          </div>
+          )}
 
           <div className="h-20 lg:hidden" />
         </div>

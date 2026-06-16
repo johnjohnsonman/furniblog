@@ -87,7 +87,6 @@ interface BuyButtonGroupProps {
   productId: string
   amazonUrl?: string | null
   coupangUrl?: string | null
-  officialUrl?: string | null
   country?: AffiliateCountry
   className?: string
 }
@@ -96,7 +95,6 @@ export function BuyButtonGroup({
   productId,
   amazonUrl,
   coupangUrl,
-  officialUrl,
   country: countryProp,
   className,
 }: BuyButtonGroupProps) {
@@ -112,7 +110,7 @@ export function BuyButtonGroup({
 
   const showCoupang = country === "KR" && Boolean(coupangUrl)
 
-  if (!amazonUrl && !coupangUrl && !officialUrl) {
+  if (!amazonUrl && !coupangUrl) {
     return null
   }
 
@@ -123,15 +121,6 @@ export function BuyButtonGroup({
           productId={productId}
           baseUrl={coupangUrl}
           retailer="coupang"
-          country={country}
-          fullWidth
-        />
-      )}
-      {officialUrl && (
-        <BuyButton
-          productId={productId}
-          baseUrl={officialUrl}
-          retailer="official"
           country={country}
           fullWidth
         />

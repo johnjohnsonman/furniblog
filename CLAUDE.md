@@ -107,6 +107,11 @@ npm run test:pipeline      # 파이프라인 테스트
 - 상세페이지(`/news/[slug]`)·원본가기 버튼은 기존에 이미 존재. 기존 111건 슬러그도 이미 채워져 있어 카드→상세 연결 정상.
 - **데이터 현실**: brands/products에 이미지가 거의 없음(브랜드 0, 제품 썸네일 1/141). 그래서 자동 폴백이 채울 게 없음 → 브랜드 `hero_image_url`을 채우면 그 브랜드 전체 뉴스에 자동 적용됨(고효율).
 
+### 2026-06-16 제휴 버튼 정리 (공식몰 링크 제거)
+- "Visit official store"는 수익 0(커미션 없음)이라 공개 UI 4곳에서 제거: Where-to-Buy 박스(`BuyButtonGroup`), 제품 모바일 하단바, Best 리스트, 유사 의자 표.
+- 모바일 하단바·유사 의자 "Buy"는 공식몰 대신 **수익 링크(아마존, KR은 쿠팡)**로 재연결. 어드민 제휴링크 편집(ProductForm)은 그대로 유지.
+- 참고: 프리미엄 의자의 아마존 링크는 `amazon.com/s?k=` 검색 링크(직판 안 됨), 저가/게이밍은 `/dp/` 직링크. 쿠팡은 `link.coupang.com/a/` 진짜 파트너스 딥링크라 KR 주 수익원. 아마존 태그는 US/JP만 주입됨(KR 미적용) — KR은 쿠팡만 노출됨.
+
 ### 남은 과제 (TODO)
 - [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
 - [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
