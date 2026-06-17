@@ -59,6 +59,9 @@ const PERIOD_OPTIONS = [
 type ReviewsPageClientProps = {
   initialMeta: ReviewsFeedMeta
   brands: Brand[]
+  initialReviews?: ReviewFeedItem[]
+  initialTotal?: number
+  initialSeed?: number
   compact?: boolean
 }
 
@@ -83,6 +86,9 @@ function buildQueryString(params: {
 export function ReviewsPageClient({
   initialMeta,
   brands,
+  initialReviews = [],
+  initialTotal = 0,
+  initialSeed,
   compact = false,
 }: ReviewsPageClientProps) {
   const router = useRouter()
@@ -92,14 +98,20 @@ export function ReviewsPageClient({
   const [searchInput, setSearchInput] = useState(
     () => searchParams.get("search") ?? ""
   )
-  const [reviews, setReviews] = useState<ReviewFeedItem[]>([])
-  const [total, setTotal] = useState(0)
+  const [reviews, setReviews] = useState<ReviewFeedItem[]>(initialReviews)
+  const [total, setTotal] = useState(initialTotal)
   const [page, setPage] = useState(1)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(initialReviews.length === 0)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // New random order on each page load (stable across "load more" within a visit).
-  const [randomSeed] = useState(() => Math.floor(Math.random() * 2_147_483_647))
+  // Reuse the server's shuffle seed so "load more" stays consistent with the
+  // server-rendered first page; fall back to a fresh seed if none was provided.
+  const [randomSeed] = useState(
+    () => initialSeed ?? Math.floor(Math.random() * 2_147_483_647)
+  )
+  // The first page is already server-rendered, so skip the initial client fetch
+  // (it would otherwise replace SSR content and break crawling if it failed).
+  const skipInitialFetch = useRef(initialReviews.length > 0)
 
   const category = searchParams.get("category") ?? "all"
   const brand = searchParams.get("brand") ?? "all"
@@ -182,6 +194,10 @@ export function ReviewsPageClient({
   }, [search])
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false
+      return
+    }
     setPage(1)
     void fetchReviews(1, false)
   }, [filterKey, fetchReviews])

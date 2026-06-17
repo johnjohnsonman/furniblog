@@ -4,6 +4,7 @@ import { Footer } from "@/components/footer"
 import { ReviewsTabbedClient } from "@/components/reviews/reviews-tabbed-client"
 import { ReviewsFeedSkeleton } from "@/components/reviews/reviews-feed-skeleton"
 import { getBrands, getReviewsFeedMeta } from "@/lib/supabase/queries"
+import { getReviews } from "@/lib/supabase/reviews-feed"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { shuffle } from "@/lib/utils/shuffle"
 import {
@@ -103,10 +104,26 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
 }
 
 export default async function ReviewsPage() {
-  const [meta, brands, experienceCards] = await Promise.all([
+  // Server-render the first page of web reviews so crawlers (and users) see real
+  // content immediately — the feed used to load only client-side, and a failed
+  // client fetch left an empty "No reviews found" shell that Google flagged as
+  // a Soft 404.
+  const initialSeed = Math.floor(Math.random() * 2_147_483_647)
+  const [meta, brands, experienceCards, initialFeed] = await Promise.all([
     getReviewsFeedMeta(),
     getBrands(),
     getExperienceCards(),
+    getReviews({
+      page: 1,
+      limit: 20,
+      category: "all",
+      brand: "all",
+      source: "all",
+      search: "",
+      sortBy: "random",
+      period: "all",
+      seed: initialSeed,
+    }).catch(() => ({ reviews: [], total: 0 })),
   ])
 
   return (
@@ -124,6 +141,9 @@ export default async function ReviewsPage() {
             initialMeta={meta}
             brands={brands}
             experienceItems={experienceCards}
+            initialReviews={initialFeed.reviews}
+            initialTotal={initialFeed.total}
+            initialSeed={initialSeed}
           />
         </Suspense>
       </main>

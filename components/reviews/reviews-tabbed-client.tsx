@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import type { Brand } from "@/types/brand"
-import type { ReviewsFeedMeta } from "@/lib/reviews/feed-types"
+import type { ReviewFeedItem, ReviewsFeedMeta } from "@/lib/reviews/feed-types"
 import { Button } from "@/components/ui/button"
 import { ReviewsPageClient } from "@/components/reviews/reviews-page-client"
 import { ExperienceReviewsBrowser } from "@/components/reviews/experience-reviews-browser"
@@ -13,10 +13,16 @@ export function ReviewsTabbedClient({
   initialMeta,
   brands,
   experienceItems,
+  initialReviews = [],
+  initialTotal = 0,
+  initialSeed,
 }: {
   initialMeta: ReviewsFeedMeta
   brands: Brand[]
   experienceItems: ExperienceReviewCard[]
+  initialReviews?: ReviewFeedItem[]
+  initialTotal?: number
+  initialSeed?: number
 }) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -45,7 +51,14 @@ export function ReviewsTabbedClient({
         </TabsContent>
 
         <TabsContent value="web">
-          <ReviewsPageClient initialMeta={initialMeta} brands={brands} compact />
+          <ReviewsPageClient
+            initialMeta={initialMeta}
+            brands={brands}
+            initialReviews={initialReviews}
+            initialTotal={initialTotal}
+            initialSeed={initialSeed}
+            compact
+          />
         </TabsContent>
       </Tabs>
     </div>
