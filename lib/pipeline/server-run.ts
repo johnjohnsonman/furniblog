@@ -6,6 +6,7 @@ import { collectFromReviewSites } from "@/lib/pipeline/sources/reviews-sites"
 import { collectFromTrustpilot } from "@/lib/pipeline/sources/trustpilot"
 import { collectFromYoutube } from "@/lib/pipeline/sources/youtube"
 import { collectFromNaver } from "@/lib/pipeline/sources/naver"
+import { collectFromReddit } from "@/lib/pipeline/sources/reddit"
 import type { PipelineSource, RawContent } from "@/lib/pipeline/types"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
@@ -101,6 +102,20 @@ async function collectServerSources(
   sources: string[]
 ): Promise<RawContent[]> {
   const serverItems: RawContent[] = []
+
+  if (sources.includes("reddit")) {
+    try {
+      const items = await withTimeout(
+        collectFromReddit(productSlug, productName),
+        SERVER_SOURCE_TIMEOUT_MS,
+        "Reddit"
+      )
+      serverItems.push(...items)
+      console.log("[PIPELINE] Reddit:", items.length)
+    } catch (e) {
+      console.warn("[PIPELINE] Reddit failed:", e)
+    }
+  }
 
   if (sources.includes("youtube")) {
     try {

@@ -3,8 +3,9 @@ import { collectNewsForBrand, loadKnownBrands } from "@/lib/news/collect"
 import { collectVideosForChair } from "@/lib/videos/collect"
 import { executeServerPipeline } from "@/lib/pipeline/server-run"
 
-/** Server-collectable review sources (no browser-only sources like Reddit). */
+/** Server-collectable review sources. Reddit now runs server-side via OAuth. */
 const REVIEW_SERVER_SOURCES = [
+  "reddit",
   "youtube",
   "naver",
   "dcinside",
