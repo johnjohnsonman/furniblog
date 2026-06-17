@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -16,10 +16,17 @@ export type GalleryImage = {
   product: { slug: string; name: string } | null
 }
 
-export function GalleryPageClient() {
+export function GalleryPageClient({
+  initialImages = [],
+}: {
+  initialImages?: GalleryImage[]
+}) {
   const [category, setCategory] = useState<GalleryCategoryId>("all")
-  const [images, setImages] = useState<GalleryImage[]>([])
-  const [loading, setLoading] = useState(true)
+  const [images, setImages] = useState<GalleryImage[]>(initialImages)
+  const [loading, setLoading] = useState(initialImages.length === 0)
+  // First page ("all") is server-rendered; skip the initial client fetch so the
+  // SSR images stay in the HTML (a failed fetch would otherwise blank the grid).
+  const skipInitialFetch = useRef(initialImages.length > 0)
 
   const loadImages = useCallback(async () => {
     setLoading(true)
@@ -39,6 +46,10 @@ export function GalleryPageClient() {
   }, [category])
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false
+      return
+    }
     void loadImages()
   }, [loadImages])
 
