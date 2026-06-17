@@ -141,6 +141,12 @@ npm run test:pipeline      # 파이프라인 테스트
 - **결론**: **색인 차단 기술 이슈 전부 해결.** 이제 트래픽 레버는 코드가 아니라 **콘텐츠(구매의도 키워드)+백링크+시간**. 남은 코드 SEO는 폴리시(이미지 최적화/breadcrumb/FAQ/내부링크)뿐, 급하지 않음. 별점 리치스니펫은 보류(사용자 판단).
 - **수익화 전략 메모(미실행)**: 5레이어 플랜 검토함 — ①광고망 졸업(Mediavine/Raptive, **트래픽 미달로 시기상조**) ②Amazon 위 레이어(Levanta 등 셀러펀딩, 브랜드 등록여부 확인 필요) ③D2C 직제휴(Impact/CJ/ShareASale) ④자동링크(Skimlinks) ⑤Chairpark 자사 퍼널(마진100%, 최우선·트래픽무관). **현실: AdSense ID가 아직 placeholder라 광고수익 0 → 기본 AdSense부터 켜야.** 구체 수치/정책(아마존 더블딥 금지 등)은 실행 전 팩트체크 필요.
 
+### 2026-06-18 크론 타임아웃 원인 규명 + 수동 수집 테스트
+- **"크론 에러" 정체 = `FUNCTION_INVOCATION_TIMEOUT`**: 수집 예산 합계 265s + 페이지별 in-flight 오버런이 Vercel 함수 한도 300s 초과 → 매 실행 죽음(며칠간 사실상 실패의 원인). **수정**(974c2de): DEFAULT_CRON_OPTIONS 예산 210s(news50/video55/review105)로 낮춤. 150s 예산 테스트가 ~173s 실측이라 210s→~235s 예상(마진 ~65s).
+- **수동 수집 테스트 성공**: 프로덕션 `/api/cron/collect`를 CRON_SECRET Bearer로 호출(쿼리 캡으로 축소). 결과 reviews saved=11(Modway+4, Razer Iskur V2 X+5 등), 리뷰 총계 1026→1061. **로테이션 수정(b0d4de5)이 실제 동작 확인**. 뉴스/영상 0건은 대상이 이미 최신(중복)이라 정상.
+- 참고: 한 의자(Aeris 3Dee)가 한 번에 5회 처리된 로그 = 타임아웃된 1차 호출이 서버에서 계속 돌던 중 2차 호출이 겹친 테스트 아티팩트(제품 테이블엔 중복 없음, 149개 전부 고유). 정상 스케줄(12h 간격)+타임아웃 수정으로 재발 안 함.
+- 수동 트리거 방법(메모): `SECRET=$(grep ^CRON_SECRET= .env.local|cut -d= -f2); curl -m280 -X POST "https://www.furniblog.com/api/cron/collect?maxNewsBrands=4&maxVideoChairs=3&maxReviewChairs=4&newsBudgetMs=35000&videoBudgetMs=35000&reviewBudgetMs=80000" -H "Authorization: Bearer $SECRET"`
+
 ### 남은 과제 (TODO)
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
 - [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
