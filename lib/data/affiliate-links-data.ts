@@ -40,6 +40,28 @@ export const AFFILIATE_LINKS_DATA: Record<
   "furmax-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01LXXM5EK", isOfficial: false }],
   "dowinx-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07VXPWCN8", isOfficial: false }],
   "serta-fairbanks": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00AVUQQES", isOfficial: false }],
+  // Catalog expansion (2026) — HNI family + major US office brands. ASINs
+  // researched June 2026 from listing titles; spot-check periodically.
+  "hon-wave": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B001MS6ROW", isOfficial: false }],
+  "hon-nucleus": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0BM1SGV4J", isOfficial: false }],
+  "hon-convergence": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CZBG2X2N", isOfficial: false }],
+  "allsteel-acuity": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B081RFKTTN", isOfficial: false }],
+  "allsteel-mimeo": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0954V7DW7", isOfficial: false }],
+  "x-chair-x1": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01HSCS9XW", isOfficial: false }],
+  "x-chair-x2": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01HSEZK7I", isOfficial: false }],
+  "x-chair-x3": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07K6W84NQ", isOfficial: false }],
+  "x-chair-x4": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01HTYUPXQ", isOfficial: false }],
+  "uplift-pursuit": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07T6C3RDL", isOfficial: false }],
+  "uplift-envoke": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CFSSQ6SR", isOfficial: false }],
+  "la-z-boy-trafford": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0116W5BG8", isOfficial: false }],
+  "la-z-boy-delano": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0116W5B5O", isOfficial: false }],
+  "la-z-boy-bellamy": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0116W5PR8", isOfficial: false }],
+  "office-star-ventilated-managers": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01EHQ5GNS", isOfficial: false }],
+  "office-star-progrid": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00450P182", isOfficial: false }],
+  "boss-office-b991": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00J5WJRMG", isOfficial: false }],
+  "flash-furniture-mid-back-mesh": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B001EJK3MG", isOfficial: false }],
+  "sihoo-doro-s300": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0DQTRVSHS", isOfficial: false }],
+  // uplift-vert: not sold on Amazon US (DTC / Amazon.ca only) → auto search-link fallback.
   "herman-miller-aeron-b": [
     {
       retailer: "Herman Miller Official",
