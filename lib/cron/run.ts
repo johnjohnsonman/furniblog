@@ -83,6 +83,17 @@ async function newsBrandsToRefresh(
     .slice(0, limit)
 }
 
+async function loadPublishedChairs(
+  supabase: SupabaseClient
+): Promise<ChairRow[]> {
+  const { data } = await supabase
+    .from("products")
+    .select("id, slug, name, published, track, brands(name)")
+    .eq("track", "chair")
+    .eq("published", true)
+  return (data ?? []) as ChairRow[]
+}
+
 /** Published chairs ordered by least-recently-collected for the given table. */
 async function chairsToRefresh(
   supabase: SupabaseClient,
@@ -90,15 +101,48 @@ async function chairsToRefresh(
   table: "videos" | "reviews",
   limit: number
 ): Promise<ChairRow[]> {
-  const { data } = await supabase
-    .from("products")
-    .select("id, slug, name, published, track, brands(name)")
-    .eq("track", "chair")
-    .eq("published", true)
-  const chairs = (data ?? []) as ChairRow[]
+  const chairs = await loadPublishedChairs(supabase)
   const latest = await latestByKey(supabase, table, keyColumn)
   return chairs
     .sort((a, b) => (latest.get(a.id) ?? "").localeCompare(latest.get(b.id) ?? ""))
+    .slice(0, limit)
+}
+
+/** Latest pipeline-run (attempt) time per product, from pipeline_runs. */
+async function latestAttemptByProduct(
+  supabase: SupabaseClient
+): Promise<Map<string, string>> {
+  const map = new Map<string, string>()
+  const { data } = await supabase
+    .from("pipeline_runs")
+    .select("product_id, created_at")
+    .order("created_at", { ascending: false })
+    .limit(5000)
+  for (const row of (data ?? []) as Record<string, string | null>[]) {
+    const key = row.product_id
+    if (!key) continue
+    if (!map.has(key)) map.set(key, row.created_at ?? "")
+  }
+  return map
+}
+
+/**
+ * Chairs to collect reviews for, ordered by least-recently-ATTEMPTED (from
+ * pipeline_runs) rather than last successful review. This prevents starvation:
+ * obscure chairs that always yield 0 reviews would otherwise never update their
+ * "last review" timestamp and block the front of the queue forever.
+ */
+async function reviewChairsToRefresh(
+  supabase: SupabaseClient,
+  limit: number
+): Promise<ChairRow[]> {
+  const chairs = await loadPublishedChairs(supabase)
+  const lastAttempt = await latestAttemptByProduct(supabase)
+  return chairs
+    .sort(
+      (a, b) =>
+        (lastAttempt.get(a.id) ?? "").localeCompare(lastAttempt.get(b.id) ?? "")
+    )
     .slice(0, limit)
 }
 
@@ -165,9 +209,9 @@ export async function runCronCollection(params: {
     console.warn("[cron] video phase failed:", (e as Error).message)
   }
 
-  // --- Reviews (server sources only — no browser-only Reddit) ---
+  // --- Reviews ---
   try {
-    const chairs = await chairsToRefresh(supabase, "product_id", "reviews", opts.maxReviewChairs)
+    const chairs = await reviewChairsToRefresh(supabase, opts.maxReviewChairs)
     const deadline = Date.now() + opts.reviewBudgetMs
     for (const chair of chairs) {
       if (Date.now() > deadline) break
