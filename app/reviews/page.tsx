@@ -15,7 +15,7 @@ import {
 import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
 export const metadata = {
-  title: "Review Feed | Furniblog",
+  title: "Review Feed",
   description:
     "Search chair reviews from Reddit, YouTube, forums, and more—filter by brand, category, and source.",
 }

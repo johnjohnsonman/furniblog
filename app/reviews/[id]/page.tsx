@@ -87,10 +87,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { id } = await props.params
   const review = await getReview(id)
-  if (!review?.products) return { title: "Review | Furniblog" }
+  if (!review?.products) return { title: "Review" }
   const name = review.products.name
   return {
-    title: `${name} review (${sourceLabel(review.source)}) | Furniblog`,
+    title: `${name} review (${sourceLabel(review.source)})`,
     description:
       review.summary_ko?.trim().slice(0, 160) ||
       `A user review of the ${name} office chair, with a link to the original.`,

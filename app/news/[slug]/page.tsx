@@ -60,10 +60,10 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const { slug } = await props.params
   const news = await getNewsBySlug(slug)
-  if (!news) return { title: "News | Furniblog" }
+  if (!news) return { title: "News" }
   const title = news.title?.trim() || "Furniture news"
   return {
-    title: `${title} | Furniblog`,
+    title: title,
     description:
       news.summary?.trim() ||
       `${news.brand ?? "Furniture"} news curated by Furniblog.`,

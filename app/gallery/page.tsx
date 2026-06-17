@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import { GalleryPageClient } from "@/components/gallery/gallery-page-client"
 
 export const metadata = {
-  title: "Chair Gallery | Furniblog",
+  title: "Chair Gallery",
   description: "Beautiful spaces featuring premium seating",
 }
 

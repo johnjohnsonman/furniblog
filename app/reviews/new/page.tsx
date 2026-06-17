@@ -3,7 +3,7 @@ import { Footer } from "@/components/footer"
 import { ExperienceReviewWizard } from "@/components/reviews/experience-review-wizard"
 
 export const metadata = {
-  title: "Write a Review | Furniblog",
+  title: "Write a Review",
   description:
     "Share your hands-on chair ranking — anonymous, based on your own experience.",
 }

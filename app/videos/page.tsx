@@ -7,7 +7,7 @@ import { fetchVideoFilterOptions } from "@/lib/videos/filter-options"
 import { shuffle } from "@/lib/utils/shuffle"
 
 export const metadata = {
-  title: "Chair Videos | Furniblog",
+  title: "Chair Videos",
   description:
     "Browse curated chair videos with concise summaries, model links, channel details, and viewing stats.",
 }

@@ -52,12 +52,12 @@ export async function generateMetadata({
 
   if (!product) {
     return {
-      title: "Product Not Found | Furniblog",
+      title: "Product Not Found",
     }
   }
 
   return {
-    title: `${product.name} | Furniblog`,
+    title: product.name,
     description:
       product.description ??
       product.overview ??

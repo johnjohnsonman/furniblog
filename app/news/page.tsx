@@ -7,7 +7,7 @@ import { NewsCard, type NewsItem } from "@/components/news/news-card"
 import { NewsHero } from "@/components/news/news-hero"
 
 export const metadata = {
-  title: "Furniture & Chair News | Furniblog",
+  title: "Furniture & Chair News",
   description:
     "Curated office-chair and furniture-brand news, automatically collected and filtered. Browse the latest launches, reviews, and industry stories by brand.",
 }
