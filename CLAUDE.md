@@ -123,8 +123,17 @@ npm run test:pipeline      # 파이프라인 테스트
 - **에디토리얼 평점 어드민** `/admin/editorial` — 쇼룸 평가(Overall/Comfort/Ergo 0–10)로 신상 콜드스타트 보정. 마이그레이션 030(rating 컬럼 numeric(4,1)) 필요.
 - **퀴즈 UI** `app/find-your-chair/` (framer-motion, 다크 시네마틱): 풀스크린 6질문(용도/예산/시간/통증 바디맵/스타일/기능) → 분석 리빌 → TOP5(매치링·태그). 시그니처 인터랙션(바디맵 물리·드래그 다이얼)은 추후 폴리시 예정.
 
+### 2026-06-17 크론 진단·수정 + 서버 Reddit + 카탈로그 정리·확장 + canonical 버그
+- **크론은 정상 동작**(하루 2회 09:0x/21:0x UTC)이었으나 리뷰 수집이 **기아 현상**으로 헛돌고 있었음: 정렬 키가 "마지막 리뷰 저장 시각"이라 saved=0인 무명 의자(Okamura Cronos 등)가 큐 앞에 영구 고정 → 141개 중 34개 인기 의자 미수집. **수정**: `lib/cron/run.ts` `reviewChairsToRefresh`가 `pipeline_runs`의 "마지막 시도 시각"으로 정렬(커밋 b0d4de5). 또한 크론 비중 리뷰로 재조정(maxReviewChairs 8→16, 5ebe75e).
+- **서버 Reddit 수집 추가**(f9dcaed): 기존 브라우저 CORS 방식 실패 → `lib/pipeline/sources/reddit.ts` OAuth(client_credentials). **단 `REDDIT_CLIENT_ID/SECRET` 미설정**(Reddit이 앱 생성에 승인 절차 검). 키 없으면 조용히 skip. 추후 키 발급 시 자동 동작.
+- **카탈로그 정리·확장**(f9ab7f3, 프로덕션 DB 적용 완료, 141→149): 유령/오류 제품 검증 후 `scripts/cleanup-catalog.ts`로 삭제 12 + 수정 5, `scripts/seed-expansion-chairs.ts`로 오피스 체어 20개 추가(HON Wave/Nucleus/Convergence, Allsteel, X-Chair X1~X4, UPLIFT, La-Z-Boy, Office Star, Boss Office, Flash Furniture, SIHOO Doro S300). 신규 브랜드 7. 게이밍/라운지 제외. 두 스크립트 모두 dry-run 기본.
+- **제휴 링크**(64d0f3c): 신규 19종 아마존 `/dp/` 직링크를 `lib/data/affiliate-links-data.ts`에 추가(머니 페이지/best-chairs-to-buy 자동 노출). ASIN은 리스팅 제목 기반 리서치 → **직접 클릭 스팟체크 권장**. UPLIFT Vert·유럽 프리미엄은 아마존 미판매 → 검색링크 자동 폴백.
+- **🔴 canonical 버그 수정**(a4f779c, 영문 페이지 미색인의 핵심 원인): 루트 layout 전역 `canonical:'/'`가 전 페이지에 상속돼 모든 상세가 "홈의 복제본"으로 선언됨. 전역 제거 + 홈 '/', products/[id]·reviews/[id]·news/[slug] self-canonical(brands·best는 기존). 프로덕션 검증 완료(제품 canonical=자기 URL).
+- 참고: 도메인 이슈(vercel.app)는 이전에 Vercel `NEXT_PUBLIC_SITE_URL=https://www.furniblog.com` 설정으로 해결됨(sitemap 1362 URL 전부 www 도메인 확인).
+- 프로모션 뉴스 정리는 이전에 완료(22건). `.env.local`은 이 데스크탑에 실제 키 채워둠(vercel env pull).
+
 ### 남은 과제 (TODO)
-- [ ] **프로모션 뉴스 삭제 실행**: `.env.local`에 실제 Supabase 키 넣고 `npm run clean:promo-news`로 미리보기 → 확인 후 `-- --apply`. (키워드 너무 많이/적게 잡히면 PROMO_PATTERNS 조정)
-- [ ] **크론 동작 확인**: Vercel → Logs에서 `/api/cron/collect` 실행 기록 확인(매일 09:00/21:00 UTC). 안 돌면 `CRON_SECRET` env 누락 의심.
-- [ ] **서치 콘솔 유효성 검사**: 배포 후 NOINDEX(84)·404(38) 화면에서 "유효성 검사 시작" 클릭 → 재크롤링 요청.
-- [ ] (확인) `https://www.furniblog.com/tag/서재의자/` 가 chairpark 블로그로 301 되는지 배포 후 점검.
+- [ ] **GSC 색인 요청**: URL 검사에서 홈/`/products`/`/best/best-chairs-to-buy`/주요 제품 → "색인 생성 요청". 색인생성→페이지에서 NOINDEX·404 "유효성 검사 시작". (canonical·/tag 수정 재크롤 유도)
+- [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts`의 2026 확장분 19개 중 일부 직접 클릭해 제품 일치 확인(틀리면 교체).
+- [ ] **신규 제품 디테일 보강**: 추가한 20개는 스펙=프리셋/이미지·실제 리뷰 없음 → 크론이 채우는 중. 브랜드 hero_image_url 채우면 뉴스/카드 이미지 자동 개선.
+- [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정 → 리뷰 소스에 Reddit 합류.
