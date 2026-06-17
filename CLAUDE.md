@@ -132,8 +132,21 @@ npm run test:pipeline      # 파이프라인 테스트
 - 참고: 도메인 이슈(vercel.app)는 이전에 Vercel `NEXT_PUBLIC_SITE_URL=https://www.furniblog.com` 설정으로 해결됨(sitemap 1362 URL 전부 www 도메인 확인).
 - 프로모션 뉴스 정리는 이전에 완료(22건). `.env.local`은 이 데스크탑에 실제 키 채워둠(vercel env pull).
 
+### 2026-06-18 제목 중복 수정 + Soft 404 전수 점검·수정 + GSC 등록 완료
+- **제목 중복 버그 수정**(069a2eb): layout 템플릿 `%s | Furniblog`인데 여러 페이지가 제목에 ` | Furniblog`를 또 붙여 `X | Furniblog | Furniblog`로 중복. 목록 7개 + 상세 3개(products/reviews/news) 접미사 제거.
+- **🔴 Soft 404 진짜 원인 발견·수정**: `/reviews`가 GSC에서 Soft 404 → 라이브 테스트 결과 "No reviews found" + `Failed to execute 'json'` = **리뷰를 클라이언트 fetch로만 로드 → 구글봇 렌더 시 fetch 실패하면 빈 화면**. 수정(4ff6c03): 서버에서 첫 페이지 SSR(`getReviews`) → initialReviews 전달, 클라 첫 fetch skip. (AI 콘텐츠 판정과 무관 — 순수 버그)
+- **전 페이지 색인 위험 전수 점검**: 24개 공개 라우트 확인. 상세 페이지(사이트맵 1,300+개)·허브 페이지 전부 SSR 콘텐츠 풍부=안전. 위험은 클라fetch-only였던 `/reviews`(수정)·`/gallery`뿐.
+- **`/gallery` 수정**(8986621): 같은 클라fetch 패턴 SSR화 + **gallery_images 테이블 0건(빈 상태)** 발견 → 비었을 때 `noindex`(이미지 추가되면 자동 색인). 
+- **GSC 작업 완료(사용자)**: sitemap `www.furniblog.com/sitemap.xml` 제출(성공, ~1,368 URL) + 옛 WordPress sitemap 5개 삭제 + 홈/`/reviews` 등 색인 요청 + NOINDEX·404 유효성 검사 시작. 실적 27클릭/528노출(28일, 대부분 옛 한국어 chairpark 글).
+- **결론**: **색인 차단 기술 이슈 전부 해결.** 이제 트래픽 레버는 코드가 아니라 **콘텐츠(구매의도 키워드)+백링크+시간**. 남은 코드 SEO는 폴리시(이미지 최적화/breadcrumb/FAQ/내부링크)뿐, 급하지 않음. 별점 리치스니펫은 보류(사용자 판단).
+- **수익화 전략 메모(미실행)**: 5레이어 플랜 검토함 — ①광고망 졸업(Mediavine/Raptive, **트래픽 미달로 시기상조**) ②Amazon 위 레이어(Levanta 등 셀러펀딩, 브랜드 등록여부 확인 필요) ③D2C 직제휴(Impact/CJ/ShareASale) ④자동링크(Skimlinks) ⑤Chairpark 자사 퍼널(마진100%, 최우선·트래픽무관). **현실: AdSense ID가 아직 placeholder라 광고수익 0 → 기본 AdSense부터 켜야.** 구체 수치/정책(아마존 더블딥 금지 등)은 실행 전 팩트체크 필요.
+
 ### 남은 과제 (TODO)
-- [ ] **GSC 색인 요청**: URL 검사에서 홈/`/products`/`/best/best-chairs-to-buy`/주요 제품 → "색인 생성 요청". 색인생성→페이지에서 NOINDEX·404 "유효성 검사 시작". (canonical·/tag 수정 재크롤 유도)
-- [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts`의 2026 확장분 19개 중 일부 직접 클릭해 제품 일치 확인(틀리면 교체).
-- [ ] **신규 제품 디테일 보강**: 추가한 20개는 스펙=프리셋/이미지·실제 리뷰 없음 → 크론이 채우는 중. 브랜드 hero_image_url 채우면 뉴스/카드 이미지 자동 개선.
-- [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정 → 리뷰 소스에 Reddit 합류.
+- [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
+- [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
+- [ ] **GSC 색인 요청 이어서**: `/products`·`/best/best-chairs-to-buy` 등 핵심 페이지 추가 색인 요청. 1~2주 후 색인 수 추이 확인.
+- [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts` 2026 확장분 19개 일부 직접 클릭 확인(틀리면 교체).
+- [ ] **신규 제품 20개 디테일 보강**: 크론이 리뷰/영상 채우는 중. 브랜드 `hero_image_url` 채우면 이미지 자동 개선.
+- [ ] (선택) 폼 페이지(`/experience`,`/reviews/new`) noindex / 이미지 최적화(`images.unoptimized:true` 해제) / breadcrumb·FAQ 스키마.
+- [ ] (선택) 수익화: ⑤Chairpark 퍼널 CTA PoC → D2C 직제휴 1곳 → Levanta. 광고망 졸업은 트래픽 2.5만+ 후.
+- [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정.
