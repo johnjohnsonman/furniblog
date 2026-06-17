@@ -39,15 +39,18 @@ export type CronCollectionOptions = {
   maxReviewChairs: number
 }
 
-// Budgets run sequentially (news → videos → reviews); the sum stays well under
-// the 300s maxDuration. Weighted toward reviews, which were under-collected.
+// Budgets run sequentially (news → videos → reviews). The sum MUST stay safely
+// under the 300s maxDuration or Vercel kills the run with
+// FUNCTION_INVOCATION_TIMEOUT (the prior 265s sum did exactly that — observed
+// ~173s wall time for a 150s budget, so each phase overruns its deadline by one
+// in-flight item). Target ~210s budget → ~235s wall, leaving ~65s margin.
 export const DEFAULT_CRON_OPTIONS: CronCollectionOptions = {
-  newsBudgetMs: 70_000,
-  videoBudgetMs: 75_000,
-  reviewBudgetMs: 120_000,
-  maxNewsBrands: 15,
-  maxVideoChairs: 12,
-  maxReviewChairs: 16,
+  newsBudgetMs: 50_000,
+  videoBudgetMs: 55_000,
+  reviewBudgetMs: 105_000,
+  maxNewsBrands: 12,
+  maxVideoChairs: 10,
+  maxReviewChairs: 12,
 }
 
 /** Build brand|key -> latest created_at (ISO) from a collected table. */
