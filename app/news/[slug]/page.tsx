@@ -67,6 +67,7 @@ export async function generateMetadata(props: {
     description:
       news.summary?.trim() ||
       `${news.brand ?? "Furniture"} news curated by Furniblog.`,
+    alternates: { canonical: `/news/${news.slug ?? slug}` },
   }
 }
 

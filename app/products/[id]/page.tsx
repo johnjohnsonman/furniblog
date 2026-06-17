@@ -62,6 +62,7 @@ export async function generateMetadata({
       product.description ??
       product.overview ??
       `Specs, reviews, and where to buy the ${product.name}.`,
+    alternates: { canonical: `/products/${product.slug ?? product.id}` },
   }
 }
 

@@ -38,6 +38,9 @@ import {
 } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
+
+export const metadata = { alternates: { canonical: "/" } }
+
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   office: Briefcase,
   executive: Crown,

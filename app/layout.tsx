@@ -36,7 +36,9 @@ export const metadata: Metadata = {
     'Steelcase',
     'chair comparison',
   ],
-  alternates: { canonical: '/' },
+  // NOTE: no global canonical here — a layout-level canonical would make every
+  // child page canonicalize to "/", telling Google they're duplicates of the
+  // homepage. Each page sets its own canonical (or self-canonicalizes).
   robots: {
     index: true,
     follow: true,

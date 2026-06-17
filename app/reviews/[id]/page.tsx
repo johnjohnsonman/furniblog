@@ -94,6 +94,7 @@ export async function generateMetadata(props: {
     description:
       review.summary_ko?.trim().slice(0, 160) ||
       `A user review of the ${name} office chair, with a link to the original.`,
+    alternates: { canonical: `/reviews/${id}` },
   }
 }
 
