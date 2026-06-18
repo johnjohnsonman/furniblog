@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-// Legacy Korean WordPress content moved to the Chairpark blog. Catch-all 301 so
-// old furniblog.com URLs don't 404 once the domain points at the new site.
-const LEGACY_BLOG_HOME = "https://blog.chairpark.com/blog"
+// Legacy Korean WordPress URLs (old furniblog.com content) 301 to the live
+// Chairpark store. Previously pointed at blog.chairpark.com, which no longer
+// resolves (NXDOMAIN) — sending that traffic to a dead page — so redirect to
+// the live www.chairpark.com instead.
+const LEGACY_BLOG_HOME = "https://www.chairpark.com"
 
 // Top-level routes that belong to the new (English) Furniblog site.
 const KNOWN_ROUTES = new Set([
