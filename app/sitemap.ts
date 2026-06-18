@@ -37,6 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     url("", now, "daily", 1),
     url("/products", now, "daily", 0.9),
+    url("/chairpedia", now, "daily", 0.9),
     url("/reviews", now, "daily", 0.9),
     url("/videos", now, "daily", 0.8),
     url("/news", now, "daily", 0.8),
@@ -62,7 +63,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const dynamicPages: MetadataRoute.Sitemap = []
   try {
     const supabase = createPublicServerClient()
-    const [products, reviews, news, brands] = await Promise.all([
+    const [products, reviews, news, brands, chairpedia] = await Promise.all([
       supabase
         .from("products")
         .select("slug")
@@ -75,6 +76,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .eq("status", "published")
         .limit(5000),
       supabase.from("brands").select("slug"),
+      supabase
+        .from("chairpedia")
+        .select("slug, updated_at")
+        .eq("status", "published")
+        .limit(5000),
     ])
 
     for (const p of products.data ?? []) {
@@ -94,6 +100,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
     for (const b of brands.data ?? []) {
       if (b.slug) dynamicPages.push(url(`/brands/${b.slug}`, now, "weekly", 0.6))
+    }
+    for (const c of chairpedia.data ?? []) {
+      if (c.slug)
+        dynamicPages.push(
+          url(`/chairpedia/${c.slug}`, toDate(c.updated_at), "weekly", 0.8)
+        )
     }
   } catch {
     // On any DB error, still return the static + best pages.
