@@ -157,10 +157,34 @@ npm run test:pipeline      # 파이프라인 테스트
   - **이미지 채우기 도구** `static-pages/_image-filler.html`: 브라우저로 열어 상세 HTML 붙여넣기→`.cp-img` 자리마다 파일 업로드/URL → 완성 HTML 복사→카페24 HTML편집에 붙여넣기. 모든 상세페이지 재사용.
   - 대량 생성 시: 리서치 신뢰도로 자동 분기(풍부→길게/부족→짧게/없음→스킵). 무검증 100/일은 구글 'scaled content abuse' + 오정보 위험 → 금지. 실제 149개 카탈로그 기준 배치+검토 권장.
 
+### 2026-06-19 Chairpedia — 의자별 초상세 백과사전 (앱 내장, AI 생성 + 블로그 에디터)
+정적 카페24 페이지(`static-pages/`)와 별개로, **furniblog 앱 안에 의자별 딥다이브 편집/발행 시스템**을 구축. 메인 메뉴 "Chairpedia" 노출. SEO 최우선 → 수익화(아마존 구매 버튼) 연결.
+
+**작동 흐름**: 어드민 `/admin/chairpedia` → New entry → 의자 이름 입력 후 **Generate**(AI가 웹 리서치로 16섹션 초안+제목/SEO/발췌/원산지 자동 작성, 카탈로그 제품 자동 연결) → 에디터에서 검토·수정 → Slug 깔끔하게 → Publish → 공개 `/chairpedia/<slug>`.
+
+**핵심 파일**:
+- DB: `lib/supabase/migrations/031_chairpedia.sql`(테이블) + `032`(랜딩 컬럼 보강) + `033`(gen_status 등 비동기 생성 상태) + `034`(anon GRANT — 공개 노출 필수).
+- 공개: `app/chairpedia/page.tsx`(랜딩, 랜덤 featured/필터/컬렉션/검색) + `components/chairpedia/chairpedia-landing.tsx`, `app/chairpedia/[slug]/page.tsx`(상세 SSR, Article/Breadcrumb JSON-LD, self-canonical, 아마존 buy 버튼).
+- 어드민: `app/admin/(panel)/chairpedia/page.tsx`(목록) + `[id]/page.tsx`(에디터 페이지). 사이드바 `components/admin/AdminSidebar.tsx`에 링크.
+- 에디터: `components/admin/chairpedia-editor.tsx`(TipTap v3 — 헤딩/리스트/인용/구분선/링크/**본문 이미지 업로드**/**표**/undo·redo). `immediatelyRender:false` 필수(SSR).
+- API: `app/api/admin/chairpedia/route.ts`(목록/생성, slugify·고유슬러그) + `[id]/route.ts`(GET/PATCH/DELETE, product_slug→product_id 해석, 23505 충돌 메시지) + `upload/route.ts`(이미지, gallery 버킷 재사용) + `generate/route.ts`(**AI 생성, 비동기**).
+- AI: `lib/chairpedia/generate.ts`(Claude + **web_search 서버툴**, 환각방지 시스템프롬프트, 깔끔한 구조 요구—At a glance/비교는 `<table>`, 16섹션) + `lib/chairpedia/match-product.ts`(이름 토큰 매칭으로 카탈로그 제품 자동 연결, 보수적 임계값 0.6).
+- 스타일: **`app/globals.css`의 `.chairpedia-body`** — 에디터와 공개페이지가 **동일 CSS 공유(WYSIWYG)**. 섹션 h2 상단 구분선, 넉넉한 여백, 표/인용 스타일(itoki 톤).
+
+**중요 설계 결정/주의**:
+- **AI 생성은 비동기(fire-and-poll)**: ~90초 걸려서 동기 HTTP로는 게이트웨이/브라우저 타임아웃. POST가 즉시 반환 → `after()`로 백그라운드 생성(최대 300초) → 행에 결과 기록 → 에디터가 4초마다 폴링하여 자동 채움. `gen_status`(generating/done/error)로 추적. `maxDuration=300`.
+- **콘텐츠는 HTML 한 덩어리**(content_html) 저장 — SEO는 렌더 결과가 중요하므로 구조화 저장과 동등. TipTap이 지원하는 태그만 쓰게 프롬프트 제약(표 확장 추가 설치: `@tiptap/extension-table*`).
+- **공개 노출엔 anon GRANT 필수**(034): SQL로 만든 테이블은 anon SELECT 권한이 없어 `permission denied` → 어드민(서비스키)만 보이고 공개페이지 안 보임. RLS 정책(published만 읽기)과 별개.
+- **Vercel env**: `ANTHROPIC_API_KEY`(웹검색 동작), 선택 `CHAIRPEDIA_MODEL`(미설정 시 CLAUDE_MODEL=claude-sonnet-4-5). 아마존 웹검색 도구는 API 별도 과금(검색 1k당 $10).
+
+**⚠️ 프로덕션 Supabase에 마이그레이션 031~034 실행 완료해야 동작** (대표님이 SQL Editor에서 실행). 새 컴퓨터에서 DB는 동일(프로덕션 공유)이므로 재실행 불필요 — 단, 새 마이그레이션 추가 시 실행 필요.
+
 ### 남은 과제 (TODO)
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
 - [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
-- [ ] **백과사전 상세페이지 확장**: 실제 카탈로그 의자들로 추가 제작(리서치→검증→`static-pages/<slug>.html`). 정보 부족·불확실 제품은 스킵.
+- [ ] **Chairpedia 콘텐츠 채우기**: `/admin/chairpedia`에서 핵심 의자들 AI 생성→검토→발행. featured 몇 개 지정(홈 랜덤 노출), collections 분류. 생성 후 본문 사실/슬러그/제품연결 확인 후 Publish.
+- [ ] (선택) Chairpedia 에디터 고급 기능: 유튜브 임베드, 구매버튼 블록, 이미지 캡션/정렬(현재 핵심 기능만).
+- [ ] **백과사전 상세페이지 확장(정적/카페24)**: 실제 카탈로그 의자들로 추가 제작(리서치→검증→`static-pages/<slug>.html`). 정보 부족·불확실 제품은 스킵.
 - [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
 - [ ] **GSC 색인 요청 이어서**: `/products`·`/best/best-chairs-to-buy` 등 핵심 페이지 추가 색인 요청. 1~2주 후 색인 수 추이 확인.
 - [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts` 2026 확장분 19개 일부 직접 클릭 확인(틀리면 교체).
