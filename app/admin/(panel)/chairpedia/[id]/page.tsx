@@ -105,7 +105,7 @@ export default function AdminChairpediaEditor() {
         body: JSON.stringify({ chairName: name }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? "Generation failed")
+      if (!res.ok) throw new Error(data.details ?? data.error ?? "Generation failed")
       const d = data.draft as {
         title: string; subtitle: string; excerpt: string; seo_title: string
         seo_description: string; origin: string; content_html: string; sources: string[]
