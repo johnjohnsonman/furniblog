@@ -30,6 +30,9 @@ type Entry = {
   seo_description: string | null
   status: string
   product_id: string | null
+  gen_status: string | null
+  gen_error: string | null
+  gen_sources: string[] | null
 }
 
 export default function AdminChairpediaEditor() {
@@ -44,6 +47,7 @@ export default function AdminChairpediaEditor() {
   const [aiError, setAiError] = useState("")
   const [sources, setSources] = useState<string[]>([])
   const heroRef = useRef<HTMLInputElement>(null)
+  const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const set = <K extends keyof Entry>(k: K, v: Entry[K]) =>
     setE((prev) => (prev ? { ...prev, [k]: v } : prev))
@@ -56,11 +60,16 @@ export default function AdminChairpediaEditor() {
       const entry = data.entry as Entry
       setE(entry)
       if (entry.title && entry.title !== "Untitled entry") setAiName(entry.title)
+      // Resume polling if a generation is still running (e.g. after a refresh).
+      if (entry.gen_status === "generating") { setGenerating(true); startPolling() }
     }
     setLoading(false)
   }, [id])
 
   useEffect(() => { void load() }, [load])
+
+  // Stop polling when leaving the page.
+  useEffect(() => () => { if (pollRef.current) clearTimeout(pollRef.current) }, [])
 
   async function save(nextStatus?: "draft" | "published") {
     if (!e) return
@@ -95,6 +104,55 @@ export default function AdminChairpediaEditor() {
     return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80)
   }
 
+  function startPolling() {
+    if (pollRef.current) clearTimeout(pollRef.current)
+    let elapsed = 0
+    const tick = async () => {
+      let entry: Entry | null = null
+      try {
+        const res = await fetch(`/api/admin/chairpedia/${id}`, { cache: "no-store" })
+        const data = await res.json()
+        if (res.ok) entry = data.entry as Entry
+      } catch { /* transient — keep polling */ }
+
+      if (entry?.gen_status === "done") {
+        setGenerating(false)
+        setSources(entry.gen_sources ?? [])
+        const done = entry
+        setE((prev) => {
+          const base = prev ?? done
+          const isDefaultSlug = !base.slug || /^(untitled-entry|entry-)/.test(base.slug)
+          return {
+            ...base,
+            title: done.title || base.title,
+            subtitle: done.subtitle,
+            excerpt: done.excerpt,
+            seo_title: done.seo_title,
+            seo_description: done.seo_description,
+            origin: done.origin,
+            content_html: done.content_html,
+            gen_status: "done",
+            slug: isDefaultSlug && done.title ? slugify(done.title) : base.slug,
+          }
+        })
+        return
+      }
+      if (entry?.gen_status === "error") {
+        setGenerating(false)
+        setAiError(entry.gen_error ?? "Generation failed")
+        return
+      }
+      elapsed += 4
+      if (elapsed > 320) {
+        setGenerating(false)
+        setAiError("Generation is taking too long. It may still finish — refresh in a minute.")
+        return
+      }
+      pollRef.current = setTimeout(() => void tick(), 4000)
+    }
+    pollRef.current = setTimeout(() => void tick(), 4000)
+  }
+
   async function generate() {
     const name = aiName.trim()
     if (!name) return
@@ -102,34 +160,14 @@ export default function AdminChairpediaEditor() {
     try {
       const res = await fetch("/api/admin/chairpedia/generate", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chairName: name }),
+        body: JSON.stringify({ id, chairName: name }),
       })
       const data = await res.json()
-      if (!res.ok) throw new Error(data.details ?? data.error ?? "Generation failed")
-      const d = data.draft as {
-        title: string; subtitle: string; excerpt: string; seo_title: string
-        seo_description: string; origin: string; content_html: string; sources: string[]
-      }
-      setE((prev) => {
-        if (!prev) return prev
-        const isDefaultSlug = !prev.slug || /^(untitled-entry|entry-)/.test(prev.slug)
-        return {
-          ...prev,
-          title: d.title || prev.title,
-          subtitle: d.subtitle || prev.subtitle,
-          excerpt: d.excerpt || prev.excerpt,
-          seo_title: d.seo_title || prev.seo_title,
-          seo_description: d.seo_description || prev.seo_description,
-          origin: d.origin || prev.origin,
-          content_html: d.content_html || prev.content_html,
-          slug: isDefaultSlug && d.title ? slugify(d.title) : prev.slug,
-        }
-      })
-      setSources(d.sources ?? [])
+      if (!res.ok) throw new Error(data.details ?? data.error ?? "Could not start generation")
+      startPolling()
     } catch (err) {
-      setAiError(err instanceof Error ? err.message : "Generation failed")
-    } finally {
       setGenerating(false)
+      setAiError(err instanceof Error ? err.message : "Could not start generation")
     }
   }
 
@@ -191,7 +229,7 @@ export default function AdminChairpediaEditor() {
                 <span className="ml-1.5">{generating ? "Researching…" : "Generate"}</span>
               </Button>
             </div>
-            {generating && <p className="text-xs text-muted-foreground mt-2">Searching the web and writing — this can take 30–90 seconds.</p>}
+            {generating && <p className="text-xs text-muted-foreground mt-2">Researching in the background — usually ~90 seconds. Keep this tab open; fields fill in automatically when ready.</p>}
             {aiError && <p className="text-xs text-red-600 mt-2">{aiError}</p>}
             {sources.length > 0 && (
               <details className="mt-2 text-xs text-muted-foreground">

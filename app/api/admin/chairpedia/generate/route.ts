@@ -1,23 +1,70 @@
 import { NextRequest, NextResponse } from "next/server"
+import { after } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { generateChairpediaDraft } from "@/lib/chairpedia/generate"
 
 export const runtime = "nodejs"
-export const maxDuration = 300 // research + long-form writing can take a while
+export const maxDuration = 300 // background research + long-form writing (~90s)
 
-// AI-generate a research-grounded draft from a chair name.
+// Kick off AI generation in the background and return immediately. The editor
+// polls GET /api/admin/chairpedia/[id] for gen_status ('generating'|'done'|'error').
 export async function POST(request: NextRequest) {
   const denied = requireAdmin(request)
   if (denied) return denied
   try {
     const body = await request.json()
+    const id = (body.id as string)?.trim()
     const chairName = (body.chairName as string)?.trim()
-    if (!chairName) {
-      return NextResponse.json({ error: "Enter a chair name" }, { status: 400 })
-    }
-    const draft = await generateChairpediaDraft(chairName)
-    return NextResponse.json({ draft })
+    if (!id) return NextResponse.json({ error: "Missing entry id" }, { status: 400 })
+    if (!chairName) return NextResponse.json({ error: "Enter a chair name" }, { status: 400 })
+
+    const supabase = createAdminClient()
+    await supabase
+      .from("chairpedia")
+      .update({
+        gen_status: "generating",
+        gen_error: null,
+        gen_started_at: new Date().toISOString(),
+        gen_sources: [],
+      })
+      .eq("id", id)
+
+    // Run after the response is sent (bounded by maxDuration). Writes the draft
+    // straight into the row so the polling editor picks it up.
+    after(async () => {
+      const db = createAdminClient()
+      try {
+        const draft = await generateChairpediaDraft(chairName)
+        await db
+          .from("chairpedia")
+          .update({
+            title: draft.title || undefined,
+            subtitle: draft.subtitle || null,
+            excerpt: draft.excerpt || null,
+            seo_title: draft.seo_title || null,
+            seo_description: draft.seo_description || null,
+            origin: draft.origin || null,
+            content_html: draft.content_html,
+            gen_status: "done",
+            gen_error: null,
+            gen_sources: draft.sources ?? [],
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", id)
+      } catch (err) {
+        await db
+          .from("chairpedia")
+          .update({
+            gen_status: "error",
+            gen_error: err instanceof Error ? err.message : String(err),
+          })
+          .eq("id", id)
+      }
+    })
+
+    return NextResponse.json({ status: "generating" })
   } catch (error) {
     return jsonInternalError(error)
   }
