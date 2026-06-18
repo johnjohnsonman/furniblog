@@ -21,3 +21,8 @@ furniblog-website-design.zip
 /data/
 *.xlsx
 .env*
+
+# Google service-account key (NEVER commit — it's a private credential)
+furniblog-*.json
+*-service-account*.json
+gcp-*.json
