@@ -82,7 +82,12 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       .eq("id", id)
       .select("id,slug,status")
       .single()
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      if (error.code === "23505") {
+        return NextResponse.json({ error: `Slug "${patch.slug}" is already taken — choose another.` }, { status: 409 })
+      }
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
     return NextResponse.json({ entry: data })
   } catch (error) {
     return jsonInternalError(error)

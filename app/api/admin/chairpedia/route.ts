@@ -36,8 +36,11 @@ export async function POST(request: NextRequest) {
   if (denied) return denied
   try {
     const body = await request.json()
-    const title = (body.title as string)?.trim() || "Untitled"
-    const slug = ((body.slug as string)?.trim() || slugify(title)) || `entry-${Date.now()}`
+    const title = (body.title as string)?.trim() || "Untitled entry"
+    // New drafts get a unique slug so repeated "New entry" clicks never collide;
+    // the editor rewrites it from the title (or AI draft) before publishing.
+    const base = (body.slug as string)?.trim() || slugify(title) || "entry"
+    const slug = `${base}-${Date.now().toString(36)}`
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from("chairpedia")
