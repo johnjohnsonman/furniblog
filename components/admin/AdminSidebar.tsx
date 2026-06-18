@@ -17,6 +17,7 @@ import {
   Newspaper,
   ShieldCheck,
   Gauge,
+  Search,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -34,6 +35,7 @@ const NAV = [
   { href: "/admin/affiliate", label: "Affiliate Links", icon: Link2 },
   { href: "/admin/brands", label: "Brands", icon: Building2 },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/seo", label: "SEO", icon: Search },
 ]
 
 export function AdminSidebar() {
