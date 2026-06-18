@@ -25,6 +25,7 @@ type SeoData = {
 }
 
 const RANGES = [
+  { label: "1d", value: 1 },
   { label: "7d", value: 7 },
   { label: "28d", value: 28 },
   { label: "90d", value: 90 },
@@ -51,7 +52,7 @@ function StatCard({ icon: Icon, label, value, sub }: { icon: typeof Eye; label: 
 
 function shortPage(url: string): string {
   try {
-    return new URL(url).pathname || "/"
+    return decodeURIComponent(new URL(url).pathname) || "/"
   } catch {
     return url
   }
@@ -151,12 +152,13 @@ export default function AdminSeoPage() {
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            <RowTable title="Top queries" rows={data.topQueries} label={(r) => r.keys[0]} />
-            <RowTable title="Top pages" rows={data.topPages} label={(r) => shortPage(r.keys[0])} mono />
+            <RowTable title="Top queries" colLabel="Query" rows={data.topQueries} label={(r) => r.keys[0]} />
+            <RowTable title="Top pages" colLabel="Page" rows={data.topPages} label={(r) => shortPage(r.keys[0])} mono />
           </div>
 
           <RowTable
             title="By country"
+            colLabel="Country"
             rows={data.byCountry}
             label={(r) => COUNTRY_NAMES[r.keys[0]] ?? r.keys[0].toUpperCase()}
           />
@@ -168,31 +170,41 @@ export default function AdminSeoPage() {
 
 function RowTable({
   title,
+  colLabel,
   rows,
   label,
   mono,
 }: {
   title: string
+  colLabel: string
   rows: Row[]
   label: (r: Row) => string
   mono?: boolean
 }) {
   return (
     <div className="rounded-xl border border-border bg-white overflow-hidden">
-      <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+      <div className="px-4 py-3 border-b border-border">
         <h2 className="text-sm font-medium">{title}</h2>
-        <span className="text-xs text-muted-foreground">clicks · impr · pos</span>
+      </div>
+      {/* Column header — widths match the data rows below exactly. */}
+      <div className="flex items-center gap-3 px-4 py-1.5 border-b border-border bg-muted/40 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+        <span className="flex-1">{colLabel}</span>
+        <span className="w-12 text-right">Clicks</span>
+        <span className="w-16 text-right">Impr.</span>
+        <span className="w-12 text-right">Pos.</span>
       </div>
       <div className="divide-y divide-border max-h-96 overflow-y-auto">
-        {rows.length === 0 && <p className="px-4 py-6 text-sm text-muted-foreground text-center">No data yet.</p>}
+        {rows.length === 0 && (
+          <p className="px-4 py-6 text-sm text-muted-foreground text-center">No data for this range yet.</p>
+        )}
         {rows.map((r, i) => (
           <div key={i} className="flex items-center gap-3 px-4 py-2 text-sm">
             <span className={cn("flex-1 truncate", mono && "font-mono text-xs")} title={label(r)}>
               {label(r)}
             </span>
-            <span className="tabular-nums w-10 text-right font-medium">{r.clicks}</span>
-            <span className="tabular-nums w-14 text-right text-muted-foreground">{r.impressions}</span>
-            <span className="tabular-nums w-10 text-right text-muted-foreground">{r.position.toFixed(0)}</span>
+            <span className="tabular-nums w-12 text-right font-medium">{r.clicks}</span>
+            <span className="tabular-nums w-16 text-right text-muted-foreground">{r.impressions}</span>
+            <span className="tabular-nums w-12 text-right text-muted-foreground">{r.position.toFixed(0)}</span>
           </div>
         ))}
       </div>

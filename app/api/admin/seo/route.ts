@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
   }
 
   const daysParam = Number(request.nextUrl.searchParams.get("days") ?? 28)
-  const days = [7, 28, 90].includes(daysParam) ? daysParam : 28
+  const days = [1, 7, 28, 90].includes(daysParam) ? daysParam : 28
 
   try {
     const data = await getSeoOverview(days)
