@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>상세페이지 이미지 채우기 — 체어파크</title>
+<style>
+  :root{--gold:#9a7b4f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#f3f1ec;color:#222;line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+  h1{font-size:24px;margin:8px 0}
+  .lead{color:#666;font-size:14px;margin:0 0 18px}
+  .steps{background:#fff;border:1px solid #e6e1d8;border-radius:12px;padding:16px 20px;font-size:14px}
+  .steps b{color:var(--gold)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:20px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid #e6e1d8;border-radius:12px;padding:18px}
+  .card h2{font-size:16px;margin:0 0 12px}
+  textarea{width:100%;height:160px;border:1px solid #d8d2c6;border-radius:8px;padding:10px;font-family:monospace;font-size:12px;resize:vertical}
+  button{cursor:pointer;border:0;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:700}
+  .btn-primary{background:#1a1a1a;color:#fff}
+  .btn-gold{background:var(--gold);color:#fff}
+  .btn-ghost{background:#efeae0;color:#333}
+  .slot{display:flex;gap:12px;align-items:center;border:1px solid #ece8e1;border-radius:10px;padding:10px;margin:10px 0;background:#faf8f4}
+  .slot .thumb{width:84px;height:60px;border-radius:6px;background:#eee url() center/cover no-repeat;flex:0 0 auto;border:1px solid #ddd;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:11px;overflow:hidden}
+  .slot .thumb img{width:100%;height:100%;object-fit:cover}
+  .slot .meta{flex:1;min-width:0}
+  .slot .label{font-size:13px;color:#555;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .slot .row{display:flex;gap:8px;flex-wrap:wrap}
+  .slot input[type=file]{font-size:12px;max-width:170px}
+  .slot input[type=url]{flex:1;min-width:120px;border:1px solid #d8d2c6;border-radius:6px;padding:6px 8px;font-size:12px}
+  .preview-wrap{margin-top:24px}
+  iframe{width:100%;height:680px;border:1px solid #e6e1d8;border-radius:12px;background:#fff}
+  .toolbar{position:sticky;top:0;background:#f3f1ec;padding:10px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;z-index:5}
+  .ok{color:#2a7d2a;font-size:13px}
+  .warn{color:#9a5b00;font-size:12px;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🪑 상세페이지 이미지 채우기</h1>
+  <p class="lead">버튼 클릭으로 이미지를 넣고, 완성된 HTML을 복사해 카페24에 붙여넣으세요. (모든 체어파크 상세페이지에 재사용 가능)</p>
+
+  <div class="steps">
+    <p><b>① 붙여넣기</b> · 상세페이지 HTML 파일(예: <code>itoki-act2.html</code>)을 메모장으로 열어 전체 복사 → 아래 칸에 붙여넣고 <b>[불러오기]</b>.</p>
+    <p><b>② 이미지 올리기</b> · 이미지 자리마다 <b>[파일 선택]</b> 버튼으로 사진을 고르면 오른쪽 미리보기에 바로 들어갑니다.</p>
+    <p><b>③ 복사 → 카페24</b> · <b>[완성 HTML 복사]</b> 누른 뒤, 카페24 상세페이지 <b>HTML 편집 모드</b>에 붙여넣기.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>1) 상세페이지 HTML 붙여넣기</h2>
+      <textarea id="src" placeholder="여기에 itoki-act2.html 내용을 통째로 붙여넣으세요…"></textarea>
+      <div style="margin-top:10px"><button class="btn-primary" id="load">① 불러오기</button> <span id="loadmsg" class="ok"></span></div>
+
+      <h2 style="margin-top:22px">2) 이미지 자리 (버튼으로 업로드)</h2>
+      <div id="slots"><p style="color:#999;font-size:13px">먼저 HTML을 불러오면 이미지 자리가 여기에 표시됩니다.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="toolbar">
+        <button class="btn-gold" id="copy">③ 완성 HTML 복사</button>
+        <button class="btn-ghost" id="download">파일로 저장</button>
+        <span id="copymsg" class="ok"></span>
+      </div>
+      <h2>미리보기</h2>
+      <iframe id="preview"></iframe>
+      <p class="warn">※ 파일 업로드 방식은 이미지가 HTML 안에 직접 박혀(base64) 용량이 커집니다. 사진이 많거나 무거우면, 카페24에 먼저 이미지를 업로드해 <b>URL</b>을 받아 각 자리의 ‘URL’ 칸에 넣는 편이 가볍고 빠릅니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  let doc = null;        // 파싱된 문서
+  let slotEls = [];      // .cp-img 요소들
+  const chosen = [];     // 각 자리의 이미지(dataURL 또는 URL)
+
+  const $ = (id) => document.getElementById(id);
+
+  $("load").onclick = () => {
+    const html = $("src").value.trim();
+    if (!html) { alert("HTML을 먼저 붙여넣어 주세요."); return; }
+    doc = new DOMParser().parseFromString(html, "text/html");
+    slotEls = Array.from(doc.querySelectorAll(".cp-img"));
+    chosen.length = 0;
+    buildSlots();
+    $("loadmsg").textContent = `이미지 자리 ${slotEls.length}곳 발견 ✓`;
+    render();
+  };
+
+  function buildSlots() {
+    const box = $("slots");
+    if (!slotEls.length) { box.innerHTML = "<p style='color:#c00'>이미지 자리(.cp-img)를 못 찾았습니다. HTML을 다시 확인해 주세요.</p>"; return; }
+    box.innerHTML = "";
+    slotEls.forEach((el, i) => {
+      const label = (el.textContent || ("이미지 " + (i + 1))).replace(/▣/g, "").trim().slice(0, 60);
+      const row = document.createElement("div");
+      row.className = "slot";
+      row.innerHTML = `
+        <div class="thumb" id="thumb${i}">${i + 1}</div>
+        <div class="meta">
+          <div class="label">${label || ("이미지 " + (i + 1))}</div>
+          <div class="row">
+            <input type="file" accept="image/*" data-i="${i}" class="pick">
+            <input type="url" placeholder="또는 이미지 URL 붙여넣기" data-i="${i}" class="urlin">
+          </div>
+        </div>`;
+      box.appendChild(row);
+    });
+    box.querySelectorAll(".pick").forEach((inp) => {
+      inp.onchange = (e) => {
+        const i = +e.target.dataset.i;
+        const f = e.target.files[0];
+        if (!f) return;
+        const r = new FileReader();
+        r.onload = () => { chosen[i] = r.result; updateThumb(i); render(); };
+        r.readAsDataURL(f);
+      };
+    });
+    box.querySelectorAll(".urlin").forEach((inp) => {
+      inp.oninput = (e) => {
+        const i = +e.target.dataset.i;
+        chosen[i] = e.target.value.trim();
+        updateThumb(i); render();
+      };
+    });
+  }
+
+  function updateThumb(i) {
+    const t = $("thumb" + i);
+    if (t) t.innerHTML = chosen[i] ? `<img src="${chosen[i]}">` : (i + 1);
+  }
+
+  function buildOutput() {
+    if (!doc) return "";
+    const clone = doc.cloneNode(true);
+    const slots = clone.querySelectorAll(".cp-img");
+    slots.forEach((el, i) => {
+      if (chosen[i]) {
+        const img = clone.createElement("img");
+        img.src = chosen[i];
+        img.setAttribute("alt", (el.textContent || "").replace(/▣/g, "").trim());
+        img.setAttribute("style", "display:block;width:100%;border-radius:10px;margin:26px 0");
+        el.replaceWith(img);
+      }
+    });
+    return clone.body.innerHTML;
+  }
+
+  function render() {
+    $("preview").srcdoc = buildOutput();
+  }
+
+  $("copy").onclick = async () => {
+    const out = buildOutput();
+    if (!out) { alert("먼저 HTML을 불러오세요."); return; }
+    try {
+      await navigator.clipboard.writeText(out);
+      $("copymsg").textContent = "복사됨 ✓ — 카페24 HTML 편집에 붙여넣으세요";
+    } catch {
+      // 클립보드 권한 막힌 경우: textarea로 대체
+      $("src").value = out; $("src").select();
+      $("copymsg").textContent = "왼쪽 칸에 완성본을 넣었습니다 — Ctrl+A, Ctrl+C로 복사하세요";
+    }
+  };
+
+  $("download").onclick = () => {
+    const out = buildOutput();
+    if (!out) { alert("먼저 HTML을 불러오세요."); return; }
+    const blob = new Blob([out], { type: "text/html;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "detail-with-images.html";
+    a.click();
+  };
+</script>
+</body>
+</html>

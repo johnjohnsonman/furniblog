@@ -147,8 +147,20 @@ npm run test:pipeline      # 파이프라인 테스트
 - 참고: 한 의자(Aeris 3Dee)가 한 번에 5회 처리된 로그 = 타임아웃된 1차 호출이 서버에서 계속 돌던 중 2차 호출이 겹친 테스트 아티팩트(제품 테이블엔 중복 없음, 149개 전부 고유). 정상 스케줄(12h 간격)+타임아웃 수정으로 재발 안 함.
 - 수동 트리거 방법(메모): `SECRET=$(grep ^CRON_SECRET= .env.local|cut -d= -f2); curl -m280 -X POST "https://www.furniblog.com/api/cron/collect?maxNewsBrands=4&maxVideoChairs=3&maxReviewChairs=4&newsBudgetMs=35000&videoBudgetMs=35000&reviewBudgetMs=80000" -H "Authorization: Bearer $SECRET"`
 
+### 2026-06-18/19 관리자 GSC 대시보드 + 카페24 백과사전 상세페이지 시스템
+- **관리자 SEO 대시보드(GSC API)**: `/admin/seo`. `lib/seo/gsc.ts`(서비스계정 JWT→OAuth 토큰 캐싱→Search Analytics, 외부 의존성 없음), `/api/admin/seo`(requireAdmin, days=1/7/28/90). 통계카드+추이차트(recharts)+상위쿼리/페이지/국가 표. 커밋 5f4dde2·3a44723.
+  - **Vercel env 필수**(프로덕션용): `GSC_CLIENT_EMAIL`, `GSC_PRIVATE_KEY`(이름 정확히! `private_key` 아님), `GSC_SITE_URL=sc-domain:furniblog.com`. 로컬 `.env.local`엔 이미 있음. 서비스계정 JSON은 `furniblog-*.json`로 gitignore됨(커밋 금지).
+  - GSC 현황(참고): 옛 한글 워드프레스 글 위주 + 영문 제품키워드(cosm review 등) 29~54위 노출 시작, 해외(캐나다·영국 등)는 노출만 시작·클릭 0.
+- **카페24 백과사전 상세페이지 시스템**(앱과 무관한 정적 콘텐츠, `static-pages/`):
+  - `itoki-act2.html`(이토키 Act2), `x-chair-x4.html`(X-Chair X4) — 16섹션, CEO/개발자 서사, 셀렉트숍 화법, 공통 header/footer + `.cp-detail`/`.cp-img` 스코프 CSS.
+  - **원칙(중요)**: 각 제품은 **웹 리서치로 검증된 사실만** 사용. 디자이너·인증·수상·스펙이 없으면 지어내지 말고 "확인되지 않음"으로 정직 표기(예: X4는 디자이너/인증/수상 없음 → 명시). 정보 풍부=길게(Act2 한글 5,661자), 부족=짧고 정직하게(X4 4,538자), 거의 없음=스킵.
+  - **이미지 채우기 도구** `static-pages/_image-filler.html`: 브라우저로 열어 상세 HTML 붙여넣기→`.cp-img` 자리마다 파일 업로드/URL → 완성 HTML 복사→카페24 HTML편집에 붙여넣기. 모든 상세페이지 재사용.
+  - 대량 생성 시: 리서치 신뢰도로 자동 분기(풍부→길게/부족→짧게/없음→스킵). 무검증 100/일은 구글 'scaled content abuse' + 오정보 위험 → 금지. 실제 149개 카탈로그 기준 배치+검토 권장.
+
 ### 남은 과제 (TODO)
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
+- [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
+- [ ] **백과사전 상세페이지 확장**: 실제 카탈로그 의자들로 추가 제작(리서치→검증→`static-pages/<slug>.html`). 정보 부족·불확실 제품은 스킵.
 - [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
 - [ ] **GSC 색인 요청 이어서**: `/products`·`/best/best-chairs-to-buy` 등 핵심 페이지 추가 색인 요청. 1~2주 후 색인 수 추이 확인.
 - [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts` 2026 확장분 19개 일부 직접 클릭 확인(틀리면 교체).
