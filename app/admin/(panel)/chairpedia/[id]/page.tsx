@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
-import { Loader2, ArrowLeft, ExternalLink, Save, Upload, Sparkles } from "lucide-react"
+import { Loader2, ArrowLeft, ExternalLink, Save, Upload, Sparkles, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ChairpediaEditor } from "@/components/admin/chairpedia-editor"
 import { cn } from "@/lib/utils"
@@ -30,9 +30,15 @@ type Entry = {
   seo_description: string | null
   status: string
   product_id: string | null
+  products: { slug: string; name: string } | { slug: string; name: string }[] | null
   gen_status: string | null
   gen_error: string | null
   gen_sources: string[] | null
+}
+
+function linkedName(p: Entry["products"]): { slug: string; name: string } | null {
+  if (!p) return null
+  return Array.isArray(p) ? p[0] ?? null : p
 }
 
 export default function AdminChairpediaEditor() {
@@ -79,6 +85,7 @@ export default function AdminChairpediaEditor() {
       excerpt: e.excerpt, content_html: e.content_html, origin: e.origin,
       collections: e.collections ?? [], featured: e.featured ?? false,
       seo_title: e.seo_title, seo_description: e.seo_description,
+      product_id: e.product_id, // persists an unlink; product_slug (below) overrides to link
       status: nextStatus ?? e.status,
     }
     if (productSlug.trim()) body.product_slug = productSlug.trim()
@@ -90,6 +97,8 @@ export default function AdminChairpediaEditor() {
     if (!res.ok) { setMsg(data.error ?? "Save failed"); return }
     if (nextStatus) set("status", nextStatus)
     setMsg("Saved ✓")
+    // If the user linked a product by slug, refresh so its name shows.
+    if (productSlug.trim()) { setProductSlug(""); void load() }
   }
 
   async function uploadHero(file: File) {
@@ -131,6 +140,8 @@ export default function AdminChairpediaEditor() {
             seo_description: done.seo_description,
             origin: done.origin,
             content_html: done.content_html,
+            product_id: done.product_id,
+            products: done.products,
             gen_status: "done",
             slug: isDefaultSlug && done.title ? slugify(done.title) : base.slug,
           }
@@ -283,10 +294,28 @@ export default function AdminChairpediaEditor() {
           </div>
 
           <div>
-            <label className={label}>Linked product (slug)</label>
-            <input className={field} value={productSlug} onChange={(ev) => setProductSlug(ev.target.value)}
-              placeholder={e.product_id ? "(linked — type to change)" : "e.g. herman-miller-aeron"} />
-            <p className="text-[11px] text-muted-foreground mt-1">Enables the Amazon buy button.</p>
+            <label className={label}>Linked product (Amazon buy button)</label>
+            {(() => {
+              const lp = linkedName(e.products)
+              if (e.product_id && lp) {
+                return (
+                  <div className="flex items-center justify-between gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm">
+                    <span className="truncate"><span className="font-medium">{lp.name}</span> <span className="text-muted-foreground">/{lp.slug}</span></span>
+                    <button type="button" className="text-muted-foreground hover:text-red-600 shrink-0" title="Unlink"
+                      onClick={() => { setE((prev) => prev ? { ...prev, product_id: null, products: null } : prev); setProductSlug("") }}>
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                )
+              }
+              return (
+                <>
+                  <input className={field} value={productSlug} onChange={(ev) => setProductSlug(ev.target.value)}
+                    placeholder="e.g. herman-miller-aeron" />
+                  <p className="text-[11px] text-muted-foreground mt-1">Type a catalog product slug to enable the buy button. AI Generate auto-links a match when it finds one.</p>
+                </>
+              )
+            })()}
           </div>
 
           <div>

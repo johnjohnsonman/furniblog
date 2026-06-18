@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { generateChairpediaDraft } from "@/lib/chairpedia/generate"
+import { matchProductId } from "@/lib/chairpedia/match-product"
 
 export const runtime = "nodejs"
 export const maxDuration = 300 // background research + long-form writing (~90s)
@@ -37,6 +38,20 @@ export async function POST(request: NextRequest) {
       const db = createAdminClient()
       try {
         const draft = await generateChairpediaDraft(chairName)
+
+        // Auto-link the catalog product (enables the Amazon buy button) when a
+        // confident name match exists and the entry isn't already linked.
+        let productId: string | undefined
+        const { data: cur } = await db
+          .from("chairpedia")
+          .select("product_id")
+          .eq("id", id)
+          .maybeSingle()
+        if (!cur?.product_id) {
+          const match = await matchProductId(db, draft.title || chairName)
+          if (match) productId = match.id
+        }
+
         await db
           .from("chairpedia")
           .update({
@@ -47,6 +62,7 @@ export async function POST(request: NextRequest) {
             seo_description: draft.seo_description || null,
             origin: draft.origin || null,
             content_html: draft.content_html,
+            ...(productId ? { product_id: productId } : {}),
             gen_status: "done",
             gen_error: null,
             gen_sources: draft.sources ?? [],

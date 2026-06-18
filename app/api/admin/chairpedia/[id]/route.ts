@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from("chairpedia")
-      .select("*")
+      .select("*, products(slug,name)")
       .eq("id", id)
       .maybeSingle()
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
