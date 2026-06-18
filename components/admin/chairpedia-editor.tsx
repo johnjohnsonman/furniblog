@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useEditor, EditorContent, type Editor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
@@ -108,6 +108,15 @@ export function ChairpediaEditor({
       },
     },
   })
+
+  // Sync external value changes (e.g. AI-generated draft) into the editor,
+  // without clobbering normal typing (onUpdate keeps value === getHTML()).
+  useEffect(() => {
+    if (!editor) return
+    if (value && value !== editor.getHTML()) {
+      editor.commands.setContent(value, { emitUpdate: false })
+    }
+  }, [editor, value])
 
   if (!editor) {
     return <div className="min-h-[460px] rounded-b-lg bg-white" />

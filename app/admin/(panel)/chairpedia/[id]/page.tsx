@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
-import { Loader2, ArrowLeft, ExternalLink, Save, Upload } from "lucide-react"
+import { Loader2, ArrowLeft, ExternalLink, Save, Upload, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ChairpediaEditor } from "@/components/admin/chairpedia-editor"
 import { cn } from "@/lib/utils"
@@ -39,6 +39,10 @@ export default function AdminChairpediaEditor() {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState("")
+  const [aiName, setAiName] = useState("")
+  const [generating, setGenerating] = useState(false)
+  const [aiError, setAiError] = useState("")
+  const [sources, setSources] = useState<string[]>([])
   const heroRef = useRef<HTMLInputElement>(null)
 
   const set = <K extends keyof Entry>(k: K, v: Entry[K]) =>
@@ -48,7 +52,11 @@ export default function AdminChairpediaEditor() {
     setLoading(true)
     const res = await fetch(`/api/admin/chairpedia/${id}`)
     const data = await res.json()
-    if (res.ok) setE(data.entry as Entry)
+    if (res.ok) {
+      const entry = data.entry as Entry
+      setE(entry)
+      if (entry.title && entry.title !== "Untitled entry") setAiName(entry.title)
+    }
     setLoading(false)
   }, [id])
 
@@ -81,6 +89,48 @@ export default function AdminChairpediaEditor() {
     const data = await res.json()
     if (data.url) set("hero_image_url", data.url)
     else alert(data.error ?? "Upload failed")
+  }
+
+  function slugify(s: string) {
+    return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80)
+  }
+
+  async function generate() {
+    const name = aiName.trim()
+    if (!name) return
+    setGenerating(true); setAiError(""); setSources([])
+    try {
+      const res = await fetch("/api/admin/chairpedia/generate", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chairName: name }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Generation failed")
+      const d = data.draft as {
+        title: string; subtitle: string; excerpt: string; seo_title: string
+        seo_description: string; origin: string; content_html: string; sources: string[]
+      }
+      setE((prev) => {
+        if (!prev) return prev
+        const isDefaultSlug = !prev.slug || /^(untitled-entry|entry-)/.test(prev.slug)
+        return {
+          ...prev,
+          title: d.title || prev.title,
+          subtitle: d.subtitle || prev.subtitle,
+          excerpt: d.excerpt || prev.excerpt,
+          seo_title: d.seo_title || prev.seo_title,
+          seo_description: d.seo_description || prev.seo_description,
+          origin: d.origin || prev.origin,
+          content_html: d.content_html || prev.content_html,
+          slug: isDefaultSlug && d.title ? slugify(d.title) : prev.slug,
+        }
+      })
+      setSources(d.sources ?? [])
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "Generation failed")
+    } finally {
+      setGenerating(false)
+    }
   }
 
   function toggleCollection(slug: string) {
@@ -122,6 +172,40 @@ export default function AdminChairpediaEditor() {
       <div className="grid lg:grid-cols-3 gap-6">
         {/* Main */}
         <div className="lg:col-span-2 space-y-4">
+          {/* AI generate */}
+          <div className="rounded-xl border border-[#9a7b4f]/30 bg-[#9a7b4f]/5 p-4">
+            <div className="flex items-center gap-1.5 text-sm font-semibold text-[#9a7b4f] mb-2">
+              <Sparkles className="h-4 w-4" /> AI draft (web-researched)
+            </div>
+            <div className="flex gap-2">
+              <input
+                className="flex-1 rounded-lg border border-border px-3 py-2 text-sm"
+                value={aiName}
+                onChange={(ev) => setAiName(ev.target.value)}
+                onKeyDown={(ev) => { if (ev.key === "Enter" && !generating) void generate() }}
+                placeholder="Chair name — e.g. Herman Miller Aeron"
+                disabled={generating}
+              />
+              <Button onClick={() => void generate()} disabled={generating || !aiName.trim()}>
+                {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                <span className="ml-1.5">{generating ? "Researching…" : "Generate"}</span>
+              </Button>
+            </div>
+            {generating && <p className="text-xs text-muted-foreground mt-2">Searching the web and writing — this can take 30–90 seconds.</p>}
+            {aiError && <p className="text-xs text-red-600 mt-2">{aiError}</p>}
+            {sources.length > 0 && (
+              <details className="mt-2 text-xs text-muted-foreground">
+                <summary className="cursor-pointer">Sources used ({sources.length})</summary>
+                <ul className="mt-1 space-y-0.5">
+                  {sources.map((s, i) => (
+                    <li key={i}><a href={s} target="_blank" rel="noopener" className="underline break-all">{s}</a></li>
+                  ))}
+                </ul>
+              </details>
+            )}
+            <p className="text-[11px] text-muted-foreground mt-2">Fills title, subtitle, excerpt, SEO, origin and the full body. Review and edit before publishing.</p>
+          </div>
+
           <input className="w-full text-2xl font-serif font-medium outline-none border-b border-border pb-2"
             value={e.title} onChange={(ev) => set("title", ev.target.value)} placeholder="Title" />
           <input className={field} value={e.subtitle ?? ""} onChange={(ev) => set("subtitle", ev.target.value)} placeholder="Subtitle (one line)" />
