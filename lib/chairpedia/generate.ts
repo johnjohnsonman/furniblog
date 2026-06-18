@@ -71,12 +71,24 @@ function buildPrompt(chairName: string): string {
 
 First, use web_search to research this exact chair. Verify: manufacturer/brand, the designer(s), year/era, materials, adjustment mechanisms, certifications, warranty, approximate price tier, and how it compares to rivals. Do several searches if needed.
 
-Then write the article body as semantic HTML using ONLY these tags: <h2>, <h3>, <p>, <ul>, <li>, <ol>, <blockquote>, <strong>, <em>, <a href>. Do NOT use <h1> (the page title is rendered separately). Do NOT include <html>, <head>, or <body> wrappers. Do NOT include images (the editor adds those).
+Then write the article body as clean, well-structured semantic HTML. This renders directly on the site, so structure matters as much as facts.
+
+ALLOWED TAGS ONLY: <h2>, <h3>, <p>, <ul>, <li>, <ol>, <blockquote>, <strong>, <em>, <a href>, <table>, <thead>, <tbody>, <tr>, <th>, <td>.
+- Do NOT use <h1> (the page title is rendered separately).
+- Do NOT include <html>, <head>, <body>, <style>, <div>, <span>, class/style attributes, or images. Plain semantic tags only — the site styles them.
+
+FORMATTING RULES (this is what makes the page look organized):
+- Open every section with an <h2>. Use <h3> for sub-points within a section.
+- Keep paragraphs to 2–4 sentences. Break dense material into multiple <p> rather than one wall of text.
+- For the "At a glance" section, output a two-column <table> (no header row needed, or a "Spec / Detail" header): each <tr> has a <th> label (e.g. Brand, Designer, Year, Materials, Adjustments, Warranty, Price tier, Weight capacity) and a <td> value. Do NOT cram specs into a paragraph.
+- For the "Comparisons with key rivals" section, output a <table> with a header row comparing this chair against 2–3 named rivals across a few dimensions (price tier, seat/back, adjustments, standout strength).
+- Use <ul> with <li> for any list of features, pros, or who-it's-for points. Where helpful, lead a <li> with a <strong>label</strong> then the detail.
+- Use <blockquote> for a designer/brand philosophy quote or a one-line editorial takeaway (1 or 2 across the article, not more).
 
 Structure the body as exactly these 16 sections, each opening with an <h2> heading (you may rephrase the heading text naturally):
 ${sectionList}
 
-Target length: 1,400–2,200 words of body content.
+Target length: 1,400–2,200 words of body content. Favor clarity and scannability over density.
 
 Return ONLY a single JSON object (no prose before or after) with these string fields:
 {

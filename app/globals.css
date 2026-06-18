@@ -144,3 +144,85 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Chairpedia article body — shared by the admin editor and the
+   public page so editing is WYSIWYG. Editorial-magazine rhythm:
+   generous spacing, sectioned h2s, styled tables & quotes.
+   ───────────────────────────────────────────────────────────── */
+.chairpedia-body {
+  color: #2b2b2b;
+  line-height: 1.85;
+  font-size: 17px;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+.chairpedia-body > :first-child { margin-top: 0 !important; padding-top: 0 !important; border-top: 0 !important; }
+.chairpedia-body h2 {
+  font-size: 26px;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+  margin: 56px 0 14px;
+  padding-top: 30px;
+  border-top: 1px solid #ece8e1;
+}
+.chairpedia-body h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 32px 0 8px;
+}
+.chairpedia-body p { margin: 16px 0; }
+.chairpedia-body strong { font-weight: 700; color: #1a1a1a; }
+.chairpedia-body em { font-style: italic; }
+.chairpedia-body ul,
+.chairpedia-body ol { margin: 16px 0; padding-left: 24px; }
+.chairpedia-body ul { list-style: disc; }
+.chairpedia-body ol { list-style: decimal; }
+.chairpedia-body li { margin: 8px 0; padding-left: 4px; }
+.chairpedia-body li p { margin: 4px 0; }
+.chairpedia-body a {
+  color: #9a6b2f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.chairpedia-body blockquote {
+  margin: 30px 0;
+  padding: 18px 26px;
+  border-left: 3px solid #9a7b4f;
+  background: #faf8f4;
+  color: #3a3a3a;
+  font-size: 17px;
+  font-style: normal;
+}
+.chairpedia-body blockquote p { margin: 6px 0; }
+.chairpedia-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin: 30px auto;
+}
+.chairpedia-body hr { border: 0; border-top: 1px solid #e7e3dc; margin: 40px 0; }
+.chairpedia-body iframe { max-width: 100%; border-radius: 10px; margin: 30px 0; }
+.chairpedia-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 26px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.chairpedia-body th,
+.chairpedia-body td {
+  border: 1px solid #ece8e1;
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+.chairpedia-body th { background: #faf8f4; font-weight: 600; color: #1a1a1a; }
+.chairpedia-body table p { margin: 0; }
+/* Editor-only: keep an empty paragraph from collapsing, show table grid lines */
+.chairpedia-body .tableWrapper { overflow-x: auto; }
+.chairpedia-body table .selectedCell { background: #f3eee4; }

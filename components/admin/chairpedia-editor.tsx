@@ -5,9 +5,13 @@ import { useEditor, EditorContent, type Editor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
+import { Table } from "@tiptap/extension-table"
+import { TableRow } from "@tiptap/extension-table-row"
+import { TableHeader } from "@tiptap/extension-table-header"
+import { TableCell } from "@tiptap/extension-table-cell"
 import {
   Bold, Italic, Strikethrough, Heading2, Heading3, List, ListOrdered,
-  Quote, Minus, Link2, ImagePlus, Undo, Redo,
+  Quote, Minus, Link2, ImagePlus, Table as TableIcon, Undo, Redo,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -67,6 +71,10 @@ function Toolbar({ editor }: { editor: Editor }) {
         }}
       ><Link2 className="h-4 w-4" /></Btn>
       <Btn title="Insert image" onClick={() => fileRef.current?.click()}><ImagePlus className="h-4 w-4" /></Btn>
+      <Btn
+        title="Insert table"
+        onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 2, withHeaderRow: true }).run()}
+      ><TableIcon className="h-4 w-4" /></Btn>
       <input
         ref={fileRef}
         type="file"
@@ -98,6 +106,10 @@ export function ChairpediaEditor({
       StarterKit.configure({ link: false }),
       Image.configure({ inline: false }),
       Link.configure({ openOnClick: false, autolink: true }),
+      Table.configure({ resizable: false }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
     content: value || "<p></p>",
     onUpdate: ({ editor }) => onChange(editor.getHTML()),

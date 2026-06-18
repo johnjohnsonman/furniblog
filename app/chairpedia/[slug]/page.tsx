@@ -167,23 +167,6 @@ export default async function ChairpediaEntryPage({
       </main>
       <Footer />
 
-      <style>{`
-        .chairpedia-body{color:#2b2b2b;line-height:1.85;font-size:17px}
-        .chairpedia-body h2{font-size:24px;font-weight:700;margin:40px 0 10px;letter-spacing:-.01em}
-        .chairpedia-body h3{font-size:19px;font-weight:700;margin:28px 0 8px}
-        .chairpedia-body p{margin:16px 0}
-        .chairpedia-body ul,.chairpedia-body ol{margin:16px 0;padding-left:22px}
-        .chairpedia-body li{margin:6px 0}
-        .chairpedia-body img{max-width:100%;height:auto;border-radius:10px;margin:24px 0}
-        .chairpedia-body blockquote{margin:24px 0;padding:14px 20px;border-left:3px solid #9a7b4f;background:#faf8f4;color:#3a3a3a}
-        .chairpedia-body a{color:#9a6b2f;text-decoration:underline}
-        .chairpedia-body table{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
-        .chairpedia-body th,.chairpedia-body td{border:1px solid #e7e3dc;padding:10px 12px;text-align:left}
-        .chairpedia-body th{background:#faf8f4}
-        .chairpedia-body iframe{max-width:100%;border-radius:10px;margin:24px 0}
-        .chairpedia-body hr{border:0;border-top:1px solid #e7e3dc;margin:32px 0}
-      `}</style>
-
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
