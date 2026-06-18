@@ -14,6 +14,7 @@ const KNOWN_ROUTES = new Set([
   "brands",
   "videos",
   "gallery",
+  "chairpedia",
   "find-your-chair",
   "amazon-picks",
   "about",
