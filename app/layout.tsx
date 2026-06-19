@@ -3,6 +3,7 @@ import Script from 'next/script'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { PageviewTracker } from '@/components/analytics/PageviewTracker'
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
 import { AmazonOneLink } from '@/components/affiliate/AmazonOneLink'
 import './globals.css'
 
@@ -101,6 +102,7 @@ export default function RootLayout({
         {children}
         <PageviewTracker />
         <AmazonOneLink />
+        <GoogleAnalytics />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
