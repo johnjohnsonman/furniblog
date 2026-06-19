@@ -34,7 +34,7 @@ type SessionRow = {
     | "6_0_6_2"
     | "6_3plus"
     | null
-  body: "below" | "normal" | "above" | null
+  body: string | null
   age_band: "under20" | "20s" | "30s" | "40s" | "50plus" | null
   job: string | null
   sit_hours: "under2" | "2to6" | "over6" | null

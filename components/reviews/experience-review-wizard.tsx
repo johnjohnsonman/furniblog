@@ -21,17 +21,19 @@ const SEX_OPTIONS = [
 ] as const
 
 const HEIGHT_OPTIONS = [
-  { label: "under 5'4\"", value: "under_5_4" },
-  { label: "5'4\"–5'7\"", value: "5_4_5_7" },
-  { label: "5'8\"–5'11\"", value: "5_8_5_11" },
-  { label: "6'0\"–6'2\"", value: "6_0_6_2" },
-  { label: "6'3\"+", value: "6_3plus" },
+  { label: "Under 5'4\" · <163 cm", value: "under_5_4" },
+  { label: "5'4\"–5'7\" · 163–170 cm", value: "5_4_5_7" },
+  { label: "5'8\"–5'11\" · 171–180 cm", value: "5_8_5_11" },
+  { label: "6'0\"–6'2\" · 181–188 cm", value: "6_0_6_2" },
+  { label: "6'3\"+ · 189+ cm", value: "6_3plus" },
 ] as const
 
 const BODY_OPTIONS = [
+  { label: "Slim", value: "slim" },
   { label: "Below average", value: "below" },
   { label: "Average", value: "normal" },
   { label: "Above average", value: "above" },
+  { label: "Larger", value: "large" },
 ] as const
 
 const AGE_OPTIONS = [
@@ -179,7 +181,9 @@ export function ExperienceReviewWizard() {
   const [heightBand, setHeightBand] = useState<
     "under_5_4" | "5_4_5_7" | "5_8_5_11" | "6_0_6_2" | "6_3plus" | null
   >(null)
-  const [body, setBody] = useState<"below" | "normal" | "above" | null>(null)
+  const [body, setBody] = useState<
+    "slim" | "below" | "normal" | "above" | "large" | null
+  >(null)
   const [ageBand, setAgeBand] = useState<
     "under20" | "20s" | "30s" | "40s" | "50plus" | null
   >(null)

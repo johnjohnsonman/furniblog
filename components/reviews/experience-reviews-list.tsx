@@ -12,7 +12,7 @@ export type ExperienceReviewCard = {
     | "6_0_6_2"
     | "6_3plus"
     | null
-  body: "below" | "normal" | "above" | null
+  body: string | null
   ageBand: "under20" | "20s" | "30s" | "40s" | "50plus" | null
   job: string | null
   sitHours: "under2" | "2to6" | "over6" | null
@@ -33,18 +33,22 @@ function decodeSex(value: ExperienceReviewCard["sex"]): string | null {
 }
 
 function decodeBody(value: ExperienceReviewCard["body"]): string | null {
-  if (value === "below") return "Below average"
-  if (value === "normal") return "Average"
-  if (value === "above") return "Above average"
-  return null
+  const map: Record<string, string> = {
+    slim: "Slim",
+    below: "Below average",
+    normal: "Average",
+    above: "Above average",
+    large: "Larger",
+  }
+  return value ? map[value] ?? value : null
 }
 
 function decodeHeight(value: ExperienceReviewCard["heightBand"]): string | null {
-  if (value === "under_5_4") return `under 5'4"`
-  if (value === "5_4_5_7") return `5'4"–5'7"`
-  if (value === "5_8_5_11") return `5'8"–5'11"`
-  if (value === "6_0_6_2") return `6'0"–6'2"`
-  if (value === "6_3plus") return `6'3"+`
+  if (value === "under_5_4") return `under 5'4" · <163 cm`
+  if (value === "5_4_5_7") return `5'4"–5'7" · 163–170 cm`
+  if (value === "5_8_5_11") return `5'8"–5'11" · 171–180 cm`
+  if (value === "6_0_6_2") return `6'0"–6'2" · 181–188 cm`
+  if (value === "6_3plus") return `6'3"+ · 189+ cm`
   return null
 }
 
