@@ -43,17 +43,50 @@ function getClient(): Anthropic | null {
   return new Anthropic({ apiKey })
 }
 
-function stripJsonMarkdown(text: string): string {
-  return text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim()
+/** Strip a leading/trailing ```lang code fence if the model wrapped the body. */
+function stripCodeFences(text: string): string {
+  return text
+    .replace(/^```[a-zA-Z]*\n?/, "")
+    .replace(/\n?```\s*$/, "")
+    .trim()
 }
 
-/** Pull the largest {...} block out of mixed text, tolerating prose around it. */
-function extractJsonObject(text: string): string {
-  const clean = stripJsonMarkdown(text)
-  const start = clean.indexOf("{")
-  const end = clean.lastIndexOf("}")
-  if (start === -1 || end === -1 || end <= start) return clean
-  return clean.slice(start, end + 1)
+const BODY_MARKER = "===BODY==="
+
+/**
+ * Parse the model's plain-text response: seven "KEY: value" lines, then a
+ * ===BODY=== marker, then the raw HTML body. Avoids JSON entirely so unescaped
+ * quotes/braces in the HTML can't break parsing (the old JSON format's failure).
+ */
+function parseDraft(raw: string): ChairpediaDraft {
+  const text = raw.trim()
+  const idx = text.indexOf(BODY_MARKER)
+  if (idx === -1) {
+    throw new Error("The generated draft is missing the ===BODY=== marker")
+  }
+  const head = text.slice(0, idx)
+  const body = stripCodeFences(text.slice(idx + BODY_MARKER.length).trim())
+
+  const field = (key: string): string => {
+    const m = head.match(new RegExp(`^${key}:[ \\t]*(.*)$`, "m"))
+    return m ? m[1].trim() : ""
+  }
+
+  const sources = field("SOURCES")
+    .split("|")
+    .map((s) => s.trim())
+    .filter((s) => /^https?:\/\//.test(s))
+
+  return {
+    title: field("TITLE"),
+    subtitle: field("SUBTITLE"),
+    excerpt: field("EXCERPT"),
+    seo_title: field("SEO_TITLE"),
+    seo_description: field("SEO_DESCRIPTION"),
+    origin: field("ORIGIN"),
+    content_html: body,
+    sources,
+  }
 }
 
 const SYSTEM = `You are a senior furniture editor writing for Furniblog, an authoritative English-language office-chair review publication. You write detailed, trustworthy, SEO-optimized deep-dives.
@@ -97,19 +130,23 @@ ${sectionList}
 
 Target length: 2,200–3,200 words of body content — substantial and authoritative, but still clear and scannable (short paragraphs, lists, tables). Every section should be a real, fleshed-out passage, not a token sentence.
 
-Return ONLY a single JSON object (no prose before or after) with these string fields:
-{
-  "title": "the chair's proper display name as a clean article title",
-  "subtitle": "one compelling editorial line (max ~90 chars)",
-  "excerpt": "a 1–2 sentence summary for cards and meta description fallback (max ~160 chars)",
-  "seo_title": "an SEO-optimized title tag, ~55–60 chars, includes the chair name",
-  "seo_description": "an SEO meta description, ~150–158 chars, compelling and keyword-rich",
-  "origin": "country of origin / manufacture (e.g. 'Japan', 'Germany', 'USA') — one or two words",
-  "content_html": "the full 16-section article body as HTML per the rules above",
-  "sources": ["array of 12–20 distinct source URLs you actually used — official brand/spec pages, reviews, retailers, certification/sustainability pages. Real URLs only, no placeholders."]
-}
+Return your answer in EXACTLY this plain-text format — NOT JSON, no code fences:
 
-Escape the HTML properly so it is valid JSON. Output nothing but the JSON object.`
+TITLE: the chair's proper display name as a clean article title
+SUBTITLE: one compelling editorial line (max ~90 chars)
+EXCERPT: a 1–2 sentence summary for cards and meta description (max ~160 chars)
+SEO_TITLE: an SEO title tag, ~55–60 chars, including the chair name
+SEO_DESCRIPTION: an SEO meta description, ~150–158 chars, compelling and keyword-rich
+ORIGIN: country of origin / manufacture, one or two words (e.g. Japan, Germany, USA)
+SOURCES: 12–20 distinct real source URLs you actually used, separated by " | " (pipe), ALL on this single line
+===BODY===
+the full 16-section article body as raw HTML per the rules above
+
+Format rules (critical — follow exactly):
+- The seven "KEY: value" lines come first, each on ONE line, in the order shown above.
+- Then a line containing only ===BODY===
+- Then the HTML body itself: raw HTML, NOT escaped, NOT quoted, NOT in code fences.
+- Output nothing before "TITLE:" and nothing after the HTML body.`
 }
 
 /**
@@ -134,7 +171,7 @@ export async function generateChairpediaDraft(chairName: string): Promise<Chairp
     messages: [{ role: "user", content: buildPrompt(chairName) }],
   })
 
-  // The final assistant text blocks contain the JSON (web_search runs server-side).
+  // The final assistant text blocks contain the answer (web_search runs server-side).
   const text = response.content
     .filter((b): b is Anthropic.TextBlock => b.type === "text")
     .map((b) => b.text)
@@ -143,25 +180,11 @@ export async function generateChairpediaDraft(chairName: string): Promise<Chairp
 
   if (!text) throw new Error("The model returned no text output")
 
-  let parsed: Partial<ChairpediaDraft>
-  try {
-    parsed = JSON.parse(extractJsonObject(text))
-  } catch {
-    throw new Error("Could not parse the generated draft as JSON")
+  const draft = parseDraft(text)
+
+  if (!draft.content_html || !draft.title) {
+    throw new Error("The generated draft is missing a title or body")
   }
 
-  if (!parsed.content_html || !parsed.title) {
-    throw new Error("The generated draft is missing required fields")
-  }
-
-  return {
-    title: String(parsed.title).trim(),
-    subtitle: String(parsed.subtitle ?? "").trim(),
-    excerpt: String(parsed.excerpt ?? "").trim(),
-    seo_title: String(parsed.seo_title ?? "").trim(),
-    seo_description: String(parsed.seo_description ?? "").trim(),
-    origin: String(parsed.origin ?? "").trim(),
-    content_html: String(parsed.content_html).trim(),
-    sources: Array.isArray(parsed.sources) ? parsed.sources.map(String) : [],
-  }
+  return draft
 }
