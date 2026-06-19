@@ -1,12 +1,11 @@
 "use client"
 
-import Link from "next/link"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import type { Brand } from "@/types/brand"
 import type { ReviewFeedItem, ReviewsFeedMeta } from "@/lib/reviews/feed-types"
-import { Button } from "@/components/ui/button"
 import { ReviewsPageClient } from "@/components/reviews/reviews-page-client"
 import { ExperienceReviewsBrowser } from "@/components/reviews/experience-reviews-browser"
+import { WriteReviewCTA } from "@/components/reviews/write-review-cta"
 import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
 export function ReviewsTabbedClient({
@@ -26,21 +25,20 @@ export function ReviewsTabbedClient({
 }) {
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6 flex items-end justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-3xl font-medium text-foreground">
-            Reviews
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            See both hands-on experience reviews and web-collected reviews.
-          </p>
-        </div>
-        <Button asChild className="shrink-0">
-          <Link href="/reviews/new">Write a Review</Link>
-        </Button>
+      <div className="mb-6">
+        <h1 className="font-serif text-3xl font-medium text-foreground">
+          Reviews
+        </h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Real, hands-on rankings from people like you — plus web-collected reviews.
+        </p>
       </div>
 
-      <Tabs defaultValue="web" className="w-full">
+      <div className="mb-8">
+        <WriteReviewCTA />
+      </div>
+
+      <Tabs defaultValue="experience" className="w-full">
         <TabsList className="mb-5 w-full justify-start">
           <TabsTrigger value="experience">Experience Reviews</TabsTrigger>
           <TabsTrigger value="web">Web Reviews</TabsTrigger>

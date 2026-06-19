@@ -18,7 +18,7 @@ import type { ExperienceReviewCard } from "@/components/reviews/experience-revie
 export const metadata = {
   title: "Review Feed",
   description:
-    "Search chair reviews from Reddit, YouTube, forums, and more—filter by brand, category, and source.",
+    "Real hands-on chair rankings from people like you, plus web-collected reviews from Reddit, YouTube and forums — filter by brand, category and source.",
 }
 
 export const dynamic = "force-dynamic"
