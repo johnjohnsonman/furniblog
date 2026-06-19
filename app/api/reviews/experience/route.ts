@@ -2,11 +2,37 @@ import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { isUuid } from "@/lib/pipeline/queue-mapper"
 
+export const dynamic = "force-dynamic"
+
 type ProductRow = {
   id: string
   slug: string
   name: string
   thumbnail_url: string | null
+}
+
+// Curated famous chairs shown first in the "Popular" picker (in this order);
+// the rest of the catalog fills in randomly after them (re-rolled each load).
+const FEATURED_SLUGS = [
+  "herman-miller-aeron",
+  "steelcase-leap-v2",
+  "humanscale-freedom",
+  "itoki-act2",
+  "okamura-contessa-ii",
+  "kokuyo-ing-cloud",
+  "herman-miller-embody-gaming",
+  "knoll-generation",
+  "steelcase-gesture",
+]
+const POPULAR_LIMIT = 18
+
+function toOption(row: ProductRow) {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    thumbnailUrl: row.thumbnail_url,
+  }
 }
 
 type SubmitBody = {
@@ -41,34 +67,50 @@ export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q")?.trim() ?? ""
   const supabase = createAdminClient()
 
-  let query = supabase
-    .from("products")
-    .select("id, slug, name, thumbnail_url, review_count")
-    .eq("track", "chair")
-    .eq("published", true)
-
+  // Search: rank by review_count then name (existing behavior).
   if (q) {
     const escaped = q.replace(/[%_\\]/g, "")
-    query = query.or(`name.ilike.%${escaped}%,slug.ilike.%${escaped}%`)
+    const { data, error } = await supabase
+      .from("products")
+      .select("id, slug, name, thumbnail_url")
+      .eq("track", "chair")
+      .eq("published", true)
+      .or(`name.ilike.%${escaped}%,slug.ilike.%${escaped}%`)
+      .order("review_count", { ascending: false })
+      .order("name", { ascending: true })
+      .limit(20)
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+    return NextResponse.json({ products: (data ?? []).map(toOption) })
   }
 
-  const { data, error } = await query
-    .order("review_count", { ascending: false })
-    .order("name", { ascending: true })
-    .limit(q ? 20 : 12)
-
+  // Popular: curated famous chairs first (fixed order), then a random fill.
+  const { data, error } = await supabase
+    .from("products")
+    .select("id, slug, name, thumbnail_url")
+    .eq("track", "chair")
+    .eq("published", true)
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  const products = (data ?? []).map((row) => ({
-    id: row.id,
-    slug: row.slug,
-    name: row.name,
-    thumbnailUrl: row.thumbnail_url,
-  }))
+  const all = (data ?? []) as ProductRow[]
+  const bySlug = new Map(all.map((r) => [r.slug, r]))
+  const featured = FEATURED_SLUGS.map((s) => bySlug.get(s)).filter(
+    (r): r is ProductRow => Boolean(r)
+  )
+  const featuredSlugs = new Set(featured.map((r) => r.slug))
 
-  return NextResponse.json({ products })
+  // Fisher–Yates shuffle of the remaining chairs (fresh each request).
+  const rest = all.filter((r) => !featuredSlugs.has(r.slug))
+  for (let i = rest.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[rest[i], rest[j]] = [rest[j], rest[i]]
+  }
+
+  const combined = [...featured, ...rest].slice(0, POPULAR_LIMIT)
+  return NextResponse.json({ products: combined.map(toOption) })
 }
 
 export async function POST(request: NextRequest) {
