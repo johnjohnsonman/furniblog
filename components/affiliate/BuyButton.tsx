@@ -86,15 +86,16 @@ export function BuyButton({
 interface BuyButtonGroupProps {
   productId: string
   amazonUrl?: string | null
-  coupangUrl?: string | null
   country?: AffiliateCountry
   className?: string
 }
 
+// Amazon-only. Coupang was removed: every curated Coupang link was a generic
+// partner landing (no itemId), so it dead-ended on the Coupang homepage, and
+// this is a global English site monetized through Amazon (Earn Globally).
 export function BuyButtonGroup({
   productId,
   amazonUrl,
-  coupangUrl,
   country: countryProp,
   className,
 }: BuyButtonGroupProps) {
@@ -108,32 +109,19 @@ export function BuyButtonGroup({
     setCountry(readCountryCookie())
   }, [countryProp])
 
-  const showCoupang = country === "KR" && Boolean(coupangUrl)
-
-  if (!amazonUrl && !coupangUrl) {
+  if (!amazonUrl) {
     return null
   }
 
   return (
     <div className={cn("space-y-2", className)}>
-      {showCoupang && coupangUrl && (
-        <BuyButton
-          productId={productId}
-          baseUrl={coupangUrl}
-          retailer="coupang"
-          country={country}
-          fullWidth
-        />
-      )}
-      {amazonUrl && (
-        <BuyButton
-          productId={productId}
-          baseUrl={amazonUrl}
-          retailer="amazon"
-          country={country}
-          fullWidth
-        />
-      )}
+      <BuyButton
+        productId={productId}
+        baseUrl={amazonUrl}
+        retailer="amazon"
+        country={country}
+        fullWidth
+      />
       <p className="text-[11px] text-muted-foreground italic leading-relaxed">
         Affiliate link — we may earn a commission
       </p>

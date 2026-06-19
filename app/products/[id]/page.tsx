@@ -254,7 +254,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <BuyButtonGroup
                     productId={product.id}
                     amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-                    coupangUrl={buyUrls.coupangUrl ?? product.coupangUrl}
                   />
                 </div>
 
@@ -262,13 +261,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          {((buyUrls.amazonUrl ?? product.amazonUrl) ||
-            (buyUrls.coupangUrl ?? product.coupangUrl)) && (
+          {(buyUrls.amazonUrl ?? product.amazonUrl) && (
             <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
               <BuyButtonGroup
                 productId={product.id}
                 amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-                coupangUrl={buyUrls.coupangUrl ?? product.coupangUrl}
               />
             </div>
           )}

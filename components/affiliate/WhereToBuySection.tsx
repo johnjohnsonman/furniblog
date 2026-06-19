@@ -36,9 +36,21 @@ export function WhereToBuySection({
     setCountry(readCountryCookie())
   }, [])
 
+  // Coupang removed site-wide: the curated Coupang links were generic partner
+  // landings (no itemId) that dead-ended on the homepage. Drop them here too.
+  const buyableLinks = useMemo(
+    () =>
+      catalogLinks.filter(
+        (l) =>
+          !l.retailer.toLowerCase().includes("coupang") &&
+          !l.url.includes("coupang.com")
+      ),
+    [catalogLinks]
+  )
+
   const sortedLinks = useMemo(
-    () => sortCatalogLinksForCountry(catalogLinks, country),
-    [catalogLinks, country]
+    () => sortCatalogLinksForCountry(buyableLinks, country),
+    [buyableLinks, country]
   )
 
   const priceRows = useMemo(
@@ -51,11 +63,6 @@ export function WhereToBuySection({
       <h2 className="font-serif text-xl font-medium text-foreground mb-6">
         Compare retailers
       </h2>
-      {country === "KR" && sortedLinks.some((l) => l.retailer === "Coupang") && (
-        <p className="text-sm text-muted-foreground mb-4">
-          Coupang offers are shown first for visitors in Korea.
-        </p>
-      )}
       <PriceCompareTable
         rows={priceRows}
         productId={productId}
