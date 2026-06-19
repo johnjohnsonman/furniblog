@@ -99,11 +99,6 @@ export function ExperienceReviewsList({
   return (
     <div className="space-y-4">
       {items.map((item) => {
-        const first = item.rankings.find((r) => r.rank === 1) ?? item.rankings[0]
-        const compared = item.rankings
-          .filter((r) => r.rank !== 1)
-          .map((r) => r.chairName)
-
         return (
           <article
             key={item.id}
@@ -126,14 +121,36 @@ export function ExperienceReviewsList({
               ))}
             </div>
 
-            {first ? (
-              <h3 className="text-lg font-medium text-foreground">
-                <Link href={`/products/${first.chairSlug}`} className="hover:underline">
-                  #1: {first.chairName}
-                </Link>
-              </h3>
+            {item.rankings.length > 0 ? (
+              <ol className="space-y-1.5">
+                {item.rankings.map((r) => (
+                  <li key={r.chairSlug} className="flex items-baseline gap-2.5">
+                    <span
+                      className={`shrink-0 font-semibold ${
+                        r.rank === 1
+                          ? "text-sm text-[#9a7b4f]"
+                          : "text-xs text-muted-foreground"
+                      }`}
+                    >
+                      #{r.rank}
+                    </span>
+                    <Link
+                      href={`/products/${r.chairSlug}`}
+                      className={`hover:underline ${
+                        r.rank === 1
+                          ? "text-lg font-medium text-foreground"
+                          : "text-sm text-neutral-700"
+                      }`}
+                    >
+                      {r.chairName}
+                    </Link>
+                  </li>
+                ))}
+              </ol>
             ) : (
-              <h3 className="text-lg font-medium text-foreground">No top chair selected</h3>
+              <h3 className="text-lg font-medium text-foreground">
+                No top chair selected
+              </h3>
             )}
 
             {item.reasons.length > 0 && (
@@ -151,12 +168,6 @@ export function ExperienceReviewsList({
 
             {item.comment ? (
               <p className="mt-4 text-sm leading-6 text-neutral-700">{item.comment}</p>
-            ) : null}
-
-            {compared.length > 0 ? (
-              <p className="mt-4 text-xs text-muted-foreground">
-                Compared with: {compared.join(", ")}
-              </p>
             ) : null}
           </article>
         )
