@@ -16,6 +16,7 @@
     "cleanup:catalog": "ts-node --project scripts/tsconfig.json scripts/cleanup-catalog.ts",
     "seed:expansion": "ts-node --project scripts/tsconfig.json scripts/seed-expansion-chairs.ts",
     "backfill:news-images": "ts-node --project scripts/tsconfig.json scripts/backfill-news-images.ts",
+    "verify:catalog": "ts-node --project scripts/tsconfig.json scripts/verify-catalog.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },
   "dependencies": {
