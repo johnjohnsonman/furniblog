@@ -54,7 +54,7 @@ function Card({ e, large = false }: { e: ChairpediaCard; large?: boolean }) {
       </div>
       <div className="p-4">
         {e.brand && (
-          <div className="text-[11px] uppercase tracking-wider text-[#9a7b4f] font-semibold mb-1">
+          <div className="text-[11px] uppercase tracking-wider text-[#9a7b4f] font-semibold mb-1 line-clamp-1">
             {e.brand}
           </div>
         )}

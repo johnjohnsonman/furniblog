@@ -38,14 +38,27 @@ function prod(p: ProductRef) {
 async function getEntries(): Promise<ChairpediaCard[]> {
   try {
     const supabase = createPublicServerClient()
-    const { data } = await supabase
-      .from("chairpedia")
-      .select(
-        "slug,title,subtitle,excerpt,hero_image_url,origin,collections,featured,products(name,category)"
-      )
-      .eq("status", "published")
-      .order("published_at", { ascending: false })
-      .limit(500)
+    const [{ data }, { data: brandRows }] = await Promise.all([
+      supabase
+        .from("chairpedia")
+        .select(
+          "slug,title,subtitle,excerpt,hero_image_url,origin,collections,featured,products(name,category)"
+        )
+        .eq("status", "published")
+        .order("published_at", { ascending: false })
+        .limit(500),
+      supabase.from("brands").select("name"),
+    ])
+
+    // Longest-first so e.g. "Herman Miller" wins over a shorter accidental match.
+    const brandNames = (((brandRows as { name: string }[]) ?? [])
+      .map((b) => b.name)
+      .filter(Boolean) as string[]).sort((a, b) => b.length - a.length)
+    const brandFromTitle = (title: string): string | null => {
+      const t = title.toLowerCase()
+      return brandNames.find((n) => t.includes(n.toLowerCase())) ?? null
+    }
+
     return ((data as Row[]) ?? []).map((r) => {
       const p = prod(r.products)
       return {
@@ -57,7 +70,9 @@ async function getEntries(): Promise<ChairpediaCard[]> {
         origin: r.origin,
         collections: r.collections ?? [],
         featured: Boolean(r.featured),
-        brand: p?.name ?? null,
+        // Linked product name when available; otherwise fall back to a brand
+        // detected in the title so every card always shows a label.
+        brand: p?.name ?? brandFromTitle(r.title),
         category: p?.category ?? null,
       }
     })
