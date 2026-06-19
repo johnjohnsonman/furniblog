@@ -14,6 +14,7 @@
  */
 
 import { config } from "dotenv"
+import { readFileSync } from "fs"
 import { resolve } from "path"
 import { createClient } from "@supabase/supabase-js"
 import Anthropic from "@anthropic-ai/sdk"
@@ -140,6 +141,14 @@ async function main() {
   const apply = process.argv.includes("--apply")
   const limArg = process.argv.find((a) => a.startsWith("--limit"))
   const limit = limArg ? Number(limArg.split("=")[1] ?? process.argv[process.argv.indexOf(limArg) + 1]) : undefined
+  // --names <path>: only process products whose name is listed (one per line).
+  const namesIdx = process.argv.indexOf("--names")
+  let onlyNames: Set<string> | null = null
+  if (namesIdx !== -1 && process.argv[namesIdx + 1]) {
+    const raw = readFileSync(process.argv[namesIdx + 1], "utf8")
+    onlyNames = new Set(raw.split("\n").map((s) => s.trim()).filter(Boolean))
+    console.log(`Resume mode: only ${onlyNames.size} listed products.`)
+  }
 
   const { data } = await sb
     .from("products")
@@ -154,6 +163,7 @@ async function main() {
     price_range: p.price_range,
     brand: Array.isArray(p.brands) ? p.brands[0]?.name : p.brands?.name,
   }))
+  if (onlyNames) products = products.filter((p) => onlyNames!.has(p.name))
   if (limit) products = products.slice(0, limit)
 
   console.log(`Researching ${products.length} products (concurrency ${CONCURRENCY})…\n`)
