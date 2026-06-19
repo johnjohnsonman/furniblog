@@ -22,7 +22,17 @@ type Entry = {
   seo_title: string | null
   seo_description: string | null
   published_at: string | null
+  gen_sources: string[] | null
   products: ProductRef
+}
+
+/** Clean host label for a source URL, e.g. "https://www.steelcase.com/x" -> "steelcase.com". */
+function sourceLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "")
+  } catch {
+    return url
+  }
 }
 
 async function getEntry(slug: string): Promise<Entry | null> {
@@ -31,7 +41,7 @@ async function getEntry(slug: string): Promise<Entry | null> {
     const { data } = await supabase
       .from("chairpedia")
       .select(
-        "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,products(slug,name)"
+        "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,gen_sources,products(slug,name)"
       )
       .eq("slug", slug)
       .eq("status", "published")
@@ -85,6 +95,11 @@ export default async function ChairpediaEntryPage({
   const buy = product
     ? resolveAmazonAffiliateLink(product.slug, product.name)
     : null
+
+  // De-duplicated research sources, surfaced publicly for trust + E-E-A-T.
+  const sources = Array.from(
+    new Set((entry.gen_sources ?? []).filter((u) => /^https?:\/\//.test(u)))
+  )
 
   const articleSchema = generateArticleSchema({
     headline: entry.title,
@@ -147,6 +162,28 @@ export default async function ChairpediaEntryPage({
             className="chairpedia-body"
             dangerouslySetInnerHTML={{ __html: entry.content_html }}
           />
+
+          {sources.length > 0 && (
+            <section className="mt-12 border-t border-border pt-6">
+              <h2 className="font-serif text-lg font-semibold text-foreground mb-3">
+                Sources &amp; references
+              </h2>
+              <ol className="list-decimal space-y-1.5 pl-5 text-sm text-muted-foreground">
+                {sources.map((url) => (
+                  <li key={url}>
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                      className="break-words hover:text-foreground hover:underline"
+                    >
+                      {sourceLabel(url)}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )}
 
           {buy && (
             <div className="mt-12 rounded-xl border border-border bg-muted/40 p-5 text-center">

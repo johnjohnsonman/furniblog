@@ -69,7 +69,14 @@ function buildPrompt(chairName: string): string {
   const sectionList = SECTIONS.map((s, i) => `${i + 1}. ${s}`).join("\n")
   return `Research and write a complete Chairpedia deep-dive for the office chair: "${chairName}".
 
-First, use web_search to research this exact chair. Verify: manufacturer/brand, the designer(s), year/era, materials, adjustment mechanisms, certifications, warranty, approximate price tier, and how it compares to rivals. Do several searches if needed.
+First, RESEARCH DEEPLY with web_search before writing — aim for 12–18 searches covering different angles, not just one or two. Search separately for:
+- the brand's official product page and spec sheet
+- the designer(s) and the design story
+- independent reviews (review sites, YouTube, Reddit/forums — what real owners say)
+- retailer listings to pin down the real price
+- certifications (BIFMA, GREENGUARD, etc.), warranty terms, and sustainability claims
+- direct comparisons against named rival chairs
+Gather and keep AT LEAST 12 distinct, credible source URLs you actually use. The richer and more cross-checked your research, the better — thin research produces a thin article.
 
 Then write the article body as clean, well-structured semantic HTML. This renders directly on the site, so structure matters as much as facts.
 
@@ -88,7 +95,7 @@ FORMATTING RULES (this is what makes the page look organized):
 Structure the body as exactly these 16 sections, each opening with an <h2> heading (you may rephrase the heading text naturally):
 ${sectionList}
 
-Target length: 1,400–2,200 words of body content. Favor clarity and scannability over density.
+Target length: 2,200–3,200 words of body content — substantial and authoritative, but still clear and scannable (short paragraphs, lists, tables). Every section should be a real, fleshed-out passage, not a token sentence.
 
 Return ONLY a single JSON object (no prose before or after) with these string fields:
 {
@@ -99,7 +106,7 @@ Return ONLY a single JSON object (no prose before or after) with these string fi
   "seo_description": "an SEO meta description, ~150–158 chars, compelling and keyword-rich",
   "origin": "country of origin / manufacture (e.g. 'Japan', 'Germany', 'USA') — one or two words",
   "content_html": "the full 16-section article body as HTML per the rules above",
-  "sources": ["array of the source URLs you actually relied on"]
+  "sources": ["array of 12–20 distinct source URLs you actually used — official brand/spec pages, reviews, retailers, certification/sustainability pages. Real URLs only, no placeholders."]
 }
 
 Escape the HTML properly so it is valid JSON. Output nothing but the JSON object.`
@@ -115,13 +122,13 @@ export async function generateChairpediaDraft(chairName: string): Promise<Chairp
 
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: 16000,
+    max_tokens: 20000,
     system: SYSTEM,
     tools: [
       {
         type: "web_search_20250305",
         name: "web_search",
-        max_uses: 8,
+        max_uses: 18,
       } satisfies Anthropic.Messages.WebSearchTool20250305,
     ],
     messages: [{ role: "user", content: buildPrompt(chairName) }],
