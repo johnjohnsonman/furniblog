@@ -105,19 +105,28 @@ export function ExperienceReviewsBrowser({
     })
   }
 
-  // Pagination over the filtered list.
+  // Sort: newest first (default) or the server's random order (fresh per visit).
+  const [sort, setSort] = useState<"newest" | "random">("newest")
+  const sorted = useMemo(() => {
+    if (sort === "random") return filtered
+    return [...filtered].sort((a, b) =>
+      (b.createdAt ?? "").localeCompare(a.createdAt ?? "")
+    )
+  }, [filtered, sort])
+
+  // Pagination over the sorted list.
   const PAGE_SIZE = 20
   const [page, setPage] = useState(1)
   const topRef = useRef<HTMLDivElement>(null)
 
-  // Back to page 1 whenever the filter changes.
+  // Back to page 1 whenever the filter or sort changes.
   useEffect(() => {
     setPage(1)
-  }, [selected])
+  }, [selected, sort])
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
-  const pageItems = filtered.slice(
+  const pageItems = sorted.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   )
@@ -173,12 +182,30 @@ export function ExperienceReviewsBrowser({
         </div>
       </div>
 
-      <p className="mb-3 text-sm text-muted-foreground">
-        {activeCount > 0
-          ? `${filtered.length} reviewer${filtered.length === 1 ? "" : "s"} like you`
-          : `${items.length} experience review${items.length === 1 ? "" : "s"}`}
-        {totalPages > 1 ? ` · page ${currentPage} of ${totalPages}` : ""}
-      </p>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="text-sm text-muted-foreground">
+          {activeCount > 0
+            ? `${filtered.length} reviewer${filtered.length === 1 ? "" : "s"} like you`
+            : `${items.length} experience review${items.length === 1 ? "" : "s"}`}
+          {totalPages > 1 ? ` · page ${currentPage} of ${totalPages}` : ""}
+        </p>
+        <div className="flex shrink-0 items-center gap-1 text-xs">
+          {(["newest", "random"] as const).map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => setSort(s)}
+              className={`rounded-full px-3 py-1 capitalize transition-colors ${
+                sort === s
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {s === "newest" ? "Newest" : "Random"}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {activeCount > 0 && filtered.length === 0 ? (
         <div className="rounded-xl border border-[#EFEFEF] bg-white px-6 py-14 text-center">

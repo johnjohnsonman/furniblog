@@ -164,7 +164,9 @@ export async function POST(request: NextRequest) {
   const { data: session, error: sessionError } = await supabase
     .from("review_sessions")
     .insert({
-      status: "pending",
+      // Auto-publish native wizard submissions so the reviewer sees their entry
+      // immediately; admins can still remove anything that doesn't fit.
+      status: "approved",
       source: "native",
       sex: body.sex ?? null,
       height_band: body.heightBand ?? null,

@@ -77,12 +77,20 @@ const PAIN_OPTIONS = [
 
 const REASON_OPTIONS = [
   "Comfortable backrest",
+  "Lumbar support",
   "Cushioned seat",
+  "Breathable mesh",
   "Headrest",
+  "Reclines well",
   "Good fit for my size",
   "Easy armrest adjustment",
-  "Build materials",
-  "Design",
+  "Highly adjustable",
+  "Build quality",
+  "Sturdy and stable",
+  "Smooth, quiet casters",
+  "Easy to assemble",
+  "Design and looks",
+  "Value for money",
   "Brand reputation",
 ] as const
 
