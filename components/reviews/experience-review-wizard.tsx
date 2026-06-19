@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { CheckCircle2 } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { CheckCircle2, GripVertical, ChevronUp, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -156,6 +156,25 @@ export function ExperienceReviewWizard() {
   const [loadingProducts, setLoadingProducts] = useState(false)
 
   const [rankings, setRankings] = useState<ProductOption[]>([])
+  const dragIndex = useRef<number | null>(null)
+
+  function moveRanking(from: number, to: number) {
+    if (from === to || to < 0 || to >= rankings.length) return
+    setRankings((prev) => {
+      const next = [...prev]
+      const [item] = next.splice(from, 1)
+      next.splice(to, 0, item)
+      return next
+    })
+  }
+
+  // Live reorder as the dragged item passes over another row.
+  function handleDragEnter(idx: number) {
+    const from = dragIndex.current
+    if (from === null || from === idx) return
+    moveRanking(from, idx)
+    dragIndex.current = idx
+  }
   const [sex, setSex] = useState<"male" | "female" | null>(null)
   const [heightBand, setHeightBand] = useState<
     "under_5_4" | "5_4_5_7" | "5_8_5_11" | "6_0_6_2" | "6_3plus" | null
@@ -324,7 +343,8 @@ export function ExperienceReviewWizard() {
         {step === 0 && (
           <div className="space-y-5">
             <p className="text-sm text-neutral-600">
-              Tap chairs in the order you liked them — 1st, 2nd, 3rd. (Up to 3)
+              Tap chairs in the order you liked them — 1st, 2nd, 3rd (up to 3).
+              Drag the handle or use ↑↓ to reorder.
             </p>
             <Input
               value={search}
@@ -340,17 +360,50 @@ export function ExperienceReviewWizard() {
                 </p>
                 <div className="space-y-2">
                   {rankings.map((r, idx) => (
-                    <button
+                    <div
                       key={r.id}
-                      type="button"
-                      onClick={() => addOrRemoveRanking(r)}
-                      className="flex w-full items-center justify-between rounded-lg border border-neutral-200 px-3 py-2 text-left text-sm"
+                      draggable
+                      onDragStart={() => {
+                        dragIndex.current = idx
+                      }}
+                      onDragEnter={() => handleDragEnter(idx)}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDragEnd={() => {
+                        dragIndex.current = null
+                      }}
+                      className="flex cursor-grab items-center gap-2 rounded-lg border border-neutral-200 bg-white px-3 py-2 text-sm active:cursor-grabbing"
                     >
-                      <span>
-                        #{idx + 1} · {r.name}
+                      <GripVertical className="h-4 w-4 shrink-0 text-neutral-300" />
+                      <span className="flex-1">
+                        <span className="font-medium text-neutral-900">#{idx + 1}</span>{" "}
+                        · {r.name}
                       </span>
-                      <span className="text-xs text-neutral-500">Remove</span>
-                    </button>
+                      <button
+                        type="button"
+                        aria-label="Move up"
+                        disabled={idx === 0}
+                        onClick={() => moveRanking(idx, idx - 1)}
+                        className="rounded p-1 text-neutral-400 hover:text-neutral-900 disabled:opacity-30"
+                      >
+                        <ChevronUp className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Move down"
+                        disabled={idx === rankings.length - 1}
+                        onClick={() => moveRanking(idx, idx + 1)}
+                        className="rounded p-1 text-neutral-400 hover:text-neutral-900 disabled:opacity-30"
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => addOrRemoveRanking(r)}
+                        className="ml-1 text-xs text-neutral-500 hover:text-red-600"
+                      >
+                        Remove
+                      </button>
+                    </div>
                   ))}
                 </div>
               </div>
