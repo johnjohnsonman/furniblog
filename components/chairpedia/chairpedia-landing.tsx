@@ -1,8 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { Search, ArrowRight, ShieldCheck, BookOpen } from "lucide-react"
+import { Search, ArrowRight, ShieldCheck, BookOpen, ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export type ChairpediaCard = {
@@ -81,10 +81,19 @@ export function ChairpediaLanding({
   const [brand, setBrand] = useState("all")
   const [origin, setOrigin] = useState("all")
 
-  const featured = useMemo(
-    () => entries.find((e) => e.slug === featuredSlug) ?? entries[0] ?? null,
-    [entries, featuredSlug]
-  )
+  // All editor-featured entries power the hero carousel (no cap). Start the
+  // rotation on the server-picked entry (random per visit) for continuity, then
+  // cycle through the rest. Falls back to a single entry when none are featured.
+  const featuredItems = useMemo(() => {
+    let f = entries.filter((e) => e.featured)
+    if (f.length === 0) {
+      const single = entries.find((e) => e.slug === featuredSlug) ?? entries[0]
+      return single ? [single] : []
+    }
+    const start = f.findIndex((e) => e.slug === featuredSlug)
+    if (start > 0) f = [...f.slice(start), ...f.slice(0, start)]
+    return f
+  }, [entries, featuredSlug])
 
   const categories = useMemo(
     () => Array.from(new Set(entries.map((e) => e.category).filter(Boolean))) as string[],
@@ -153,38 +162,8 @@ export function ChairpediaLanding({
         <p className="text-center text-muted-foreground py-20">New entries are on the way.</p>
       ) : (
         <>
-          {/* Featured */}
-          {featured && (
-            <Link
-              href={`/chairpedia/${featured.slug}`}
-              className="group grid md:grid-cols-2 gap-6 rounded-2xl border border-border overflow-hidden mb-12 hover:shadow-lg transition-shadow"
-            >
-              <div className="aspect-[16/11] md:aspect-auto bg-muted overflow-hidden">
-                {featured.heroImage && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={featured.heroImage}
-                    alt={featured.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                )}
-              </div>
-              <div className="flex flex-col justify-center p-6 md:p-10">
-                <div className="text-xs uppercase tracking-wider text-[#9a7b4f] font-semibold">
-                  Featured{featured.brand ? ` · ${featured.brand}` : ""}
-                </div>
-                <h2 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-foreground">
-                  {featured.title}
-                </h2>
-                {(featured.subtitle || featured.excerpt) && (
-                  <p className="mt-3 text-muted-foreground">{featured.subtitle || featured.excerpt}</p>
-                )}
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
-                  Read the story <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </span>
-              </div>
-            </Link>
-          )}
+          {/* Featured carousel */}
+          <FeaturedCarousel items={featuredItems} />
 
           {/* Search */}
           <div className="relative mb-4 max-w-xl mx-auto">
@@ -298,6 +277,97 @@ export function ChairpediaLanding({
               ))}
             </div>
           </section>
+        </>
+      )}
+    </div>
+  )
+}
+
+function FeaturedCarousel({ items }: { items: ChairpediaCard[] }) {
+  const [i, setI] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const count = items.length
+
+  // Auto-advance every 6s; pause on hover. Single item = static (no timer).
+  useEffect(() => {
+    if (count <= 1 || paused) return
+    const t = setInterval(() => setI((p) => (p + 1) % count), 6000)
+    return () => clearInterval(t)
+  }, [count, paused])
+
+  if (count === 0) return null
+  const e = items[Math.min(i, count - 1)]
+  const go = (n: number) => setI(((n % count) + count) % count)
+
+  return (
+    <div
+      className="relative mb-12"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <Link
+        key={e.slug}
+        href={`/chairpedia/${e.slug}`}
+        className="group grid md:grid-cols-2 gap-6 rounded-2xl border border-border overflow-hidden hover:shadow-lg transition-shadow animate-in fade-in duration-700"
+      >
+        <div className="aspect-[16/11] md:aspect-auto bg-muted overflow-hidden">
+          {e.heroImage && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={e.heroImage}
+              alt={e.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          )}
+        </div>
+        <div className="flex flex-col justify-center p-6 md:p-10">
+          <div className="text-xs uppercase tracking-wider text-[#9a7b4f] font-semibold">
+            Featured{e.brand ? ` · ${e.brand}` : ""}
+          </div>
+          <h2 className="mt-2 font-serif text-3xl font-semibold tracking-tight text-foreground">
+            {e.title}
+          </h2>
+          {(e.subtitle || e.excerpt) && (
+            <p className="mt-3 text-muted-foreground">{e.subtitle || e.excerpt}</p>
+          )}
+          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-foreground">
+            Read the story <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
+          </span>
+        </div>
+      </Link>
+
+      {count > 1 && (
+        <>
+          <button
+            type="button"
+            aria-label="Previous featured chair"
+            onClick={() => go(i - 1)}
+            className="absolute left-3 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-white/90 shadow-sm transition-colors hover:bg-white"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            aria-label="Next featured chair"
+            onClick={() => go(i + 1)}
+            className="absolute right-3 top-1/2 z-10 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-border bg-white/90 shadow-sm transition-colors hover:bg-white"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+          <div className="absolute bottom-4 left-1/2 z-10 flex max-w-[70%] -translate-x-1/2 flex-wrap justify-center gap-2">
+            {items.map((it, idx) => (
+              <button
+                key={it.slug}
+                type="button"
+                aria-label={`Show ${it.title}`}
+                onClick={() => setI(idx)}
+                className={cn(
+                  "h-2 rounded-full transition-all",
+                  idx === i ? "w-6 bg-foreground" : "w-2 bg-foreground/30 hover:bg-foreground/50"
+                )}
+              />
+            ))}
+          </div>
         </>
       )}
     </div>
