@@ -6,56 +6,39 @@ import type { RawContent } from "@/lib/pipeline/types"
 
 export const maxDuration = 60
 
-const UA = "Mozilla/5.0 (compatible; FurniblogBot/1.0; +https://www.furniblog.com)"
+// Reddit blocks the public .json endpoint from data-center IPs (Vercel) with a
+// 403. The reliable path is the OAuth API (oauth.reddit.com), which works from
+// servers when REDDIT_CLIENT_ID/SECRET are set. We try OAuth first, then fall
+// back to a best-effort public .json fetch with a browser UA.
+const API_UA = "web:furniblog:v1.0 (by /u/furniblog)"
+const BROWSER_UA =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
 
 type RedditPost = { title: string; body: string; permalink: string }
 
-/** Fetch a Reddit post (selftext + top comments) via the public .json endpoint. */
-async function fetchRedditPost(rawUrl: string): Promise<RedditPost | { error: string }> {
-  let jsonUrl: string
+async function getRedditToken(): Promise<string | null> {
+  const id = process.env.REDDIT_CLIENT_ID?.trim()
+  const secret = process.env.REDDIT_CLIENT_SECRET?.trim()
+  if (!id || !secret) return null
   try {
-    const u = new URL(rawUrl.trim())
-    const host = u.hostname.replace(/^www\.|^old\./, "")
-    if (host !== "reddit.com" && host !== "redd.it") {
-      return { error: "That's not a Reddit link." }
-    }
-    jsonUrl = `https://www.reddit.com${u.pathname.replace(/\/+$/, "")}.json`
-  } catch {
-    return { error: "That doesn't look like a valid URL." }
-  }
-
-  const get = (url: string) =>
-    fetch(url, {
-      headers: { "User-Agent": UA, Accept: "application/json" },
-      redirect: "follow",
+    const res = await fetch("https://www.reddit.com/api/v1/access_token", {
+      method: "POST",
+      headers: {
+        Authorization: `Basic ${Buffer.from(`${id}:${secret}`).toString("base64")}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": API_UA,
+      },
+      body: "grant_type=client_credentials",
     })
-
-  let res = await get(jsonUrl)
-  // Share links (/s/…) and redd.it shorteners need resolving to the canonical URL first.
-  const ct = res.headers.get("content-type") ?? ""
-  if (!res.ok || !ct.includes("json")) {
-    try {
-      const resolved = await fetch(rawUrl, { headers: { "User-Agent": UA }, redirect: "follow" })
-      const u2 = new URL(resolved.url)
-      res = await get(`https://www.reddit.com${u2.pathname.replace(/\/+$/, "")}.json`)
-    } catch {
-      // fall through to the error handling below
-    }
-  }
-
-  if (!res.ok) {
-    return {
-      error: `Reddit returned ${res.status}. The post may be private/removed, or Reddit blocked the request — try again in a moment.`,
-    }
-  }
-
-  let data: unknown
-  try {
-    data = await res.json()
+    if (!res.ok) return null
+    const j = (await res.json()) as { access_token?: string }
+    return j.access_token ?? null
   } catch {
-    return { error: "Reddit didn't return readable data (it may be rate-limiting). Try again." }
+    return null
   }
+}
 
+function parseListing(data: unknown, fallbackUrl: string): RedditPost | { error: string } {
   const arr = data as Array<{ data?: { children?: Array<{ data?: Record<string, unknown> }> } }>
   const post = arr?.[0]?.data?.children?.[0]?.data
   if (!post) return { error: "Couldn't find the post in Reddit's response." }
@@ -71,10 +54,67 @@ async function fetchRedditPost(rawUrl: string): Promise<RedditPost | { error: st
     .slice(0, 10)
 
   const body = [selftext, ...comments].filter(Boolean).join("\n\n").slice(0, 6000)
-  const permalink = post.permalink ? `https://www.reddit.com${post.permalink}` : rawUrl
-
+  const permalink = post.permalink ? `https://www.reddit.com${post.permalink}` : fallbackUrl
   if (!title && !body) return { error: "This post has no readable text to summarize." }
   return { title: title || "Reddit discussion", body, permalink }
+}
+
+async function fetchRedditPost(rawUrl: string): Promise<RedditPost | { error: string }> {
+  let path: string
+  try {
+    const u = new URL(rawUrl.trim())
+    const host = u.hostname.replace(/^www\.|^old\./, "")
+    if (host !== "reddit.com" && host !== "redd.it") {
+      return { error: "That's not a Reddit link." }
+    }
+    path = u.pathname.replace(/\/+$/, "")
+  } catch {
+    return { error: "That doesn't look like a valid URL." }
+  }
+
+  // 1) Authenticated API (works from servers) when credentials are configured.
+  const token = await getRedditToken()
+  if (token) {
+    try {
+      const res = await fetch(`https://oauth.reddit.com${path}?raw_json=1`, {
+        headers: { Authorization: `Bearer ${token}`, "User-Agent": API_UA },
+      })
+      if (res.ok) return parseListing(await res.json(), rawUrl)
+    } catch {
+      // fall through to public fetch
+    }
+  }
+
+  // 2) Best-effort public .json with a browser UA.
+  const get = (url: string) =>
+    fetch(url, {
+      headers: { "User-Agent": BROWSER_UA, Accept: "application/json,text/html" },
+      redirect: "follow",
+    })
+  let res = await get(`https://www.reddit.com${path}.json`)
+  if (!res.ok || !(res.headers.get("content-type") ?? "").includes("json")) {
+    try {
+      const resolved = await fetch(rawUrl, { headers: { "User-Agent": BROWSER_UA }, redirect: "follow" })
+      const u2 = new URL(resolved.url)
+      res = await get(`https://www.reddit.com${u2.pathname.replace(/\/+$/, "")}.json`)
+    } catch {
+      // fall through
+    }
+  }
+
+  if (!res.ok) {
+    return {
+      error:
+        res.status === 403
+          ? "Reddit blocked the request (403). Reddit blocks server fetches without API keys — add REDDIT_CLIENT_ID/SECRET to enable this reliably."
+          : `Reddit returned ${res.status}. The post may be private/removed — try again in a moment.`,
+    }
+  }
+  try {
+    return parseListing(await res.json(), rawUrl)
+  } catch {
+    return { error: "Reddit didn't return readable data (rate-limiting or blocked). Try again." }
+  }
 }
 
 export async function POST(request: NextRequest) {
