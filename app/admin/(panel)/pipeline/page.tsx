@@ -328,8 +328,9 @@ export default function AdminPipelinePage() {
     msg: string
     video?: { title: string; thumbnailUrl: string | null; youtubeId: string }
   } | null>(null)
-  // Manual Reddit review add (paste a Reddit post link, pick a chair).
+  // Manual Reddit review add (paste the post + comments text, pick a chair).
   const [redditChairSlug, setRedditChairSlug] = useState("")
+  const [redditText, setRedditText] = useState("")
   const [redditUrl, setRedditUrl] = useState("")
   const [redditBusy, setRedditBusy] = useState(false)
   const [redditResult, setRedditResult] = useState<{
@@ -1077,8 +1078,8 @@ export default function AdminPipelinePage() {
       setRedditResult({ ok: false, msg: "Select a chair first." })
       return
     }
-    if (!redditUrl.trim()) {
-      setRedditResult({ ok: false, msg: "Paste a Reddit post link." })
+    if (!redditText.trim()) {
+      setRedditResult({ ok: false, msg: "Paste the Reddit post + comments text." })
       return
     }
     setRedditBusy(true)
@@ -1090,7 +1091,11 @@ export default function AdminPipelinePage() {
       }>("/api/admin/reviews/manual-reddit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chairSlug: redditChairSlug, url: redditUrl.trim() }),
+        body: JSON.stringify({
+          chairSlug: redditChairSlug,
+          text: redditText.trim(),
+          sourceUrl: redditUrl.trim() || undefined,
+        }),
       })
       if (!res.ok) {
         setRedditResult({ ok: false, msg: res.error })
@@ -1100,6 +1105,7 @@ export default function AdminPipelinePage() {
           msg: `Added to ${res.data.chair?.name ?? "chair"}`,
           review: res.data.review,
         })
+        setRedditText("")
         setRedditUrl("")
       }
     } catch (err) {
@@ -1526,9 +1532,10 @@ export default function AdminPipelinePage() {
         <div>
           <h2 className="text-lg font-medium">Add a review from Reddit</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Pick a chair, paste a Reddit post link — the post and its top comments
-            are fetched and summarized by Claude into a structured review (summary,
-            pros, cons, rating) linked to the chair.
+            Pick a chair, paste the Reddit post text and its most useful comments —
+            Claude summarizes and lightly rewrites them into a structured review
+            (summary, pros, cons, rating) linked to the chair. No Reddit account or
+            keys needed.
           </p>
         </div>
 
@@ -1540,22 +1547,32 @@ export default function AdminPipelinePage() {
         />
 
         <div className="space-y-2">
-          <Label htmlFor="reddit-url">Reddit post link</Label>
+          <Label htmlFor="reddit-text">Reddit post + comments</Label>
+          <textarea
+            id="reddit-text"
+            value={redditText}
+            onChange={(e) => setRedditText(e.target.value)}
+            placeholder="Paste the post body and the most useful comments here…"
+            disabled={redditBusy}
+            rows={8}
+            className="w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="reddit-src">Reddit link (optional — for attribution)</Label>
           <Input
-            id="reddit-url"
+            id="reddit-src"
             value={redditUrl}
             onChange={(e) => setRedditUrl(e.target.value)}
             placeholder="https://www.reddit.com/r/…/comments/…"
             disabled={redditBusy}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void addRedditReview()
-            }}
           />
         </div>
 
         <Button
           onClick={() => void addRedditReview()}
-          disabled={redditBusy || !redditChairSlug || !redditUrl.trim()}
+          disabled={redditBusy || !redditChairSlug || !redditText.trim()}
         >
           {redditBusy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
           {redditBusy ? "Summarizing…" : "Add review"}

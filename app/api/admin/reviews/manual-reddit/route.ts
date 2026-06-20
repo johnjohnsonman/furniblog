@@ -121,17 +121,26 @@ export async function POST(request: NextRequest) {
   const denied = requireAdmin(request)
   if (denied) return denied
 
-  let body: { chairSlug?: string; url?: string }
+  let body: { chairSlug?: string; url?: string; text?: string; sourceUrl?: string }
   try {
-    body = (await request.json()) as { chairSlug?: string; url?: string }
+    body = (await request.json()) as {
+      chairSlug?: string
+      url?: string
+      text?: string
+      sourceUrl?: string
+    }
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
   const chairSlug = body.chairSlug?.trim()
+  const text = body.text?.trim()
   const url = body.url?.trim()
+  const sourceUrl = body.sourceUrl?.trim()
   if (!chairSlug) return NextResponse.json({ error: "Select a chair first." }, { status: 400 })
-  if (!url) return NextResponse.json({ error: "Paste a Reddit post link." }, { status: 400 })
+  if (!text && !url) {
+    return NextResponse.json({ error: "Paste the Reddit text (or a link)." }, { status: 400 })
+  }
 
   const supabase = createAdminClient()
   const { data: product, error: pErr } = await supabase
@@ -143,24 +152,41 @@ export async function POST(request: NextRequest) {
   if (pErr) return NextResponse.json({ error: pErr.message }, { status: 500 })
   if (!product) return NextResponse.json({ error: "Chair not found." }, { status: 404 })
 
-  const post = await fetchRedditPost(url)
-  if ("error" in post) return NextResponse.json({ error: post.error }, { status: 422 })
+  // Pasted text wins (no Reddit fetch → no 403). Otherwise fetch from the link.
+  let postTitle = ""
+  let postBody = ""
+  let permalink: string | null = null
+  if (text) {
+    postBody = text
+    permalink = sourceUrl && /^https?:\/\//.test(sourceUrl) ? sourceUrl : null
+  } else {
+    const fetched = await fetchRedditPost(url as string)
+    if ("error" in fetched) return NextResponse.json({ error: fetched.error }, { status: 422 })
+    postTitle = fetched.title
+    postBody = fetched.body
+    permalink = fetched.permalink
+  }
 
-  // Already saved this exact post for this chair?
-  const { data: dup } = await supabase
-    .from("reviews")
-    .select("id")
-    .eq("product_id", product.id)
-    .eq("source_url", post.permalink)
-    .maybeSingle()
-  if (dup) {
-    return NextResponse.json({ error: "This Reddit post is already a review for this chair." }, { status: 409 })
+  // Dedup only when we have a URL to key on.
+  if (permalink) {
+    const { data: dup } = await supabase
+      .from("reviews")
+      .select("id")
+      .eq("product_id", product.id)
+      .eq("source_url", permalink)
+      .maybeSingle()
+    if (dup) {
+      return NextResponse.json(
+        { error: "This Reddit post is already a review for this chair." },
+        { status: 409 }
+      )
+    }
   }
 
   const item: RawContent = {
-    url: post.permalink,
-    title: post.title,
-    body: post.body,
+    url: permalink ?? "",
+    title: postTitle,
+    body: postBody,
     source: "reddit",
     collectedAt: new Date().toISOString(),
   }
@@ -171,7 +197,7 @@ export async function POST(request: NextRequest) {
       {
         error: `The AI judged this not specific enough to the ${product.name} (relevance ${Math.round(
           (outcome.confidence ?? 0) * 100
-        )}%). Paste a post that clearly reviews this chair.`,
+        )}%). Make sure the pasted text is clearly about this chair.`,
       },
       { status: 422 }
     )
@@ -193,7 +219,7 @@ export async function POST(request: NextRequest) {
     pros: d.pros ?? [],
     cons: d.cons ?? [],
     scores,
-    source_url: post.permalink,
+    source_url: permalink,
     original_language: "en",
     verified: false,
   })
@@ -207,7 +233,7 @@ export async function POST(request: NextRequest) {
       overall: d.overall,
       pros: d.pros ?? [],
       cons: d.cons ?? [],
-      sourceUrl: post.permalink,
+      sourceUrl: permalink,
     },
   })
 }

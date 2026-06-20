@@ -275,7 +275,8 @@ export async function processWithClaude(
     return { status: "error" }
   }
 
-  const body = item.body.slice(0, 3000)
+  // Allow enough room for a post + its top comments (manual paste & rich threads).
+  const body = item.body.slice(0, 6000)
   const userContent = `${item.title}\n\n${body}`
 
   console.log("[PROCESSOR] Input text length:", item.body.length)
