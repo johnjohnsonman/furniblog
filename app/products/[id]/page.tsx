@@ -1,9 +1,10 @@
 ﻿import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { MapPin, Star, ChevronRight } from "lucide-react"
+import { MapPin, Star, ChevronRight, BookOpen, ArrowUpRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { products, getSimilarProducts } from "@/lib/data"
 import { getChairReviewsForProduct } from "@/lib/data/chair-reviews"
 import {
@@ -35,6 +36,23 @@ async function resolveProduct(slug: string) {
   const fromDb = await getProductBySlug(slug)
   if (fromDb) return fromDb
   return products.find((p) => p.id === slug || p.slug === slug)
+}
+
+/** Published Chairpedia deep-dive linked to this product, if any. */
+async function getChairpediaSlug(productId: string): Promise<string | null> {
+  try {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from("chairpedia")
+      .select("slug")
+      .eq("product_id", productId)
+      .eq("status", "published")
+      .limit(1)
+      .maybeSingle()
+    return (data as { slug: string } | null)?.slug ?? null
+  } catch {
+    return null
+  }
 }
 
 export async function generateStaticParams() {
@@ -90,6 +108,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       : getChairReviewsForProduct(product.id)
 
   const slug = product.slug ?? product.id
+  const chairpediaSlug = await getChairpediaSlug(product.id)
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
 
@@ -190,6 +209,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       <span className="text-muted-foreground">Best for: </span>
                       <span className="font-medium text-foreground">{product.bestFor}</span>
                     </p>
+                  )}
+
+                  {chairpediaSlug && (
+                    <Link
+                      href={`/chairpedia/${chairpediaSlug}`}
+                      className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                    >
+                      <BookOpen className="h-4 w-4 text-[#9a7b4f]" />
+                      Read the Chairpedia deep-dive
+                      <ArrowUpRight className="h-4 w-4 opacity-70" />
+                    </Link>
                   )}
                 </div>
               </div>
