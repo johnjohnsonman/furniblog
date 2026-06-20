@@ -319,6 +319,15 @@ export default function AdminPipelinePage() {
   const [videoResult, setVideoResult] = useState<VideoCollectResult | null>(null)
   const [videoProgress, setVideoProgress] = useState<VideoProgress | null>(null)
   const stopVideoRef = useRef(false)
+  // Manual video add (paste a YouTube link, pick a chair).
+  const [manualChairSlug, setManualChairSlug] = useState("")
+  const [manualUrl, setManualUrl] = useState("")
+  const [manualBusy, setManualBusy] = useState(false)
+  const [manualResult, setManualResult] = useState<{
+    ok: boolean
+    msg: string
+    video?: { title: string; thumbnailUrl: string | null; youtubeId: string }
+  } | null>(null)
   const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
   const [summaryBackfillResult, setSummaryBackfillResult] =
     useState<VideoSummaryBackfillResult | null>(null)
@@ -1011,6 +1020,49 @@ export default function AdminPipelinePage() {
     })
   }
 
+  async function addManualVideo() {
+    if (!manualChairSlug) {
+      setManualResult({ ok: false, msg: "Select a chair first." })
+      return
+    }
+    if (!manualUrl.trim()) {
+      setManualResult({ ok: false, msg: "Paste a YouTube link." })
+      return
+    }
+    setManualBusy(true)
+    setManualResult(null)
+    try {
+      const res = await fetchJson<{
+        success?: boolean
+        relinked?: boolean
+        chair?: { name: string }
+        video?: { title: string; thumbnailUrl: string | null; youtubeId: string }
+      }>("/api/admin/videos/manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chairSlug: manualChairSlug, url: manualUrl.trim() }),
+      })
+      if (!res.ok) {
+        setManualResult({ ok: false, msg: res.error })
+      } else {
+        const data = res.data
+        setManualResult({
+          ok: true,
+          msg: `${data.relinked ? "Re-linked" : "Added"} to ${data.chair?.name ?? "chair"}`,
+          video: data.video,
+        })
+        setManualUrl("")
+      }
+    } catch (err) {
+      setManualResult({
+        ok: false,
+        msg: err instanceof Error ? err.message : "Failed to add video.",
+      })
+    } finally {
+      setManualBusy(false)
+    }
+  }
+
   async function runVideoCollection() {
     if (videoMode === "single" && !videoChairSlug) {
       setVideoError("Select a chair")
@@ -1346,8 +1398,83 @@ export default function AdminPipelinePage() {
         )}
       </section>
 
+      <section className="border-2 border-foreground/15 rounded-xl p-6 mb-8 space-y-4 bg-muted/20">
+        <div>
+          <h2 className="text-lg font-medium">Add a video manually</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Pick a chair, paste a YouTube link, and add it directly — title,
+            channel and thumbnail are fetched automatically. Best for hand-picked,
+            high-quality videos.
+          </p>
+        </div>
+
+        <ChairSearchCombobox
+          products={products}
+          value={manualChairSlug}
+          onChange={setManualChairSlug}
+          disabled={manualBusy}
+        />
+
+        <div className="space-y-2">
+          <Label htmlFor="manual-url">YouTube link</Label>
+          <Input
+            id="manual-url"
+            value={manualUrl}
+            onChange={(e) => setManualUrl(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=…  or  https://youtu.be/…"
+            disabled={manualBusy}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void addManualVideo()
+            }}
+          />
+        </div>
+
+        <Button
+          onClick={() => void addManualVideo()}
+          disabled={manualBusy || !manualChairSlug || !manualUrl.trim()}
+        >
+          {manualBusy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+          Add video
+        </Button>
+
+        {manualResult && (
+          <div
+            className={`rounded-lg border p-3 text-sm ${
+              manualResult.ok
+                ? "border-green-500/40 bg-green-500/5"
+                : "border-red-500/40 bg-red-500/5"
+            }`}
+          >
+            <p className={manualResult.ok ? "text-green-700" : "text-red-700"}>
+              {manualResult.ok ? "✓ " : "✗ "}
+              {manualResult.msg}
+            </p>
+            {manualResult.ok && manualResult.video && (
+              <div className="mt-2 flex items-center gap-3">
+                {manualResult.video.thumbnailUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={manualResult.video.thumbnailUrl}
+                    alt=""
+                    className="h-12 w-20 rounded object-cover"
+                  />
+                )}
+                <a
+                  href={`https://www.youtube.com/watch?v=${manualResult.video.youtubeId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:underline"
+                >
+                  {manualResult.video.title}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
       <section className="border border-border rounded-xl p-6 mb-8 space-y-4">
-        <h2 className="text-lg font-medium">Video Collection</h2>
+        <h2 className="text-lg font-medium">Video Collection (auto)</h2>
         <p className="text-sm text-muted-foreground">
           Collect YouTube videos to the <code>videos</code> table. Search uses
           brand + model queries; Claude relevance filter runs before save.
