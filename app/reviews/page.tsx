@@ -134,7 +134,7 @@ export default async function ReviewsPage({
       brand: one("brand") ?? "all",
       source: one("source") ?? "all",
       search: one("search") ?? "",
-      sortBy: (one("sort") ?? "recent") as NonNullable<Parameters<typeof getReviews>[0]>["sortBy"],
+      sortBy: (one("sort") ?? "random") as NonNullable<Parameters<typeof getReviews>[0]>["sortBy"],
       period: (one("period") ?? "all") as NonNullable<Parameters<typeof getReviews>[0]>["period"],
       seed: initialSeed,
     }).catch(() => ({ reviews: [], total: 0 })),
