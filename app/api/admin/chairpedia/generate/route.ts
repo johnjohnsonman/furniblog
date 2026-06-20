@@ -3,7 +3,7 @@ import { after } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
-import { generateChairpediaDraft } from "@/lib/chairpedia/generate"
+import { generateChairpediaDraft, type GenTier } from "@/lib/chairpedia/generate"
 import { matchProductId } from "@/lib/chairpedia/match-product"
 
 export const runtime = "nodejs"
@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const id = (body.id as string)?.trim()
     const chairName = (body.chairName as string)?.trim()
+    const tier: GenTier = body.tier === "standard" ? "standard" : "premium"
     if (!id) return NextResponse.json({ error: "Missing entry id" }, { status: 400 })
     if (!chairName) return NextResponse.json({ error: "Enter a chair name" }, { status: 400 })
 
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
     after(async () => {
       const db = createAdminClient()
       try {
-        const draft = await generateChairpediaDraft(chairName)
+        const draft = await generateChairpediaDraft(chairName, tier)
 
         // Auto-link the catalog product (enables the Amazon buy button) when a
         // confident name match exists and the entry isn't already linked.

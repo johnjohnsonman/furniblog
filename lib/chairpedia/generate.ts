@@ -98,18 +98,50 @@ NON-NEGOTIABLE RULES:
 - Write in clear, engaging, confident editorial English. No marketing fluff, no hallucinated superlatives.
 - Each section should be substantial (multiple sentences / a real paragraph), not one line.`
 
-function buildPrompt(chairName: string): string {
+export type GenTier = "premium" | "standard"
+
+type TierConfig = {
+  maxUses: number
+  maxTokens: number
+  searches: string
+  minSources: number
+  sourcesLine: string
+  words: string
+}
+
+export const TIER_CONFIG: Record<GenTier, TierConfig> = {
+  // Top-tier: exhaustive research, long authoritative article.
+  premium: {
+    maxUses: 18,
+    maxTokens: 20000,
+    searches: "12–18",
+    minSources: 12,
+    sourcesLine: "12–20",
+    words: "2,200–3,200",
+  },
+  // Standard: ~5 searches, a solid but lighter article (cheaper/faster).
+  standard: {
+    maxUses: 5,
+    maxTokens: 12000,
+    searches: "4–6",
+    minSources: 4,
+    sourcesLine: "5–8",
+    words: "1,100–1,700",
+  },
+}
+
+function buildPrompt(chairName: string, cfg: TierConfig): string {
   const sectionList = SECTIONS.map((s, i) => `${i + 1}. ${s}`).join("\n")
   return `Research and write a complete Chairpedia deep-dive for the office chair: "${chairName}".
 
-First, RESEARCH DEEPLY with web_search before writing — aim for 12–18 searches covering different angles, not just one or two. Search separately for:
+First, RESEARCH with web_search before writing — aim for ${cfg.searches} searches covering different angles, not just one or two. Search separately for:
 - the brand's official product page and spec sheet
 - the designer(s) and the design story
 - independent reviews (review sites, YouTube, Reddit/forums — what real owners say)
 - retailer listings to pin down the real price
 - certifications (BIFMA, GREENGUARD, etc.), warranty terms, and sustainability claims
 - direct comparisons against named rival chairs
-Gather and keep AT LEAST 12 distinct, credible source URLs you actually use. The richer and more cross-checked your research, the better — thin research produces a thin article.
+Gather and keep AT LEAST ${cfg.minSources} distinct, credible source URLs you actually use. The richer and more cross-checked your research, the better — thin research produces a thin article.
 
 Then write the article body as clean, well-structured semantic HTML. This renders directly on the site, so structure matters as much as facts.
 
@@ -128,7 +160,7 @@ FORMATTING RULES (this is what makes the page look organized):
 Structure the body as exactly these 16 sections, each opening with an <h2> heading (you may rephrase the heading text naturally):
 ${sectionList}
 
-Target length: 2,200–3,200 words of body content — substantial and authoritative, but still clear and scannable (short paragraphs, lists, tables). Every section should be a real, fleshed-out passage, not a token sentence.
+Target length: ${cfg.words} words of body content — substantial and authoritative, but still clear and scannable (short paragraphs, lists, tables). Every section should be a real, fleshed-out passage, not a token sentence.
 
 Return your answer in EXACTLY this plain-text format — NOT JSON, no code fences:
 
@@ -138,7 +170,7 @@ EXCERPT: a 1–2 sentence summary for cards and meta description (max ~160 chars
 SEO_TITLE: an SEO title tag, ~55–60 chars, including the chair name
 SEO_DESCRIPTION: an SEO meta description, ~150–158 chars, compelling and keyword-rich
 ORIGIN: country of origin / manufacture, one or two words (e.g. Japan, Germany, USA)
-SOURCES: 12–20 distinct real source URLs you actually used, separated by " | " (pipe), ALL on this single line
+SOURCES: ${cfg.sourcesLine} distinct real source URLs you actually used, separated by " | " (pipe), ALL on this single line
 ===BODY===
 the full 16-section article body as raw HTML per the rules above
 
@@ -153,22 +185,27 @@ Format rules (critical — follow exactly):
  * Generate a research-grounded Chairpedia draft for a chair name.
  * Uses Claude with the web_search server tool for anti-hallucination grounding.
  */
-export async function generateChairpediaDraft(chairName: string): Promise<ChairpediaDraft> {
+export async function generateChairpediaDraft(
+  chairName: string,
+  tier: GenTier = "premium"
+): Promise<ChairpediaDraft> {
   const client = getClient()
   if (!client) throw new Error("ANTHROPIC_API_KEY is not configured")
 
+  const cfg = TIER_CONFIG[tier] ?? TIER_CONFIG.premium
+
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: 20000,
+    max_tokens: cfg.maxTokens,
     system: SYSTEM,
     tools: [
       {
         type: "web_search_20250305",
         name: "web_search",
-        max_uses: 18,
+        max_uses: cfg.maxUses,
       } satisfies Anthropic.Messages.WebSearchTool20250305,
     ],
-    messages: [{ role: "user", content: buildPrompt(chairName) }],
+    messages: [{ role: "user", content: buildPrompt(chairName, cfg) }],
   })
 
   // The final assistant text blocks contain the answer (web_search runs server-side).

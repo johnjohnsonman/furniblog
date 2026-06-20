@@ -50,6 +50,7 @@ export default function AdminChairpediaEditor() {
   const [msg, setMsg] = useState("")
   const [aiName, setAiName] = useState("")
   const [generating, setGenerating] = useState(false)
+  const [genTier, setGenTier] = useState<"standard" | "premium" | null>(null)
   const [aiError, setAiError] = useState("")
   const [sources, setSources] = useState<string[]>([])
   const heroRef = useRef<HTMLInputElement>(null)
@@ -76,6 +77,9 @@ export default function AdminChairpediaEditor() {
 
   // Stop polling when leaving the page.
   useEffect(() => () => { if (pollRef.current) clearTimeout(pollRef.current) }, [])
+
+  // Clear which tier is running once generation ends (done/error/timeout).
+  useEffect(() => { if (!generating) setGenTier(null) }, [generating])
 
   async function save(nextStatus?: "draft" | "published") {
     if (!e) return
@@ -164,14 +168,15 @@ export default function AdminChairpediaEditor() {
     pollRef.current = setTimeout(() => void tick(), 4000)
   }
 
-  async function generate() {
+  async function generate(tier: "standard" | "premium") {
     const name = aiName.trim()
     if (!name) return
+    setGenTier(tier)
     setGenerating(true); setAiError(""); setSources([])
     try {
       const res = await fetch("/api/admin/chairpedia/generate", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, chairName: name }),
+        body: JSON.stringify({ id, chairName: name, tier }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.details ?? data.error ?? "Could not start generation")
@@ -231,13 +236,26 @@ export default function AdminChairpediaEditor() {
                 className="flex-1 rounded-lg border border-border px-3 py-2 text-sm"
                 value={aiName}
                 onChange={(ev) => setAiName(ev.target.value)}
-                onKeyDown={(ev) => { if (ev.key === "Enter" && !generating) void generate() }}
+                onKeyDown={(ev) => { if (ev.key === "Enter" && !generating) void generate("standard") }}
                 placeholder="Chair name — e.g. Herman Miller Aeron"
                 disabled={generating}
               />
-              <Button onClick={() => void generate()} disabled={generating || !aiName.trim()}>
-                {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                <span className="ml-1.5">{generating ? "Researching…" : "Generate"}</span>
+              <Button
+                onClick={() => void generate("standard")}
+                disabled={generating || !aiName.trim()}
+                title="Standard: ~5 web searches, a solid lighter article (cheaper, faster)"
+              >
+                {generating && genTier === "standard" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                <span className="ml-1.5">{generating && genTier === "standard" ? "Researching…" : "Generate"}</span>
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => void generate("premium")}
+                disabled={generating || !aiName.trim()}
+                title="Deep: exhaustive ~18 web searches, long authoritative article (slower, costs more)"
+              >
+                {generating && genTier === "premium" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                <span className="ml-1.5">{generating && genTier === "premium" ? "Researching…" : "Deep"}</span>
               </Button>
             </div>
             {generating && <p className="text-xs text-muted-foreground mt-2">Researching in the background — usually ~90 seconds. Keep this tab open; fields fill in automatically when ready.</p>}
@@ -252,7 +270,7 @@ export default function AdminChairpediaEditor() {
                 </ul>
               </details>
             )}
-            <p className="text-[11px] text-muted-foreground mt-2">Fills title, subtitle, excerpt, SEO, origin and the full body. Review and edit before publishing.</p>
+            <p className="text-[11px] text-muted-foreground mt-2"><b>Generate</b> = standard (~5 searches, ~1.1–1.7k words). <b>Deep</b> = exhaustive (~18 searches, ~2.2–3.2k words, costs more). Both fill all fields; review before publishing.</p>
           </div>
 
           <input className="w-full text-2xl font-serif font-medium outline-none border-b border-border pb-2"
