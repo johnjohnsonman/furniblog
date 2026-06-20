@@ -55,6 +55,15 @@ export function ReviewCard({
   return (
     <article className="p-5 bg-card rounded-lg border border-border">
       <header className="flex flex-wrap items-center gap-2 mb-3">
+        {review.createdAt && !Number.isNaN(new Date(review.createdAt).getTime()) && (
+          <span className="text-xs text-muted-foreground">
+            {new Date(review.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+        )}
         <SourceBadge source={review.source} variant="compact" />
         {review.verified && (
           <span className="px-2 py-0.5 rounded-full bg-foreground/10 text-xs text-foreground">

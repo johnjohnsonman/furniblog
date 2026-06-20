@@ -43,10 +43,8 @@ const SOURCE_OPTIONS = [
 ] as const
 
 const SORT_OPTIONS = [
-  { label: "Surprise me", value: "random" },
   { label: "Most Recent", value: "recent" },
-  { label: "Highest Rated", value: "rating" },
-  { label: "Most Relevant", value: "relevance" },
+  { label: "Surprise me", value: "random" },
 ] as const
 
 const PERIOD_OPTIONS = [
@@ -341,6 +339,15 @@ export function ReviewsPageClient({
       </div>
 
       {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+
+      {!loading && reviews.length > 0 && (
+        <p className="mb-3 text-sm text-muted-foreground">
+          {total.toLocaleString()} web review{total === 1 ? "" : "s"}
+          {Math.ceil(total / PAGE_SIZE) > 1
+            ? ` · page ${page} of ${Math.ceil(total / PAGE_SIZE).toLocaleString()}`
+            : ""}
+        </p>
+      )}
 
       {loading ? (
         <ReviewsFeedSkeleton />

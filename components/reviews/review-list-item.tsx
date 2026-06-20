@@ -11,6 +11,14 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
   const topCons = review.cons.slice(0, 1)
 
   const metaParts: string[] = []
+  const dateStr = review.createdAt
+    ? new Date(review.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : null
+  if (dateStr) metaParts.push(dateStr)
   if (review.reviewerHeightCm) metaParts.push(`${review.reviewerHeightCm}cm`)
   if (review.reviewerWeightKg) metaParts.push(`${review.reviewerWeightKg}kg`)
   if (review.usageHoursPerDay) metaParts.push(`${review.usageHoursPerDay}h/day`)
