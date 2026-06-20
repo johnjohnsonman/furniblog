@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   ExperienceReviewsList,
@@ -45,6 +46,26 @@ export function ExperienceReviewsBrowser({
   items: ExperienceReviewCard[]
 }) {
   const [selected, setSelected] = useState<Record<FacetKey, string[]>>(EMPTY)
+  const [chair, setChair] = useState<{ slug: string; name: string } | null>(null)
+  const [chairQuery, setChairQuery] = useState("")
+
+  // Unique chairs that appear (in any rank) across the reviews, for the search.
+  const chairOptions = useMemo(() => {
+    const m = new Map<string, string>()
+    for (const it of items)
+      for (const r of it.rankings) m.set(r.chairSlug, r.chairName)
+    return [...m.entries()]
+      .map(([slug, name]) => ({ slug, name }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [items])
+
+  const chairSuggestions = useMemo(() => {
+    const q = chairQuery.trim().toLowerCase()
+    if (!q) return []
+    return chairOptions
+      .filter((c) => c.name.toLowerCase().includes(q))
+      .slice(0, 8)
+  }, [chairOptions, chairQuery])
 
   // Build chip options from the data so we only show values that exist.
   const facets = useMemo(() => {
@@ -74,6 +95,8 @@ export function ExperienceReviewsBrowser({
 
   const filtered = useMemo(() => {
     return items.filter((it) => {
+      if (chair && !it.rankings.some((r) => r.chairSlug === chair.slug))
+        return false
       if (selected.age.length && (!it.ageBand || !selected.age.includes(it.ageBand)))
         return false
       if (selected.sit.length && (!it.sitHours || !selected.sit.includes(it.sitHours)))
@@ -87,7 +110,7 @@ export function ExperienceReviewsBrowser({
         return false
       return true
     })
-  }, [items, selected])
+  }, [items, selected, chair])
 
   const activeCount =
     selected.age.length +
@@ -122,7 +145,7 @@ export function ExperienceReviewsBrowser({
   // Back to page 1 whenever the filter or sort changes.
   useEffect(() => {
     setPage(1)
-  }, [selected, sort])
+  }, [selected, sort, chair])
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
@@ -138,6 +161,56 @@ export function ExperienceReviewsBrowser({
 
   return (
     <div ref={topRef}>
+      {/* Chair filter — narrow to reviews mentioning a specific chair */}
+      <div className="mb-4">
+        {chair ? (
+          <div className="flex flex-wrap items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Reviews of</span>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-foreground py-1.5 pl-3 pr-2 text-background">
+              {chair.name}
+              <button
+                type="button"
+                aria-label="Clear chair filter"
+                onClick={() => {
+                  setChair(null)
+                  setChairQuery("")
+                }}
+                className="rounded-full p-0.5 hover:bg-white/20"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </span>
+          </div>
+        ) : (
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              value={chairQuery}
+              onChange={(e) => setChairQuery(e.target.value)}
+              placeholder="Filter by chair (e.g. Aeron)"
+              className="w-full rounded-full border border-border bg-white py-2.5 pl-11 pr-4 text-sm outline-none focus:border-foreground/40"
+            />
+            {chairSuggestions.length > 0 && (
+              <div className="absolute z-20 mt-1 max-h-72 w-full overflow-auto rounded-xl border border-border bg-white py-1 shadow-lg">
+                {chairSuggestions.map((c) => (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => {
+                      setChair(c)
+                      setChairQuery("")
+                    }}
+                    className="block w-full px-4 py-2 text-left text-sm hover:bg-muted"
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
       <div className="mb-5 rounded-xl border border-[#EFEFEF] bg-white p-4">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-medium text-foreground">
@@ -184,9 +257,11 @@ export function ExperienceReviewsBrowser({
 
       <div className="mb-3 flex items-center justify-between gap-3">
         <p className="text-sm text-muted-foreground">
-          {activeCount > 0
-            ? `${filtered.length} reviewer${filtered.length === 1 ? "" : "s"} like you`
-            : `${items.length} experience review${items.length === 1 ? "" : "s"}`}
+          {chair
+            ? `${filtered.length} review${filtered.length === 1 ? "" : "s"} of ${chair.name}${activeCount > 0 ? " from people like you" : ""}`
+            : activeCount > 0
+              ? `${filtered.length} reviewer${filtered.length === 1 ? "" : "s"} like you`
+              : `${items.length} experience review${items.length === 1 ? "" : "s"}`}
           {totalPages > 1 ? ` · page ${currentPage} of ${totalPages}` : ""}
         </p>
         <div className="flex shrink-0 items-center gap-1 text-xs">
@@ -207,7 +282,7 @@ export function ExperienceReviewsBrowser({
         </div>
       </div>
 
-      {activeCount > 0 && filtered.length === 0 ? (
+      {(activeCount > 0 || chair) && filtered.length === 0 ? (
         <div className="rounded-xl border border-[#EFEFEF] bg-white px-6 py-14 text-center">
           <p className="font-medium text-foreground">No reviews match yet</p>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -216,7 +291,11 @@ export function ExperienceReviewsBrowser({
           </p>
           <button
             type="button"
-            onClick={() => setSelected(EMPTY)}
+            onClick={() => {
+              setSelected(EMPTY)
+              setChair(null)
+              setChairQuery("")
+            }}
             className="mt-4 text-sm font-medium underline underline-offset-2"
           >
             Clear filters
