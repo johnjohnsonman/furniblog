@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import type { Review } from "@/types/review"
 import { ChairReviewsSection } from "./ChairReviewsSection"
@@ -32,8 +33,29 @@ export function ProductChairTabs({
   videoCount = 0,
 }: ProductChairTabsProps) {
   const hasVideos = Boolean(videos) && videoCount > 0
+  const [tab, setTab] = useState("overview")
+  const ref = useRef<HTMLDivElement>(null)
+
+  // Let in-page links (e.g. the "read what N reviews say" button under the
+  // videos) switch tabs reliably — programmatically clicking a Radix trigger is
+  // unreliable, so use a custom event into this controlled Tabs instead.
+  useEffect(() => {
+    function onSelect(e: Event) {
+      const detail = (e as CustomEvent<string>).detail
+      if (typeof detail === "string") {
+        setTab(detail)
+        requestAnimationFrame(() =>
+          ref.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+        )
+      }
+    }
+    window.addEventListener("product-select-tab", onSelect)
+    return () => window.removeEventListener("product-select-tab", onSelect)
+  }, [])
+
   return (
-    <Tabs defaultValue="overview" className="mt-10 w-full">
+    <div ref={ref} className="scroll-mt-20">
+      <Tabs value={tab} onValueChange={setTab} className="mt-10 w-full">
       <TabsList className="w-full flex-wrap h-auto justify-start gap-1">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="specs">Specs</TabsTrigger>
@@ -68,6 +90,7 @@ export function ProductChairTabs({
           defaultPrice={defaultPrice}
         />
       </TabsContent>
-    </Tabs>
+      </Tabs>
+    </div>
   )
 }

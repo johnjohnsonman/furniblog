@@ -10,11 +10,9 @@ export function ReviewsTabLink({ reviewCount, className }: Props) {
     <button
       type="button"
       onClick={() => {
-        const trigger = document.querySelector<HTMLElement>(
-          '[data-product-tab="reviews"]'
+        window.dispatchEvent(
+          new CustomEvent("product-select-tab", { detail: "reviews" })
         )
-        trigger?.click()
-        trigger?.scrollIntoView({ behavior: "smooth", block: "start" })
       }}
       className={className}
     >
