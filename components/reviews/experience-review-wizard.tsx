@@ -78,6 +78,14 @@ const PAIN_OPTIONS = [
 const REASON_OPTIONS = [
   "Comfortable backrest",
   "Lumbar support",
+  // Health / pain-relief benefits
+  "Eased back pain",
+  "Improved posture",
+  "Less neck & shoulder strain",
+  "Less tailbone pressure",
+  "Less end-of-day fatigue",
+  "Better circulation",
+  // Comfort & features
   "Cushioned seat",
   "Breathable mesh",
   "Headrest",
