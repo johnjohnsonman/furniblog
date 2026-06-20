@@ -82,6 +82,12 @@ const BADGE_CONFIG: Record<
     className: "bg-[#B92B27]/10 text-[#B92B27] border-[#B92B27]/30",
     icon: HelpCircle,
   },
+  // Curated/owner reviews — never rendered (see early return below).
+  community: {
+    label: "Community",
+    className: "bg-muted text-foreground border-border",
+    icon: MessageCircle,
+  },
 }
 
 interface SourceBadgeProps {
@@ -95,6 +101,8 @@ export function SourceBadge({
   className,
   variant = "default",
 }: SourceBadgeProps) {
+  // Owner-curated reviews show no source attribution.
+  if (source === "community") return null
   const config = BADGE_CONFIG[source]
   const Icon = config.icon
 

@@ -56,6 +56,10 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
   )
 
   const bySource = countBySource(reviews)
+  // Community = curated/owner reviews: shown without source attribution.
+  const visibleSources = (Object.entries(bySource) as [ReviewSource, number][]).filter(
+    ([source]) => source !== "community"
+  )
   const body = averageBodyStats(reviews)
 
   return (
@@ -69,26 +73,26 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
             <p className="text-5xl font-bold text-foreground tabular-nums">
               {reviews.length}
             </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              from {Object.keys(bySource).length} source
-              {Object.keys(bySource).length === 1 ? "" : "s"}
-            </p>
+            {visibleSources.length > 0 && (
+              <p className="text-sm text-muted-foreground mt-1">
+                from {visibleSources.length} source
+                {visibleSources.length === 1 ? "" : "s"}
+              </p>
+            )}
           </div>
           <div className="flex-1 space-y-3">
             <div className="flex flex-wrap gap-2">
-              {(Object.entries(bySource) as [ReviewSource, number][]).map(
-                ([source, count]) => (
-                  <span
-                    key={source}
-                    className={cn(
-                      "px-2.5 py-1 rounded-full text-xs font-medium border",
-                      getSourceBadgeClass(source)
-                    )}
-                  >
-                    {SOURCE_LABELS[source]} ({count})
-                  </span>
-                )
-              )}
+              {visibleSources.map(([source, count]) => (
+                <span
+                  key={source}
+                  className={cn(
+                    "px-2.5 py-1 rounded-full text-xs font-medium border",
+                    getSourceBadgeClass(source)
+                  )}
+                >
+                  {SOURCE_LABELS[source]} ({count})
+                </span>
+              ))}
             </div>
             {(body.height || body.weight) && (
               <p className="text-sm text-muted-foreground">

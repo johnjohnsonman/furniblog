@@ -13,6 +13,7 @@ export const SOURCE_LABELS: Record<ReviewSource, string> = {
   hackernews: "Hacker News",
   twitter: "Twitter",
   quora: "Quora",
+  community: "Community",
 }
 
 export const SOURCE_COLORS: Record<ReviewSource, string> = {
@@ -28,6 +29,7 @@ export const SOURCE_COLORS: Record<ReviewSource, string> = {
   hackernews: "#FF6600",
   twitter: "#1DA1F2",
   quora: "#B92B27",
+  community: "#6b7280",
 }
 
 /** Tailwind classes for source filter pills and badges */
@@ -44,6 +46,7 @@ export const SOURCE_BADGE_CLASSES: Record<ReviewSource, string> = {
   hackernews: "bg-[#FF6600]/10 text-[#FF6600] border-[#FF6600]/30",
   twitter: "bg-sky-50 text-sky-700 border-sky-200",
   quora: "bg-[#B92B27]/10 text-[#B92B27] border-[#B92B27]/30",
+  community: "bg-muted text-foreground border-border",
 }
 
 export function getSourceBadgeClass(source: ReviewSource): string {

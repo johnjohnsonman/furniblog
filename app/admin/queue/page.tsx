@@ -37,6 +37,7 @@ const SOURCE_BADGE: Record<ReviewSource, string> = {
   hackernews: "bg-[#FF6600]/15 text-[#FF6600]",
   twitter: "bg-sky-100 text-sky-700",
   quora: "bg-[#B92B27]/15 text-[#B92B27]",
+  community: "bg-gray-100 text-gray-800",
 }
 
 function getAdminSecret(): string {

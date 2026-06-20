@@ -11,6 +11,8 @@ export type ReviewSource =
   | "hackernews"
   | "twitter"
   | "quora"
+  // Curated/owner-added reviews shown without any source attribution.
+  | "community"
 
 export type BodyType = "slim" | "average" | "athletic" | "plus"
 

@@ -213,8 +213,9 @@ export async function POST(request: NextRequest) {
   if (d.back_issue_sentiment) scores.backIssueSentiment = d.back_issue_sentiment
 
   const { error: insErr } = await supabase.from("reviews").insert({
+    // Stored as "community" so it shows on-site with no source attribution.
     product_id: product.id,
-    source: "reddit",
+    source: "community",
     summary_ko: d.summary,
     pros: d.pros ?? [],
     cons: d.cons ?? [],

@@ -183,9 +183,11 @@ export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
         >
           Read full review →
         </Link>
-        <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
-          Summarized from {SOURCE_LABELS[review.source] ?? "the original review"}
-        </p>
+        {review.source !== "community" && (
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+            Summarized from {SOURCE_LABELS[review.source] ?? "the original review"}
+          </p>
+        )}
       </footer>
     </article>
   )
