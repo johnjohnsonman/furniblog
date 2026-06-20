@@ -4,6 +4,7 @@ import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { PageviewTracker } from '@/components/analytics/PageviewTracker'
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
+import { MicrosoftClarity } from '@/components/analytics/MicrosoftClarity'
 import { AmazonOneLink } from '@/components/affiliate/AmazonOneLink'
 import './globals.css'
 
@@ -103,6 +104,7 @@ export default function RootLayout({
         <PageviewTracker />
         <AmazonOneLink />
         <GoogleAnalytics />
+        <MicrosoftClarity />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
