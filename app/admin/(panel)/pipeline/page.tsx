@@ -328,6 +328,15 @@ export default function AdminPipelinePage() {
     msg: string
     video?: { title: string; thumbnailUrl: string | null; youtubeId: string }
   } | null>(null)
+  // Manual Reddit review add (paste a Reddit post link, pick a chair).
+  const [redditChairSlug, setRedditChairSlug] = useState("")
+  const [redditUrl, setRedditUrl] = useState("")
+  const [redditBusy, setRedditBusy] = useState(false)
+  const [redditResult, setRedditResult] = useState<{
+    ok: boolean
+    msg: string
+    review?: { summary: string; overall: number; sourceUrl: string }
+  } | null>(null)
   const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
   const [summaryBackfillResult, setSummaryBackfillResult] =
     useState<VideoSummaryBackfillResult | null>(null)
@@ -1063,6 +1072,46 @@ export default function AdminPipelinePage() {
     }
   }
 
+  async function addRedditReview() {
+    if (!redditChairSlug) {
+      setRedditResult({ ok: false, msg: "Select a chair first." })
+      return
+    }
+    if (!redditUrl.trim()) {
+      setRedditResult({ ok: false, msg: "Paste a Reddit post link." })
+      return
+    }
+    setRedditBusy(true)
+    setRedditResult(null)
+    try {
+      const res = await fetchJson<{
+        chair?: { name: string }
+        review?: { summary: string; overall: number; sourceUrl: string }
+      }>("/api/admin/reviews/manual-reddit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chairSlug: redditChairSlug, url: redditUrl.trim() }),
+      })
+      if (!res.ok) {
+        setRedditResult({ ok: false, msg: res.error })
+      } else {
+        setRedditResult({
+          ok: true,
+          msg: `Added to ${res.data.chair?.name ?? "chair"}`,
+          review: res.data.review,
+        })
+        setRedditUrl("")
+      }
+    } catch (err) {
+      setRedditResult({
+        ok: false,
+        msg: err instanceof Error ? err.message : "Failed to add review.",
+      })
+    } finally {
+      setRedditBusy(false)
+    }
+  }
+
   async function runVideoCollection() {
     if (videoMode === "single" && !videoChairSlug) {
       setVideoError("Select a chair")
@@ -1466,6 +1515,78 @@ export default function AdminPipelinePage() {
                   className="text-foreground hover:underline"
                 >
                   {manualResult.video.title}
+                </a>
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+
+      <section className="border-2 border-foreground/15 rounded-xl p-6 mb-8 space-y-4 bg-muted/20">
+        <div>
+          <h2 className="text-lg font-medium">Add a review from Reddit</h2>
+          <p className="text-sm text-muted-foreground mt-1">
+            Pick a chair, paste a Reddit post link — the post and its top comments
+            are fetched and summarized by Claude into a structured review (summary,
+            pros, cons, rating) linked to the chair.
+          </p>
+        </div>
+
+        <ChairSearchCombobox
+          products={products}
+          value={redditChairSlug}
+          onChange={setRedditChairSlug}
+          disabled={redditBusy}
+        />
+
+        <div className="space-y-2">
+          <Label htmlFor="reddit-url">Reddit post link</Label>
+          <Input
+            id="reddit-url"
+            value={redditUrl}
+            onChange={(e) => setRedditUrl(e.target.value)}
+            placeholder="https://www.reddit.com/r/…/comments/…"
+            disabled={redditBusy}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void addRedditReview()
+            }}
+          />
+        </div>
+
+        <Button
+          onClick={() => void addRedditReview()}
+          disabled={redditBusy || !redditChairSlug || !redditUrl.trim()}
+        >
+          {redditBusy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+          {redditBusy ? "Summarizing…" : "Add review"}
+        </Button>
+
+        {redditResult && (
+          <div
+            className={`rounded-lg border p-3 text-sm ${
+              redditResult.ok
+                ? "border-green-500/40 bg-green-500/5"
+                : "border-red-500/40 bg-red-500/5"
+            }`}
+          >
+            <p className={redditResult.ok ? "text-green-700" : "text-red-700"}>
+              {redditResult.ok ? "✓ " : "✗ "}
+              {redditResult.msg}
+            </p>
+            {redditResult.ok && redditResult.review && (
+              <div className="mt-2 space-y-1 text-muted-foreground">
+                <p>
+                  <span className="font-medium text-foreground">Rating:</span>{" "}
+                  {redditResult.review.overall}/5
+                </p>
+                <p className="text-foreground">{redditResult.review.summary}</p>
+                <a
+                  href={redditResult.review.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs underline break-all"
+                >
+                  {redditResult.review.sourceUrl}
                 </a>
               </div>
             )}
