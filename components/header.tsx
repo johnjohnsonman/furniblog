@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 
@@ -20,9 +20,34 @@ export function Header() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryOpen, setCategoryOpen] = useState(false)
+  const [counts, setCounts] = useState<Record<string, number> | null>(null)
+  const [totalChairs, setTotalChairs] = useState<number | null>(null)
+
+  // Per-category chair counts for the "Chairs" menu (cached API, loads once).
+  useEffect(() => {
+    let active = true
+    fetch("/api/categories")
+      .then((r) => r.json())
+      .then((d) => {
+        if (!active) return
+        setCounts(d?.counts ?? {})
+        setTotalChairs(typeof d?.total === "number" ? d.total : null)
+      })
+      .catch(() => {})
+    return () => {
+      active = false
+    }
+  }, [])
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/")
+
+  const withCount = (id: string, label: string) =>
+    counts?.[id] != null ? `${label} (${counts[id]})` : label
+  // Hide categories with zero chairs once counts have loaded.
+  const visibleCategories = CHAIR_CATEGORIES.filter(
+    (cat) => counts == null || (counts[cat.id] ?? 0) > 0
+  )
 
   return (
     <header className="sticky top-0 z-50 bg-background border-b border-border">
@@ -74,16 +99,21 @@ export function Header() {
                   className="block px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
                   onClick={() => setCategoryOpen(false)}
                 >
-                  All Chairs
+                  {totalChairs != null ? `All Chairs (${totalChairs})` : "All Chairs"}
                 </Link>
-                {CHAIR_CATEGORIES.map((cat) => (
+                {visibleCategories.map((cat) => (
                   <Link
                     key={cat.id}
                     href={`/products?category=${cat.id}`}
-                    className="block px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="flex items-center justify-between gap-3 px-4 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                     onClick={() => setCategoryOpen(false)}
                   >
-                    {cat.navLabel}
+                    <span>{cat.navLabel}</span>
+                    {counts?.[cat.id] != null && (
+                      <span className="text-xs text-muted-foreground/70">
+                        {counts[cat.id]}
+                      </span>
+                    )}
                   </Link>
                 ))}
               </div>
@@ -147,16 +177,16 @@ export function Header() {
                 className="block py-2.5 text-base text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                All Chairs
+                {totalChairs != null ? `All Chairs (${totalChairs})` : "All Chairs"}
               </Link>
-              {CHAIR_CATEGORIES.map((cat) => (
+              {visibleCategories.map((cat) => (
                 <Link
                   key={cat.id}
                   href={`/products?category=${cat.id}`}
                   className="block py-2.5 text-base text-muted-foreground"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {cat.navLabel}
+                  {withCount(cat.id, cat.navLabel)}
                 </Link>
               ))}
 

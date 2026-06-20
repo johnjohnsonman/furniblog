@@ -1,7 +1,7 @@
 ﻿"use client"
 
-import { useMemo, useState } from "react"
-import { ChevronDown } from "lucide-react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import type { Brand } from "@/types/brand"
 import type {
@@ -152,6 +152,30 @@ export function ProductsPageContent({
     searchQuery,
   ])
 
+  // Pagination over the filtered/sorted list.
+  const PAGE_SIZE = 24
+  const [page, setPage] = useState(1)
+  const gridTopRef = useRef<HTMLDivElement>(null)
+
+  // Reset to page 1 whenever filters/sort/search change.
+  useEffect(() => {
+    setPage(1)
+  }, [selectedCategory, selectedBrand, sortBy, searchQuery])
+
+  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
+  const currentPage = Math.min(page, totalPages)
+  const pageItems = filteredProducts.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  )
+  const firstShown = filteredProducts.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
+  const lastShown = Math.min(currentPage * PAGE_SIZE, filteredProducts.length)
+
+  function goToPage(p: number) {
+    setPage(Math.min(Math.max(1, p), totalPages))
+    gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
   return (
     <main className="flex-1 bg-premium-bg">
       <section className="border-b border-[#E5E5E5] bg-white">
@@ -230,18 +254,31 @@ export function ProductsPageContent({
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section ref={gridTopRef} className="mx-auto max-w-7xl px-6 py-10">
         {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredProducts.map(({ product, reviewCount, avgScore }) => (
-              <ChairCard
-                key={product.id}
-                product={product}
-                reviewCount={reviewCount}
-                avgScore={avgScore}
+          <>
+            <p className="mb-6 text-sm text-premium-text-tertiary">
+              Showing {firstShown.toLocaleString()}–{lastShown.toLocaleString()} of{" "}
+              {filteredProducts.length.toLocaleString()} chairs
+            </p>
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {pageItems.map(({ product, reviewCount, avgScore }) => (
+                <ChairCard
+                  key={product.id}
+                  product={product}
+                  reviewCount={reviewCount}
+                  avgScore={avgScore}
+                />
+              ))}
+            </div>
+            {totalPages > 1 && (
+              <Pager
+                current={currentPage}
+                total={totalPages}
+                onGo={goToPage}
               />
-            ))}
-          </div>
+            )}
+          </>
         ) : (
           <div className="py-20 text-center">
             <p className="text-premium-text-secondary">
@@ -261,5 +298,63 @@ export function ProductsPageContent({
         )}
       </section>
     </main>
+  )
+}
+
+function Pager({
+  current,
+  total,
+  onGo,
+}: {
+  current: number
+  total: number
+  onGo: (p: number) => void
+}) {
+  // Compact window of page numbers around the current page.
+  const wanted = new Set([1, total, current - 1, current, current + 1])
+  const pages = [...wanted].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
+
+  return (
+    <nav className="mt-12 flex items-center justify-center gap-1.5" aria-label="Pagination">
+      <button
+        type="button"
+        onClick={() => onGo(current - 1)}
+        disabled={current === 1}
+        aria-label="Previous page"
+        className="grid h-9 w-9 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
+      >
+        <ChevronLeft className="h-4 w-4" />
+      </button>
+      {pages.map((p, i) => {
+        const gap = i > 0 && p - pages[i - 1] > 1
+        return (
+          <span key={p} className="flex items-center">
+            {gap && <span className="px-1 text-premium-text-tertiary">…</span>}
+            <button
+              type="button"
+              onClick={() => onGo(p)}
+              aria-current={p === current ? "page" : undefined}
+              className={cn(
+                "h-9 min-w-9 rounded-md px-3 text-sm font-medium transition-colors",
+                p === current
+                  ? "bg-premium-accent text-white"
+                  : "border border-premium-border bg-white text-premium-text hover:border-premium-border-hover"
+              )}
+            >
+              {p}
+            </button>
+          </span>
+        )
+      })}
+      <button
+        type="button"
+        onClick={() => onGo(current + 1)}
+        disabled={current === total}
+        aria-label="Next page"
+        className="grid h-9 w-9 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
+      >
+        <ChevronRight className="h-4 w-4" />
+      </button>
+    </nav>
   )
 }
