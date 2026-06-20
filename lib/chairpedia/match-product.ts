@@ -24,22 +24,16 @@ function tokens(s: string): string[] {
  * chair name (so we don't link the wrong affiliate product). Returns null if no
  * confident match.
  */
-export async function matchProductId(
-  supabase: SupabaseClient,
-  chairName: string
-): Promise<MatchedProduct | null> {
+/** Pure matcher against a pre-loaded product list (no DB hit per call). */
+export function matchProductInList(
+  chairName: string,
+  products: MatchedProduct[]
+): MatchedProduct | null {
   const nameTokens = new Set(tokens(chairName))
   if (nameTokens.size === 0) return null
 
-  const { data } = await supabase
-    .from("products")
-    .select("id, slug, name")
-    .eq("track", "chair")
-    .limit(2000)
-  if (!data?.length) return null
-
   let best: { p: MatchedProduct; score: number; matched: number } | null = null
-  for (const p of data as MatchedProduct[]) {
+  for (const p of products) {
     const pt = tokens(p.name)
     if (pt.length === 0) continue
     const matched = pt.filter((t) => nameTokens.has(t)).length
@@ -50,8 +44,18 @@ export async function matchProductId(
   }
 
   // Require a strong match: most of the product's tokens present, >=2 real hits.
-  if (best && best.score >= 0.6 && best.matched >= 2) {
-    return best.p
-  }
+  if (best && best.score >= 0.6 && best.matched >= 2) return best.p
   return null
+}
+
+export async function matchProductId(
+  supabase: SupabaseClient,
+  chairName: string
+): Promise<MatchedProduct | null> {
+  const { data } = await supabase
+    .from("products")
+    .select("id, slug, name")
+    .eq("track", "chair")
+    .limit(2000)
+  return matchProductInList(chairName, (data ?? []) as MatchedProduct[])
 }

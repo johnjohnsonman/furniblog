@@ -45,7 +45,9 @@ export function ScreenshotReviewCard({ products }: { products: ProductOption[] }
   const [result, setResult] = useState<{
     ok: boolean
     msg: string
-    samples?: { overall: number; summary: string }[]
+    byChair?: { name: string; count: number }[]
+    unmatched?: string[]
+    samples?: { chair: string; overall: number; summary: string }[]
   } | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
@@ -84,8 +86,9 @@ export function ScreenshotReviewCard({ products }: { products: ProductOption[] }
     try {
       const res = await fetchJson<{
         added: number
-        chair?: { name: string }
-        samples?: { overall: number; summary: string }[]
+        byChair?: { name: string; count: number }[]
+        unmatched?: string[]
+        samples?: { chair: string; overall: number; summary: string }[]
       }>("/api/admin/reviews/from-screenshots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,11 +97,14 @@ export function ScreenshotReviewCard({ products }: { products: ProductOption[] }
       if (!res.ok) {
         setResult({ ok: false, msg: res.error })
       } else {
+        const chairs = res.data.byChair?.length ?? 1
         setResult({
           ok: true,
-          msg: `Added ${res.data.added} review${res.data.added === 1 ? "" : "s"} to ${
-            res.data.chair?.name ?? "chair"
+          msg: `Added ${res.data.added} review${res.data.added === 1 ? "" : "s"} across ${chairs} chair${
+            chairs === 1 ? "" : "s"
           }`,
+          byChair: res.data.byChair,
+          unmatched: res.data.unmatched,
           samples: res.data.samples,
         })
         setImages([])
@@ -115,10 +121,12 @@ export function ScreenshotReviewCard({ products }: { products: ProductOption[] }
       <div>
         <h2 className="text-lg font-medium">Add reviews from a screenshot</h2>
         <p className="mt-1 text-sm text-muted-foreground">
-          Pick a chair, then drop / paste / upload screenshot(s) of a Reddit or forum thread.
-          Claude reads the post + comments and turns each real opinion into its own review
-          (up to 100), negatives included, with no source shown. Tip: use a few normal-width
-          screenshots (not one huge tall one) so the text stays readable.
+          Pick the thread&apos;s main chair, then drop / paste / upload screenshot(s) of a
+          Reddit or forum thread. Claude turns each real opinion into its own review
+          (up to 100), negatives included, no source shown — and opinions about OTHER
+          chairs in the thread are routed to those chairs automatically (unknown chairs
+          are skipped and listed). Tip: a few normal-width screenshots (not one huge tall
+          one) keep the text readable.
         </p>
       </div>
 
@@ -185,10 +193,28 @@ export function ScreenshotReviewCard({ products }: { products: ProductOption[] }
             {result.ok ? "✓ " : "✗ "}
             {result.msg}
           </p>
+          {result.ok && result.byChair && result.byChair.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {result.byChair.map((c) => (
+                <span
+                  key={c.name}
+                  className="rounded-full border border-border bg-background px-2.5 py-0.5 text-xs"
+                >
+                  {c.name} <span className="text-muted-foreground">({c.count})</span>
+                </span>
+              ))}
+            </div>
+          )}
+          {result.ok && result.unmatched && result.unmatched.length > 0 && (
+            <p className="mt-2 text-xs text-muted-foreground">
+              Skipped (not in catalog): {result.unmatched.join(", ")}
+            </p>
+          )}
           {result.ok && result.samples && result.samples.length > 0 && (
             <ul className="mt-2 space-y-1 text-muted-foreground">
               {result.samples.map((s, i) => (
                 <li key={i}>
+                  {s.chair && <span className="font-medium text-foreground">{s.chair}</span>}{" "}
                   <span className="font-medium text-foreground">{s.overall}/5</span> — {s.summary}
                 </li>
               ))}
