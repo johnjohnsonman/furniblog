@@ -1,7 +1,7 @@
 ﻿"use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import type { Brand } from "@/types/brand"
 import type {
@@ -50,7 +50,7 @@ export function ProductsPageContent({
   const [selectedCategory, setSelectedCategory] = useState(initialCategory)
   const [selectedBrand, setSelectedBrand] = useState("All")
   const [sortBy, setSortBy] = useState<string>("rating")
-  const [searchQuery] = useState(initialSearch)
+  const [searchQuery, setSearchQuery] = useState(initialSearch)
 
   const totalChairs = stats.products
 
@@ -219,6 +219,17 @@ export function ProductsPageContent({
 
           <div className="flex flex-wrap items-center gap-3">
             <div className="relative">
+              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-premium-text-tertiary" />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search chairs…"
+                aria-label="Search chairs"
+                className="w-full rounded-sm border border-premium-border bg-white py-2 pl-9 pr-3 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-56"
+              />
+            </div>
+            <div className="relative">
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
@@ -289,6 +300,7 @@ export function ProductsPageContent({
               onClick={() => {
                 setSelectedCategory("All")
                 setSelectedBrand("All")
+                setSearchQuery("")
               }}
               className="mt-4 text-sm font-medium text-premium-text underline-offset-4 hover:underline"
             >
