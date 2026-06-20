@@ -182,7 +182,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <span>{product.categoryLabel ?? product.category}</span>
                   </div>
 
-                  <h1 className="font-serif text-3xl font-medium text-foreground mt-2">{product.name}</h1>
+                  <h1 data-cp={chairpediaSlug ?? "null"} className="font-serif text-3xl font-medium text-foreground mt-2">{product.name}</h1>
 
                   <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
                     <span>
