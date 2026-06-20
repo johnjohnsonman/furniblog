@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { matchProductInList } from "@/lib/chairpedia/match-product"
 
 export const runtime = "nodejs"
-export const maxDuration = 120
+export const maxDuration = 300
 
 const MODEL = process.env.CLAUDE_MODEL?.trim() || "claude-sonnet-4-5"
 const MAX_REVIEWS = 100
@@ -103,19 +103,23 @@ Return ONLY a JSON array — no prose, no markdown. If nothing relevant, return 
   const anthropic = new Anthropic({ apiKey })
   let parsed: Extracted[]
   try {
-    const res = await anthropic.messages.create({
-      model: MODEL,
-      max_tokens: 24000,
-      messages: [
-        {
-          role: "user",
-          content: [
-            ...imageBlocks,
-            { type: "text", text: prompt },
-          ] as Anthropic.Messages.MessageParam["content"],
-        },
-      ],
-    })
+    // Stream: a large max_tokens makes the SDK reject non-streaming requests
+    // ("Streaming is required for operations that may take longer than 10 min").
+    const res = await anthropic.messages
+      .stream({
+        model: MODEL,
+        max_tokens: 16000,
+        messages: [
+          {
+            role: "user",
+            content: [
+              ...imageBlocks,
+              { type: "text", text: prompt },
+            ] as Anthropic.Messages.MessageParam["content"],
+          },
+        ],
+      })
+      .finalMessage()
     const text = res.content
       .filter((b): b is Anthropic.TextBlock => b.type === "text")
       .map((b) => b.text)
