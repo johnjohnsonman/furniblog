@@ -54,22 +54,41 @@ function stripCodeFences(text: string): string {
 const BODY_MARKER = "===BODY==="
 
 /**
- * Parse the model's plain-text response: seven "KEY: value" lines, then a
- * ===BODY=== marker, then the raw HTML body. Avoids JSON entirely so unescaped
- * quotes/braces in the HTML can't break parsing (the old JSON format's failure).
+ * Parse the model's plain-text response: "KEY: value" lines, a ===BODY=== marker,
+ * then the raw HTML body. Avoids JSON entirely so unescaped quotes/braces in the
+ * HTML can't break parsing (the old JSON format's failure).
+ *
+ * Tolerant by design — the model occasionally drops the marker, wraps the body in
+ * a code fence, or emits the HTML straight away. Rather than hard-fail (which threw
+ * away an otherwise good ~6k-token article), we recover the body from the first
+ * real HTML tag and pull KEY fields from anywhere in the text.
  */
 function parseDraft(raw: string): ChairpediaDraft {
-  const text = raw.trim()
-  const idx = text.indexOf(BODY_MARKER)
-  if (idx === -1) {
-    throw new Error("The generated draft is missing the ===BODY=== marker")
-  }
-  const head = text.slice(0, idx)
-  const body = stripCodeFences(text.slice(idx + BODY_MARKER.length).trim())
+  const text = stripCodeFences(raw.trim())
 
+  // KEY fields may sit before the marker, or anywhere if the marker was dropped —
+  // match against the whole text on their own line.
   const field = (key: string): string => {
-    const m = head.match(new RegExp(`^${key}:[ \\t]*(.*)$`, "m"))
+    const m = text.match(new RegExp(`^${key}:[ \\t]*(.*)$`, "m"))
     return m ? m[1].trim() : ""
+  }
+
+  // Body: prefer the explicit marker; otherwise recover from the first HTML block.
+  let body = ""
+  const idx = text.indexOf(BODY_MARKER)
+  if (idx !== -1) {
+    body = text.slice(idx + BODY_MARKER.length)
+  } else {
+    const htmlStart = text.match(/<(?:h2|h3|p|table|ul|ol|blockquote)\b/i)
+    if (htmlStart && htmlStart.index !== undefined) body = text.slice(htmlStart.index)
+  }
+  body = stripCodeFences(body.trim())
+
+  // Title fallback: first <h2> when the TITLE: line was omitted.
+  let title = field("TITLE")
+  if (!title) {
+    const h2 = body.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i)
+    if (h2) title = h2[1].replace(/<[^>]+>/g, "").trim()
   }
 
   const sources = field("SOURCES")
@@ -78,7 +97,7 @@ function parseDraft(raw: string): ChairpediaDraft {
     .filter((s) => /^https?:\/\//.test(s))
 
   return {
-    title: field("TITLE"),
+    title,
     subtitle: field("SUBTITLE"),
     excerpt: field("EXCERPT"),
     seo_title: field("SEO_TITLE"),
@@ -122,7 +141,7 @@ export const TIER_CONFIG: Record<GenTier, TierConfig> = {
   // Standard: ~5 searches, a solid but lighter article (cheaper/faster).
   standard: {
     maxUses: 5,
-    maxTokens: 12000,
+    maxTokens: 16000,
     searches: "4–6",
     minSources: 4,
     sourcesLine: "5–8",
@@ -175,10 +194,11 @@ SOURCES: ${cfg.sourcesLine} distinct real source URLs you actually used, separat
 the full 16-section article body as raw HTML per the rules above
 
 Format rules (critical — follow exactly):
+- Begin your reply with "TITLE:" — output nothing (no preamble, no commentary) before it.
 - The seven "KEY: value" lines come first, each on ONE line, in the order shown above.
-- Then a line containing only ===BODY===
-- Then the HTML body itself: raw HTML, NOT escaped, NOT quoted, NOT in code fences.
-- Output nothing before "TITLE:" and nothing after the HTML body.`
+- Then a line containing ONLY ===BODY=== — this separator is MANDATORY, never omit it.
+- Then the HTML body itself: raw HTML, NOT escaped, NOT quoted, NOT wrapped in code fences (no \`\`\`).
+- Output nothing after the HTML body.`
 }
 
 /**
@@ -194,7 +214,7 @@ export async function generateChairpediaDraft(
 
   const cfg = TIER_CONFIG[tier] ?? TIER_CONFIG.premium
 
-  const response = await client.messages.create({
+  const baseParams = {
     model: MODEL,
     max_tokens: cfg.maxTokens,
     system: SYSTEM,
@@ -205,8 +225,18 @@ export async function generateChairpediaDraft(
         max_uses: cfg.maxUses,
       } satisfies Anthropic.Messages.WebSearchTool20250305,
     ],
-    messages: [{ role: "user", content: buildPrompt(chairName, cfg) }],
-  })
+  }
+
+  // web_search can return stop_reason "pause_turn" on a long-running turn — feed
+  // the partial assistant content back so the model finishes writing the answer.
+  const messages: Anthropic.Messages.MessageParam[] = [
+    { role: "user", content: buildPrompt(chairName, cfg) },
+  ]
+  let response = await client.messages.create({ ...baseParams, messages })
+  for (let guard = 0; response.stop_reason === "pause_turn" && guard < 6; guard++) {
+    messages.push({ role: "assistant", content: response.content })
+    response = await client.messages.create({ ...baseParams, messages })
+  }
 
   // The final assistant text blocks contain the answer (web_search runs server-side).
   const text = response.content

@@ -179,7 +179,14 @@ npm run test:pipeline      # 파이프라인 테스트
 
 **⚠️ 프로덕션 Supabase에 마이그레이션 031~034 실행 완료해야 동작** (대표님이 SQL Editor에서 실행). 새 컴퓨터에서 DB는 동일(프로덕션 공유)이므로 재실행 불필요 — 단, 새 마이그레이션 추가 시 실행 필요.
 
+### 2026-06-20 카탈로그 확장(DB) + Chairpedia standard 생성 버그 수정 + SEO 성장 기획
+- **카탈로그 확장(DB만, 코드 커밋 없음)**: Ergohuman/Interstuhl/Dauphin 3개 브랜드는 이미 존재. 임시 스크립트(.mjs/.ts, 실행 후 삭제)로 **실존·웹검증 제품 8개 추가** — Ergohuman Pro/LX/Plus, Interstuhl JOYCEis3/Hero/MOVYis3, Dauphin Magnum/@Just evo(전부 category=office, chair_specs 복제). `npm run verify:catalog`로 가격 9건 확정(예: Ergohuman Classic null→$866, Dauphin Magnum $895, Interstuhl Hero $967). **"Ergohuman Curve"는 환각(verify 신뢰도 0.30, 실존 모델 아님) → 삭제**. 이어서 영상 자동수집 1회: JOYCEis3 +5, @Just evo +5, Ergohuman Pro/Plus +3 등(Dauphin Magnum은 관련영상 0—관련성 필터 정상 작동). 제품목록 force-dynamic이라 즉시 노출.
+- **🔴 Chairpedia standard("Generate") 생성 버그 수정**(이 커밋, `lib/chairpedia/generate.ts`): 증상 = standard 티어가 "missing the ===BODY=== marker"로 실패. **재현 결과 standard 자체는 정상**(동일 설정으로 6k토큰 완전 생성, end_turn)이고, 원인은 **모델 출력 변동성**(가끔 `TITLE:`…`===BODY===` 래퍼를 건너뛰고 HTML 직출력/코드펜스 래핑)인데 기존 파서가 마커 누락 시 **하드 실패로 멀쩡한 초안 폐기**. 수정: ①`parseDraft` 관대화(마커 없으면 첫 HTML 태그부터 본문 복구, TITLE 없으면 첫 `<h2>`를 제목으로, 선행 코드펜스 제거, KEY는 위치 무관 추출) ②standard max_tokens 12k→16k ③web_search `pause_turn` 이어받기 루프 ④프롬프트에 "===BODY=== 필수" 강조. **사용자 테스트로 정상 동작 확인.** (premium/Deep은 원래 정상이었음)
+- **SEO/트래픽 성장 기획(논의만, 미실행)**: 코드 감사 결과 **기술 색인 차단은 전부 해결됨**(robots/sitemap/canonical/JSON-LD 정상). 진짜 병목 = "크롤링됨–색인안됨 58 + 발견됨 17 = 75페이지를 구글이 가치판단으로 색인거부" → **얇은 제품 1,300페이지 + 도메인 권위 0** 탓. noindex 84·404 38은 레거시(무시 OK). 레버 우선순위: ①**깊이 우선**(Chairpedia 딥다이브 — 이미 10개 발행됨, 색인율 여는 핵심) ②**키워드 전략**(롱테일 구매의도: "best chair for back pain", "A vs B", "X review reddit" — 신생이 이길 수 있는 싸움) ③**E-E-A-T/독창 데이터**(Experience 자체리뷰 UGC=해자, "Reddit 1000개 분석" 데이터스터디=백링크 유발) ④**백링크**(chairpark 교차링크, Reddit/Quora, 디지털PR) ⑤**구글 밖 유통**(Pinterest=가구 폭발 카테고리, YouTube). 기술폴리시: **별점 리치스니펫**(SERP ★=CTR 2배, ROI 최고)·내부링크(제품↔Chairpedia↔리스티클)·이미지최적화(썸네일 141중 1개뿐, 구글이미지 트래픽). 신생도메인은 3~6개월 후 꿈틀이 정상이나 **가만두면 12개월 뒤도 0** — 위 레버를 돌려야 함.
+  - **다음에 이어서 할 것**: 발행된 Chairpedia 10개 **GSC 색인 요청** → **내부링크 연결 상태 점검**(제품→Chairpedia 버튼, Chairpedia→아마존 버튼, Chairpedia 상호링크) → **별점 스키마** → "Best for X" 리스티클 신규.
+
 ### 남은 과제 (TODO)
+- [ ] **🔴 SEO 트래픽: Chairpedia 10개 GSC 색인요청 + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
 - [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
 - [ ] **Chairpedia 콘텐츠 채우기**: `/admin/chairpedia`에서 핵심 의자들 AI 생성→검토→발행. featured 몇 개 지정(홈 랜덤 노출), collections 분류. 생성 후 본문 사실/슬러그/제품연결 확인 후 Publish.
