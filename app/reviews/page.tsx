@@ -103,12 +103,26 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
   }
 }
 
-export default async function ReviewsPage() {
+export default async function ReviewsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>
+}) {
   // Server-render the first page of web reviews so crawlers (and users) see real
-  // content immediately — the feed used to load only client-side, and a failed
-  // client fetch left an empty "No reviews found" shell that Google flagged as
-  // a Soft 404.
-  const initialSeed = Math.floor(Math.random() * 2_147_483_647)
+  // content immediately. Honor the URL filters/sort so the server-rendered feed
+  // matches the dropdowns — otherwise e.g. ?sort=recent showed "Most Recent" in
+  // the UI but random data (the client skips the initial refetch).
+  const sp = await searchParams
+  const one = (k: string): string | undefined => {
+    const v = sp[k]
+    return Array.isArray(v) ? v[0] : v
+  }
+  const seedParam = one("seed")
+  const initialSeed =
+    seedParam && Number.isFinite(Number(seedParam))
+      ? Number(seedParam)
+      : Math.floor(Math.random() * 2_147_483_647)
+
   const [meta, brands, experienceCards, initialFeed] = await Promise.all([
     getReviewsFeedMeta(),
     getBrands(),
@@ -116,12 +130,12 @@ export default async function ReviewsPage() {
     getReviews({
       page: 1,
       limit: 20,
-      category: "all",
-      brand: "all",
-      source: "all",
-      search: "",
-      sortBy: "random",
-      period: "all",
+      category: one("category") ?? "all",
+      brand: one("brand") ?? "all",
+      source: one("source") ?? "all",
+      search: one("search") ?? "",
+      sortBy: (one("sort") ?? "recent") as Parameters<typeof getReviews>[0]["sortBy"],
+      period: (one("period") ?? "all") as Parameters<typeof getReviews>[0]["period"],
       seed: initialSeed,
     }).catch(() => ({ reviews: [], total: 0 })),
   ])
