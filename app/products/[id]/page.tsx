@@ -38,10 +38,21 @@ async function resolveProduct(slug: string) {
   return products.find((p) => p.id === slug || p.slug === slug)
 }
 
-/** Published Chairpedia deep-dive linked to this product, if any. */
-async function getChairpediaSlug(productId: string): Promise<string | null> {
+/**
+ * Published Chairpedia deep-dive linked to this product, if any.
+ * NOTE: the page's `product.id` is the SLUG (ProductView convention), not the
+ * UUID — so resolve the real product UUID first, then match chairpedia.product_id.
+ */
+async function getChairpediaSlug(productSlug: string): Promise<string | null> {
   try {
     const supabase = createPublicServerClient()
+    const { data: prod } = await supabase
+      .from("products")
+      .select("id")
+      .eq("slug", productSlug)
+      .maybeSingle()
+    const productId = (prod as { id: string } | null)?.id
+    if (!productId) return null
     const { data } = await supabase
       .from("chairpedia")
       .select("slug")
@@ -108,7 +119,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       : getChairReviewsForProduct(product.id)
 
   const slug = product.slug ?? product.id
-  const chairpediaSlug = await getChairpediaSlug(product.id)
+  const chairpediaSlug = await getChairpediaSlug(slug)
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
 
@@ -182,7 +193,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <span>{product.categoryLabel ?? product.category}</span>
                   </div>
 
-                  <h1 data-cp={`id=${product.id}|slug=${chairpediaSlug ?? "null"}`} className="font-serif text-3xl font-medium text-foreground mt-2">{product.name}</h1>
+                  <h1 className="font-serif text-3xl font-medium text-foreground mt-2">{product.name}</h1>
 
                   <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
                     <span>
