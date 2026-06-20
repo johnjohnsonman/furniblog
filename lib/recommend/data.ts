@@ -12,11 +12,26 @@ import type {
 const MIN_SUPPORT = 3 // need this many picks in a segment before we trust a lift
 const ALPHA = 0.02 // smoothing
 
+// Which "what did you like?" reasons count as relief for each pain area. When a
+// reviewer ranks a chair #1 and cites these, it's evidence the chair eases that
+// pain — fed into the recommender's pain match alongside review lift + keywords.
+const RELIEF_BY_PAIN: Record<string, string[]> = {
+  "Lower back": ["Eased back pain", "Lumbar support", "Improved posture"],
+  Neck: ["Less neck & shoulder strain", "Headrest"],
+  Shoulders: ["Less neck & shoulder strain", "Reclines well"],
+  Hips: ["Less tailbone pressure", "Cushioned seat"],
+  Tailbone: ["Less tailbone pressure", "Cushioned seat"],
+  "Legs & lower body": ["Better circulation"],
+  Arms: ["Easy armrest adjustment"],
+}
+const RELIEF_K = 3 // relief mentions for a full (1.0) signal
+
 type RankRow = { rank: number; chair_id: string }
 type SessionRow = {
   pain: string[] | null
   job: string | null
   sit_hours: string | null
+  reasons: string[] | null
   review_rankings: RankRow[] | null
 }
 
@@ -153,7 +168,7 @@ export async function loadRecommenderData(): Promise<{
   const [{ data: sessions }, { data: products }] = await Promise.all([
     supabase
       .from("review_sessions")
-      .select("pain, job, sit_hours, review_rankings(rank, chair_id)")
+      .select("pain, job, sit_hours, reasons, review_rankings(rank, chair_id)")
       .eq("status", "approved")
       .limit(5000),
     supabase
@@ -170,6 +185,7 @@ export async function loadRecommenderData(): Promise<{
   const painCounts = new Map<string, Map<string, number>>()
   const jobCounts = new Map<string, Map<string, number>>()
   const sitCounts = new Map<string, Map<string, number>>()
+  const reliefCounts = new Map<string, Map<string, number>>()
 
   const bump = (m: Map<string, Map<string, number>>, seg: string, chair: string) => {
     const t = m.get(seg) ?? new Map<string, number>()
@@ -189,13 +205,37 @@ export async function loadRecommenderData(): Promise<{
     const job = canonicalJob(s.job)
     if (job) bump(jobCounts, job, chair)
     if (s.sit_hours) bump(sitCounts, s.sit_hours, chair)
+
+    // Relief signal: cited pain-relief reasons -> evidence for each pain area.
+    const reasons = new Set(s.reasons ?? [])
+    if (reasons.size) {
+      for (const pn of Object.keys(RELIEF_BY_PAIN)) {
+        let matches = 0
+        for (const r of RELIEF_BY_PAIN[pn]) if (reasons.has(r)) matches++
+        if (matches > 0) {
+          const t = reliefCounts.get(pn) ?? new Map<string, number>()
+          t.set(chair, (t.get(chair) ?? 0) + matches)
+          reliefCounts.set(pn, t)
+        }
+      }
+    }
   }
 
   totalPicks = Math.max(1, totalPicks)
+
+  // Normalize relief counts to a 0..1 per-chair signal per pain.
+  const reliefPain: Record<string, Record<string, number>> = {}
+  for (const [pn, chairs] of reliefCounts) {
+    const table: Record<string, number> = {}
+    for (const [chair, c] of chairs) table[chair] = Math.min(1, c / RELIEF_K)
+    reliefPain[pn] = table
+  }
+
   const affinity: Affinity = {
     liftPain: buildLift(painCounts, picks, totalPicks),
     liftJob: buildLift(jobCounts, picks, totalPicks),
     liftSit: buildLift(sitCounts, picks, totalPicks),
+    reliefPain,
     picks: Object.fromEntries(picks),
     totalPicks,
   }

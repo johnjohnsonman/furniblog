@@ -113,6 +113,8 @@ export type Affinity = {
   liftPain: Record<string, Record<string, number>>
   liftJob: Record<string, Record<string, number>>
   liftSit: Record<string, Record<string, number>>
+  /** 0..1 per-chair relief signal per pain, from reviewers' pain-relief reasons. */
+  reliefPain: Record<string, Record<string, number>>
   picks: Record<string, number>
   totalPicks: number
 }
@@ -356,11 +358,13 @@ function scoreProduct(
       const lift = aff.liftPain[pn]?.[p.id] ?? 1
       const ls = liftScore(lift)
       const kw = hit(text, PAIN_KEYWORDS[pn] ?? []) ? 1 : 0
-      const s = 0.6 * ls + 0.4 * kw
+      // Reviewers who flagged this chair as easing this exact pain.
+      const relief = aff.reliefPain[pn]?.[p.id] ?? 0
+      const s = 0.5 * ls + 0.3 * kw + 0.2 * relief
       if (s > best) {
         best = s
         painLabel = pn
-        reviewDriven = ls > 0.15
+        reviewDriven = ls > 0.15 || relief > 0.3
       }
     }
     pain = best
