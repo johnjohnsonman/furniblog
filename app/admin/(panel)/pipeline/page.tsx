@@ -329,16 +329,6 @@ export default function AdminPipelinePage() {
     msg: string
     video?: { title: string; thumbnailUrl: string | null; youtubeId: string }
   } | null>(null)
-  // Manual Reddit review add (paste the post + comments text, pick a chair).
-  const [redditChairSlug, setRedditChairSlug] = useState("")
-  const [redditText, setRedditText] = useState("")
-  const [redditUrl, setRedditUrl] = useState("")
-  const [redditBusy, setRedditBusy] = useState(false)
-  const [redditResult, setRedditResult] = useState<{
-    ok: boolean
-    msg: string
-    review?: { summary: string; overall: number; sourceUrl: string }
-  } | null>(null)
   const [summaryBackfillRunning, setSummaryBackfillRunning] = useState(false)
   const [summaryBackfillResult, setSummaryBackfillResult] =
     useState<VideoSummaryBackfillResult | null>(null)
@@ -1074,51 +1064,6 @@ export default function AdminPipelinePage() {
     }
   }
 
-  async function addRedditReview() {
-    if (!redditChairSlug) {
-      setRedditResult({ ok: false, msg: "Select a chair first." })
-      return
-    }
-    if (!redditText.trim()) {
-      setRedditResult({ ok: false, msg: "Paste the Reddit post + comments text." })
-      return
-    }
-    setRedditBusy(true)
-    setRedditResult(null)
-    try {
-      const res = await fetchJson<{
-        chair?: { name: string }
-        review?: { summary: string; overall: number; sourceUrl: string }
-      }>("/api/admin/reviews/manual-reddit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chairSlug: redditChairSlug,
-          text: redditText.trim(),
-          sourceUrl: redditUrl.trim() || undefined,
-        }),
-      })
-      if (!res.ok) {
-        setRedditResult({ ok: false, msg: res.error })
-      } else {
-        setRedditResult({
-          ok: true,
-          msg: `Added to ${res.data.chair?.name ?? "chair"}`,
-          review: res.data.review,
-        })
-        setRedditText("")
-        setRedditUrl("")
-      }
-    } catch (err) {
-      setRedditResult({
-        ok: false,
-        msg: err instanceof Error ? err.message : "Failed to add review.",
-      })
-    } finally {
-      setRedditBusy(false)
-    }
-  }
-
   async function runVideoCollection() {
     if (videoMode === "single" && !videoChairSlug) {
       setVideoError("Select a chair")
@@ -1522,89 +1467,6 @@ export default function AdminPipelinePage() {
                   className="text-foreground hover:underline"
                 >
                   {manualResult.video.title}
-                </a>
-              </div>
-            )}
-          </div>
-        )}
-      </section>
-
-      <section className="border-2 border-foreground/15 rounded-xl p-6 mb-8 space-y-4 bg-muted/20">
-        <div>
-          <h2 className="text-lg font-medium">Add a review from Reddit</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            Pick a chair, paste the Reddit post text and its most useful comments —
-            Claude summarizes and lightly rewrites them into a structured review
-            (summary, pros, cons, rating) linked to the chair. No Reddit account or
-            keys needed.
-          </p>
-        </div>
-
-        <ChairSearchCombobox
-          products={products}
-          value={redditChairSlug}
-          onChange={setRedditChairSlug}
-          disabled={redditBusy}
-        />
-
-        <div className="space-y-2">
-          <Label htmlFor="reddit-text">Reddit post + comments</Label>
-          <textarea
-            id="reddit-text"
-            value={redditText}
-            onChange={(e) => setRedditText(e.target.value)}
-            placeholder="Paste the post body and the most useful comments here…"
-            disabled={redditBusy}
-            rows={8}
-            className="w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="reddit-src">Reddit link (optional — for attribution)</Label>
-          <Input
-            id="reddit-src"
-            value={redditUrl}
-            onChange={(e) => setRedditUrl(e.target.value)}
-            placeholder="https://www.reddit.com/r/…/comments/…"
-            disabled={redditBusy}
-          />
-        </div>
-
-        <Button
-          onClick={() => void addRedditReview()}
-          disabled={redditBusy || !redditChairSlug || !redditText.trim()}
-        >
-          {redditBusy ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-          {redditBusy ? "Summarizing…" : "Add review"}
-        </Button>
-
-        {redditResult && (
-          <div
-            className={`rounded-lg border p-3 text-sm ${
-              redditResult.ok
-                ? "border-green-500/40 bg-green-500/5"
-                : "border-red-500/40 bg-red-500/5"
-            }`}
-          >
-            <p className={redditResult.ok ? "text-green-700" : "text-red-700"}>
-              {redditResult.ok ? "✓ " : "✗ "}
-              {redditResult.msg}
-            </p>
-            {redditResult.ok && redditResult.review && (
-              <div className="mt-2 space-y-1 text-muted-foreground">
-                <p>
-                  <span className="font-medium text-foreground">Rating:</span>{" "}
-                  {redditResult.review.overall}/5
-                </p>
-                <p className="text-foreground">{redditResult.review.summary}</p>
-                <a
-                  href={redditResult.review.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs underline break-all"
-                >
-                  {redditResult.review.sourceUrl}
                 </a>
               </div>
             )}
