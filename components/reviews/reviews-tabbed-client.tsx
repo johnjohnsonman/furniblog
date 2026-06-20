@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import type { Brand } from "@/types/brand"
 import type { ReviewFeedItem, ReviewsFeedMeta } from "@/lib/reviews/feed-types"
@@ -23,6 +24,22 @@ export function ReviewsTabbedClient({
   initialTotal?: number
   initialSeed?: number
 }) {
+  // Remember the active tab so returning from a review detail (back) lands on
+  // the same tab instead of resetting to Experience.
+  const [tab, setTab] = useState("experience")
+  useEffect(() => {
+    const saved = sessionStorage.getItem("reviews-tab")
+    if (saved === "experience" || saved === "web") setTab(saved)
+  }, [])
+  function onTab(v: string) {
+    setTab(v)
+    try {
+      sessionStorage.setItem("reviews-tab", v)
+    } catch {
+      // ignore
+    }
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <div className="mb-6">
@@ -38,7 +55,7 @@ export function ReviewsTabbedClient({
         <WriteReviewCTA />
       </div>
 
-      <Tabs defaultValue="experience" className="w-full">
+      <Tabs value={tab} onValueChange={onTab} className="w-full">
         <TabsList className="mb-5 w-full justify-start">
           <TabsTrigger value="experience">Experience Reviews</TabsTrigger>
           <TabsTrigger value="web">Web Reviews</TabsTrigger>

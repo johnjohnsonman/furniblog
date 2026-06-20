@@ -119,6 +119,7 @@ export function ReviewsPageClient({
   const search = searchParams.get("search") ?? ""
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const restoredRef = useRef(false)
   const filterKey = `${search}|${category}|${brand}|${source}|${sort}|${period}`
 
   const updateUrl = useCallback(
@@ -210,6 +211,78 @@ export function ReviewsPageClient({
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
   }, [searchInput, search, updateUrl])
+
+  // Persist scroll position + how many pages were loaded, so returning from a
+  // review detail (back) restores the same view instead of the first page.
+  const SCROLL_KEY = "reviews-web-pos"
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | null = null
+    const save = () => {
+      try {
+        sessionStorage.setItem(
+          SCROLL_KEY,
+          JSON.stringify({ filterKey, page, scrollY: window.scrollY })
+        )
+      } catch {
+        // ignore
+      }
+    }
+    const onScroll = () => {
+      if (t) clearTimeout(t)
+      t = setTimeout(save, 250)
+    }
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", onScroll)
+      if (t) clearTimeout(t)
+      save()
+    }
+  }, [filterKey, page])
+
+  useEffect(() => {
+    if (restoredRef.current) return
+    restoredRef.current = true
+    let saved: { filterKey: string; page: number; scrollY: number } | null = null
+    try {
+      saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || "null")
+    } catch {
+      saved = null
+    }
+    if (!saved || saved.filterKey !== filterKey) return
+    const targetPage = Math.max(1, Math.min(saved.page || 1, 50))
+    const scrollY = saved.scrollY || 0
+    const doRestore = async () => {
+      if (targetPage > 1) {
+        const params = new URLSearchParams({
+          page: "1",
+          limit: String(targetPage * PAGE_SIZE),
+          category,
+          brand,
+          source,
+          sort,
+          period,
+        })
+        if (search) params.set("search", search)
+        if (sort === "random") params.set("seed", String(randomSeed))
+        try {
+          const res = await fetch(`/api/reviews?${params.toString()}`)
+          const data = await res.json()
+          if (res.ok) {
+            setReviews((data.reviews ?? []) as ReviewFeedItem[])
+            setTotal(data.total ?? 0)
+            setPage(targetPage)
+          }
+        } catch {
+          // ignore — keep the server-rendered first page
+        }
+      }
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => window.scrollTo(0, scrollY))
+      )
+    }
+    void doRestore()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const visibleCount = reviews.length
   const hasMore = visibleCount < total
