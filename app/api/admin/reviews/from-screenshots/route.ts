@@ -81,7 +81,12 @@ export async function POST(request: NextRequest) {
 Extract EVERY substantive user opinion about the "${product.name}" as its own separate review — the original post AND each comment that shares a real experience or opinion about this chair.
 
 For each one, output an object:
-{"summary":"2-3 sentence English summary, PARAPHRASED (never copy the user's exact words)","pros":["..."],"cons":["..."],"overall":<1-5>,"mentions_back_pain":<true|false>,"mentions_lumbar":<true|false>,"back_issue_sentiment":"positive"|"negative"|"neutral"|null}
+{"summary":"a DETAILED review in English","pros":["..."],"cons":["..."],"overall":<1-5>,"mentions_back_pain":<true|false>,"mentions_lumbar":<true|false>,"back_issue_sentiment":"positive"|"negative"|"neutral"|null}
+
+The "summary" field is the actual review body shown on the site — make it RICH and DETAILED, not a short summary:
+- Capture EVERYTHING this person said: their full experience, specifics, what they liked and disliked, how long they've owned it, their use case / body type / setup, comparisons to other chairs, and any nuance or caveat.
+- Write a substantial paragraph — roughly 4-8 sentences, and longer if the person wrote a lot. Do NOT compress or trim away detail; longer, specific reviews are more valuable.
+- Paraphrase in your own words (never copy their exact wording verbatim), but keep their real stance, tone, and all the concrete details.
 
 Rules:
 - Include negative and critical opinions honestly — do NOT soften or omit them. overall must reflect real sentiment (low if they disliked the chair).
@@ -96,7 +101,7 @@ Return ONLY a JSON array — no prose, no markdown. If nothing relevant, return 
   try {
     const res = await anthropic.messages.create({
       model: MODEL,
-      max_tokens: 16000,
+      max_tokens: 24000,
       messages: [
         {
           role: "user",

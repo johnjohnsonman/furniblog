@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
-import { ArrowLeft, ExternalLink, Check, X } from "lucide-react"
+import { ExternalLink, Check, X } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { BackToReviewsLink } from "@/components/reviews/back-to-reviews-link"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import {
   generateArticleSchema,
@@ -140,13 +141,7 @@ export default async function ReviewDetailPage(props: {
       />
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10">
-        <Link
-          href="/reviews"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          All reviews
-        </Link>
+        <BackToReviewsLink />
 
         <div className="flex flex-wrap items-center gap-2">
           {brand ? (
