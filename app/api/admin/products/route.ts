@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from("products")
       .select(
-        "id, slug, name, category, price_usd, price_krw, published, created_at, brands(slug, name)"
+        "id, slug, name, category, price_usd, price_krw, published, created_at, thumbnail_url, brands(slug, name)"
       )
       .eq("track", "chair")
       .order("name")
@@ -44,6 +44,10 @@ export async function GET(request: NextRequest) {
 
     let items = (data ?? []).map((row) => {
       const b = Array.isArray(row.brands) ? row.brands[0] : row.brands
+      const thumbnailUrl =
+        typeof row.thumbnail_url === "string" && row.thumbnail_url.trim()
+          ? row.thumbnail_url.trim()
+          : null
       return {
         id: row.id,
         slug: row.slug,
@@ -54,6 +58,8 @@ export async function GET(request: NextRequest) {
         priceUsd: row.price_usd,
         priceKrw: row.price_krw,
         published: row.published,
+        thumbnailUrl,
+        hasImage: Boolean(thumbnailUrl),
       }
     })
 
