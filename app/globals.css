@@ -214,6 +214,18 @@
   font-size: 15px;
   line-height: 1.6;
 }
+/* Wide tables scroll horizontally on mobile instead of squishing the cells.
+   width:max-content sizes to content; min-width:100% keeps narrow tables full. */
+.chairpedia-body .cp-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 26px 0;
+}
+.chairpedia-body .cp-table-scroll table {
+  width: max-content;
+  min-width: 100%;
+  margin: 0;
+}
 .chairpedia-body th,
 .chairpedia-body td {
   border: 1px solid #ece8e1;

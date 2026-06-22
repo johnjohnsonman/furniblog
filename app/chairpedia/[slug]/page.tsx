@@ -26,6 +26,13 @@ type Entry = {
   products: ProductRef
 }
 
+/** Wrap authored <table>s in a scroll container so wide tables don't squish on mobile. */
+function wrapTables(html: string): string {
+  return html
+    .replace(/<table(\s[^>]*)?>/gi, '<div class="cp-table-scroll"><table$1>')
+    .replace(/<\/table>/gi, "</table></div>")
+}
+
 /** Clean host label for a source URL, e.g. "https://www.steelcase.com/x" -> "steelcase.com". */
 function sourceLabel(url: string): string {
   try {
@@ -160,7 +167,7 @@ export default async function ChairpediaEntryPage({
           {/* Authored content (admin/AI). Styles for plain authored HTML below. */}
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: entry.content_html }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(entry.content_html) }}
           />
 
           {sources.length > 0 && (
