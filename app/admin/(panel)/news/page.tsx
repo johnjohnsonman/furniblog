@@ -170,6 +170,9 @@ export default function AdminNewsPage() {
         on <code className="text-xs">/news</code>.
       </p>
 
+      {/* Manual add by URL */}
+      <AddByUrlCard onPublished={loadNews} />
+
       {/* Collection controls */}
       <div className="mb-8 rounded-lg border border-border p-5">
         <div className="flex flex-wrap items-end gap-4">
@@ -339,6 +342,245 @@ export default function AdminNewsPage() {
           </tbody>
         </table>
       </div>
+    </div>
+  )
+}
+
+type NewsPreview = {
+  url: string
+  title: string
+  summary: string | null
+  whyItMatters: string | null
+  brand: string | null
+  imageUrl: string | null
+  sourceName: string | null
+  publishedAt: string | null
+}
+
+function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
+  const [url, setUrl] = useState("")
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string>("")
+  const [note, setNote] = useState<string>("")
+  const [preview, setPreview] = useState<NewsPreview | null>(null)
+
+  function reset() {
+    setUrl("")
+    setPreview(null)
+    setError("")
+    setNote("")
+  }
+
+  async function handleFetch() {
+    const trimmed = url.trim()
+    if (!trimmed || busy) return
+    setBusy(true)
+    setError("")
+    setNote("")
+    setPreview(null)
+    try {
+      const res = await fetch("/api/admin/news/add-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "preview", url: trimmed }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? "Failed to fetch the article.")
+        return
+      }
+      setPreview(data.preview as NewsPreview)
+      if (data.fetchError) {
+        setNote(
+          `Could not auto-read the page (${data.fetchError}). Fill in the fields below manually.`
+        )
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Network error")
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function handlePublish() {
+    if (!preview || busy) return
+    if (!preview.title.trim()) {
+      setError("A title is required to publish.")
+      return
+    }
+    setBusy(true)
+    setError("")
+    try {
+      const res = await fetch("/api/admin/news/add-url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "publish", ...preview }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error ?? "Failed to publish.")
+        return
+      }
+      reset()
+      onPublished()
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Network error")
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  function patchPreview(update: Partial<NewsPreview>) {
+    setPreview((prev) => (prev ? { ...prev, ...update } : prev))
+  }
+
+  return (
+    <div className="mb-8 rounded-lg border border-border p-5">
+      <h2 className="mb-1 font-serif text-lg font-medium">Add by URL</h2>
+      <p className="mb-4 text-sm text-muted-foreground">
+        Paste an important article link. We read the page and draft a summary
+        with Claude — review, edit, then publish. Bypasses the auto-collector’s
+        filters, so use it for the big news the cron misses.
+      </p>
+
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="flex-1 space-y-1.5" style={{ minWidth: 280 }}>
+          <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Article URL
+          </label>
+          <input
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") void handleFetch()
+            }}
+            placeholder="https://…"
+            disabled={busy}
+            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleFetch}
+          disabled={busy || !url.trim()}
+          className="h-10 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-40"
+        >
+          {busy && !preview ? "Reading…" : "Fetch"}
+        </button>
+      </div>
+
+      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {note && <p className="mt-3 text-sm text-amber-600">{note}</p>}
+
+      {preview && (
+        <div className="mt-5 grid gap-4 rounded-md border border-border bg-muted/30 p-4 md:grid-cols-[160px_1fr]">
+          {/* Thumbnail */}
+          <div className="space-y-1.5">
+            <div className="aspect-[16/9] w-full overflow-hidden rounded-md border border-border bg-muted">
+              {preview.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={preview.imageUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-[10px] text-muted-foreground">
+                  No image
+                </span>
+              )}
+            </div>
+            <input
+              type="url"
+              value={preview.imageUrl ?? ""}
+              onChange={(e) => patchPreview({ imageUrl: e.target.value })}
+              placeholder="Image URL"
+              className="h-8 w-full rounded-md border border-input bg-background px-2 text-xs"
+            />
+          </div>
+
+          {/* Fields */}
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Title
+              </label>
+              <input
+                type="text"
+                value={preview.title}
+                onChange={(e) => patchPreview({ title: e.target.value })}
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+              />
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-1">
+                <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Brand
+                </label>
+                <input
+                  type="text"
+                  value={preview.brand ?? ""}
+                  onChange={(e) => patchPreview({ brand: e.target.value })}
+                  placeholder="(must match a known brand)"
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Source
+                </label>
+                <input
+                  type="text"
+                  value={preview.sourceName ?? ""}
+                  onChange={(e) => patchPreview({ sourceName: e.target.value })}
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Summary
+              </label>
+              <textarea
+                value={preview.summary ?? ""}
+                onChange={(e) => patchPreview({ summary: e.target.value })}
+                rows={2}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Why it matters
+              </label>
+              <textarea
+                value={preview.whyItMatters ?? ""}
+                onChange={(e) => patchPreview({ whyItMatters: e.target.value })}
+                rows={2}
+                className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+              />
+            </div>
+            <div className="flex items-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={handlePublish}
+                disabled={busy || !preview.title.trim()}
+                className="h-10 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-40"
+              >
+                {busy ? "Publishing…" : "Publish"}
+              </button>
+              <button
+                type="button"
+                onClick={reset}
+                disabled={busy}
+                className="h-10 rounded-md border border-border px-4 text-sm font-medium transition-colors hover:bg-muted disabled:opacity-40"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
