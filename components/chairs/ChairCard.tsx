@@ -3,6 +3,7 @@ import { Armchair } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import type { ChairCategory } from "@/types/product"
 import { ChairProductImage } from "./ChairProductImage"
+import { stripBrandPrefix } from "@/lib/product-name"
 import { cn } from "@/lib/utils"
 
 const PLACEHOLDER_BG: Partial<Record<ChairCategory, string>> = {
@@ -75,7 +76,7 @@ export function ChairCard({ product, reviewCount }: ChairCardProps) {
 
         <Link href={`/products/${product.id}`} className="mt-2 block">
           <h3 className="font-serif text-xl font-medium leading-snug text-premium-text transition-colors group-hover:text-premium-text-secondary">
-            {product.name}
+            {stripBrandPrefix(product.name, product.brand)}
           </h3>
         </Link>
 

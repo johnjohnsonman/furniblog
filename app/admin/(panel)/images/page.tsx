@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { stripBrandPrefix } from "@/lib/product-name"
 
 type ProductRow = {
   id: string
@@ -250,7 +251,7 @@ function ChairImageCard({
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="min-h-[2.5rem]">
           <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground">
-            {product.name}
+            {stripBrandPrefix(product.name, product.brand)}
           </p>
           <p className="text-xs text-muted-foreground">{product.brand}</p>
         </div>
