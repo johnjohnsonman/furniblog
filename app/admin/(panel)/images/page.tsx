@@ -51,18 +51,24 @@ export default function AdminChairImagesPage() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return products.filter((p) => {
-      if (brand !== "all" && p.brandSlug !== brand) return false
-      if (missingOnly && p.hasImage) return false
-      if (
-        q &&
-        !p.name.toLowerCase().includes(q) &&
-        !p.brand.toLowerCase().includes(q) &&
-        !p.slug.toLowerCase().includes(q)
-      )
-        return false
-      return true
-    })
+    return products
+      .filter((p) => {
+        if (brand !== "all" && p.brandSlug !== brand) return false
+        if (missingOnly && p.hasImage) return false
+        if (
+          q &&
+          !p.name.toLowerCase().includes(q) &&
+          !p.brand.toLowerCase().includes(q) &&
+          !p.slug.toLowerCase().includes(q)
+        )
+          return false
+        return true
+      })
+      // Chairs without an image float to the top so they're easy to fill in.
+      .sort((a, b) => {
+        if (a.hasImage !== b.hasImage) return a.hasImage ? 1 : -1
+        return a.name.localeCompare(b.name)
+      })
   }, [products, search, brand, missingOnly])
 
   // Reset to first page whenever the filter set changes.
