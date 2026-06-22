@@ -33,6 +33,8 @@ const FEATURED_SLUGS = [
   "haworth",
   "interstuhl",
   "wilkhahn",
+  "kokuyo",
+  "itoki",
 ]
 
 const PAGE_SIZE = 24
