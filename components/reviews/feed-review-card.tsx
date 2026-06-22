@@ -29,7 +29,7 @@ function HighlightChip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs",
+        "inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[13px]",
         active
           ? "bg-amber-100 text-amber-950 ring-1 ring-amber-300/60"
           : "text-muted-foreground",
@@ -123,13 +123,13 @@ export function FeedReviewCard({ review, highlights }: FeedReviewCardProps) {
       {hasProfile && (
         <div className="mt-3 space-y-1.5 p-3 rounded-lg bg-muted/40 border border-border/60">
           {bodyLine.length > 0 && (
-            <p className="flex flex-wrap items-center gap-1.5 text-xs">
+            <p className="flex flex-wrap items-center gap-1.5 text-[13px]">
               <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
               {joinChips(bodyLine)}
             </p>
           )}
           {workLine.length > 0 && (
-            <p className="flex flex-wrap items-center gap-1.5 text-xs">
+            <p className="flex flex-wrap items-center gap-1.5 text-[13px]">
               <Briefcase className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
               {joinChips(workLine)}
             </p>

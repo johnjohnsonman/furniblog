@@ -180,7 +180,7 @@ export function ProductsPageContent({
     <main className="flex-1 bg-premium-bg">
       <section className="border-b border-[#E5E5E5] bg-white">
         <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
-          <h1 className="font-serif text-[40px] font-medium leading-tight text-premium-text">
+          <h1 className="font-serif text-3xl font-medium leading-tight text-premium-text sm:text-[40px]">
             Premium Chair Database
           </h1>
           <p className="mt-3 text-lg text-premium-text-secondary">
@@ -217,8 +217,8 @@ export function ProductsPageContent({
             })}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="relative">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div className="relative w-full sm:w-auto">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-premium-text-tertiary" />
               <input
                 type="search"
@@ -229,11 +229,11 @@ export function ProductsPageContent({
                 className="w-full rounded-sm border border-premium-border bg-white py-2 pl-9 pr-3 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-56"
               />
             </div>
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent"
+                className="w-full appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
                 aria-label="Brand"
               >
                 <option value="All">All Brands</option>
@@ -246,11 +246,11 @@ export function ProductsPageContent({
               <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-premium-text-tertiary" />
             </div>
 
-            <div className="relative">
+            <div className="relative flex-1 sm:flex-none">
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent"
+                className="w-full appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
                 aria-label="Sort"
               >
                 {SORT_OPTIONS.map((opt) => (
@@ -333,7 +333,7 @@ function Pager({
         onClick={() => onGo(current - 1)}
         disabled={current === 1}
         aria-label="Previous page"
-        className="grid h-9 w-9 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
+        className="grid h-11 w-11 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -347,7 +347,7 @@ function Pager({
               onClick={() => onGo(p)}
               aria-current={p === current ? "page" : undefined}
               className={cn(
-                "h-9 min-w-9 rounded-md px-3 text-sm font-medium transition-colors",
+                "h-11 min-w-11 rounded-md px-3 text-sm font-medium transition-colors",
                 p === current
                   ? "bg-premium-accent text-white"
                   : "border border-premium-border bg-white text-premium-text hover:border-premium-border-hover"
@@ -363,7 +363,7 @@ function Pager({
         onClick={() => onGo(current + 1)}
         disabled={current === total}
         aria-label="Next page"
-        className="grid h-9 w-9 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
+        className="grid h-11 w-11 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

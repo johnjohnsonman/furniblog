@@ -62,7 +62,7 @@ export function Header() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="p-2 text-foreground"
+            className="-mr-2 p-3 text-foreground"
             onClick={() => setMobileMenuOpen(true)}
           >
             <span className="sr-only">Open menu</span>
@@ -160,7 +160,7 @@ export function Header() {
               </Link>
               <button
                 type="button"
-                className="p-2 text-foreground"
+                className="-mr-2 p-3 text-foreground"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
