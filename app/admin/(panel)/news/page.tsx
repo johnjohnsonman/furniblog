@@ -14,6 +14,7 @@ type NewsItem = {
   summary: string | null
   image_url: string | null
   published_at: string | null
+  created_at: string | null
   status: "published" | "hidden"
   featured: boolean
 }
@@ -33,13 +34,17 @@ export default function AdminNewsPage() {
   const [progress, setProgress] = useState<string>("")
   const [log, setLog] = useState<string[]>([])
   const [news, setNews] = useState<NewsItem[]>([])
+  const [filterBrand, setFilterBrand] = useState("all")
+  const [sort, setSort] = useState<"newest" | "oldest">("newest")
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 20
 
   const addLog = useCallback((line: string) => {
     setLog((prev) => [line, ...prev].slice(0, 50))
   }, [])
 
   const loadNews = useCallback(async () => {
-    const res = await fetch("/api/admin/news/feature?limit=200")
+    const res = await fetch("/api/admin/news/feature?limit=300")
     const data = await res.json()
     if (Array.isArray(data.news)) setNews(data.news)
   }, [])
@@ -161,6 +166,28 @@ export default function AdminNewsPage() {
   const featuredCount = news.filter((n) => n.featured && n.status === "published")
     .length
 
+  // Distinct brands present in the loaded articles, for the filter dropdown.
+  const newsBrands = Array.from(
+    new Set(news.map((n) => n.brand).filter((b): b is string => Boolean(b)))
+  ).sort((a, b) => a.localeCompare(b))
+
+  const dateValue = (n: NewsItem) =>
+    new Date(n.published_at ?? n.created_at ?? 0).getTime()
+
+  const filteredNews = news
+    .filter((n) => filterBrand === "all" || n.brand === filterBrand)
+    .sort((a, b) =>
+      sort === "newest" ? dateValue(b) - dateValue(a) : dateValue(a) - dateValue(b)
+    )
+
+  const totalPages = Math.max(1, Math.ceil(filteredNews.length / PAGE_SIZE))
+  const pageItems = filteredNews.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  // Reset to the first page whenever the filter or sort changes.
+  useEffect(() => {
+    setPage(1)
+  }, [filterBrand, sort])
+
   return (
     <div className="max-w-5xl p-8">
       <h1 className="mb-2 font-serif text-2xl font-medium">News Collection</h1>
@@ -238,9 +265,10 @@ export default function AdminNewsPage() {
       </div>
 
       {/* News management */}
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-serif text-lg font-medium">
-          Articles ({news.length})
+          Articles ({filteredNews.length}
+          {filterBrand !== "all" ? ` of ${news.length}` : ""})
         </h2>
         <span
           className={`text-sm ${
@@ -249,6 +277,31 @@ export default function AdminNewsPage() {
         >
           {featuredCount} featured{featuredCount > 3 ? " (hero shows 3)" : ""}
         </span>
+      </div>
+
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <select
+          value={filterBrand}
+          onChange={(e) => setFilterBrand(e.target.value)}
+          className="h-10 w-56 rounded-md border border-input bg-background px-3 text-sm"
+          aria-label="Filter by brand"
+        >
+          <option value="all">All brands ({news.length})</option>
+          {newsBrands.map((b) => (
+            <option key={b} value={b}>
+              {b} ({news.filter((n) => n.brand === b).length})
+            </option>
+          ))}
+        </select>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value as "newest" | "oldest")}
+          className="h-10 w-40 rounded-md border border-input bg-background px-3 text-sm"
+          aria-label="Sort order"
+        >
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+        </select>
       </div>
 
       <div className="overflow-hidden rounded-lg border border-border">
@@ -263,17 +316,19 @@ export default function AdminNewsPage() {
             </tr>
           </thead>
           <tbody>
-            {news.length === 0 ? (
+            {pageItems.length === 0 ? (
               <tr>
                 <td
                   colSpan={5}
                   className="px-4 py-8 text-center text-muted-foreground"
                 >
-                  No news collected yet. Run a collection above.
+                  {news.length === 0
+                    ? "No news collected yet. Run a collection above."
+                    : "No articles match this filter."}
                 </td>
               </tr>
             ) : (
-              news.map((n) => (
+              pageItems.map((n) => (
                 <tr key={n.id} className="border-b border-border align-top">
                   <td className="px-4 py-3">
                     <NewsThumbCell
@@ -342,6 +397,37 @@ export default function AdminNewsPage() {
           </tbody>
         </table>
       </div>
+
+      {filteredNews.length > PAGE_SIZE && (
+        <div className="mt-4 flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">
+            Showing {(page - 1) * PAGE_SIZE + 1}–
+            {Math.min(page * PAGE_SIZE, filteredNews.length)} of{" "}
+            {filteredNews.length}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={page <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              className="h-9 rounded-md border border-border px-3 font-medium transition-colors hover:bg-muted disabled:opacity-40"
+            >
+              Prev
+            </button>
+            <span className="text-muted-foreground">
+              {page} / {totalPages}
+            </span>
+            <button
+              type="button"
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              className="h-9 rounded-md border border-border px-3 font-medium transition-colors hover:bg-muted disabled:opacity-40"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
