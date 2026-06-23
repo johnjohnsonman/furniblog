@@ -183,10 +183,10 @@ Target length: ${cfg.words} words of body content — substantial and authoritat
 
 Return your answer in EXACTLY this plain-text format — NOT JSON, no code fences:
 
-TITLE: the chair's proper display name as a clean article title
+TITLE: the chair's proper display name ONLY (e.g. "Steelcase Series 2"). Do NOT append words like "Review", "Guide", "Explained", "Deep Dive", a year, or any tagline — just the clean product name.
 SUBTITLE: one compelling editorial line (max ~90 chars)
 EXCERPT: a 1–2 sentence summary for cards and meta description (max ~160 chars)
-SEO_TITLE: an SEO title tag, ~55–60 chars, including the chair name
+SEO_TITLE: an SEO title tag, ~55–60 chars, including the chair name. Do NOT use the word "Review"; a short descriptor like "– Ergonomic Chair Guide" is fine.
 SEO_DESCRIPTION: an SEO meta description, ~150–158 chars, compelling and keyword-rich
 ORIGIN: country of origin / manufacture, one or two words (e.g. Japan, Germany, USA)
 SOURCES: ${cfg.sourcesLine} distinct real source URLs you actually used, separated by " | " (pipe), ALL on this single line
