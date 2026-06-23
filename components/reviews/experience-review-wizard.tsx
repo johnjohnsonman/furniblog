@@ -166,7 +166,11 @@ function decodeSitHours(value: "under2" | "2to6" | "over6" | null): string | nul
   return SIT_HOURS_OPTIONS.find((v) => v.value === value)?.label ?? null
 }
 
-export function ExperienceReviewWizard() {
+export function ExperienceReviewWizard({
+  initialProductSlug,
+}: {
+  initialProductSlug?: string
+} = {}) {
   const [step, setStep] = useState(0)
   const [search, setSearch] = useState("")
   const [productResults, setProductResults] = useState<ProductOption[]>([])
@@ -257,6 +261,35 @@ export function ExperienceReviewWizard() {
     }, 250)
     return () => clearTimeout(t)
   }, [search])
+
+  // Deep-link from a product page (?product=<slug>): pre-select that chair as #1.
+  useEffect(() => {
+    if (!initialProductSlug) return
+    let cancelled = false
+    void (async () => {
+      try {
+        const res = await fetch(
+          `/api/reviews/experience?q=${encodeURIComponent(initialProductSlug)}`
+        )
+        const json = (await res.json()) as { products?: ProductOption[] }
+        const match = (json.products ?? []).find(
+          (p) => p.slug === initialProductSlug
+        )
+        if (match && !cancelled) {
+          setRankings((prev) =>
+            prev.some((r) => r.id === match.id)
+              ? prev
+              : [match, ...prev].slice(0, 3)
+          )
+        }
+      } catch {
+        // Ignore — the user can still pick the chair manually.
+      }
+    })()
+    return () => {
+      cancelled = true
+    }
+  }, [initialProductSlug])
 
   const canGoNext = useMemo(() => {
     if (step === 0) return rankings.length >= 1

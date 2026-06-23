@@ -8,7 +8,15 @@ export const metadata = {
     "Share your hands-on chair ranking — anonymous, based on your own experience.",
 }
 
-export default function ExperienceReviewNewPage() {
+type PageProps = {
+  searchParams: Promise<{ product?: string }>
+}
+
+export default async function ExperienceReviewNewPage({
+  searchParams,
+}: PageProps) {
+  const { product } = await searchParams
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -21,7 +29,7 @@ export default function ExperienceReviewNewPage() {
             Share your hands-on chair ranking — anonymous, based on your own experience.
           </p>
         </div>
-        <ExperienceReviewWizard />
+        <ExperienceReviewWizard initialProductSlug={product} />
       </main>
       <Footer />
     </div>

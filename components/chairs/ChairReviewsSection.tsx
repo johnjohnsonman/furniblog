@@ -1,6 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import Link from "next/link"
+import { PenLine } from "lucide-react"
 import type { Review, ReviewSource } from "@/types/review"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ReviewCard } from "./ReviewCard"
@@ -35,9 +37,15 @@ const FILTER_SOURCES: (ReviewSource | "all")[] = [
 
 interface ChairReviewsSectionProps {
   reviews: Review[]
+  productSlug?: string
+  productName?: string
 }
 
-export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
+export function ChairReviewsSection({
+  reviews,
+  productSlug,
+  productName,
+}: ChairReviewsSectionProps) {
   const [sourceFilter, setSourceFilter] = useState<ReviewSource | "all">("all")
   const [profileFilters, setProfileFilters] =
     useState<ReviewFilters>(DEFAULT_REVIEW_FILTERS)
@@ -64,6 +72,29 @@ export function ChairReviewsSection({ reviews }: ChairReviewsSectionProps) {
 
   return (
     <div className="space-y-8">
+      {productSlug && (
+        <div className="flex flex-col gap-3 rounded-xl border border-foreground/15 bg-muted/40 p-5 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-medium text-foreground">
+              {reviews.length === 0
+                ? `Be the first to review${productName ? ` the ${productName}` : " this chair"}`
+                : `Sat in${productName ? ` the ${productName}` : " this chair"}?`}
+            </p>
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              Share your hands-on experience — it takes a minute and helps other
+              buyers.
+            </p>
+          </div>
+          <Link
+            href={`/reviews/new?product=${encodeURIComponent(productSlug)}`}
+            className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg bg-foreground px-4 py-2.5 text-sm font-semibold text-background transition-opacity hover:opacity-90"
+          >
+            <PenLine className="h-4 w-4" />
+            Write a review
+          </Link>
+        </div>
+      )}
+
       <div className="p-6 bg-card rounded-xl border border-border">
         <div className="flex flex-col sm:flex-row sm:items-end gap-6">
           <div>

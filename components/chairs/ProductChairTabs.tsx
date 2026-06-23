@@ -79,7 +79,11 @@ export function ProductChairTabs({
       )}
 
       <TabsContent value="reviews" className="mt-8">
-        <ChairReviewsSection reviews={reviews} />
+        <ChairReviewsSection
+          reviews={reviews}
+          productSlug={productId}
+          productName={productName}
+        />
       </TabsContent>
 
       <TabsContent value="purchase" className="mt-8">

@@ -209,6 +209,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         </span>
                       </>
                     )}
+                    <span>·</span>
+                    <Link
+                      href={`/reviews/new?product=${slug}`}
+                      className="font-medium text-foreground underline-offset-4 hover:underline"
+                    >
+                      Write a review
+                    </Link>
                   </div>
 
                   <p className="text-2xl font-semibold text-foreground mt-4">{product.price}</p>
