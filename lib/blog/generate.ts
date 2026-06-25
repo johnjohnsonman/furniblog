@@ -4,13 +4,31 @@ import Anthropic from "@anthropic-ai/sdk"
 const MODEL =
   process.env.BLOG_MODEL?.trim() || process.env.CLAUDE_MODEL?.trim() || "claude-sonnet-4-6"
 
+export const BLOG_CATEGORIES = [
+  "Reviews",
+  "Comparisons",
+  "Guides",
+  "Design Stories",
+] as const
+
 export type BlogDraft = {
   title: string
   subtitle: string
   excerpt: string
   seo_title: string
   seo_description: string
+  category: string
   content_html: string
+}
+
+function normalizeCategory(value: string): string {
+  const v = value.trim().toLowerCase()
+  const hit = BLOG_CATEGORIES.find((c) => c.toLowerCase() === v)
+  if (hit) return hit
+  if (v.includes("compar")) return "Comparisons"
+  if (v.includes("review")) return "Reviews"
+  if (v.includes("design") || v.includes("story") || v.includes("stories")) return "Design Stories"
+  return "Guides"
 }
 
 export type CatalogChair = { slug: string; name: string }
@@ -57,6 +75,7 @@ function parseDraft(raw: string): BlogDraft {
     excerpt: field(head, "EXCERPT"),
     seo_title: field(head, "SEO_TITLE"),
     seo_description: field(head, "SEO_DESCRIPTION"),
+    category: normalizeCategory(field(head, "CATEGORY") || "Guides"),
     content_html: body,
   }
 }
@@ -103,6 +122,7 @@ SUBTITLE: one compelling sub-line (max ~90 chars)
 EXCERPT: 1–2 sentence summary for cards/meta (max ~160 chars)
 SEO_TITLE: an SEO title tag, ~55–60 chars
 SEO_DESCRIPTION: an SEO meta description, ~150–158 chars
+CATEGORY: exactly one of — Reviews | Comparisons | Guides | Design Stories
 ===BODY===
 the full article body as raw HTML using only the allowed tags
 

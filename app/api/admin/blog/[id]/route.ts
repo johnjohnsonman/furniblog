@@ -15,6 +15,7 @@ const EDITABLE = [
   "excerpt",
   "content_html",
   "source_url",
+  "category",
   "featured",
   "seo_title",
   "seo_description",

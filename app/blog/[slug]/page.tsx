@@ -20,23 +20,41 @@ type Post = {
   seo_title: string | null
   seo_description: string | null
   published_at: string | null
+  category: string | null
 }
 
+const BASE_COLS =
+  "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at"
+
 async function getPost(slug: string): Promise<Post | null> {
+  const supabase = createPublicServerClient()
   try {
-    const supabase = createPublicServerClient()
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("blog_posts")
-      .select(
-        "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at"
-      )
+      .select(`${BASE_COLS},category`)
       .eq("slug", slug)
       .eq("status", "published")
       .maybeSingle()
+    if (error) throw error
     return (data as Post | null) ?? null
   } catch {
-    return null
+    try {
+      const { data } = await supabase
+        .from("blog_posts")
+        .select(BASE_COLS)
+        .eq("slug", slug)
+        .eq("status", "published")
+        .maybeSingle()
+      return data ? ({ ...(data as Omit<Post, "category">), category: null }) : null
+    } catch {
+      return null
+    }
   }
+}
+
+function readMinutes(html: string): number {
+  const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.round(words / 200))
 }
 
 export async function generateMetadata({
@@ -98,21 +116,30 @@ export default async function BlogPostPage({
           </nav>
 
           <header className="mb-8">
+            {post.category && (
+              <p className="mb-3 text-xs font-medium uppercase tracking-[0.16em] text-premium-accent">
+                {post.category}
+              </p>
+            )}
             <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
               {post.title}
             </h1>
             {post.subtitle && (
               <p className="mt-3 text-lg text-muted-foreground">{post.subtitle}</p>
             )}
-            {post.published_at && (
-              <p className="mt-3 text-sm text-muted-foreground">
-                {new Date(post.published_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            )}
+            <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+              {post.published_at && (
+                <span>
+                  {new Date(post.published_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              )}
+              {post.published_at && <span>·</span>}
+              <span>{readMinutes(post.content_html)} min read</span>
+            </p>
           </header>
 
           {post.hero_image_url && (

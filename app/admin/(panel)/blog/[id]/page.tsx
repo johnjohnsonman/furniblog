@@ -17,6 +17,7 @@ type Post = {
   excerpt: string | null
   content_html: string
   source_url: string | null
+  category: string | null
   featured: boolean | null
   seo_title: string | null
   seo_description: string | null
@@ -164,6 +165,7 @@ export default function AdminBlogEditor() {
         excerpt: e.excerpt,
         content_html: e.content_html,
         source_url: sourceUrl || null,
+        category: e.category || null,
         featured: e.featured ?? false,
         seo_title: e.seo_title,
         seo_description: e.seo_description,
@@ -295,6 +297,16 @@ export default function AdminBlogEditor() {
               <Upload className="h-4 w-4" /> {e.hero_image_url ? "Replace" : "Upload"} hero
               <input type="file" accept="image/*" className="hidden" onChange={(ev) => { const f = ev.target.files?.[0]; if (f) void uploadHero(f); ev.target.value = "" }} />
             </label>
+          </div>
+          <div>
+            <label className={label}>Category</label>
+            <select className={field} value={e.category ?? ""} onChange={(ev) => set("category", ev.target.value || null)}>
+              <option value="">— none —</option>
+              <option value="Reviews">Reviews</option>
+              <option value="Comparisons">Comparisons</option>
+              <option value="Guides">Guides</option>
+              <option value="Design Stories">Design Stories</option>
+            </select>
           </div>
           <div>
             <label className={label}>Excerpt (card / SEO fallback)</label>

@@ -110,6 +110,12 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
             updated_at: new Date().toISOString(),
           })
           .eq("id", id)
+
+        // Category lives in a later migration (036); save it separately so a
+        // not-yet-migrated DB still completes generation.
+        if (draft.category) {
+          await db.from("blog_posts").update({ category: draft.category }).eq("id", id)
+        }
       } catch (err) {
         await db
           .from("blog_posts")
