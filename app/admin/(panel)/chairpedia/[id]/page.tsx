@@ -12,6 +12,7 @@ const COLLECTIONS = [
   { slug: "icons", label: "The Icons" },
   { slug: "japanese-premium", label: "Japanese Premium" },
   { slug: "ergonomic-milestones", label: "Ergonomic Milestones" },
+  { slug: "design-statements", label: "Design Statements" },
   { slug: "buy-now", label: "Worth It — Buy Now" },
 ]
 
