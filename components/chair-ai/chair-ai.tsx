@@ -92,7 +92,7 @@ export function ChairAI() {
         <button
           type="submit"
           disabled={busy || !query.trim()}
-          aria-label="Ask chAIr"
+          aria-label="Ask chA.I.r"
           className="absolute bottom-3 right-3 grid h-10 w-10 place-items-center rounded-full bg-premium-accent text-white transition hover:opacity-90 disabled:opacity-40"
         >
           {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowUp className="h-5 w-5" />}
@@ -188,7 +188,7 @@ export function ChairAI() {
           </button>
 
           <p className="mt-4 text-xs text-premium-text-tertiary">
-            chAIr suggests from Furniblog&apos;s catalog based on your description. Always
+            chA.I.r suggests from Furniblog&apos;s catalog based on your description. Always
             double-check fit and specs before buying.
           </p>
         </div>

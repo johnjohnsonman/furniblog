@@ -5,14 +5,14 @@ import { Footer } from "@/components/footer"
 import { ChairAI } from "@/components/chair-ai/chair-ai"
 
 export const metadata: Metadata = {
-  title: "chAIr — AI Chair Finder | Furniblog",
+  title: "chA.I.r — AI Chair Finder | Furniblog",
   description:
-    "Describe how you sit, your budget, your body and the look you want — chAIr, Furniblog's AI chair advisor, matches you to the right office, ergonomic or design chair from a catalog of 180+ models.",
+    "Describe how you sit, your budget, your body and the look you want — chA.I.r, Furniblog's AI chair advisor, matches you to the right office, ergonomic or design chair from a catalog of 180+ models.",
   alternates: { canonical: "/chair" },
   openGraph: {
-    title: "chAIr — AI Chair Finder",
+    title: "chA.I.r — AI Chair Finder",
     description:
-      "Tell chAIr what you need in plain words and get matched to the right chairs, with a reason for each pick.",
+      "Tell chA.I.r what you need in plain words and get matched to the right chairs, with a reason for each pick.",
     url: "/chair",
     type: "website",
   },
@@ -20,16 +20,16 @@ export const metadata: Metadata = {
 
 const FAQ = [
   {
-    q: "How does chAIr work?",
-    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chAIr reads Furniblog's catalog of 180+ chairs and recommends the best matches, with a short reason for each pick.",
+    q: "How does chA.I.r work?",
+    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chA.I.r reads Furniblog's catalog of 180+ chairs and recommends the best matches, with a short reason for each pick.",
   },
   {
-    q: "Is chAIr free?",
-    a: "Yes. chAIr is a free tool. When you buy through some of our links we may earn a commission at no extra cost to you.",
+    q: "Is chA.I.r free?",
+    a: "Yes. chA.I.r is a free tool. When you buy through some of our links we may earn a commission at no extra cost to you.",
   },
   {
-    q: "Does chAIr only recommend chairs you sell?",
-    a: "chAIr recommends from Furniblog's reviewed catalog of office, ergonomic, gaming, executive and design chairs. It won't invent models — every suggestion links to a real chair you can research further.",
+    q: "Does chA.I.r only recommend chairs you sell?",
+    a: "chA.I.r recommends from Furniblog's reviewed catalog of office, ergonomic, gaming, executive and design chairs. It won't invent models — every suggestion links to a real chair you can research further.",
   },
 ]
 
@@ -61,7 +61,7 @@ export default function ChairAIPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-premium-text-secondary">
             Describe your needs in plain words — budget, hours, back pain, height,
-            style. <span className="font-medium text-premium-text">chAIr</span>{" "}
+            style. <span className="font-medium text-premium-text">chA.I.r</span>{" "}
             matches you to the right seat from 180+ reviewed chairs, and tells you
             why each one fits.
           </p>
@@ -75,7 +75,7 @@ export default function ChairAIPage() {
         <section className="border-t border-premium-border bg-white">
           <div className="mx-auto max-w-3xl px-4 py-12">
             <h2 className="font-serif text-2xl font-medium text-premium-text">
-              About chAIr
+              About chA.I.r
             </h2>
             <div className="mt-6 space-y-6">
               {FAQ.map((f) => (

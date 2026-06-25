@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY?.trim()
   if (!apiKey) {
-    return NextResponse.json({ error: "chAIr is not configured (missing API key)." }, { status: 500 })
+    return NextResponse.json({ error: "chA.I.r is not configured (missing API key)." }, { status: 500 })
   }
 
   try {
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
       })
       .join("\n")
 
-    const system = `You are chAIr, Furniblog's expert chair advisor. A person describes what they need in their own words, and you recommend the chairs that fit them best.
+    const system = `You are chA.I.r, Furniblog's expert chair advisor. A person describes what they need in their own words, and you recommend the chairs that fit them best.
 
 STRICT RULES:
 - Recommend ONLY chairs from the CATALOG below, referenced by their exact slug. Never invent a chair, brand, or slug.
@@ -186,7 +186,7 @@ ${catalog}`
 
     return NextResponse.json({ intro: parsed.intro, picks })
   } catch (err) {
-    const message = err instanceof Error ? err.message : "chAIr failed"
+    const message = err instanceof Error ? err.message : "chA.I.r failed"
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }
