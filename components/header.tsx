@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 
 const mainNav = [
+  { name: "chAIr", href: "/chair" },
   { name: "Chairpedia", href: "/chairpedia" },
   { name: "Brands", href: "/brands" },
   { name: "Reviews", href: "/reviews" },
