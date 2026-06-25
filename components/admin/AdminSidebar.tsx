@@ -19,6 +19,7 @@ import {
   Gauge,
   Search,
   BookOpen,
+  FileText,
   ImageIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -28,6 +29,7 @@ const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Armchair },
   { href: "/admin/chairpedia", label: "Chairpedia", icon: BookOpen },
+  { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/experience", label: "체험 후기", icon: MessageSquareHeart },
   { href: "/admin/editorial", label: "Editorial Ratings", icon: Gauge },

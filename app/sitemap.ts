@@ -38,6 +38,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("", now, "daily", 1),
     url("/products", now, "daily", 0.9),
     url("/chairpedia", now, "daily", 0.9),
+    url("/blog", now, "daily", 0.7),
+    url("/chair", now, "weekly", 0.6),
     url("/reviews", now, "daily", 0.9),
     url("/videos", now, "daily", 0.8),
     url("/news", now, "daily", 0.8),
@@ -109,6 +111,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch {
     // On any DB error, still return the static + best pages.
+  }
+
+  // Blog is queried separately so a not-yet-created table can't drop the rest.
+  try {
+    const supabase = createPublicServerClient()
+    const { data: blog } = await supabase
+      .from("blog_posts")
+      .select("slug, updated_at")
+      .eq("status", "published")
+      .limit(5000)
+    for (const b of blog ?? []) {
+      if (b.slug)
+        dynamicPages.push(url(`/blog/${b.slug}`, toDate(b.updated_at), "weekly", 0.7))
+    }
+  } catch {
+    // Blog table may not exist yet — ignore.
   }
 
   return [...staticPages, ...bestPages, ...dynamicPages]
