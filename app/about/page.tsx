@@ -75,15 +75,16 @@ export default function AboutPage() {
               About Furniblog
             </p>
             <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-foreground sm:text-[42px] sm:leading-[1.15]">
-              One family. One object.
-              <br />A quarter-century of chairs.
+              Perhaps the person who has sat in
+              <br />more chairs than anyone on Earth.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               I was raised inside a furniture business my father built. For as
               long as I can remember, our family has studied a single object,
-              obsessively — the chair. Over 26 years in the trade I have sat in
-              more of them than almost anyone alive. Furniblog is where that
-              experience becomes something you can use.
+              obsessively — the chair. Over 26 years in the trade that has meant
+              tens of thousands of chairs, in showrooms and factories across
+              Korea, Japan, Europe and the US. Furniblog is where that experience
+              becomes something you can use.
             </p>
           </div>
         </section>
@@ -178,34 +179,6 @@ export default function AboutPage() {
               Our judgments draw on hands-on experience, verified manufacturer
               specs, and reviews gathered from real owners around the world —
               not marketing copy.
-            </p>
-          </div>
-
-          <SectionHeading>Independence &amp; how we make money</SectionHeading>
-          <div className="mt-4 space-y-4 text-[17px] leading-relaxed text-muted-foreground">
-            <p>
-              No brand can buy a good word here. Our editorial content is
-              independent of our affiliate partnerships, and we recommend chairs
-              on merit — never on commission rates. When you buy through some of
-              our links we may earn a commission at no extra cost to you, which
-              keeps the database free and growing.
-            </p>
-            <p>
-              Read our{" "}
-              <Link
-                href="/editorial-policy"
-                className="text-foreground underline underline-offset-4"
-              >
-                Editorial Policy
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/affiliate-disclosure"
-                className="text-foreground underline underline-offset-4"
-              >
-                Affiliate Disclosure
-              </Link>{" "}
-              for the full details.
             </p>
           </div>
 
