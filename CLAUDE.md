@@ -185,7 +185,22 @@ npm run test:pipeline      # 파이프라인 테스트
 - **SEO/트래픽 성장 기획(논의만, 미실행)**: 코드 감사 결과 **기술 색인 차단은 전부 해결됨**(robots/sitemap/canonical/JSON-LD 정상). 진짜 병목 = "크롤링됨–색인안됨 58 + 발견됨 17 = 75페이지를 구글이 가치판단으로 색인거부" → **얇은 제품 1,300페이지 + 도메인 권위 0** 탓. noindex 84·404 38은 레거시(무시 OK). 레버 우선순위: ①**깊이 우선**(Chairpedia 딥다이브 — 이미 10개 발행됨, 색인율 여는 핵심) ②**키워드 전략**(롱테일 구매의도: "best chair for back pain", "A vs B", "X review reddit" — 신생이 이길 수 있는 싸움) ③**E-E-A-T/독창 데이터**(Experience 자체리뷰 UGC=해자, "Reddit 1000개 분석" 데이터스터디=백링크 유발) ④**백링크**(chairpark 교차링크, Reddit/Quora, 디지털PR) ⑤**구글 밖 유통**(Pinterest=가구 폭발 카테고리, YouTube). 기술폴리시: **별점 리치스니펫**(SERP ★=CTR 2배, ROI 최고)·내부링크(제품↔Chairpedia↔리스티클)·이미지최적화(썸네일 141중 1개뿐, 구글이미지 트래픽). 신생도메인은 3~6개월 후 꿈틀이 정상이나 **가만두면 12개월 뒤도 0** — 위 레버를 돌려야 함.
   - **다음에 이어서 할 것**: 발행된 Chairpedia 10개 **GSC 색인 요청** → **내부링크 연결 상태 점검**(제품→Chairpedia 버튼, Chairpedia→아마존 버튼, Chairpedia 상호링크) → **별점 스키마** → "Best for X" 리스티클 신규.
 
+### 2026-06-26 카탈로그 확장(Design/Dining/Executive) + 국가별 리뷰 수집 기획(미구현)
+- **Design 카테고리 추가(코드, 커밋 ba476d1)**: `types/product.ts` ChairCategory에 `"design"`, `lib/chair-categories.ts` CHAIR_CATEGORY_IDS/CHAIR_CATEGORIES("Design Chairs")/PRODUCT_LIST_CATEGORIES(dining·design 추가), `app/page.tsx` 홈 카테고리 아이콘 `design:Gem`. **`products.category`는 제약 없는 text라 DB 마이그레이션 불필요.**
+- **카탈로그 대량 확장(DB only, 임시 .mjs 스크립트 실행 후 삭제 — 커밋 없음)**: 총 48종 추가.
+  - 1차(명작 다이닝/디자인 18종) + 신규브랜드 8(Carl Hansen & Søn, Cassina, Kartell, Emeco, Tolix, Thonet, HAY, Muuto).
+  - 2차(프리미엄 30종): **Walter Knoll 1→14**(Osuu[정식표기, Foster+Partners]·Andoo·Liz·Sheru·Burgaz·FK Chair / FK Lounge·375·Vostra·Turtle·Healey·Andoo Lounge / Leadchair Management), **Itoki Vertebra 03 + 03 Wood**(Fumie Shibata), Poltrona Frau Oxford Executive/President/Visitor, Knoll Saarinen Executive·Platner, Vitra Soft Pad EA219·Lobby ES104·Standard·Eames DSR, Fritz Hansen Grand Prix, Carl Hansen CH88·Shell CH07, Thonet S43, HAY Soft Edge, 신규브랜드 **Flexform**(Morgan).
+  - 카테고리 분포: dining 13→26, executive 24→30, lounge 11→18, design 6→7, conference 5→6. **전부 thumbnail 비어있음 → 어드민 Chair Images "missing only"로 채워야.**
+  - 원칙: 웹검색으로 디자이너·연도·특징 검증된 모델만(추측 모델명 제외).
+- **🌍 국가별(Country-aware) 리뷰 수집 기획 — 확정, 구현 보류**(사용자: "기획만, 나중에 구현" / 대상 "온갖 나라 다"):
+  - **현 구조**: 소스는 이미 언어(en/ko/ja)별 동작, `getSearchQueries(slug,name,lang)`·`CHAIR_NAMES` 번역 존재. **그러나 리뷰에 country 개념 전무**(컬럼·필터·크론 로테이션 없음), 사실상 영어+한국어 2개국. 영어 소스=reddit/youtube/trustpilot/review_sites/hackernews, 한국=naver/dcinside. `reviews` 테이블 최신 마이그레이션 037, country/region 컬럼 없음(상품 country만 있음). 피드 필터=category/brand/source/search/period(국가 없음). 프로세서는 KO/JA/EN 프롬프트 보유, 출력은 항상 영어 요약.
+  - **설계**: "국가 = (소스 + 언어 + 마켓플레이스)" 묶음. `lib/pipeline/country-profiles.ts`(US/KR/JP/DE/UK/FR/CN/IN…) 신설 → 확장 가능 구조로 만들되 활성화는 소스 품질 있는 국가부터.
+  - **단계**: ①migration 038(reviews.country ISO2 + 인덱스, 기존행 source기준 백필) ②MVP=YouTube `regionCode`+`relevanceLanguage`로 JP/DE/FR 즉시 다국가 + country 태깅 + `/reviews` 국기 필터 ③country-profiles config화 + Trustpilot/Reddit locale 주입 + 크론 국가 로테이션(pipeline_runs에 country 기록, 회차분산: 아침 US/KR·저녁 JP/DE 등 Vercel 300s 한도 주의) ④신규 전용 소스(JP Kakaku/Rakuten, DE idealo 등 — 유지보수 위험 큼, 트래픽 확인 후) ⑤제품상세 "국가별 평가" 섹션 + 국가별 SEO 페이지.
+  - **ROI 최고**: 0+1단계(마이그레이션+YouTube 다국가+국기필터)가 신규 스크레이퍼 없이 즉시 다국가 데이터. 리스크: 국가별 양질 소스 편차→confidence 게이트(현 0.2) 국가별 조정, JP/DE 의자 별칭 부족 시 `CHAIR_NAMES` 보강 선행.
+
 ### 남은 과제 (TODO)
+- [ ] **🌍 국가별 리뷰 수집 구현**(2026-06-26 기획): 0단계 migration 038(reviews.country+백필) → 1단계 YouTube 다국가(regionCode/relevanceLanguage)+국기 필터 → 2단계 country-profiles config+크론 로테이션. 대상 "온갖 나라"지만 소스 품질순 점진 활성화.
+- [ ] **신규 카탈로그 48종 썸네일 채우기**: 어드민 Chair Images "missing only"로. Walter Knoll·Poltrona Frau·Vitra 등 공식 제품컷 깔끔.
 - [ ] **🔴 SEO 트래픽: Chairpedia 10개 GSC 색인요청 + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
 - [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
