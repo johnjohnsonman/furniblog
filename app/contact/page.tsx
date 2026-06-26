@@ -30,19 +30,19 @@ export default function ContactPage() {
             <div className="grid gap-6 sm:grid-cols-2 mt-8">
               <div className="p-6 bg-card rounded-xl border border-border">
                 <h2 className="font-medium text-foreground mb-2">General Inquiries</h2>
-                <p className="text-sm text-muted-foreground">hello@furniblog.com</p>
+                <a href="mailto:hello@chairpark.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors">hello@chairpark.com</a>
               </div>
               <div className="p-6 bg-card rounded-xl border border-border">
                 <h2 className="font-medium text-foreground mb-2">Partnerships</h2>
-                <p className="text-sm text-muted-foreground">partners@furniblog.com</p>
+                <a href="mailto:hello@chairpark.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors">hello@chairpark.com</a>
               </div>
               <div className="p-6 bg-card rounded-xl border border-border">
                 <h2 className="font-medium text-foreground mb-2">Press & Media</h2>
-                <p className="text-sm text-muted-foreground">press@furniblog.com</p>
+                <a href="mailto:hello@chairpark.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors">hello@chairpark.com</a>
               </div>
               <div className="p-6 bg-card rounded-xl border border-border">
                 <h2 className="font-medium text-foreground mb-2">Advertising</h2>
-                <p className="text-sm text-muted-foreground">ads@furniblog.com</p>
+                <a href="mailto:hello@chairpark.com" className="text-sm text-muted-foreground hover:text-foreground transition-colors">hello@chairpark.com</a>
               </div>
             </div>
           </div>
