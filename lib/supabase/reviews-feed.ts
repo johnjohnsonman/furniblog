@@ -337,10 +337,14 @@ export async function getReviews(
       (searchTerm.length > 0 && nameSearchIds.length > 0)
 
     if (needsWideFetch) {
-      const { data, error } = await query.limit(500)
+      // Random/rating/relevance need the whole matching set in memory to sort
+      // and paginate consistently. Cap generously (covers the dataset with
+      // headroom) but keep the EXACT db count for the displayed total.
+      const WIDE_FETCH_CAP = 2000
+      const { data, error, count } = await query.limit(WIDE_FETCH_CAP)
       if (error) throw error
 
-      let rows = (data ?? []) as DbFeedReviewRow[]
+      const rows = (data ?? []) as DbFeedReviewRow[]
       let items = rows.map(mapFeedRow)
 
       if (searchTerm) {
@@ -367,7 +371,9 @@ export async function getReviews(
         })
       }
 
-      const total = items.length
+      // True total = the db's exact count for these filters. When a search is
+      // applied we re-filter client-side, so use the filtered length instead.
+      const total = searchTerm ? items.length : count ?? items.length
       const start = (page - 1) * limit
       return {
         reviews: items.slice(start, start + limit),
