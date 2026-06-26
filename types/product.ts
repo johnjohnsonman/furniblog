@@ -9,6 +9,7 @@ export type ChairCategory =
   | "conference"
   | "lounge"
   | "standing"
+  | "design"
 
 export type PriceRange = "$" | "$$" | "$$$" | "$$$$"
 

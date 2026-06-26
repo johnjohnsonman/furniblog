@@ -11,6 +11,7 @@ export const CHAIR_CATEGORY_IDS: ChairCategory[] = [
   "conference",
   "lounge",
   "standing",
+  "design",
 ]
 
 export const CHAIR_CATEGORIES: {
@@ -30,6 +31,7 @@ export const CHAIR_CATEGORIES: {
     label: "Standing & Saddle",
     navLabel: "Standing & Saddle",
   },
+  { id: "design", label: "Design Chairs", navLabel: "Design Chairs" },
 ]
 
 const LABEL_BY_ID = Object.fromEntries(
@@ -64,6 +66,8 @@ export const PRODUCT_LIST_CATEGORIES: { value: string; label: string }[] = [
   { value: "standing", label: "Standing" },
   { value: "study", label: "Study" },
   { value: "lounge", label: "Lounge" },
+  { value: "dining", label: "Dining" },
+  { value: "design", label: "Design" },
 ]
 
 export function countByChairCategory(

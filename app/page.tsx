@@ -8,6 +8,7 @@ import {
   Users,
   Armchair,
   ArrowUpFromLine,
+  Gem,
   Play,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
@@ -51,6 +52,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   conference: Users,
   lounge: Armchair,
   standing: ArrowUpFromLine,
+  design: Gem,
 }
 
 const HOME_BEST_LIST_IDS = [
