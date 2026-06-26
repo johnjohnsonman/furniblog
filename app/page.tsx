@@ -14,7 +14,7 @@ import type { LucideIcon } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { NewsCard } from "@/components/news/news-card"
-import { HomeHero } from "@/components/home/home-hero"
+import { ChairBand } from "@/components/home/chair-band"
 import { StatBand } from "@/components/home/stat-band"
 import { Reveal } from "@/components/home/reveal"
 import { bestLists } from "@/lib/data"
@@ -31,6 +31,7 @@ import {
   getLatestReviews,
   getLatestVideos,
   getLatestNews,
+  getHomeChairpedia,
 } from "@/lib/home/feeds"
 import {
   generateOrganizationSchema,
@@ -61,24 +62,11 @@ const HOME_BEST_LIST_IDS = [
   "best-for-long-hours",
 ] as const
 
-function SectionHead({
-  title,
-  href,
-  cta,
-}: {
-  title: string
-  href: string
-  cta: string
-}) {
+function SectionHead({ title, href, cta }: { title: string; href: string; cta: string }) {
   return (
     <div className="mb-6 flex items-end justify-between">
-      <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">
-        {title}
-      </h2>
-      <Link
-        href={href}
-        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
+      <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">{title}</h2>
+      <Link href={href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
         {cta} →
       </Link>
     </div>
@@ -90,6 +78,7 @@ export default async function HomePage() {
     stats,
     featuredProducts,
     allProducts,
+    chairpedia,
     latestReviews,
     latestVideos,
     latestNews,
@@ -97,7 +86,8 @@ export default async function HomePage() {
     getSiteStats(),
     getFeaturedProducts(6),
     getProducts(),
-    getLatestReviews(9),
+    getHomeChairpedia(9),
+    getLatestReviews(6),
     getLatestVideos(8),
     getLatestNews(4),
   ])
@@ -108,24 +98,115 @@ export default async function HomePage() {
   const { brands } = await import("@/lib/data")
   const topBrands = brands.slice(0, 6)
 
+  const cpFeatured = chairpedia[0] ?? null
+  const cpRest = chairpedia.slice(1)
+
   return (
     <div className="flex min-h-screen flex-col bg-premium-bg">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            generateOrganizationSchema(),
-            generateWebsiteSchema(),
-          ]),
+          __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]),
         }}
       />
       <Header />
 
       <main className="flex-1">
-        {/* Hero — bold type + chA.I.r natural-language input */}
-        <HomeHero productCount={stats.products} reviewCount={stats.reviews} />
+        {/* Hero — Chairpedia-led, image-forward */}
+        <section className="border-b border-premium-border">
+          <div className="mx-auto max-w-6xl px-4 py-12 lg:py-16">
+            <Reveal>
+              <p className="text-xs font-medium uppercase tracking-[0.18em] text-premium-text-tertiary">
+                Furniblog — premium chair database
+              </p>
+              <h1 className="mt-3 max-w-3xl font-serif text-4xl font-medium leading-[1.1] tracking-tight text-premium-text sm:text-5xl lg:text-[56px] text-balance">
+                Real reviews &amp; real data for premium chairs
+              </h1>
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-premium-text-secondary">
+                Honest reviews, in-depth deep dives, videos and verified specs for
+                the world&apos;s best office, ergonomic and design chairs.
+              </p>
+            </Reveal>
 
-        {/* Trust band — animated, data front-and-center */}
+            {cpFeatured && (
+              <Reveal className="mt-9">
+                <Link
+                  href={`/chairpedia/${cpFeatured.slug}`}
+                  className="group grid overflow-hidden rounded-2xl border border-premium-border bg-white md:grid-cols-2"
+                >
+                  <div className="aspect-[4/3] overflow-hidden bg-premium-cream md:aspect-auto md:min-h-[360px]">
+                    {cpFeatured.heroImage && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={cpFeatured.heroImage}
+                        alt={cpFeatured.title}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    )}
+                  </div>
+                  <div className="flex flex-col justify-center p-7 sm:p-10">
+                    <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-premium-accent">
+                      From Chairpedia
+                    </span>
+                    <h2 className="mt-2 font-serif text-2xl font-medium leading-snug text-premium-text sm:text-3xl">
+                      {cpFeatured.title}
+                    </h2>
+                    {(cpFeatured.excerpt || cpFeatured.subtitle) && (
+                      <p className="mt-3 line-clamp-3 text-base leading-relaxed text-premium-text-secondary">
+                        {cpFeatured.excerpt || cpFeatured.subtitle}
+                      </p>
+                    )}
+                    <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-premium-accent">
+                      Read the deep-dive →
+                    </span>
+                  </div>
+                </Link>
+              </Reveal>
+            )}
+
+            {cpRest.length > 0 && (
+              <Reveal className="mt-8">
+                <div className="mb-4 flex items-end justify-between">
+                  <h3 className="font-serif text-lg font-medium text-premium-text">
+                    More from Chairpedia
+                  </h3>
+                  <Link href="/chairpedia" className="text-sm text-premium-text-secondary hover:text-premium-text">
+                    View all →
+                  </Link>
+                </div>
+                <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2">
+                  {cpRest.map((c) => (
+                    <Link
+                      key={c.slug}
+                      href={`/chairpedia/${c.slug}`}
+                      className="group w-[240px] shrink-0 snap-start sm:w-[280px]"
+                    >
+                      <div className="aspect-[16/10] overflow-hidden rounded-xl border border-premium-border bg-premium-cream">
+                        {c.heroImage && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={c.heroImage}
+                            alt={c.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        )}
+                      </div>
+                      <h4 className="mt-2 line-clamp-2 font-serif text-base font-medium leading-snug text-premium-text">
+                        {c.title}
+                      </h4>
+                    </Link>
+                  ))}
+                </div>
+              </Reveal>
+            )}
+          </div>
+        </section>
+
+        {/* chA.I.r band */}
+        <ChairBand />
+
+        {/* Trust band — animated data */}
         <StatBand
           stats={[
             { value: stats.products, label: "Products" },
@@ -135,33 +216,50 @@ export default async function HomePage() {
           ]}
         />
 
-        {/* Latest reviews */}
+        {/* Latest reviews — now image-forward */}
         {latestReviews.length > 0 && (
           <section className="border-t border-border py-14 lg:py-20">
             <div className="mx-auto max-w-6xl px-4">
               <Reveal>
                 <SectionHead title="Latest reviews" href="/reviews" cta="View all" />
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {latestReviews.map((r) => (
                     <Link
                       key={r.id}
                       href={`/reviews/${r.id}`}
-                      className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
                     >
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        {r.brandName && (
-                          <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
-                            {r.brandName}
-                          </span>
+                      <div className="aspect-[16/10] overflow-hidden bg-premium-cream">
+                        {r.productImage ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={r.productImage}
+                            alt={r.productName}
+                            loading="lazy"
+                            className="h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.04]"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+                            {r.productName}
+                          </div>
                         )}
-                        <span className="truncate">{r.productName}</span>
                       </div>
-                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-foreground">
-                        {r.summary}
-                      </p>
-                      <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
-                        Read full review →
-                      </span>
+                      <div className="flex flex-1 flex-col p-5">
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          {r.brandName && (
+                            <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
+                              {r.brandName}
+                            </span>
+                          )}
+                          <span className="truncate">{r.productName}</span>
+                        </div>
+                        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-foreground">
+                          {r.summary}
+                        </p>
+                        <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
+                          Read full review →
+                        </span>
+                      </div>
                     </Link>
                   ))}
                 </div>
@@ -170,35 +268,29 @@ export default async function HomePage() {
           </section>
         )}
 
-        {/* Top rated — editorial numbered list */}
-        <section className="border-t border-border py-14 lg:py-20">
+        {/* Top rated */}
+        <section className="border-t border-border bg-muted/20 py-14 lg:py-20">
           <div className="mx-auto max-w-6xl px-4">
             <Reveal>
               <SectionHead title="Top rated" href="/products" cta="View all" />
-              <div className="divide-y divide-border overflow-hidden rounded-xl border border-border">
+              <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
                 {featuredProducts.map((product, index) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.id}`}
-                    className="flex items-center gap-4 bg-card p-4 transition-colors hover:bg-muted/30"
+                    className="flex items-center gap-4 p-4 transition-colors hover:bg-muted/40"
                   >
                     <span className="w-5 shrink-0 font-serif text-lg text-muted-foreground">
                       {index + 1}
                     </span>
-                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
+                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-premium-cream">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="h-full w-full object-cover"
-                      />
+                      <img src={product.image} alt={product.name} className="h-full w-full object-contain p-1.5" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium text-foreground">{product.name}</h3>
-                        <span className="hidden text-sm text-muted-foreground sm:inline">
-                          by {product.brand}
-                        </span>
+                        <span className="hidden text-sm text-muted-foreground sm:inline">by {product.brand}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span>{product.categoryLabel ?? product.category}</span>
@@ -210,9 +302,7 @@ export default async function HomePage() {
                         )}
                       </div>
                     </div>
-                    <p className="shrink-0 text-right font-medium text-foreground">
-                      {product.price}
-                    </p>
+                    <p className="shrink-0 text-right font-medium text-foreground">{product.price}</p>
                   </Link>
                 ))}
               </div>
@@ -220,9 +310,9 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* New videos — horizontal editorial rail */}
+        {/* New videos — rail */}
         {latestVideos.length > 0 && (
-          <section className="border-t border-border bg-muted/20 py-14 lg:py-20">
+          <section className="border-t border-border py-14 lg:py-20">
             <div className="mx-auto max-w-6xl px-4">
               <Reveal>
                 <SectionHead title="New videos" href="/videos" cta="View all" />
@@ -253,12 +343,8 @@ export default async function HomePage() {
                           </span>
                         </span>
                       </div>
-                      <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">
-                        {v.title}
-                      </p>
-                      {v.brand && (
-                        <p className="text-xs text-muted-foreground">{v.brand}</p>
-                      )}
+                      <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">{v.title}</p>
+                      {v.brand && <p className="text-xs text-muted-foreground">{v.brand}</p>}
                     </a>
                   ))}
                 </div>
@@ -274,9 +360,7 @@ export default async function HomePage() {
               <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">
                 Browse by category
               </h2>
-              <p className="mb-8 mt-1 text-sm text-muted-foreground">
-                Explore chairs by how you use them
-              </p>
+              <p className="mb-8 mt-1 text-sm text-muted-foreground">Explore chairs by how you use them</p>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {CHAIR_CATEGORIES.map((cat) => {
                   const Icon = CATEGORY_ICONS[cat.id] ?? Briefcase
@@ -288,9 +372,7 @@ export default async function HomePage() {
                       className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
                     >
                       <Icon className="mb-3 h-6 w-6 text-foreground transition-transform group-hover:scale-110" />
-                      <h3 className="text-sm font-medium leading-snug text-foreground">
-                        {cat.label}
-                      </h3>
+                      <h3 className="text-sm font-medium leading-snug text-foreground">{cat.label}</h3>
                       <p className="mt-1 text-xs text-muted-foreground">
                         {count} {count === 1 ? "chair" : "chairs"}
                       </p>
@@ -320,7 +402,7 @@ export default async function HomePage() {
 
         {/* Best lists + Brands */}
         <section className="border-t border-border py-14 lg:py-20">
-          <div className="mx-auto max-w-6xl px-4 space-y-14">
+          <div className="mx-auto max-w-6xl space-y-14 px-4">
             <Reveal>
               <SectionHead title="Best lists" href="/best" cta="View all" />
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">

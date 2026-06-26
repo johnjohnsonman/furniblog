@@ -14,7 +14,16 @@ export type HomeReview = {
   source: string | null
   productName: string
   productSlug: string
+  productImage: string | null
   brandName: string | null
+}
+
+export type HomeChairpedia = {
+  slug: string
+  title: string
+  subtitle: string | null
+  excerpt: string | null
+  heroImage: string | null
 }
 
 export type HomeVideo = {
@@ -29,8 +38,8 @@ export type HomeVideo = {
 
 type BrandRel = { name?: string | null } | Array<{ name?: string | null }> | null
 type ProductRel =
-  | { slug?: string | null; name?: string | null; brands?: BrandRel }
-  | Array<{ slug?: string | null; name?: string | null; brands?: BrandRel }>
+  | { slug?: string | null; name?: string | null; thumbnail_url?: string | null; brands?: BrandRel }
+  | Array<{ slug?: string | null; name?: string | null; thumbnail_url?: string | null; brands?: BrandRel }>
   | null
 
 function first<T>(rel: T | T[] | null | undefined): T | null {
@@ -52,7 +61,7 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
     const supabase = createPublicServerClient()
     const { data } = await supabase
       .from("reviews")
-      .select("id, summary_ko, source, products!inner(slug, name, brands(name))")
+      .select("id, summary_ko, source, products!inner(slug, name, thumbnail_url, brands(name))")
       .order("created_at", { ascending: false })
       .limit(poolSize(limit))
 
@@ -66,6 +75,7 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
           source: (row.source as string | null) ?? null,
           productName: product.name,
           productSlug: product.slug,
+          productImage: product.thumbnail_url?.trim() || null,
           brandName: first(product.brands)?.name?.trim() || null,
         }
       })
@@ -105,6 +115,31 @@ export async function getLatestVideos(limit = 8): Promise<HomeVideo[]> {
       })
       .filter((v): v is HomeVideo => v !== null)
     return shuffle(items).slice(0, limit)
+  } catch {
+    return []
+  }
+}
+
+/** Published Chairpedia entries (with hero images) for the homepage showcase. */
+export async function getHomeChairpedia(limit = 9): Promise<HomeChairpedia[]> {
+  if (!isConfigured()) return []
+  try {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from("chairpedia")
+      .select("slug, title, subtitle, excerpt, hero_image_url, featured, published_at")
+      .eq("status", "published")
+      .not("hero_image_url", "is", null)
+      .order("featured", { ascending: false })
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .limit(limit)
+    return (data ?? []).map((r) => ({
+      slug: r.slug as string,
+      title: r.title as string,
+      subtitle: (r.subtitle as string | null) ?? null,
+      excerpt: (r.excerpt as string | null) ?? null,
+      heroImage: (r.hero_image_url as string | null) ?? null,
+    }))
   } catch {
     return []
   }
