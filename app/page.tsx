@@ -1,8 +1,5 @@
 import Link from "next/link"
 import {
-  ArrowRight,
-  Search,
-  Star,
   Briefcase,
   Crown,
   Gamepad2,
@@ -17,6 +14,9 @@ import type { LucideIcon } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { NewsCard } from "@/components/news/news-card"
+import { HomeHero } from "@/components/home/home-hero"
+import { StatBand } from "@/components/home/stat-band"
+import { Reveal } from "@/components/home/reveal"
 import { bestLists } from "@/lib/data"
 import {
   CHAIR_CATEGORIES,
@@ -61,6 +61,30 @@ const HOME_BEST_LIST_IDS = [
   "best-for-long-hours",
 ] as const
 
+function SectionHead({
+  title,
+  href,
+  cta,
+}: {
+  title: string
+  href: string
+  cta: string
+}) {
+  return (
+    <div className="mb-6 flex items-end justify-between">
+      <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">
+        {title}
+      </h2>
+      <Link
+        href={href}
+        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        {cta} →
+      </Link>
+    </div>
+  )
+}
+
 export default async function HomePage() {
   const [
     stats,
@@ -85,7 +109,7 @@ export default async function HomePage() {
   const topBrands = brands.slice(0, 6)
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-premium-bg">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -98,245 +122,83 @@ export default async function HomePage() {
       <Header />
 
       <main className="flex-1">
-        <section className="py-10 lg:py-14">
-          <div className="mx-auto max-w-3xl px-4 text-center">
-            <h1 className="font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance">
-              Real reviews, videos &amp; news for premium chairs
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground leading-relaxed">
-              Everything about office &amp; ergonomic chairs in one place —
-              updated daily.
-            </p>
+        {/* Hero — bold type + chA.I.r natural-language input */}
+        <HomeHero productCount={stats.products} reviewCount={stats.reviews} />
 
-            <form action="/products" className="mt-7">
-              <div className="relative max-w-xl mx-auto">
-                <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
-                  type="text"
-                  name="search"
-                  placeholder="Search chairs, brands, models..."
-                  className="w-full h-14 pl-14 pr-32 text-base bg-card border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-foreground focus:border-transparent placeholder:text-muted-foreground/60"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-10 px-6 bg-foreground text-background rounded-full text-sm font-medium hover:bg-foreground/90 transition-colors"
-                >
-                  Search
-                </button>
-              </div>
-            </form>
+        {/* Trust band — animated, data front-and-center */}
+        <StatBand
+          stats={[
+            { value: stats.products, label: "Products" },
+            { value: stats.brands, label: "Brands" },
+            { value: stats.reviews, label: "Reviews" },
+            { value: stats.comparisons, label: "Comparisons" },
+          ]}
+        />
 
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm">
-              <span className="text-muted-foreground">Popular:</span>
-              {["Aeron", "Embody", "Gesture", "Leap"].map((term) => (
-                <Link
-                  key={term}
-                  href={`/products?search=${term.toLowerCase()}`}
-                  className="px-3 py-1.5 bg-muted rounded-full text-foreground hover:bg-muted/80 transition-colors"
-                >
-                  {term}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="py-12 lg:py-16 border-t border-border bg-muted/20">
-          <div className="mx-auto max-w-6xl px-4">
-            <h2 className="font-serif text-2xl font-medium text-foreground mb-2">
-              Browse by Category
-            </h2>
-            <p className="text-sm text-muted-foreground mb-8">
-              Explore chairs by how you use them
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {CHAIR_CATEGORIES.map((cat) => {
-                const Icon = CATEGORY_ICONS[cat.id] ?? Briefcase
-                const count = categoryCounts[cat.id]
-                return (
-                  <Link
-                    key={cat.id}
-                    href={`/products?category=${cat.id}`}
-                    className="group p-5 bg-card rounded-xl border border-border hover:border-foreground/25 transition-all"
-                  >
-                    <Icon className="h-6 w-6 text-foreground mb-3" />
-                    <h3 className="font-medium text-foreground text-sm leading-snug">
-                      {cat.label}
-                    </h3>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {count} {count === 1 ? "chair" : "chairs"}
-                    </p>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
+        {/* Latest reviews */}
         {latestReviews.length > 0 && (
-          <section className="py-12 lg:py-16 border-t border-border">
+          <section className="border-t border-border py-14 lg:py-20">
             <div className="mx-auto max-w-6xl px-4">
-              <div className="mb-6 flex items-end justify-between">
-                <h2 className="font-serif text-2xl font-medium text-foreground">
-                  Latest reviews
-                </h2>
-                <Link
-                  href="/reviews"
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  View all →
-                </Link>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {latestReviews.map((r) => (
-                  <Link
-                    key={r.id}
-                    href={`/reviews/${r.id}`}
-                    className="group flex flex-col rounded-xl border border-border bg-card p-4 transition-shadow hover:shadow-md"
-                  >
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      {r.brandName && (
-                        <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
-                          {r.brandName}
-                        </span>
-                      )}
-                      <span className="truncate">{r.productName}</span>
-                    </div>
-                    <p className="mt-2 line-clamp-3 text-sm text-foreground">
-                      {r.summary}
-                    </p>
-                    <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
-                      Read full review →
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {latestVideos.length > 0 && (
-          <section className="py-12 lg:py-16 border-t border-border bg-muted/20">
-            <div className="mx-auto max-w-6xl px-4">
-              <div className="mb-6 flex items-end justify-between">
-                <h2 className="font-serif text-2xl font-medium text-foreground">
-                  New videos
-                </h2>
-                <Link
-                  href="/videos"
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  View all →
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                {latestVideos.map((v) => (
-                  <a
-                    key={v.id}
-                    href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex flex-col"
-                  >
-                    <div className="relative aspect-video overflow-hidden rounded-lg border border-border bg-muted">
-                      {v.thumbnailUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={v.thumbnailUrl}
-                          alt={v.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
-                      ) : null}
-                      <span className="absolute inset-0 flex items-center justify-center">
-                        <span className="rounded-full bg-black/55 p-2.5 backdrop-blur-sm transition-colors group-hover:bg-black/70">
-                          <Play className="h-4 w-4 fill-white text-white" />
-                        </span>
+              <Reveal>
+                <SectionHead title="Latest reviews" href="/reviews" cta="View all" />
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {latestReviews.map((r) => (
+                    <Link
+                      key={r.id}
+                      href={`/reviews/${r.id}`}
+                      className="group flex flex-col rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                    >
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        {r.brandName && (
+                          <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
+                            {r.brandName}
+                          </span>
+                        )}
+                        <span className="truncate">{r.productName}</span>
+                      </div>
+                      <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-foreground">
+                        {r.summary}
+                      </p>
+                      <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
+                        Read full review →
                       </span>
-                    </div>
-                    <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">
-                      {v.title}
-                    </p>
-                    {v.brand && (
-                      <p className="text-xs text-muted-foreground">{v.brand}</p>
-                    )}
-                  </a>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+              </Reveal>
             </div>
           </section>
         )}
 
-        {latestNews.length > 0 && (
-          <section className="py-12 lg:py-16 border-t border-border">
-            <div className="mx-auto max-w-6xl px-4">
-              <div className="mb-6 flex items-end justify-between">
-                <h2 className="font-serif text-2xl font-medium text-foreground">
-                  Latest news
-                </h2>
-                <Link
-                  href="/news"
-                  className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  View all →
-                </Link>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                {latestNews.map((n) => (
-                  <NewsCard key={n.id} item={n} />
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        <section className="py-8 border-y border-border bg-card">
+        {/* Top rated — editorial numbered list */}
+        <section className="border-t border-border py-14 lg:py-20">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{stats.products}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Products</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{stats.brands}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Brands</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{stats.reviews}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Reviews</p>
-              </div>
-              <div>
-                <p className="text-2xl font-semibold text-foreground">{stats.comparisons}</p>
-                <p className="text-sm text-muted-foreground mt-0.5">Comparisons</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-14 lg:py-16">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-6">
-              <h2 className="font-serif text-2xl font-medium text-foreground">Top Rated</h2>
-              <Link href="/products" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                View all
-              </Link>
-            </div>
-            <div className="border border-border rounded-lg overflow-hidden divide-y divide-border">
-              {featuredProducts.map((product, index) => {
-                return (
+            <Reveal>
+              <SectionHead title="Top rated" href="/products" cta="View all" />
+              <div className="divide-y divide-border overflow-hidden rounded-xl border border-border">
+                {featuredProducts.map((product, index) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.id}`}
-                    className="flex items-center gap-4 p-4 bg-card hover:bg-muted/30 transition-colors"
+                    className="flex items-center gap-4 bg-card p-4 transition-colors hover:bg-muted/30"
                   >
-                    <span className="text-sm text-muted-foreground w-5 shrink-0">{index + 1}</span>
-                    <div className="h-12 w-12 rounded-lg overflow-hidden bg-muted shrink-0">
-                      <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+                    <span className="w-5 shrink-0 font-serif text-lg text-muted-foreground">
+                      {index + 1}
+                    </span>
+                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-muted">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <h3 className="font-medium text-foreground">{product.name}</h3>
-                        <span className="text-sm text-muted-foreground hidden sm:inline">by {product.brand}</span>
+                        <span className="hidden text-sm text-muted-foreground sm:inline">
+                          by {product.brand}
+                        </span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span>{product.categoryLabel ?? product.category}</span>
@@ -348,66 +210,153 @@ export default async function HomePage() {
                         )}
                       </div>
                     </div>
-                    <div className="text-right shrink-0">
-                      <p className="font-medium text-foreground">{product.price}</p>
-                    </div>
+                    <p className="shrink-0 text-right font-medium text-foreground">
+                      {product.price}
+                    </p>
                   </Link>
-                )
-              })}
-            </div>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </section>
 
-        <section className="py-14 lg:py-16 border-t border-border">
+        {/* New videos — horizontal editorial rail */}
+        {latestVideos.length > 0 && (
+          <section className="border-t border-border bg-muted/20 py-14 lg:py-20">
+            <div className="mx-auto max-w-6xl px-4">
+              <Reveal>
+                <SectionHead title="New videos" href="/videos" cta="View all" />
+              </Reveal>
+              <Reveal>
+                <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2">
+                  {latestVideos.map((v) => (
+                    <a
+                      key={v.id}
+                      href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block w-[260px] shrink-0 snap-start sm:w-[320px]"
+                    >
+                      <div className="relative aspect-video overflow-hidden rounded-xl border border-border bg-muted">
+                        {v.thumbnailUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={v.thumbnailUrl}
+                            alt={v.title}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : null}
+                        <span className="absolute inset-0 flex items-center justify-center">
+                          <span className="rounded-full bg-black/55 p-3 backdrop-blur-sm transition-colors group-hover:bg-black/70">
+                            <Play className="h-5 w-5 fill-white text-white" />
+                          </span>
+                        </span>
+                      </div>
+                      <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">
+                        {v.title}
+                      </p>
+                      {v.brand && (
+                        <p className="text-xs text-muted-foreground">{v.brand}</p>
+                      )}
+                    </a>
+                  ))}
+                </div>
+              </Reveal>
+            </div>
+          </section>
+        )}
+
+        {/* Browse by category */}
+        <section className="border-t border-border py-14 lg:py-20">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-6">
-              <h2 className="font-serif text-2xl font-medium text-foreground">Best Lists</h2>
-              <Link href="/best" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                View all
-              </Link>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {homeBestLists.map((list) => (
-                <Link
-                  key={list.id}
-                  href={`/best/${list.id}`}
-                  className="p-4 bg-card rounded-lg border border-border hover:border-foreground/20 transition-all"
-                >
-                  <h3 className="font-medium text-foreground text-sm">{list.title}</h3>
-                  <p className="text-xs text-muted-foreground mt-1">{list.count} chairs</p>
-                </Link>
-              ))}
-            </div>
+            <Reveal>
+              <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">
+                Browse by category
+              </h2>
+              <p className="mb-8 mt-1 text-sm text-muted-foreground">
+                Explore chairs by how you use them
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {CHAIR_CATEGORIES.map((cat) => {
+                  const Icon = CATEGORY_ICONS[cat.id] ?? Briefcase
+                  const count = categoryCounts[cat.id]
+                  return (
+                    <Link
+                      key={cat.id}
+                      href={`/products?category=${cat.id}`}
+                      className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                    >
+                      <Icon className="mb-3 h-6 w-6 text-foreground transition-transform group-hover:scale-110" />
+                      <h3 className="text-sm font-medium leading-snug text-foreground">
+                        {cat.label}
+                      </h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {count} {count === 1 ? "chair" : "chairs"}
+                      </p>
+                    </Link>
+                  )
+                })}
+              </div>
+            </Reveal>
           </div>
         </section>
 
-        <section className="py-14 lg:py-16 border-t border-border">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-end justify-between mb-6">
-              <h2 className="font-serif text-2xl font-medium text-foreground">Brands</h2>
-              <Link href="/brands" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                All brands
-              </Link>
+        {/* Latest news */}
+        {latestNews.length > 0 && (
+          <section className="border-t border-border py-14 lg:py-20">
+            <div className="mx-auto max-w-6xl px-4">
+              <Reveal>
+                <SectionHead title="Latest news" href="/news" cta="View all" />
+                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  {latestNews.map((n) => (
+                    <NewsCard key={n.id} item={n} />
+                  ))}
+                </div>
+              </Reveal>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {topBrands.map((brand) => (
-                <Link
-                  key={brand.id}
-                  href={`/brands/${brand.id}`}
-                  className="p-4 bg-card rounded-lg border border-border hover:border-foreground/20 transition-all text-center"
-                >
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground font-semibold text-xs">
-                    {brand.logo}
-                  </div>
-                  <p className="mt-2 font-medium text-foreground text-sm">{brand.name}</p>
-                  <p className="text-xs text-muted-foreground">{brand.country}</p>
-                </Link>
-              ))}
-            </div>
+          </section>
+        )}
+
+        {/* Best lists + Brands */}
+        <section className="border-t border-border py-14 lg:py-20">
+          <div className="mx-auto max-w-6xl px-4 space-y-14">
+            <Reveal>
+              <SectionHead title="Best lists" href="/best" cta="View all" />
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {homeBestLists.map((list) => (
+                  <Link
+                    key={list.id}
+                    href={`/best/${list.id}`}
+                    className="rounded-xl border border-border bg-card p-4 transition-all hover:border-foreground/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                  >
+                    <h3 className="text-sm font-medium text-foreground">{list.title}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">{list.count} chairs</p>
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
+
+            <Reveal>
+              <SectionHead title="Brands" href="/brands" cta="All brands" />
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+                {topBrands.map((brand) => (
+                  <Link
+                    key={brand.id}
+                    href={`/brands/${brand.id}`}
+                    className="rounded-xl border border-border bg-card p-4 text-center transition-all hover:border-foreground/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
+                  >
+                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
+                      {brand.logo}
+                    </div>
+                    <p className="mt-2 text-sm font-medium text-foreground">{brand.name}</p>
+                    <p className="text-xs text-muted-foreground">{brand.country}</p>
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </section>
-
-
       </main>
 
       <Footer />

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { ArrowUp, Sparkles, Loader2, RotateCcw } from "lucide-react"
 import { ChairProductImage } from "@/components/chairs/ChairProductImage"
@@ -25,12 +25,13 @@ const SUGGESTIONS = [
   "Breathable mesh chair for a hot room, under $400",
 ]
 
-export function ChairAI() {
-  const [query, setQuery] = useState("")
+export function ChairAI({ initialQuery }: { initialQuery?: string } = {}) {
+  const [query, setQuery] = useState(initialQuery ?? "")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState("")
   const [result, setResult] = useState<Result | null>(null)
   const [asked, setAsked] = useState("")
+  const autoRan = useRef(false)
 
   async function run(q: string) {
     const trimmed = q.trim()
@@ -64,6 +65,15 @@ export function ChairAI() {
     setAsked("")
     setQuery("")
   }
+
+  // Auto-run when arriving with a prefilled query (e.g. from the home hero).
+  useEffect(() => {
+    if (initialQuery && initialQuery.trim() && !autoRan.current) {
+      autoRan.current = true
+      void run(initialQuery)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery])
 
   return (
     <div className="mx-auto w-full max-w-2xl">

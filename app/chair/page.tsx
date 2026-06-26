@@ -33,7 +33,12 @@ const FAQ = [
   },
 ]
 
-export default function ChairAIPage() {
+export default async function ChairAIPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>
+}) {
+  const { q } = await searchParams
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -68,7 +73,7 @@ export default function ChairAIPage() {
         </section>
 
         <section className="mx-auto max-w-3xl px-4 pb-16">
-          <ChairAI />
+          <ChairAI initialQuery={q} />
         </section>
 
         {/* SEO / FAQ */}
