@@ -3,7 +3,9 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { bestLists } from "@/lib/data"
+import { getBestListCards } from "@/lib/best/resolve"
+
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Best Office Chairs — Curated Lists",
@@ -12,7 +14,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/best" },
 }
 
-export default function BestListsPage() {
+export default async function BestListsPage() {
+  const lists = await getBestListCards()
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -53,11 +56,28 @@ export default function BestListsPage() {
               Budget to premium — the ergonomic chairs you can actually buy today, with specs and prices.
             </p>
           </Link>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {bestLists.map((list) => (
-              <Link key={list.id} href={`/best/${list.id}`} className="p-6 bg-card rounded-xl border border-border hover:border-foreground/20 transition-all">
-                <h2 className="font-serif text-lg font-medium text-foreground">{list.title}</h2>
-                <p className="text-sm text-muted-foreground mt-2">{list.count} products reviewed</p>
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {lists.map((list) => (
+              <Link
+                key={list.slug}
+                href={`/best/${list.slug}`}
+                className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+              >
+                {list.heroImage ? (
+                  <div className="aspect-[16/9] overflow-hidden bg-muted">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={list.heroImage}
+                      alt={list.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                ) : null}
+                <div className="flex flex-1 flex-col p-6">
+                  <h2 className="font-serif text-lg font-medium text-foreground">{list.title}</h2>
+                  <p className="mt-2 text-sm text-muted-foreground">{list.count} chairs</p>
+                </div>
               </Link>
             ))}
           </div>

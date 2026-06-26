@@ -20,6 +20,7 @@ import {
   Search,
   BookOpen,
   FileText,
+  ListOrdered,
   ImageIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -30,6 +31,7 @@ const NAV = [
   { href: "/admin/products", label: "Products", icon: Armchair },
   { href: "/admin/chairpedia", label: "Chairpedia", icon: BookOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/best", label: "Best Lists", icon: ListOrdered },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
   { href: "/admin/experience", label: "체험 후기", icon: MessageSquareHeart },
   { href: "/admin/editorial", label: "Editorial Ratings", icon: Gauge },
