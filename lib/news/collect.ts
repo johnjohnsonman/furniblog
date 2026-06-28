@@ -11,6 +11,18 @@ import {
 /** Max articles considered per brand per run (keeps Claude calls bounded). */
 const DEFAULT_MAX_PER_BRAND = 10
 
+/** Reject articles older than this — keep the feed genuinely "news". */
+const MAX_AGE_YEARS = 3
+
+/** True if the article is recent enough (undated articles are kept — rare in RSS). */
+function isRecentEnough(publishedAt: string | null | undefined): boolean {
+  if (!publishedAt) return true
+  const t = new Date(publishedAt).getTime()
+  if (Number.isNaN(t)) return true
+  const cutoff = Date.now() - MAX_AGE_YEARS * 365.25 * 24 * 60 * 60 * 1000
+  return t >= cutoff
+}
+
 export type RejectedNews = {
   title: string
   confidence: number
@@ -25,6 +37,7 @@ export type CollectNewsSingleResult = {
   inserted: number
   skippedDuplicates: number
   skippedIrrelevant: number
+  skippedOld: number
   rejected: RejectedNews[]
 }
 
@@ -42,6 +55,7 @@ export type CollectNewsBatchResult = {
   totalInserted: number
   totalDuplicateSkips: number
   totalSkippedIrrelevant: number
+  totalSkippedOld: number
   message: string
 }
 
@@ -88,7 +102,11 @@ export async function collectNewsForBrand(params: {
   const maxItems = Math.max(1, params.maxItems ?? DEFAULT_MAX_PER_BRAND)
 
   const { query, items: allItems } = await fetchGoogleNews(brand)
-  const items = allItems.slice(0, maxItems)
+  // Drop articles older than MAX_AGE_YEARS before spending the per-brand budget
+  // (and Claude calls) on them, so the feed stays genuinely recent.
+  const recentItems = allItems.filter((item) => isRecentEnough(item.publishedAt))
+  const skippedOld = allItems.length - recentItems.length
+  const items = recentItems.slice(0, maxItems)
 
   if (items.length === 0) {
     return {
@@ -98,6 +116,7 @@ export async function collectNewsForBrand(params: {
       inserted: 0,
       skippedDuplicates: 0,
       skippedIrrelevant: 0,
+      skippedOld,
       rejected: [],
     }
   }
@@ -167,6 +186,7 @@ export async function collectNewsForBrand(params: {
       inserted: 0,
       skippedDuplicates: 0,
       skippedIrrelevant,
+      skippedOld,
       rejected,
     }
   }
@@ -184,6 +204,7 @@ export async function collectNewsForBrand(params: {
     inserted: rows.length,
     skippedDuplicates: 0,
     skippedIrrelevant,
+    skippedOld,
     rejected,
   }
 }
@@ -207,6 +228,7 @@ export async function collectNewsForAllBrands(params: {
   let totalInserted = 0
   let totalDuplicateSkips = 0
   let totalSkippedIrrelevant = 0
+  let totalSkippedOld = 0
 
   for (let idx = 0; idx < targets.length; idx++) {
     const brand = targets[idx]
@@ -237,6 +259,7 @@ export async function collectNewsForAllBrands(params: {
     totalInserted += one.inserted
     totalDuplicateSkips += one.skippedDuplicates
     totalSkippedIrrelevant += one.skippedIrrelevant
+    totalSkippedOld += one.skippedOld
 
     if (idx < targets.length - 1 && options.delayMs > 0) {
       await sleep(options.delayMs)
@@ -250,6 +273,7 @@ export async function collectNewsForAllBrands(params: {
     totalInserted,
     totalDuplicateSkips,
     totalSkippedIrrelevant,
+    totalSkippedOld,
     message: "completed",
   }
 }
