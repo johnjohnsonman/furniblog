@@ -40,6 +40,10 @@ export const AFFILIATE_LINKS_DATA: Record<
   "furmax-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01LXXM5EK", isOfficial: false }],
   "dowinx-gaming": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07VXPWCN8", isOfficial: false }],
   "serta-fairbanks": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00AVUQQES", isOfficial: false }],
+  // Amazon bestseller additions (verified June 2026) — buyable /dp/ ASINs.
+  "gtplayer-gaming-footrest": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0FVXRZJ12", isOfficial: false }],
+  "bestoffice-breathable-mid-back": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0FQDM23S4", isOfficial: false }],
+  "homall-executive": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01MRZ02TL", isOfficial: false }],
   // Catalog expansion (2026) — HNI family + major US office brands. ASINs
   // researched June 2026 from listing titles; spot-check periodically.
   "hon-wave": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B001MS6ROW", isOfficial: false }],
