@@ -17,6 +17,7 @@ export const dynamic = "force-dynamic"
 type SearchParams = {
   brand?: string
   page?: string
+  sort?: "latest" | "added"
 }
 
 const HERO_COUNT = 3
@@ -31,6 +32,8 @@ export default async function NewsPage(props: {
   const searchParams = await props.searchParams
   const supabase = createPublicServerClient()
   const selectedBrand = searchParams.brand?.trim() || ""
+  const sort = searchParams.sort === "added" ? "added" : "latest"
+  const orderCol = sort === "added" ? "created_at" : "published_at"
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1)
   const from = (page - 1) * PAGE_SIZE
   const to = from + PAGE_SIZE - 1
@@ -39,7 +42,7 @@ export default async function NewsPage(props: {
     .from("news")
     .select(NEWS_SELECT, { count: "exact" })
     .eq("status", "published")
-    .order("published_at", { ascending: false, nullsFirst: false })
+    .order(orderCol, { ascending: false, nullsFirst: false })
 
   if (selectedBrand) gridQuery = gridQuery.eq("brand", selectedBrand)
 
@@ -79,6 +82,15 @@ export default async function NewsPage(props: {
   function brandHref(brand: string): string {
     const qs = new URLSearchParams()
     if (brand) qs.set("brand", brand)
+    if (sort === "added") qs.set("sort", sort)
+    const s = qs.toString()
+    return s ? `/news?${s}` : "/news"
+  }
+
+  function sortHref(nextSort: "latest" | "added"): string {
+    const qs = new URLSearchParams()
+    if (selectedBrand) qs.set("brand", selectedBrand)
+    if (nextSort === "added") qs.set("sort", nextSort)
     const s = qs.toString()
     return s ? `/news?${s}` : "/news"
   }
@@ -86,6 +98,7 @@ export default async function NewsPage(props: {
   function pageHref(nextPage: number): string {
     const qs = new URLSearchParams()
     if (selectedBrand) qs.set("brand", selectedBrand)
+    if (sort === "added") qs.set("sort", sort)
     qs.set("page", String(nextPage))
     return `/news?${qs.toString()}`
   }
@@ -112,6 +125,29 @@ export default async function NewsPage(props: {
             <NewsHero items={featured} />
           </section>
         )}
+
+        {/* Sort toggle */}
+        <div className="mb-6 flex items-center gap-2 text-sm">
+          <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            Sort
+          </span>
+          {([
+            { key: "latest", label: "Latest" },
+            { key: "added", label: "Recently added" },
+          ] as const).map((opt) => (
+            <Link
+              key={opt.key}
+              href={sortHref(opt.key)}
+              className={`rounded-full border px-3 py-1.5 transition-colors ${
+                sort === opt.key
+                  ? "border-foreground bg-foreground text-background"
+                  : "border-border bg-background text-foreground hover:bg-muted"
+              }`}
+            >
+              {opt.label}
+            </Link>
+          ))}
+        </div>
 
         {/* Brand filter chips */}
         {brands.length > 0 && (

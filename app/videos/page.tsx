@@ -17,7 +17,7 @@ export const dynamic = "force-dynamic"
 type SearchParams = {
   brand?: string
   chair?: string
-  sort?: "latest" | "views" | "random"
+  sort?: "latest" | "added" | "views" | "random"
   page?: string
 }
 
@@ -72,7 +72,9 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
       ? "views"
       : searchParams.sort === "latest"
         ? "latest"
-        : "random"
+        : searchParams.sort === "added"
+          ? "added"
+          : "random"
   const isRandom = sort === "random"
   const RANDOM_POOL = 48
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1)
@@ -92,6 +94,8 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
   if (selectedChairId) query = query.eq("chair_id", selectedChairId)
   if (sort === "views") {
     query = query.order("view_count", { ascending: false, nullsFirst: false })
+  } else if (sort === "added") {
+    query = query.order("created_at", { ascending: false, nullsFirst: false })
   } else {
     query = query.order("published_at", { ascending: false, nullsFirst: false })
   }
@@ -172,6 +176,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
           </label>
           <select name="sort" defaultValue={sort} className={selectClass}>
             <option value="random">Surprise me</option>
+            <option value="added">Recently added</option>
             <option value="latest">Latest</option>
             <option value="views">Most viewed</option>
           </select>
