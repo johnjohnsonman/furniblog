@@ -20,11 +20,12 @@ type Post = {
   seo_title: string | null
   seo_description: string | null
   published_at: string | null
+  updated_at: string | null
   category: string | null
 }
 
 const BASE_COLS =
-  "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at"
+  "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,updated_at"
 
 async function getPost(slug: string): Promise<Post | null> {
   const supabase = createPublicServerClient()
@@ -96,6 +97,7 @@ export default async function BlogPostPage({
     description: post.excerpt ?? post.subtitle ?? null,
     path: `/blog/${post.slug}`,
     datePublished: post.published_at,
+    dateModified: post.updated_at ?? post.published_at,
     image: post.hero_image_url,
   })
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -127,7 +129,13 @@ export default async function BlogPostPage({
             {post.subtitle && (
               <p className="mt-3 text-lg text-muted-foreground">{post.subtitle}</p>
             )}
-            <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+            <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <span>By the{" "}
+                <Link href="/about" className="font-medium text-foreground hover:underline">
+                  Furniblog Editorial Team
+                </Link>
+              </span>
+              <span>·</span>
               {post.published_at && (
                 <span>
                   {new Date(post.published_at).toLocaleDateString("en-US", {

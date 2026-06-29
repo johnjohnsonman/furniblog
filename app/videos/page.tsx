@@ -10,6 +10,8 @@ export const metadata = {
   title: "Chair Videos",
   description:
     "Browse curated chair videos with concise summaries, model links, channel details, and viewing stats.",
+  // Consolidate ?page/?sort/?brand/?chair variants to the base feed.
+  alternates: { canonical: "/videos" },
 }
 
 export const dynamic = "force-dynamic"

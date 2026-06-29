@@ -40,10 +40,13 @@ export async function generateMetadata({
   const brand = await getBrandBySlug(id)
   if (!brand) return {}
   const description = `${brand.name} office chairs — specs, real reviews, videos and prices. ${brand.country ? `From ${brand.country}.` : ""}`.trim()
+  // A brand page with no products is thin/soft-404 — keep it reachable but noindex.
+  const products = await getProductsByBrandSlug(brand.slug)
   return {
     title: `${brand.name} Chairs — Reviews & Specs`,
     description,
     alternates: { canonical: `/brands/${brand.slug}` },
+    ...(products.length === 0 ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: `${brand.name} Chairs — Reviews & Specs`,
       description,

@@ -30,6 +30,7 @@ export function generateArticleSchema(params: {
   description?: string | null
   path: string
   datePublished?: string | null
+  dateModified?: string | null
   image?: string | null
   authorName?: string
 }) {
@@ -41,6 +42,7 @@ export function generateArticleSchema(params: {
     url: `${SITE_URL}${params.path}`,
     mainEntityOfPage: `${SITE_URL}${params.path}`,
     ...(params.datePublished ? { datePublished: params.datePublished } : {}),
+    ...(params.dateModified ? { dateModified: params.dateModified } : {}),
     ...(params.image ? { image: params.image } : {}),
     author: {
       "@type": "Organization",

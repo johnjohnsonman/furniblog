@@ -15,7 +15,6 @@ const mainNav = [
   { name: "Reviews", href: "/reviews" },
   { name: "News", href: "/news" },
   { name: "Videos", href: "/videos" },
-  { name: "Gallery", href: "/gallery" },
 ]
 
 export function Header() {

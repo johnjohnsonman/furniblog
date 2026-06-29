@@ -10,6 +10,8 @@ export const metadata = {
   title: "Furniture & Chair News",
   description:
     "Curated office-chair and furniture-brand news, automatically collected and filtered. Browse the latest launches, reviews, and industry stories by brand.",
+  // Consolidate ?page/?brand/?sort variants to the base feed.
+  alternates: { canonical: "/news" },
 }
 
 export const dynamic = "force-dynamic"

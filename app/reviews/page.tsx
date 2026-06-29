@@ -19,6 +19,8 @@ export const metadata = {
   title: "Review Feed",
   description:
     "Real hands-on chair rankings from people like you, plus web-collected reviews from Reddit, YouTube and forums — filter by brand, category and source.",
+  // Consolidate ?page/?sort/?brand/?seed variants to the base feed.
+  alternates: { canonical: "/reviews" },
 }
 
 export const dynamic = "force-dynamic"

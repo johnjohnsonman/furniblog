@@ -22,6 +22,7 @@ type Entry = {
   seo_title: string | null
   seo_description: string | null
   published_at: string | null
+  updated_at: string | null
   gen_sources: string[] | null
   products: ProductRef
 }
@@ -48,7 +49,7 @@ async function getEntry(slug: string): Promise<Entry | null> {
     const { data } = await supabase
       .from("chairpedia")
       .select(
-        "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,gen_sources,products(slug,name)"
+        "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,updated_at,gen_sources,products(slug,name)"
       )
       .eq("slug", slug)
       .eq("status", "published")
@@ -108,11 +109,17 @@ export default async function ChairpediaEntryPage({
     new Set((entry.gen_sources ?? []).filter((u) => /^https?:\/\//.test(u)))
   )
 
+  const updatedAt = entry.updated_at ?? entry.published_at
+  const updatedStr = updatedAt
+    ? new Date(updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+    : null
+
   const articleSchema = generateArticleSchema({
     headline: entry.title,
     description: entry.excerpt ?? entry.subtitle ?? null,
     path: `/chairpedia/${entry.slug}`,
     datePublished: entry.published_at,
+    dateModified: updatedAt,
     image: entry.hero_image_url,
   })
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -139,6 +146,15 @@ export default async function ChairpediaEntryPage({
             {entry.subtitle && (
               <p className="mt-3 text-lg text-muted-foreground">{entry.subtitle}</p>
             )}
+            <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+              <span>By the{" "}
+                <Link href="/about" className="font-medium text-foreground hover:underline">
+                  Furniblog Editorial Team
+                </Link>
+              </span>
+              {sources.length > 0 && <span>· Researched against {sources.length} sources</span>}
+              {updatedStr && <span>· Updated {updatedStr}</span>}
+            </div>
           </header>
 
           {entry.hero_image_url && (
