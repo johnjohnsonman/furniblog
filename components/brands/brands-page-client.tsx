@@ -12,6 +12,7 @@ import {
   getCountryFilterPills,
 } from "@/lib/brand-assets"
 import { cn } from "@/lib/utils"
+import { shuffle } from "@/lib/utils/shuffle"
 
 type BrandsPageClientProps = {
   brands: Brand[]
@@ -197,6 +198,14 @@ export function BrandsPageClient({
     )
   }, [brands])
 
+  // Randomize the featured order on each visit. Shuffle only after mount so the
+  // server/client first render match (no hydration mismatch).
+  const [shuffledFeatured, setShuffledFeatured] = useState<Brand[] | null>(null)
+  useEffect(() => {
+    setShuffledFeatured(shuffle(featuredBrands))
+  }, [featuredBrands])
+  const displayedFeatured = shuffledFeatured ?? featuredBrands
+
   const filteredBrands = useMemo(() => {
     const query = search.trim().toLowerCase()
 
@@ -334,7 +343,7 @@ export function BrandsPageClient({
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
-                  {featuredBrands.map((brand) => (
+                  {displayedFeatured.map((brand) => (
                     <FeaturedTile key={brand.slug} brand={brand} />
                   ))}
                 </div>
