@@ -22,6 +22,7 @@ import {
   FileText,
   ListOrdered,
   ImageIcon,
+  GalleryHorizontal,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -37,6 +38,7 @@ const NAV = [
   { href: "/admin/editorial", label: "Editorial Ratings", icon: Gauge },
   { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/images", label: "Chair Images", icon: ImageIcon },
+  { href: "/admin/brand-images", label: "Brand Images", icon: GalleryHorizontal },
   { href: "/admin/pipeline", label: "Pipeline", icon: Settings2 },
   { href: "/admin/news", label: "News", icon: Newspaper },
   { href: "/admin/audit", label: "Audit", icon: ShieldCheck },

@@ -30,6 +30,7 @@ type DbBrand = {
   website_url: string | null
   tier: string
   founded_year: number | null
+  images?: string[] | null
 }
 
 type DbDesigner = {
@@ -158,6 +159,7 @@ function mapDbBrand(row: DbBrand, productCount = 0): Brand {
     category: "Office",
     website: row.website_url ?? undefined,
     heroImageUrl: row.hero_image_url ?? undefined,
+    images: (row.images ?? []).filter((u): u is string => Boolean(u?.trim())),
     colorPrimary: row.color_primary ?? undefined,
     colorSecondary: row.color_secondary ?? undefined,
   }

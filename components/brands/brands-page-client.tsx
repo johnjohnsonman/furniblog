@@ -53,23 +53,31 @@ function matchesCountry(brand: Brand, countryFilter: string): boolean {
 }
 
 function BrandCard({ brand }: { brand: Brand }) {
+  const cover = brand.images?.[0]
   return (
     <Link
       href={`/brands/${brand.slug}`}
       className="group flex items-start gap-4 rounded-lg border border-border bg-card p-5 transition-all hover:border-foreground/20"
     >
-      <div
-        className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg text-sm font-semibold text-white"
-        style={{
-          background: `linear-gradient(135deg, ${brand.colorPrimary ?? "#1A1A1A"}, ${brand.colorSecondary ?? "#4A4A4A"})`,
-        }}
-      >
-        {getBrandLogoInitials(brand.name)}
-      </div>
+      {cover ? (
+        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={cover} alt="" className="h-full w-full object-cover" />
+        </div>
+      ) : (
+        <div
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg font-serif text-sm font-semibold text-white"
+          style={{
+            background: `linear-gradient(135deg, ${brand.colorPrimary ?? "#1A1A1A"}, ${brand.colorSecondary ?? "#4A4A4A"})`,
+          }}
+        >
+          {getBrandLogoInitials(brand.name)}
+        </div>
+      )}
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between">
-          <h2 className="font-medium text-foreground">{brand.name}</h2>
+          <h2 className="font-serif text-base font-medium text-foreground">{brand.name}</h2>
           <ArrowRight className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-foreground" />
         </div>
 

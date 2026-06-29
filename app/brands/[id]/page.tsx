@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
-import Image from "next/image"
 import { ArrowLeft, ArrowUpRight, ChevronDown } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BrandProductsGrid } from "@/components/brands/brand-products-grid"
+import { BrandHeroCarousel } from "@/components/brands/brand-hero-carousel"
 import {
   getBrandBySlug,
   getBrandsWithCounts,
@@ -13,9 +13,6 @@ import {
   getReviewCounts,
 } from "@/lib/supabase/queries"
 import {
-  getBrandGradientStyle,
-  getBrandHeroImage,
-  getBrandLogoInitials,
   getBrandLongDescription,
   getBrandWarrantyLabel,
 } from "@/lib/brand-assets"
@@ -66,28 +63,16 @@ export default async function BrandPage({ params }: BrandPageProps) {
   const products = await getProductsByBrandSlug(brand.slug)
   const reviewCounts = await getReviewCounts(products.map((p) => p.id))
 
-  const heroImage = getBrandHeroImage(brand.slug, brand.heroImageUrl)
-  const gradientStyle = getBrandGradientStyle(
-    brand.colorPrimary,
-    brand.colorSecondary
-  )
   const longDescription = getBrandLongDescription(brand)
   const warrantyLabel = getBrandWarrantyLabel(brand.slug)
-  const isLightHero =
-    brand.slug === "hag-flokk" || brand.slug === "vitra"
-  const textClass = isLightHero ? "text-gray-900" : "text-white"
-  const mutedClass = isLightHero
-    ? "text-gray-700/90"
-    : "text-white/80"
+  const images = brand.images ?? []
+  // A short philosophy line for the hero quote (first 1–2 sentences).
+  const quote = longDescription.split(/(?<=\.)\s+/).slice(0, 2).join(" ")
 
   const stats = [
-    {
-      label: `${products.length} ${products.length === 1 ? "Chair" : "Chairs"}`,
-    },
-    ...(brand.founded > 0
-      ? [{ label: `Est. ${brand.founded}` }]
-      : []),
-    { label: brand.country },
+    { label: `${products.length} ${products.length === 1 ? "Chair" : "Chairs"}` },
+    ...(brand.founded > 0 ? [{ label: `Est. ${brand.founded}` }] : []),
+    ...(brand.country ? [{ label: brand.country }] : []),
     ...(warrantyLabel ? [{ label: warrantyLabel }] : []),
   ]
 
@@ -96,105 +81,70 @@ export default async function BrandPage({ params }: BrandPageProps) {
       <Header />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative h-[400px] w-full overflow-hidden">
-          <div className="absolute inset-0" style={gradientStyle} />
-          <Image
-            src={heroImage}
-            alt=""
-            fill
-            className="object-cover opacity-30 mix-blend-overlay"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-
-          <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-end px-4 pb-10 lg:px-8">
+        {/* Hero — editorial two-column (text + image carousel) */}
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
             <Link
               href="/brands"
-              className={`mb-6 inline-flex items-center gap-2 text-sm ${mutedClass} transition-colors hover:opacity-100`}
+              className="mb-8 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <ArrowLeft className="h-4 w-4" />
               All brands
             </Link>
 
-            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-              <div className="flex items-end gap-5">
-                <div
-                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border text-xl font-bold backdrop-blur-sm ${
-                    isLightHero
-                      ? "border-gray-900/20 bg-white/60 text-gray-900"
-                      : "border-white/20 bg-white/10 text-white"
-                  }`}
-                >
-                  {getBrandLogoInitials(brand.name)}
-                </div>
-                <div>
-                  <h1
-                    className={`font-serif text-4xl font-medium md:text-5xl ${textClass}`}
-                  >
-                    {brand.name}
-                  </h1>
-                  <p className={`mt-2 text-sm md:text-base ${mutedClass}`}>
-                    {brand.country}
-                    {brand.founded > 0 && (
-                      <>
-                        {" "}
-                        · Est. {brand.founded}
-                      </>
-                    )}
-                  </p>
-                  <p
-                    className={`mt-3 max-w-xl text-sm md:text-base ${mutedClass} line-clamp-2`}
-                  >
-                    {longDescription.split(".").slice(0, 1).join(".")}.
-                  </p>
-                </div>
-              </div>
+            <div className="grid items-center gap-10 md:grid-cols-2">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+                  {brand.country}
+                  {brand.founded > 0 && <> · Est. {brand.founded}</>}
+                </p>
+                <h1 className="mt-3 font-serif text-4xl font-medium text-foreground md:text-5xl">
+                  {brand.name}
+                </h1>
+                <blockquote className="mt-5 border-l-2 border-foreground/15 pl-4 font-serif text-lg italic leading-relaxed text-foreground/80">
+                  {quote}
+                </blockquote>
 
-              <div className="flex flex-wrap gap-3">
-                {brand.website && (
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {stats.map((stat) => (
+                    <span
+                      key={stat.label}
+                      className="rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-medium text-foreground"
+                    >
+                      {stat.label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="mt-7 flex flex-wrap gap-3">
                   <a
-                    href={brand.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 rounded-sm border px-4 py-2.5 text-sm font-medium transition-colors ${
-                      isLightHero
-                        ? "border-gray-900/30 bg-white/80 text-gray-900 hover:bg-white"
-                        : "border-white/30 bg-white/10 text-white hover:bg-white/20"
-                    }`}
+                    href="#chairs"
+                    className="inline-flex items-center gap-2 rounded-lg bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
                   >
-                    Official site
-                    <ArrowUpRight className="h-4 w-4" />
+                    View all chairs
+                    <ChevronDown className="h-4 w-4" />
                   </a>
-                )}
-                <a
-                  href="#chairs"
-                  className={`inline-flex items-center gap-2 rounded-sm px-4 py-2.5 text-sm font-medium transition-colors ${
-                    isLightHero
-                      ? "bg-gray-900 text-white hover:bg-gray-800"
-                      : "bg-white text-gray-900 hover:bg-white/90"
-                  }`}
-                >
-                  View all chairs
-                  <ChevronDown className="h-4 w-4" />
-                </a>
+                  {brand.website && (
+                    <a
+                      href={brand.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                    >
+                      Official site
+                      <ArrowUpRight className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Stats bar */}
-        <section className="border-b border-border bg-card">
-          <div className="mx-auto flex max-w-7xl flex-wrap gap-3 px-4 py-4 lg:px-8">
-            {stats.map((stat) => (
-              <span
-                key={stat.label}
-                className="rounded-full border border-border bg-background px-4 py-1.5 text-sm font-medium text-foreground"
-              >
-                {stat.label}
-              </span>
-            ))}
+              <BrandHeroCarousel
+                images={images}
+                name={brand.name}
+                colorPrimary={brand.colorPrimary}
+                colorSecondary={brand.colorSecondary}
+              />
+            </div>
           </div>
         </section>
 

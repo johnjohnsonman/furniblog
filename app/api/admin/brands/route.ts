@@ -10,11 +10,22 @@ export async function GET(request: NextRequest) {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from("brands")
-      .select("slug, name")
+      .select("id, slug, name, images")
       .order("name")
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      // `images` column may not exist yet (migration 040 not applied) — fall
+      // back so the brand dropdown on other admin pages keeps working.
+      const { data: basic, error: basicErr } = await supabase
+        .from("brands")
+        .select("id, slug, name")
+        .order("name")
+      if (basicErr) {
+        return NextResponse.json({ error: basicErr.message }, { status: 500 })
+      }
+      return NextResponse.json({
+        brands: (basic ?? []).map((b) => ({ ...b, images: [] })),
+      })
     }
 
     return NextResponse.json({ brands: data ?? [] })
