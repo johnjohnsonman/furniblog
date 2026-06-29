@@ -198,7 +198,20 @@ npm run test:pipeline      # 파이프라인 테스트
   - **단계**: ①migration 038(reviews.country ISO2 + 인덱스, 기존행 source기준 백필) ②MVP=YouTube `regionCode`+`relevanceLanguage`로 JP/DE/FR 즉시 다국가 + country 태깅 + `/reviews` 국기 필터 ③country-profiles config화 + Trustpilot/Reddit locale 주입 + 크론 국가 로테이션(pipeline_runs에 country 기록, 회차분산: 아침 US/KR·저녁 JP/DE 등 Vercel 300s 한도 주의) ④신규 전용 소스(JP Kakaku/Rakuten, DE idealo 등 — 유지보수 위험 큼, 트래픽 확인 후) ⑤제품상세 "국가별 평가" 섹션 + 국가별 SEO 페이지.
   - **ROI 최고**: 0+1단계(마이그레이션+YouTube 다국가+국기필터)가 신규 스크레이퍼 없이 즉시 다국가 데이터. 리스크: 국가별 양질 소스 편차→confidence 게이트(현 0.2) 국가별 조정, JP/DE 의자 별칭 부족 시 `CHAIR_NAMES` 보강 선행.
 
+### 2026-06-29 사이트 점검 + SEO/UX 퀵윈 적용 + 브랜드 페이지 리뉴얼 기획(미구현)
+- **데이터 점검**: 제품 235개 **썸네일 235/235 채워짐**(예전 "비어있음" 해소됨, 전부 고유 Supabase 이미지). **브랜드 이미지 0/83**(hero·logo 전무)=최대 시각 약점. gallery_images 0. **제품 124/235 리뷰 0건**(thin). chairpedia 27pub·blog 5pub·news 133.
+- **SEO/UX 퀵윈 적용(커밋 a5b02bf)**: ①Chairpedia/Blog **E-E-A-T 바이라인**("By the Furniblog Editorial Team"→/about) + "Researched against N sources · Updated 날짜" + article 스키마 `dateModified` ②사이트 전역 **OG 카드**(`app/opengraph-image.tsx`, next/og) — twitter large_image인데 이미지 없던 것 해결 ③**빈 브랜드 noindex**(0제품: uchida·boss-design·fursys) ④**/news·/videos·/reviews self-canonical**(?page/sort/seed/brand 통합) ⑤헤더에서 **빈 Gallery 메뉴 제거**.
+- **AI-SEO 판정**: Chairpedia/Blog(딥·웹리서치 고유)=SEO 유리, 페널티 아님. 진짜 위험=**얇은 제품 페이지**(리뷰0·짧은 템플릿설명)—"AI라서"가 아니라 "얇아서". `description_ko===en`(221/235)은 페이지엔 하나만 렌더→문제 아님. 대응=신규 제품 남발 금지, 리뷰/Chairpedia 깊이로 해소.
+- **남은 선택지(미적용)**: 별점 리치스니펫(평점 데이터 정합성 확인 후), 이미지 최적화(`images.unoptimized` 해제—Vercel 과금), 브랜드 hero 채우기.
+- **🎨 브랜드 페이지 리뉴얼 기획 — 확정, 구현 보류**(레퍼런스: Duomo&Co 리스팅 + Chairpark 상세):
+  - **현 상태(이미 60%)**: 리스팅 `components/brands/brands-page-client.tsx`=featured 14(이니셜 박스)+검색+국가필터+페이지네이션. 상세 `app/brands/[id]/page.tsx`=히어로(`lib/brand-assets.ts` **제네릭 Unsplash 폴백**)+longDescription+`BrandProductsGrid`(가격·정렬·LoadMore). **재구축 아니라 리파인.**
+  - **선결과제=브랜드 이미지(0/83).** 결정: **하이브리드** — ①지금 이니셜 박스→**브랜드 컬러+세리프 워드마크 카드**(color_primary/secondary 이미 있음) 즉시 업그레이드 ②어드민 **Brand Images 도구**(Chair Images처럼) 만들어 major부터 **체어파크 쇼룸 실촬영 사진**으로 점진 채움(저작권0+고유+E-E-A-T). 로고는 상표 nominative use OK, 라이프스타일 사진은 자체촬영/공식 프레스만.
+  - **리스팅(Duomo식)**: featured 로고/워드마크 그리드 + **A–Z 인덱스 신설** + 각 브랜드 **"Online" 점=아마존 구매가능**(`AFFILIATE_LINKS_DATA`로 자동판정, 수작업0).
+  - **상세(Chairpark식, 어필리에이트 각색)**: 히어로(쇼룸사진)+**브랜드 철학 인용구**+제품수 → 제품그리드(있음)에 재고badge 대신 **리뷰수·평점·Buy on Amazon** → **허브 레일 추가**(그 브랜드 Chairpedia/리뷰/뉴스 묶기, 내부링크·thin 완화). 제네릭 Unsplash 폴백 제거.
+  - **단계**: ①워드마크 카드+Brand Images 어드민 ②리스팅 A–Z+Online점 ③상세 Chairpark화(인용·레일·배지) ④major 15~20 히어로 채움.
+
 ### 남은 과제 (TODO)
+- [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드): 워드마크 카드 + Brand Images 어드민 → 리스팅 A–Z+Online점 → 상세 Chairpark화(인용·허브레일·리뷰/Amazon 배지). 쇼룸 실촬영 사진 우선.
 - [ ] **🌍 국가별 리뷰 수집 구현**(2026-06-26 기획): 0단계 migration 038(reviews.country+백필) → 1단계 YouTube 다국가(regionCode/relevanceLanguage)+국기 필터 → 2단계 country-profiles config+크론 로테이션. 대상 "온갖 나라"지만 소스 품질순 점진 활성화.
 - [ ] **신규 카탈로그 48종 썸네일 채우기**: 어드민 Chair Images "missing only"로. Walter Knoll·Poltrona Frau·Vitra 등 공식 제품컷 깔끔.
 - [ ] **🔴 SEO 트래픽: Chairpedia 10개 GSC 색인요청 + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
