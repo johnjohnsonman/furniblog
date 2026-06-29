@@ -14,6 +14,40 @@ export type ChairpediaDraft = {
   sources: string[]
 }
 
+/** Token/search usage and the resulting USD cost for one generation. */
+export type GenUsage = {
+  model: string
+  inputTokens: number
+  outputTokens: number
+  cacheCreationTokens: number
+  cacheReadTokens: number
+  webSearches: number
+  costUsd: number
+}
+
+/** Per-million-token prices (USD). Anthropic list pricing; web search billed separately. */
+function priceFor(model: string): { in: number; out: number; cacheWrite: number; cacheRead: number } {
+  const m = model.toLowerCase()
+  if (m.includes("opus")) return { in: 15, out: 75, cacheWrite: 18.75, cacheRead: 1.5 }
+  if (m.includes("haiku")) return { in: 1, out: 5, cacheWrite: 1.25, cacheRead: 0.1 }
+  // Sonnet (default for Chairpedia) and anything else.
+  return { in: 3, out: 15, cacheWrite: 3.75, cacheRead: 0.3 }
+}
+
+/** Web search server tool: $10 per 1,000 requests. */
+const WEB_SEARCH_USD = 0.01
+
+function computeCost(model: string, u: Omit<GenUsage, "model" | "costUsd">): number {
+  const p = priceFor(model)
+  return (
+    (u.inputTokens / 1_000_000) * p.in +
+    (u.outputTokens / 1_000_000) * p.out +
+    (u.cacheCreationTokens / 1_000_000) * p.cacheWrite +
+    (u.cacheReadTokens / 1_000_000) * p.cacheRead +
+    u.webSearches * WEB_SEARCH_USD
+  )
+}
+
 /**
  * The 16-section editorial structure for a Chairpedia deep-dive. The model fills
  * each as an <h2> section. Order matters for narrative + SEO flow.
@@ -208,7 +242,7 @@ Format rules (critical — follow exactly):
 export async function generateChairpediaDraft(
   chairName: string,
   tier: GenTier = "premium"
-): Promise<ChairpediaDraft> {
+): Promise<{ draft: ChairpediaDraft; usage: GenUsage }> {
   const client = getClient()
   if (!client) throw new Error("ANTHROPIC_API_KEY is not configured")
 
@@ -227,16 +261,32 @@ export async function generateChairpediaDraft(
     ],
   }
 
+  // Accumulate token + web-search usage across every API call (the initial one
+  // plus each pause_turn continuation — each call is billed for its full input).
+  const acc = { inputTokens: 0, outputTokens: 0, cacheCreationTokens: 0, cacheReadTokens: 0, webSearches: 0 }
+  const addUsage = (u: Anthropic.Messages.Usage | undefined) => {
+    if (!u) return
+    acc.inputTokens += u.input_tokens ?? 0
+    acc.outputTokens += u.output_tokens ?? 0
+    acc.cacheCreationTokens += u.cache_creation_input_tokens ?? 0
+    acc.cacheReadTokens += u.cache_read_input_tokens ?? 0
+    acc.webSearches += u.server_tool_use?.web_search_requests ?? 0
+  }
+
   // web_search can return stop_reason "pause_turn" on a long-running turn — feed
   // the partial assistant content back so the model finishes writing the answer.
   const messages: Anthropic.Messages.MessageParam[] = [
     { role: "user", content: buildPrompt(chairName, cfg) },
   ]
   let response = await client.messages.create({ ...baseParams, messages })
+  addUsage(response.usage)
   for (let guard = 0; response.stop_reason === "pause_turn" && guard < 6; guard++) {
     messages.push({ role: "assistant", content: response.content })
     response = await client.messages.create({ ...baseParams, messages })
+    addUsage(response.usage)
   }
+
+  const usage: GenUsage = { model: MODEL, ...acc, costUsd: computeCost(MODEL, acc) }
 
   // The final assistant text blocks contain the answer (web_search runs server-side).
   const text = response.content
@@ -253,5 +303,5 @@ export async function generateChairpediaDraft(
     throw new Error("The generated draft is missing a title or body")
   }
 
-  return draft
+  return { draft, usage }
 }

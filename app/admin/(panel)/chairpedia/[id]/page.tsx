@@ -35,6 +35,11 @@ type Entry = {
   gen_status: string | null
   gen_error: string | null
   gen_sources: string[] | null
+  gen_cost_usd: number | null
+  gen_input_tokens: number | null
+  gen_output_tokens: number | null
+  gen_web_searches: number | null
+  gen_tier: string | null
 }
 
 function linkedName(p: Entry["products"]): { slug: string; name: string } | null {
@@ -148,6 +153,11 @@ export default function AdminChairpediaEditor() {
             product_id: done.product_id,
             products: done.products,
             gen_status: "done",
+            gen_cost_usd: done.gen_cost_usd,
+            gen_input_tokens: done.gen_input_tokens,
+            gen_output_tokens: done.gen_output_tokens,
+            gen_web_searches: done.gen_web_searches,
+            gen_tier: done.gen_tier,
             slug: isDefaultSlug && done.title ? slugify(done.title) : base.slug,
           }
         })
@@ -260,6 +270,16 @@ export default function AdminChairpediaEditor() {
               </Button>
             </div>
             {generating && <p className="text-xs text-muted-foreground mt-2">Researching in the background — usually ~90 seconds. Keep this tab open; fields fill in automatically when ready.</p>}
+            {!generating && e.gen_cost_usd != null && (
+              <div className="mt-2 inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-md bg-[#9a7b4f]/10 px-2.5 py-1.5 text-xs text-[#7a5f3a]">
+                <span className="font-semibold">AI cost: ${e.gen_cost_usd.toFixed(4)}</span>
+                {e.gen_web_searches != null && <span>· {e.gen_web_searches} searches</span>}
+                {e.gen_input_tokens != null && e.gen_output_tokens != null && (
+                  <span>· {(e.gen_input_tokens / 1000).toFixed(1)}k in / {(e.gen_output_tokens / 1000).toFixed(1)}k out</span>
+                )}
+                {e.gen_tier && <span>· {e.gen_tier}</span>}
+              </div>
+            )}
             {aiError && <p className="text-xs text-red-600 mt-2">{aiError}</p>}
             {sources.length > 0 && (
               <details className="mt-2 text-xs text-muted-foreground">

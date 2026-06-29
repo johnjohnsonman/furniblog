@@ -30,6 +30,11 @@ export async function POST(request: NextRequest) {
         gen_error: null,
         gen_started_at: new Date().toISOString(),
         gen_sources: [],
+        gen_cost_usd: null,
+        gen_input_tokens: null,
+        gen_output_tokens: null,
+        gen_web_searches: null,
+        gen_tier: tier,
       })
       .eq("id", id)
 
@@ -38,7 +43,7 @@ export async function POST(request: NextRequest) {
     after(async () => {
       const db = createAdminClient()
       try {
-        const draft = await generateChairpediaDraft(chairName, tier)
+        const { draft, usage } = await generateChairpediaDraft(chairName, tier)
 
         // Auto-link the catalog product (enables the Amazon buy button) when a
         // confident name match exists and the entry isn't already linked.
@@ -67,6 +72,10 @@ export async function POST(request: NextRequest) {
             gen_status: "done",
             gen_error: null,
             gen_sources: draft.sources ?? [],
+            gen_cost_usd: usage.costUsd,
+            gen_input_tokens: usage.inputTokens,
+            gen_output_tokens: usage.outputTokens,
+            gen_web_searches: usage.webSearches,
             updated_at: new Date().toISOString(),
           })
           .eq("id", id)
