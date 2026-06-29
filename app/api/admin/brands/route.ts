@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from("brands")
-      .select("id, slug, name, images")
+      .select("id, slug, name, logo_url, images")
       .order("name")
 
     if (error) {
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       // back so the brand dropdown on other admin pages keeps working.
       const { data: basic, error: basicErr } = await supabase
         .from("brands")
-        .select("id, slug, name")
+        .select("id, slug, name, logo_url")
         .order("name")
       if (basicErr) {
         return NextResponse.json({ error: basicErr.message }, { status: 500 })

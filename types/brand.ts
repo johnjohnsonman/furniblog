@@ -11,6 +11,7 @@ export interface Brand {
   category: string
   website?: string
   heroImageUrl?: string
+  logoUrl?: string
   images?: string[]
   colorPrimary?: string
   colorSecondary?: string

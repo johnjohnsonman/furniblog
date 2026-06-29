@@ -11,72 +11,64 @@ export const runtime = "nodejs"
 
 type Ctx = { params: Promise<{ slug: string }> }
 
-async function loadImages(slug: string): Promise<{ id: string; images: string[] } | null> {
+async function loadBrand(slug: string): Promise<{ id: string; logo_url: string | null } | null> {
   const supabase = createAdminClient()
   const { data } = await supabase
     .from("brands")
-    .select("id, images")
+    .select("id, logo_url")
     .eq("slug", slug)
     .maybeSingle()
   if (!data) return null
-  return { id: data.id as string, images: (data.images as string[] | null) ?? [] }
+  return { id: data.id as string, logo_url: (data.logo_url as string | null) ?? null }
 }
 
-// Upload a new image and append it to the brand's images array.
+// Upload / replace the brand's official logo (stored in logo_url).
 export async function POST(request: NextRequest, context: Ctx) {
   const denied = requireAdmin(request)
   if (denied) return denied
   const { slug } = await context.params
   try {
-    const current = await loadImages(slug)
+    const current = await loadBrand(slug)
     if (!current) return NextResponse.json({ error: "Brand not found" }, { status: 404 })
-    if (current.images.length >= 4) {
-      return NextResponse.json({ error: "Up to 4 images per brand" }, { status: 400 })
-    }
 
     const formData = await request.formData()
     const file = formData.get("file")
     if (!(file instanceof File)) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 })
     }
-    const url = await uploadGalleryImageServer(file, `brand-${slug}`)
-    const images = [...current.images, url]
+    const url = await uploadGalleryImageServer(file, `brand-logo-${slug}`)
 
     const supabase = createAdminClient()
-    const { error } = await supabase.from("brands").update({ images }).eq("id", current.id)
+    const { error } = await supabase.from("brands").update({ logo_url: url }).eq("id", current.id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-    return NextResponse.json({ images })
+
+    // Best-effort cleanup of the old logo file.
+    if (current.logo_url && current.logo_url !== url) {
+      await deleteStorageObject("gallery", current.logo_url).catch(() => {})
+    }
+    return NextResponse.json({ logo_url: url })
   } catch (error) {
     return jsonInternalError(error)
   }
 }
 
-// Replace the whole images array (reorder / set cover / delete).
-export async function PATCH(request: NextRequest, context: Ctx) {
+// Remove the brand's logo.
+export async function DELETE(request: NextRequest, context: Ctx) {
   const denied = requireAdmin(request)
   if (denied) return denied
   const { slug } = await context.params
   try {
-    const current = await loadImages(slug)
+    const current = await loadBrand(slug)
     if (!current) return NextResponse.json({ error: "Brand not found" }, { status: 404 })
 
-    const body = await request.json()
-    const next = Array.isArray(body.images)
-      ? (body.images as unknown[])
-          .filter((u): u is string => typeof u === "string" && Boolean(u.trim()))
-          .slice(0, 4)
-      : null
-    if (!next) return NextResponse.json({ error: "images array required" }, { status: 400 })
-
     const supabase = createAdminClient()
-    const { error } = await supabase.from("brands").update({ images: next }).eq("id", current.id)
+    const { error } = await supabase.from("brands").update({ logo_url: null }).eq("id", current.id)
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    // Best-effort cleanup of removed files from storage.
-    const removed = current.images.filter((u) => !next.includes(u))
-    await Promise.all(removed.map((u) => deleteStorageObject("gallery", u).catch(() => {})))
-
-    return NextResponse.json({ images: next })
+    if (current.logo_url) {
+      await deleteStorageObject("gallery", current.logo_url).catch(() => {})
+    }
+    return NextResponse.json({ logo_url: null })
   } catch (error) {
     return jsonInternalError(error)
   }

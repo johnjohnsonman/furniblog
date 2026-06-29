@@ -88,6 +88,14 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
             <div className="grid items-center gap-10 md:grid-cols-2">
               <div>
+                {brand.logoUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={brand.logoUrl}
+                    alt={`${brand.name} logo`}
+                    className="mb-5 h-12 w-auto max-w-[220px] object-contain"
+                  />
+                )}
                 <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
                   {brand.country}
                   {brand.founded > 0 && <> · Est. {brand.founded}</>}

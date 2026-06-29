@@ -55,7 +55,7 @@ function matchesCountry(brand: Brand, countryFilter: string): boolean {
 
 /** Large Duomo-style tile for the featured brands grid (logo/image centered). */
 function FeaturedTile({ brand }: { brand: Brand }) {
-  const cover = brand.images?.[0]
+  const cover = brand.logoUrl ?? brand.images?.[0]
   return (
     <Link
       href={`/brands/${brand.slug}`}
@@ -83,16 +83,16 @@ function FeaturedTile({ brand }: { brand: Brand }) {
 }
 
 function BrandCard({ brand }: { brand: Brand }) {
-  const cover = brand.images?.[0]
+  const cover = brand.logoUrl ?? brand.images?.[0]
   return (
     <Link
       href={`/brands/${brand.slug}`}
       className="group flex items-start gap-4 rounded-lg border border-border bg-card p-5 transition-all hover:border-foreground/20"
     >
       {cover ? (
-        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-muted">
+        <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-border bg-white">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={cover} alt="" className="h-full w-full object-cover" />
+          <img src={cover} alt="" className="h-full w-full object-contain p-1" />
         </div>
       ) : (
         <div
