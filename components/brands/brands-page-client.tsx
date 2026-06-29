@@ -52,6 +52,35 @@ function matchesCountry(brand: Brand, countryFilter: string): boolean {
   return (brand.country?.trim().toUpperCase() ?? "") === countryFilter.toUpperCase()
 }
 
+/** Large Duomo-style tile for the featured brands grid (logo/image centered). */
+function FeaturedTile({ brand }: { brand: Brand }) {
+  const cover = brand.images?.[0]
+  return (
+    <Link
+      href={`/brands/${brand.slug}`}
+      className="group relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-card transition-colors hover:bg-muted/50"
+    >
+      {cover ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={cover}
+          alt={brand.name}
+          className="h-full w-full object-contain p-8 transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <span className="px-6 text-center font-serif text-2xl font-medium text-foreground md:text-3xl">
+          {brand.name}
+        </span>
+      )}
+      {cover && (
+        <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/40 to-transparent px-4 pb-3 pt-8 text-center text-xs font-medium uppercase tracking-wider text-white opacity-0 transition-opacity group-hover:opacity-100">
+          {brand.name}
+        </span>
+      )}
+    </Link>
+  )
+}
+
 function BrandCard({ brand }: { brand: Brand }) {
   const cover = brand.images?.[0]
   return (
@@ -304,9 +333,9 @@ export function BrandsPageClient({
                     Iconic design houses
                   </span>
                 </div>
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
                   {featuredBrands.map((brand) => (
-                    <BrandCard key={brand.slug} brand={brand} />
+                    <FeaturedTile key={brand.slug} brand={brand} />
                   ))}
                 </div>
               </section>

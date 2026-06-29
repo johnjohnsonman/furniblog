@@ -8,7 +8,6 @@ import { BrandProductsGrid } from "@/components/brands/brand-products-grid"
 import { BrandHeroCarousel } from "@/components/brands/brand-hero-carousel"
 import {
   getBrandBySlug,
-  getBrandsWithCounts,
   getProductsByBrandSlug,
   getReviewCounts,
 } from "@/lib/supabase/queries"
@@ -21,14 +20,9 @@ interface BrandPageProps {
   params: Promise<{ id: string }>
 }
 
-// Statically generated per brand, but re-validate every 10 min so product
-// prices on the brand grid stay in sync with the DB after catalog updates.
-export const revalidate = 600
-
-export async function generateStaticParams() {
-  const brands = await getBrandsWithCounts()
-  return brands.map((brand) => ({ id: brand.slug }))
-}
+// Dynamic so newly uploaded brand images, prices and products show immediately
+// (was ISR, which served a stale pre-render until revalidation).
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata({
   params,

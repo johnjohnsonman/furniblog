@@ -208,11 +208,11 @@ function BrandImageCard({
           {busy ? "Uploading…" : "No images — click to upload"}
         </button>
       ) : (
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {brand.images.map((url, i) => (
-            <div key={url} className="group relative aspect-square overflow-hidden rounded-md border border-border bg-muted">
+            <div key={url} className="group relative aspect-square overflow-hidden rounded-md border border-border bg-white">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={url} alt="" className="h-full w-full object-cover" />
+              <img src={url} alt="" className="h-full w-full object-contain p-2" />
               {i === 0 && (
                 <span className="absolute left-1 top-1 rounded bg-foreground px-1.5 py-0.5 text-[10px] font-semibold text-background">
                   Cover
