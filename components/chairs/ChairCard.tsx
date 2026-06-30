@@ -22,8 +22,13 @@ interface ChairCardProps {
 export function ChairCard({ product, reviewCount }: ChairCardProps) {
   const displayCount = reviewCount ?? product.reviewCount ?? 0
   const hasReviews = displayCount > 0
-  const imageBg =
-    PLACEHOLDER_BG[product.category as ChairCategory] ?? "var(--premium-cream)"
+  const hasImage = Boolean(product.images?.[0] ?? product.image)
+  // Real product photos usually sit on white — keep the tile light so they
+  // blend. The category-tinted (incl. dark) background is only for the empty
+  // placeholder, where it makes the white chair icon pop.
+  const imageBg = hasImage
+    ? "var(--premium-cream)"
+    : PLACEHOLDER_BG[product.category as ChairCategory] ?? "var(--premium-cream)"
   const isDarkPlaceholder =
     product.category === "gaming" || product.category === "executive"
 
