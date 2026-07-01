@@ -835,11 +835,15 @@ export async function getReviewCounts(
     )
     const uuids = [...slugToUuid.values()]
 
+    // Count ALL reviews for each product — the web-collected reviews (Reddit,
+    // YouTube, Naver, etc.) are unverified but are exactly what the feed and
+    // product pages show, so cards must reflect them too. .limit raises the
+    // default 1000-row cap so later products aren't undercounted.
     const { data: reviews, error: reviewError } = await supabase
       .from("reviews")
-      .select("product_id, scores, verified, source")
+      .select("product_id, scores")
       .in("product_id", uuids)
-      .or("verified.eq.true,source.eq.chairpark")
+      .limit(5000)
 
     if (reviewError || !reviews?.length) {
       return getReviewCountsLocal(uniqueIds)

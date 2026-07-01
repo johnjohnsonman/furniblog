@@ -103,7 +103,9 @@ export function ProductsPageContent({
       const statsForProduct = reviewCounts[p.id]
       return {
         product: p,
-        reviewCount: statsForProduct?.count ?? p.reviewCount ?? 0,
+        // Live count from the reviews table; the products.review_count column
+        // is stale, so don't fall back to it.
+        reviewCount: statsForProduct?.count ?? 0,
         avgScore:
           statsForProduct?.avgScore && statsForProduct.avgScore > 0
             ? statsForProduct.avgScore
