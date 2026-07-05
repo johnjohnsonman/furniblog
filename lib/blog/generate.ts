@@ -148,3 +148,87 @@ ${params.sourceTitle ? `Title: ${params.sourceTitle}\n` : ""}${params.sourceText
   if (!draft.title) draft.title = params.sourceTitle?.trim() || "Untitled post"
   return draft
 }
+
+export type BlogImageInput = {
+  media_type: "image/png" | "image/jpeg" | "image/webp" | "image/gif"
+  data: string
+}
+
+/**
+ * Same as generateBlogPost, but the source is screenshot(s) of a post (e.g. a
+ * Naver blog that won't scrape by URL). Claude reads the images with vision,
+ * translates + rewrites into an original English SEO blog post.
+ */
+export async function generateBlogPostFromImages(params: {
+  images: BlogImageInput[]
+  catalog: CatalogChair[]
+}): Promise<BlogDraft> {
+  const apiKey = process.env.ANTHROPIC_API_KEY?.trim()
+  if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY")
+  if (params.images.length === 0) throw new Error("No screenshots provided")
+
+  const client = new Anthropic({ apiKey })
+
+  const catalogList = params.catalog
+    .slice(0, 200)
+    .map((c) => `${c.slug} — ${c.name}`)
+    .join("\n")
+
+  const prompt = `You are an editor for Furniblog, an English-language site about office, ergonomic and design chairs.
+
+The attached SCREENSHOT(S) are a blog post the author wrote (often in Korean, e.g. a Naver blog). Read ALL of the screenshots IN ORDER — together they form ONE article. Read the on-image text carefully. Then convert it into a polished, original English blog post.
+
+RULES
+- The source is usually Korean — translate to natural, fluent English. Do NOT produce a literal machine translation; rewrite for clarity, flow and a Western reader.
+- Read the text from the images only. Reconstruct the full article across all screenshots (they are sequential parts of the same post). Ignore UI chrome — site headers, menus, ads/"Promoted", sidebars, comment sections, share buttons.
+- Keep it FAITHFUL to the source's facts and intent. Do not invent specs, prices, brands, dates or claims that aren't in the screenshots. If some text is cut off or unreadable, work with what's legible rather than guessing.
+- Make it genuinely useful and readable: clear structure, helpful H2/H3 headings, scannable.
+
+AFFILIATE & LINKS
+- Where you recommend or discuss a chair people could buy, add an Amazon affiliate link using an Amazon SEARCH url: <a href="https://www.amazon.com/s?k=BRAND+MODEL+chair">…</a>. NEVER guess an Amazon product id (no /dp/ links) — only search urls.
+- If a chair you mention exists in the CATALOG below, link its name to its Furniblog product page instead: <a href="/products/SLUG">…</a> (internal link). Use the exact slug from the catalog.
+- Don't over-link: link the first meaningful mention only.
+
+ALLOWED HTML TAGS ONLY: <h2>, <h3>, <p>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a href>, <table>, <thead>, <tbody>, <tr>, <th>, <td>. No <h1>, <img>, <div>, <span>, class/style attributes, scripts.
+
+OUTPUT FORMAT (follow EXACTLY — the KEY lines first, each on one line, then the body):
+TITLE: the post's English headline
+SUBTITLE: one compelling sub-line (max ~90 chars)
+EXCERPT: 1–2 sentence summary for cards/meta (max ~160 chars)
+SEO_TITLE: an SEO title tag, ~55–60 chars
+SEO_DESCRIPTION: an SEO meta description, ~150–158 chars
+CATEGORY: exactly one of — Reviews | Comparisons | Guides | Design Stories
+===BODY===
+the full article body as raw HTML using only the allowed tags
+
+CATALOG (for internal /products/SLUG links — use only when genuinely relevant):
+${catalogList || "(none)"}`
+
+  const imageBlocks = params.images.map((im) => ({
+    type: "image" as const,
+    source: { type: "base64" as const, media_type: im.media_type, data: im.data },
+  }))
+
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 8000,
+    messages: [
+      {
+        role: "user",
+        content: [
+          ...imageBlocks,
+          { type: "text", text: prompt },
+        ] as Anthropic.Messages.MessageParam["content"],
+      },
+    ],
+  })
+
+  const block = response.content.find((b) => b.type === "text")
+  const raw = block && block.type === "text" ? block.text : ""
+  const draft = parseDraft(raw)
+  if (!draft.content_html || draft.content_html.length < 40) {
+    throw new Error("The conversion returned an empty body (screenshots unreadable?)")
+  }
+  if (!draft.title) draft.title = "Untitled post"
+  return draft
+}
