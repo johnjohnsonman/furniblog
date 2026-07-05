@@ -90,7 +90,9 @@ async function getTrustpilotReviews(domain: string): Promise<TrustpilotReview[]>
     const businessUnitId = idMatch[1]
     console.log("[TRUSTPILOT] Business ID:", businessUnitId)
 
-    const apiUrl = `https://www.trustpilot.com/api/categoriespages/businessunit/${businessUnitId}/reviews?perPage=10&language=en`
+    // No language filter → include reviews from every country (translated to
+    // English later by the processor), not just English-language ones.
+    const apiUrl = `https://www.trustpilot.com/api/categoriespages/businessunit/${businessUnitId}/reviews?perPage=20`
     const apiRes = await fetch(apiUrl, {
       headers: {
         "User-Agent": "Mozilla/5.0 Chrome/120.0.0.0",

@@ -54,6 +54,67 @@ async function getVideoComments(
   }
 }
 
+type YtLocale = {
+  country: string
+  regionCode: string
+  relevanceLanguage: string
+  query: (name: string) => string
+  maxResults: number
+}
+
+// Always search the global/English pool, then ONE rotating foreign market per
+// chair so review coverage spreads worldwide without blowing the API quota
+// (2 search calls per chair instead of one-per-locale).
+const YT_BASE: YtLocale = {
+  country: "US",
+  regionCode: "US",
+  relevanceLanguage: "en",
+  query: (n) => `${n} review`,
+  maxResults: 5,
+}
+const YT_FOREIGN: YtLocale[] = [
+  { country: "JP", regionCode: "JP", relevanceLanguage: "ja", query: (n) => `${n} レビュー`, maxResults: 4 },
+  { country: "DE", regionCode: "DE", relevanceLanguage: "de", query: (n) => `${n} test erfahrungen`, maxResults: 4 },
+  { country: "FR", regionCode: "FR", relevanceLanguage: "fr", query: (n) => `${n} avis test`, maxResults: 4 },
+  { country: "IN", regionCode: "IN", relevanceLanguage: "en", query: (n) => `${n} review`, maxResults: 4 },
+]
+
+/** Deterministic per-chair rotation so different chairs hit different markets. */
+function pickForeignLocale(chairName: string): YtLocale {
+  let h = 0
+  for (let i = 0; i < chairName.length; i++) h = (h * 31 + chairName.charCodeAt(i)) >>> 0
+  return YT_FOREIGN[h % YT_FOREIGN.length]
+}
+
+async function searchVideoIds(
+  locale: YtLocale,
+  chairName: string,
+  apiKey: string
+): Promise<string[]> {
+  const params = new URLSearchParams({
+    part: "snippet",
+    q: locale.query(chairName),
+    type: "video",
+    maxResults: String(locale.maxResults),
+    regionCode: locale.regionCode,
+    relevanceLanguage: locale.relevanceLanguage,
+    key: apiKey,
+  })
+  try {
+    const res = await fetch(`https://www.googleapis.com/youtube/v3/search?${params}`)
+    if (!res.ok) {
+      console.warn(`[youtube] search failed (${locale.country}): HTTP ${res.status}`)
+      return []
+    }
+    const json = (await res.json()) as { items?: YoutubeSearchItem[] }
+    return (json.items ?? [])
+      .map((i) => i.id?.videoId)
+      .filter((id): id is string => Boolean(id))
+  } catch {
+    return []
+  }
+}
+
 export async function collectFromYoutube(chairName: string): Promise<RawContent[]> {
   const apiKey = process.env.YOUTUBE_API_KEY?.trim()
   if (!apiKey) {
@@ -62,33 +123,13 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
   }
 
   try {
-    const searchQuery = buildYoutubeSearchQuery(chairName)
-    console.log("[youtube] Search query:", searchQuery)
+    const locales = [YT_BASE, pickForeignLocale(chairName)]
+    console.log("[youtube] markets:", locales.map((l) => l.country).join("+"), "for", chairName)
 
-    const searchParams = new URLSearchParams({
-      part: "snippet",
-      q: searchQuery,
-      type: "video",
-      maxResults: "5",
-      key: apiKey,
-    })
-
-    const searchRes = await fetch(
-      `https://www.googleapis.com/youtube/v3/search?${searchParams}`
+    const idLists = await Promise.all(
+      locales.map((l) => searchVideoIds(l, chairName, apiKey))
     )
-
-    if (!searchRes.ok) {
-      console.warn(`[youtube] search failed: HTTP ${searchRes.status}`)
-      return []
-    }
-
-    const searchJson = (await searchRes.json()) as {
-      items?: YoutubeSearchItem[]
-    }
-
-    const videoIds = (searchJson.items ?? [])
-      .map((i) => i.id?.videoId)
-      .filter((id): id is string => Boolean(id))
+    const videoIds = [...new Set(idLists.flat())].slice(0, 9)
 
     if (videoIds.length === 0) return []
 
