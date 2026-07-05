@@ -12,6 +12,7 @@ const REVIEW_SERVER_SOURCES = [
   "trustpilot",
   "review_sites",
   "hackernews",
+  "kakaku",
 ]
 
 type ChairRow = {

@@ -35,6 +35,7 @@ const SOURCE_BADGE: Record<ReviewSource, string> = {
   trustpilot: "bg-[#00B67A]/15 text-[#00B67A]",
   review_sites: "bg-blue-100 text-blue-800 border-blue-200",
   hackernews: "bg-[#FF6600]/15 text-[#FF6600]",
+  kakaku: "bg-rose-100 text-rose-800",
   twitter: "bg-sky-100 text-sky-700",
   quora: "bg-[#B92B27]/15 text-[#B92B27]",
   community: "bg-gray-100 text-gray-800",

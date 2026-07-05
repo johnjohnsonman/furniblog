@@ -14,6 +14,7 @@ export interface RawContent {
     | "trustpilot"
     | "review_sites"
     | "hackernews"
+    | "kakaku"
   >
   score?: number
   viewCount?: number
@@ -45,6 +46,7 @@ export type PipelineSource =
   | "trustpilot"
   | "review_sites"
   | "hackernews"
+  | "kakaku"
 
 export interface PipelineOptions {
   chairSlug: string

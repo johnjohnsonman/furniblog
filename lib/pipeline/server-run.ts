@@ -7,6 +7,7 @@ import { collectFromTrustpilot } from "@/lib/pipeline/sources/trustpilot"
 import { collectFromYoutube } from "@/lib/pipeline/sources/youtube"
 import { collectFromNaver } from "@/lib/pipeline/sources/naver"
 import { collectFromReddit } from "@/lib/pipeline/sources/reddit"
+import { collectFromKakaku } from "@/lib/pipeline/sources/kakaku"
 import type { PipelineSource, RawContent } from "@/lib/pipeline/types"
 import type { SupabaseClient } from "@supabase/supabase-js"
 
@@ -24,6 +25,7 @@ export type SourceCounts = {
   trustpilot: number
   review_sites: number
   hackernews: number
+  kakaku: number
   browser: number
   server: number
 }
@@ -68,6 +70,7 @@ const VALID_SOURCES: PipelineSource[] = [
   "trustpilot",
   "review_sites",
   "hackernews",
+  "kakaku",
 ]
 
 function normalizeBrowserItems(items: unknown[]): RawContent[] {
@@ -201,6 +204,20 @@ async function collectServerSources(
     }
   }
 
+  if (sources.includes("kakaku")) {
+    try {
+      const items = await withTimeout(
+        collectFromKakaku(productSlug, productName),
+        SCRAPE_SOURCE_TIMEOUT_MS,
+        "Kakaku"
+      )
+      serverItems.push(...items)
+      console.log("[PIPELINE] Kakaku:", items.length)
+    } catch (e) {
+      console.warn("[PIPELINE] Kakaku failed:", e)
+    }
+  }
+
   return serverItems
 }
 
@@ -214,6 +231,7 @@ function countBySource(items: RawContent[]): SourceCounts {
     trustpilot: 0,
     review_sites: 0,
     hackernews: 0,
+    kakaku: 0,
     browser: 0,
     server: 0,
   }
@@ -389,7 +407,7 @@ export async function executeServerPipeline(params: {
 
   function originalLanguageFor(source: RawContent["source"]): string {
     if (source === "naver" || source === "dcinside") return "ko"
-    if (source === "japan_community") return "ja"
+    if (source === "japan_community" || source === "kakaku") return "ja"
     return "en"
   }
 

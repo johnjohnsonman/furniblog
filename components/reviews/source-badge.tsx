@@ -72,6 +72,11 @@ const BADGE_CONFIG: Record<
     className: "bg-[#FF6600]/10 text-[#FF6600] border-[#FF6600]/30",
     icon: Newspaper,
   },
+  kakaku: {
+    label: "Kakaku.com (Japan)",
+    className: "bg-rose-50 text-rose-800 border-rose-200",
+    icon: Globe,
+  },
   twitter: {
     label: "Twitter / X",
     className: "bg-sky-50 text-sky-700 border-sky-200",

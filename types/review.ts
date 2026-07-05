@@ -9,6 +9,7 @@ export type ReviewSource =
   | "trustpilot"
   | "review_sites"
   | "hackernews"
+  | "kakaku"
   | "twitter"
   | "quora"
   // Curated/owner-added reviews shown without any source attribution.
