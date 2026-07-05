@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Loader2, Plus } from "lucide-react"
+import { Loader2, Plus, Trash2 } from "lucide-react"
 
 type Post = {
   id: string
@@ -22,6 +22,25 @@ export default function AdminBlogPage() {
   const [sourceUrl, setSourceUrl] = useState("")
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState("")
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  async function del(post: Post) {
+    if (deletingId) return
+    if (!window.confirm(`Delete "${post.title || "this post"}"? This can't be undone.`)) return
+    setDeletingId(post.id)
+    try {
+      const res = await fetch(`/api/admin/blog/${post.id}`, { method: "DELETE" })
+      if (res.ok) setPosts((prev) => prev.filter((p) => p.id !== post.id))
+      else {
+        const data = await res.json().catch(() => ({}))
+        alert(data.error ?? "Delete failed")
+      }
+    } catch {
+      alert("Network error")
+    } finally {
+      setDeletingId(null)
+    }
+  }
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -133,18 +152,19 @@ export default function AdminBlogPage() {
               <th className="px-4 py-3">Title</th>
               <th className="w-28 px-4 py-3">Status</th>
               <th className="w-32 px-4 py-3">Updated</th>
+              <th className="w-16 px-4 py-3"></th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
                   Loading…
                 </td>
               </tr>
             ) : posts.length === 0 ? (
               <tr>
-                <td colSpan={3} className="px-4 py-8 text-center text-muted-foreground">
+                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
                   No posts yet. Convert an article above.
                 </td>
               </tr>
@@ -175,6 +195,21 @@ export default function AdminBlogPage() {
                   </td>
                   <td className="px-4 py-3 text-muted-foreground">
                     {new Date(p.updated_at).toLocaleDateString()}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      type="button"
+                      onClick={() => void del(p)}
+                      disabled={deletingId === p.id}
+                      title="Delete post"
+                      className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600 disabled:opacity-40"
+                    >
+                      {deletingId === p.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </button>
                   </td>
                 </tr>
               ))
