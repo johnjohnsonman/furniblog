@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useParams, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Loader2, ArrowLeft, ExternalLink, Save, Upload, Sparkles, ClipboardPaste, ImagePlus, X } from "lucide-react"
+import { Loader2, ArrowLeft, ExternalLink, Save, Upload, Sparkles, ClipboardPaste } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ChairpediaEditor } from "@/components/admin/chairpedia-editor"
 import { cn } from "@/lib/utils"
@@ -40,85 +40,23 @@ export default function AdminBlogEditor() {
   const [sourceUrl, setSourceUrl] = useState("")
   const [converting, setConverting] = useState(false)
   const [genError, setGenError] = useState("")
-  const [shots, setShots] = useState<string[]>([])
+  const [pastedText, setPastedText] = useState("")
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const autoStarted = useRef(false)
-  const shotInputRef = useRef<HTMLInputElement>(null)
-  const convertingRef = useRef(false)
-  useEffect(() => { convertingRef.current = converting }, [converting])
 
-  const MAX_SHOTS = 8
-
-  // Downscale to ~1600px long edge (Claude downscales anyway) and re-encode as
-  // JPEG — keeps text legible while keeping the POST body well under limits.
-  const downscale = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onerror = () => reject(new Error("read failed"))
-      reader.onload = () => {
-        const img = new window.Image()
-        img.onerror = () => reject(new Error("decode failed"))
-        img.onload = () => {
-          const MAX = 1600
-          const scale = Math.min(1, MAX / Math.max(img.width, img.height))
-          const w = Math.round(img.width * scale)
-          const h = Math.round(img.height * scale)
-          const canvas = document.createElement("canvas")
-          canvas.width = w
-          canvas.height = h
-          const ctx = canvas.getContext("2d")
-          if (!ctx) return reject(new Error("no canvas"))
-          ctx.drawImage(img, 0, 0, w, h)
-          resolve(canvas.toDataURL("image/jpeg", 0.85))
-        }
-        img.src = reader.result as string
-      }
-      reader.readAsDataURL(file)
-    })
-
-  const addImageFiles = useCallback((files: File[]) => {
-    const imgs = files.filter((f) => f.type.startsWith("image/"))
-    for (const file of imgs) {
-      void downscale(file)
-        .then((url) =>
-          setShots((prev) => (prev.length >= MAX_SHOTS ? prev : [...prev, url]))
-        )
-        .catch(() => {})
+  const convertText = useCallback(async () => {
+    const text = pastedText.trim()
+    if (text.length < 100) {
+      setGenError("Paste the full article text (at least a paragraph).")
+      return
     }
-  }, [])
-
-  // Capture screenshots pasted anywhere (Win+Shift+S → Ctrl+V) into the queue.
-  useEffect(() => {
-    const onPaste = (ev: ClipboardEvent) => {
-      if (convertingRef.current) return
-      const items = ev.clipboardData?.items
-      if (!items) return
-      const files: File[] = []
-      for (let i = 0; i < items.length; i++) {
-        const it = items[i]
-        if (it.kind === "file" && it.type.startsWith("image/")) {
-          const f = it.getAsFile()
-          if (f) files.push(f)
-        }
-      }
-      if (files.length > 0) {
-        ev.preventDefault()
-        addImageFiles(files)
-      }
-    }
-    document.addEventListener("paste", onPaste)
-    return () => document.removeEventListener("paste", onPaste)
-  }, [addImageFiles])
-
-  const convertShots = useCallback(async () => {
-    if (shots.length === 0) return
     setConverting(true)
     setGenError("")
     try {
-      const res = await fetch(`/api/admin/blog/${id}/from-screenshots`, {
+      const res = await fetch(`/api/admin/blog/${id}/from-text`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ images: shots }),
+        body: JSON.stringify({ text }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? "Could not start conversion")
@@ -128,7 +66,7 @@ export default function AdminBlogEditor() {
       setGenError(err instanceof Error ? err.message : "Could not start conversion")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, shots])
+  }, [id, pastedText])
 
   const set = <K extends keyof Post>(k: K, v: Post[K]) =>
     setE((prev) => (prev ? { ...prev, [k]: v } : prev))
@@ -346,82 +284,38 @@ export default function AdminBlogEditor() {
             </p>
           </div>
 
-          {/* Convert from screenshots (for Naver blogs that won't scrape by URL) */}
+          {/* Convert from pasted text (for Naver blogs that won't scrape by URL) */}
           <div className="rounded-xl border border-[#9a7b4f]/30 bg-[#9a7b4f]/5 p-4">
             <div className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-[#9a7b4f]">
-              <ClipboardPaste className="h-4 w-4" /> Convert from screenshots
+              <ClipboardPaste className="h-4 w-4" /> Paste article text → English post
             </div>
-
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => shotInputRef.current?.click()}
-              onDragOver={(ev) => ev.preventDefault()}
-              onDrop={(ev) => {
-                ev.preventDefault()
-                addImageFiles(Array.from(ev.dataTransfer.files))
-              }}
-              className="flex flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-[#9a7b4f]/40 bg-white/60 px-4 py-6 text-center text-xs text-muted-foreground transition-colors hover:bg-white"
-            >
-              <ImagePlus className="h-5 w-5 text-[#9a7b4f]" />
-              <span>
-                <b>Paste (Ctrl+V)</b>, drag &amp; drop, or click to add screenshots
-              </span>
-              <span className="text-[11px]">
-                Capture your post with Win+Shift+S, then Ctrl+V here — add several
-                screen-sized shots (up to {MAX_SHOTS}) so text stays sharp.
-              </span>
-            </div>
-
-            <input
-              ref={shotInputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              multiple
-              className="hidden"
-              onChange={(ev) => {
-                addImageFiles(Array.from(ev.target.files ?? []))
-                ev.target.value = ""
-              }}
+            <textarea
+              value={pastedText}
+              onChange={(ev) => setPastedText(ev.target.value)}
+              placeholder="Paste your Korean (or English) blog post text here — the whole article. AI translates it to English, writes SEO title/description, picks a category, and auto-links chairs (Amazon + catalog)."
+              disabled={converting}
+              rows={6}
+              className="w-full resize-y rounded-lg border border-border bg-white/70 px-3 py-2 text-sm focus:bg-white focus:outline-none"
             />
-
-            {shots.length > 0 && (
-              <div className="mt-3 flex flex-wrap gap-2">
-                {shots.map((src, i) => (
-                  <div key={i} className="group relative h-16 w-16 overflow-hidden rounded-md border border-border bg-white">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={src} alt="" className="h-full w-full object-cover" />
-                    <span className="absolute left-0.5 top-0.5 rounded bg-foreground px-1 text-[9px] font-semibold text-background">
-                      {i + 1}
-                    </span>
-                    {!converting && (
-                      <button
-                        type="button"
-                        onClick={() => setShots((prev) => prev.filter((_, j) => j !== i))}
-                        className="absolute right-0.5 top-0.5 rounded bg-white/90 p-0.5 text-red-600 opacity-0 transition-opacity hover:bg-white group-hover:opacity-100"
-                        title="Remove"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-3 flex items-center gap-2">
-              <Button onClick={() => void convertShots()} disabled={converting || shots.length === 0}>
+            <div className="mt-2 flex items-center gap-2">
+              <Button onClick={() => void convertText()} disabled={converting || pastedText.trim().length < 100}>
                 {converting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-                <span className="ml-1.5">{converting ? "Converting…" : `Convert ${shots.length || ""} screenshot${shots.length === 1 ? "" : "s"}`}</span>
+                <span className="ml-1.5">{converting ? "Converting…" : "Convert text"}</span>
               </Button>
-              {shots.length > 0 && !converting && (
-                <button type="button" onClick={() => setShots([])} className="text-xs text-muted-foreground hover:text-foreground">
+              {pastedText && !converting && (
+                <button type="button" onClick={() => setPastedText("")} className="text-xs text-muted-foreground hover:text-foreground">
                   Clear
                 </button>
               )}
+              <span className="ml-auto text-[11px] text-muted-foreground">{pastedText.trim().length.toLocaleString()} chars</span>
             </div>
+            {converting && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Translating + rewriting in the background (~60–90s). Keep this tab open — fields fill in automatically.
+              </p>
+            )}
             <p className="mt-2 text-[11px] text-muted-foreground">
-              Reads the text in your screenshots and writes an original English post — for Naver blogs that don&apos;t convert by URL. Photos in the shots aren&apos;t reused; add hero/body images separately.
+              Best for Naver blogs that don&apos;t convert by URL. Just copy the article body and paste — more accurate than screenshots. Add hero/body images separately.
             </p>
           </div>
 

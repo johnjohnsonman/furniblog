@@ -1,0 +1,641 @@
+<!--
+  CHAIRPARK 제품 상세 페이지 — ITOKI Act2 (이토키 액트2)
+  · 카페24 / chairpark.com 제품 상세 영역에 그대로 붙여넣어 사용하는 자체완결형 단일 파일.
+  · 외부 JS / 외부 CSS / iframe 사용 안 함. 모든 스타일은 아래 <style> 블록에 포함.
+  · 카페24 전역 스타일과 충돌하지 않도록 모든 선택자를 ".cp-act2" 네임스페이스로 한정.
+  · 폰트: 본문은 Pretendard(설치 시) → 시스템 산세리프 폴백, 제목은 시스템 세리프 스택.
+  · 이미지: 실제 운영 시 src의 "이미지위치/파일명"을 교체. alt는 한국어로 내용 명시.
+  · 본문은 ITOKI 공식 자료 기반의 확인된 사실만 사용(과장·허위 배제).
+-->
+<div class="cp-act2">
+<style>
+/* ===== CHAIRPARK Act2 상세 — 네임스페이스 한정 스타일 ===== */
+.cp-act2 *{box-sizing:border-box;margin:0;padding:0}
+.cp-act2{
+  --charcoal:#16181B;
+  --offwhite:#F6F4EF;
+  --white:#ffffff;
+  --green:#0C6B5B;
+  --graphite:#2A2D31;
+  --line:#E4E0D8;
+  --muted:#6A6D72;
+  font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+  color:var(--charcoal);
+  background:var(--white);
+  line-height:1.85;
+  font-size:17px;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:-0.01em;
+}
+.cp-act2 .serif{
+  font-family:"Iropke Batang","Nanum Myeongjo",Georgia,"Times New Roman","Apple SD Gothic Neo",serif;
+  letter-spacing:-0.02em;
+}
+.cp-act2 img{display:block;width:100%;height:auto;background:var(--offwhite)}
+.cp-act2 figure{margin:0}
+.cp-act2 figcaption{font-size:13px;color:var(--muted);text-align:center;padding:12px 16px;background:var(--offwhite)}
+.cp-act2 .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+.cp-act2 .section{padding:74px 0}
+.cp-act2 .eyebrow{display:inline-block;font-size:12px;letter-spacing:0.22em;text-transform:uppercase;color:var(--green);font-weight:700;margin-bottom:18px}
+.cp-act2 h2.title{font-size:32px;font-weight:700;line-height:1.3;margin-bottom:22px}
+.cp-act2 h3.sub{font-size:22px;font-weight:700;line-height:1.4;margin:38px 0 14px}
+.cp-act2 p{margin-bottom:18px;color:#26292E}
+.cp-act2 p.lead{font-size:19px;color:var(--charcoal)}
+.cp-act2 .dim{color:var(--muted)}
+
+/* 헤더 */
+.cp-act2 .hd{position:sticky;top:0;z-index:50;background:rgba(246,244,239,0.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.cp-act2 .hd .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+.cp-act2 .logo{font-size:20px;font-weight:800;letter-spacing:0.18em}
+.cp-act2 .nav{display:flex;gap:22px}
+.cp-act2 .nav a{color:var(--charcoal);text-decoration:none;font-size:14px;font-weight:600;opacity:.78}
+.cp-act2 .nav a:hover{opacity:1;color:var(--green)}
+
+/* 히어로 */
+.cp-act2 .hero{background:var(--charcoal);color:var(--offwhite)}
+.cp-act2 .hero .wrap{padding-top:84px;padding-bottom:84px}
+.cp-act2 .hero .eyebrow{color:#7FC9BC}
+.cp-act2 .hero h1{font-size:46px;line-height:1.18;font-weight:800;margin-bottom:20px}
+.cp-act2 .hero .hsub{font-size:19px;color:#C9C7C1;margin-bottom:40px}
+.cp-act2 .hero blockquote{border-left:3px solid var(--green);padding:6px 0 6px 22px;margin:0 0 46px;font-size:19px;line-height:1.7;color:#EDEBE6;max-width:760px}
+.cp-act2 .hero blockquote cite{display:block;margin-top:14px;font-style:normal;font-size:15px;color:#9A9D9C}
+.cp-act2 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:8px}
+.cp-act2 .stat{border-top:1px solid #3A3D42;padding-top:16px}
+.cp-act2 .stat b{display:block;font-size:30px;font-weight:800;color:var(--white)}
+.cp-act2 .stat span{font-size:13px;color:#9A9D9C;letter-spacing:.02em}
+.cp-act2 .hero figure{margin-top:54px;border-radius:6px;overflow:hidden}
+
+/* 강조 인용 */
+.cp-act2 .pull{background:var(--offwhite);border-left:4px solid var(--green);padding:34px 36px;margin:40px 0;border-radius:4px}
+.cp-act2 .pull p{font-size:21px;line-height:1.7;color:var(--charcoal);margin:0}
+.cp-act2 .pull cite{display:block;margin-top:16px;font-style:normal;font-size:15px;color:var(--muted)}
+
+/* 포인트 리스트 */
+.cp-act2 .points{list-style:none;display:grid;gap:16px;margin:26px 0}
+.cp-act2 .points li{position:relative;padding-left:30px;color:#26292E}
+.cp-act2 .points li::before{content:"";position:absolute;left:4px;top:11px;width:9px;height:9px;border-radius:50%;background:var(--green)}
+
+/* 기술 카드 */
+.cp-act2 .tech{display:grid;gap:28px}
+.cp-act2 .tech .card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--white)}
+.cp-act2 .tech .card .body{padding:30px 30px 34px}
+.cp-act2 .tech .num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;background:var(--charcoal);color:var(--white);font-weight:700;font-size:16px;margin-bottom:16px}
+.cp-act2 .tech h3{font-size:21px;font-weight:700;margin-bottom:12px}
+
+/* 레이어 다이어그램 (레스피텍) */
+.cp-act2 .layers{display:grid;gap:10px;margin:24px 0 8px}
+.cp-act2 .layer{border:1px solid var(--line);border-radius:8px;padding:18px 20px;background:var(--offwhite)}
+.cp-act2 .layer b{display:block;font-size:15px;margin-bottom:4px}
+.cp-act2 .layer span{font-size:14px;color:var(--muted)}
+
+/* 타임라인 */
+.cp-act2 .timeline{position:relative;margin-top:30px;padding-left:8px}
+.cp-act2 .timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.cp-act2 .tl{position:relative;padding:0 0 30px 40px}
+.cp-act2 .tl::before{content:"";position:absolute;left:1px;top:4px;width:16px;height:16px;border-radius:50%;background:var(--white);border:3px solid var(--green)}
+.cp-act2 .tl .yr{font-weight:800;font-size:18px;color:var(--green);margin-bottom:4px}
+.cp-act2 .tl .ev{color:#26292E}
+
+/* 인증/특징 배지 */
+.cp-act2 .certs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.cp-act2 .cert{display:flex;gap:14px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:20px}
+.cp-act2 .cert .ic{flex:0 0 auto;width:40px;height:40px;border-radius:8px;background:var(--offwhite);display:flex;align-items:center;justify-content:center}
+.cp-act2 .cert .ic svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.8}
+.cp-act2 .cert b{display:block;font-size:16px;margin-bottom:3px}
+.cp-act2 .cert span{font-size:14px;color:var(--muted)}
+
+/* 옵션 카드 */
+.cp-act2 .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.cp-act2 .opt{border:1px solid var(--line);border-radius:10px;padding:24px 22px}
+.cp-act2 .opt .tag{font-size:13px;font-weight:700;letter-spacing:.1em;color:var(--green);text-transform:uppercase}
+.cp-act2 .opt .h{font-size:19px;font-weight:800;margin:8px 0 6px}
+.cp-act2 .opt .d{font-size:14px;color:var(--muted)}
+
+/* 사양 표 */
+.cp-act2 .spec{width:100%;border-collapse:collapse;margin-top:24px;font-size:15px}
+.cp-act2 .spec th,.cp-act2 .spec td{text-align:left;padding:15px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.cp-act2 .spec th{width:32%;background:var(--offwhite);font-weight:700;color:var(--charcoal)}
+.cp-act2 .spec td{color:#26292E}
+
+/* FAQ */
+.cp-act2 .faq{margin-top:20px}
+.cp-act2 .faq details{border-bottom:1px solid var(--line);padding:6px 0}
+.cp-act2 .faq summary{list-style:none;cursor:pointer;padding:18px 36px 18px 4px;position:relative;font-size:17px;font-weight:700;color:var(--charcoal)}
+.cp-act2 .faq summary::-webkit-details-marker{display:none}
+.cp-act2 .faq summary::after{content:"+";position:absolute;right:6px;top:16px;font-size:22px;color:var(--green);font-weight:400}
+.cp-act2 .faq details[open] summary::after{content:"–"}
+.cp-act2 .faq .ans{padding:0 4px 22px;color:#3A3D42}
+.cp-act2 .faq .ans p{margin-bottom:10px}
+
+/* CTA */
+.cp-act2 .cta{background:var(--charcoal);color:var(--offwhite);text-align:center}
+.cp-act2 .cta .wrap{padding:78px 24px}
+.cp-act2 .cta h2{font-size:32px;font-weight:800;color:#fff;margin-bottom:14px}
+.cp-act2 .cta p{color:#C9C7C1;margin-bottom:30px}
+.cp-act2 .btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cp-act2 .btn{display:inline-block;text-decoration:none;font-weight:700;font-size:16px;padding:15px 30px;border-radius:8px;transition:.15s}
+.cp-act2 .btn--primary{background:var(--green);color:#fff}
+.cp-act2 .btn--primary:hover{background:#0a594c}
+.cp-act2 .btn--ghost{background:transparent;color:#fff;border:1px solid #4A4D52}
+.cp-act2 .btn--ghost:hover{border-color:#fff}
+
+/* 푸터 */
+.cp-act2 .ft{background:var(--offwhite);border-top:1px solid var(--line)}
+.cp-act2 .ft .wrap{padding:56px 24px 40px}
+.cp-act2 .ft .top{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:36px}
+.cp-act2 .ft h4{font-size:14px;font-weight:800;letter-spacing:.04em;margin-bottom:14px}
+.cp-act2 .ft p,.cp-act2 .ft li{font-size:14px;color:var(--muted);line-height:1.9}
+.cp-act2 .ft ul{list-style:none}
+.cp-act2 .ft .copy{margin-top:40px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+
+/* 반응형 */
+@media (max-width:760px){
+  .cp-act2{font-size:16px}
+  .cp-act2 .nav{display:none}
+  .cp-act2 .hero h1{font-size:32px}
+  .cp-act2 h2.title{font-size:26px}
+  .cp-act2 .stats{grid-template-columns:repeat(2,1fr);gap:14px}
+  .cp-act2 .tech,.cp-act2 .certs,.cp-act2 .opts,.cp-act2 .ft .top{grid-template-columns:1fr}
+  .cp-act2 .section{padding:56px 0}
+  .cp-act2 .pull p{font-size:18px}
+}
+</style>
+
+<!-- ====================== CHAIRPARK 공통 헤더 (다른 제품에 재사용) ====================== -->
+<header class="hd">
+  <div class="wrap">
+    <div class="logo">CHAIRPARK</div>
+    <nav class="nav">
+      <a href="#story">브랜드</a>
+      <a href="#tech">기술</a>
+      <a href="#option">옵션</a>
+      <a href="#spec">스펙</a>
+      <a href="#qa">Q&amp;A</a>
+      <a href="#cta">문의</a>
+    </nav>
+  </div>
+</header>
+<!-- ==================== /CHAIRPARK 공통 헤더 ==================== -->
+
+<!-- ====================== 제품 상세: ITOKI Act2 ====================== -->
+<main>
+
+  <!-- [1] 히어로 -->
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">ITOKI · 2025</span>
+      <h1 class="serif">숨 쉬는 좌면으로,<br>다시 쓴 일본의 워크체어</h1>
+      <p class="hsub">6년 만의 풀 모델체인지 — ITOKI Act2</p>
+      <blockquote class="serif">
+        “우레탄이 가진 ‘답답함과 꺼짐’을, 통기성과 쿠션성을 함께 가진 레이어 구조로 풀어냈다.”
+        <cite>— 레스피텍 좌면 개발 컨셉</cite>
+      </blockquote>
+      <div class="stats">
+        <div class="stat"><b>2025</b><span>풀 모델체인지 출시</span></div>
+        <div class="stat"><b>1890</b><span>이토키 창업</span></div>
+        <div class="stat"><b>2-Layer</b><span>레스피텍 좌면 구조</span></div>
+        <div class="stat"><b>Urethane<br>-Free</b><span>우레탄 없는 좌면</span></div>
+      </div>
+      <figure>
+        <img src="이미지위치/act2-hero-darkgray.jpg" alt="이토키 액트2 정면 다크그레이 대표컷 — 엘라스토머 메쉬 등판과 좌면이 보이는 전신 컷">
+        <figcaption>ITOKI Act2 — Dark Gray</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- [2] 왜 액트2인가 -->
+  <section class="section" id="why">
+    <div class="wrap">
+      <span class="eyebrow">Why Act2</span>
+      <h2 class="title serif">잘 팔리던 의자를, 굳이 다시 만든 이유</h2>
+      <p class="lead">
+        이토키 액트(Act)는 2018년 등장한 이래 일본에서 가장 사랑받은 태스크 체어 중 하나였다.
+        ‘워크 퍼포먼스를 최대한 끌어올린다’는 분명한 컨셉, 다양한 자세를 받아주는 가동성과 지지력으로
+        오피스와 재택을 가리지 않고 자리를 지켜 왔다. 그런 의자를 이토키는 6년 만에 ‘풀 모델체인지’했다.
+        부분 개선이 아니라 좌면의 근간을 다시 설계한, 보기 드문 결정이었다.
+      </p>
+      <p>
+        이유는 단순하면서도 본질적이다. 대부분의 사무용 의자가 좌면에 쓰는 몰드 우레탄은 시간이 지나면 두 가지 문제를 드러낸다.
+        오래 앉으면 열과 습기가 차는 ‘답답함(ムレ)’, 그리고 몇 해가 지나면 눌려 주저앉는 ‘꺼짐(へたり)’이다.
+        앉는 순간의 편안함은 누구나 만들 수 있지만, 3년 뒤·5년 뒤에도 같은 편안함을 유지하는 일은 전혀 다른 과제다.
+        액트2는 바로 그 ‘오래가는 편안함’을 좌면 소재에서부터 다시 풀기 위해 태어났다.
+      </p>
+      <p>
+        일하는 방식이 바뀐 것도 한몫했다. 한 회사 사무실에서 정해진 자세로 여덟 시간을 보내던 시대는 지나갔다.
+        지금은 재택과 출근을 오가고, 책상 앞에서 회의하고 집중하고 잠시 기대 쉬는 일이 한 자리에서 일어난다.
+        의자는 이제 ‘바른 자세를 강요하는 도구’가 아니라, 끊임없이 바뀌는 자세와 움직임을 거스르지 않고 받아내는 동반자에 가까워야 한다.
+        액트2가 좌면의 통기성과 등판의 유연함, 그리고 골반부터 받치는 지지에 동시에 공을 들인 것은 이 변화에 대한 이토키의 대답이다.
+      </p>
+      <ul class="points">
+        <li>2018년 액트의 사상을 계승하되, 6년 만에 좌면을 근본부터 다시 설계한 풀 모델체인지.</li>
+        <li>우레탄의 고질적 문제(답답함·꺼짐)를 신소재 ‘레스피텍’ 2층 구조로 해결.</li>
+        <li>엘라스토머 메쉬 등판으로 상체의 움직임을 유연하게 받아내는 프레임리스 설계.</li>
+        <li>골반·요추를 함께 받치는 펠비스&amp;럼버 서포트, 조절식 헤드 서포트(옵션).</li>
+        <li>전담 CMF 팀이 다듬은 차분하고 절제된 마감 — 오피스와 홈 인테리어 양쪽에 어울린다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- [3] 브랜드 & 개발 스토리 (핵심) -->
+  <section class="section" id="story" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">ITOKI &amp; Respitec</span>
+      <h2 class="title serif">130년의 제조사가, 좌면 하나에 매달린 6년</h2>
+      <p class="lead">
+        액트2를 이해하려면 먼저 만든 사람을 알아야 한다. 이토키(ITOKI)는 1890년에 시작된 일본의 오피스 가구 기업이다.
+        한 세기를 훌쩍 넘는 시간 동안 사무 공간과 일하는 방식을 연구해 온 회사로, 화려한 스타 디자이너의 이름보다
+        ‘오래 쓰는 물건을 묵묵히 잘 만든다’는 제조사의 태도로 신뢰를 쌓아 왔다. 액트2는 바로 그 태도의 최신 결과물이다.
+      </p>
+
+      <figure style="margin:34px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/act2-respitec-section.jpg" alt="레스피텍 좌면 2층 구조 단면 컷 — 상층 부직포와 하층 입체 메쉬 섬유 구조가 보이는 사진">
+        <figcaption>Respitec — 촉감층(부직포)과 쿠션층(입체 메쉬 섬유)의 2층 구조</figcaption>
+      </figure>
+
+      <h3 class="sub serif">‘숨 쉬는 좌면’ 레스피텍 — 두 회사의 소재를 겹치다</h3>
+      <p>
+        액트2의 심장은 이토키가 새로 개발한 좌면 구조 ‘레스피텍(Respitec)’이다. 이름 그대로 ‘호흡하는(respire)’ 좌면을 지향한다.
+        핵심은 성격이 다른 두 가지 통기성 소재를 위아래로 겹친 2층 구조에 있다. 하나의 소재로 모든 것을 해결하려 하지 않고,
+        ‘닿는 느낌’과 ‘떠받치는 힘’을 각각 다른 재료에 맡긴 것이 이 좌면의 발상이다.
+      </p>
+      <div class="layers">
+        <div class="layer">
+          <b>상층 — 촉감층 (Fibre Cushion VL)</b>
+          <span>데이진 프론티어가 개발한 폴리에스터 세로형 부직포. 섬유를 세로 방향으로 정렬해 ‘탄력은 있으면서도 부드러운’ 첫 촉감을 만든다.</span>
+        </div>
+        <div class="layer">
+          <b>하층 — 쿠션층 (Breath Air®)</b>
+          <span>도요보의 3차원 망상 섬유 구조체. 부드러운 엘라스토머 섬유가 그물처럼 얽혀 체압을 분산하고, 공기가 자유롭게 드나들게 한다.</span>
+        </div>
+      </div>
+      <p>
+        이 2층 구조가 만들어내는 결과는 명확하다. 체압 분산성, 통기성, 그리고 내구성이 동시에 높아진다.
+        촉감층이 피부에 닿는 첫인상을 책임지고, 그 아래 망상 섬유층이 체중을 면으로 받아 한 점에 쏠리지 않게 흩어 놓는다.
+        무엇보다 공기가 좌면을 통과하기 때문에 오래 앉아도 열과 습기가 갇히지 않는다. 우레탄이 시간과 함께 잃어버리던
+        ‘처음의 편안함’을, 레스피텍은 소재 구조로 오래 붙잡아 두려 한다.
+      </p>
+      <p>
+        ‘체압 분산’이라는 말은 추상적으로 들리지만, 오래 앉는 사람에게는 가장 현실적인 문제다. 우리가 의자에 앉을 때 체중의 상당 부분은
+        엉덩이의 좌골(坐骨) 두 점에 집중된다. 이 한 점에 하중이 오래 쏠리면 혈류가 막히고, 그 자리가 저리거나 아파 자세를 자꾸 고쳐 앉게 된다.
+        레스피텍의 망상 섬유층은 체중을 ‘점’이 아니라 ‘면’으로 받아 흩어 놓아, 한 곳에 압력이 누적되는 것을 줄인다.
+        오래 앉아도 덜 배기고 덜 저린 감각은, 바로 이 면 분산에서 나온다.
+      </p>
+      <div class="pull">
+        <p class="serif">“좌면 소재로서, 계속 이어지는 새로운 편안함을 구현했다.”</p>
+        <cite>— ITOKI, 레스피텍 개발 노트</cite>
+      </div>
+
+      <h3 class="sub serif">엘라스토머 메쉬 등판 — 프레임을 없앤 유연함</h3>
+      <p>
+        등판에서도 이토키의 소재 실험은 이어진다. 액트2의 대표 등판은 수지(플라스틱)와 고무의 중간 성질을 가진
+        엘라스토머(elastomer) 소재로 만든 메쉬다. 적당한 부드러움과 ‘코시(コシ)’ — 즉 받쳐주는 탄력 — 를 함께 갖춰,
+        상체가 움직일 때 그 움직임을 거스르지 않고 유연하게 따라간다. 짧은 단책(短冊)형으로 짠 메쉬 패턴은
+        은은한 음영과 비침을 만들어, 공간에 가벼우면서도 존재감 있는 인상을 남긴다.
+      </p>
+      <p>
+        기능적으로도 이점이 분명하다. 엘라스토머 등판은 통기성이 좋고 내구성이 뛰어나며, 무엇보다 단단한 등 프레임이 없다.
+        프레임이 없다는 것은 등 전체가 한 장의 유연한 면으로 작동한다는 뜻이고, 그래서 체격이 큰 사용자도
+        특정 부위에 프레임이 배기는 스트레스 없이 자연스럽게 안긴다. ‘딱딱한 틀에 몸을 맞추는’ 의자가 아니라
+        ‘몸의 형태에 면이 맞춰지는’ 의자에 가깝다. 취향에 따라, 직물의 질감을 살린 텍스처드 패브릭 메쉬도 선택할 수 있다.
+      </p>
+
+      <h3 class="sub serif">CMF — 보이지 않는 곳까지 톤을 맞추다</h3>
+      <p>
+        이토키에는 색(Color)·소재(Material)·마감(Finish)을 전담하는 CMF 팀이 있다. 액트2의 차분한 인상은 우연이 아니라
+        이 팀이 트렌드와 공간을 읽어 의도적으로 설계한 결과다. 시크한 배색과 짙은 우드 톤 공간에 녹아드는 새 다크그레이 컬러,
+        무광(매트) 마감의 등 커버, 그리고 레버와 커버까지 같은 색으로 통일한 디테일이 그것이다.
+        의자가 공간에서 튀지 않으면서도 품질감 있는 존재로 남도록, 눈에 잘 띄지 않는 부품의 색까지 맞췄다.
+        오피스의 도구이면서 동시에 집 안에 두어도 어색하지 않은 가구 — 액트2가 지향하는 자리다.
+      </p>
+      <p>
+        이런 디테일은 화려하지 않다. 다크그레이의 무게감, 빛을 머금지 않는 매트한 표면, 시야에 잘 들어오지 않는 레버까지 같은 톤으로 정돈한 절제.
+        오래 곁에 두는 물건일수록 ‘튀지 않는 완성도’가 중요하다는 것을, 130년을 이어 온 제조사는 알고 있다.
+        액트2가 첫인상보다 ‘오래 봐도 질리지 않는 인상’에 무게를 둔 이유다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [4] 핵심 기술 -->
+  <section class="section" id="tech">
+    <div class="wrap">
+      <span class="eyebrow">Engineering</span>
+      <h2 class="title serif">액트2를 떠받치는 네 가지</h2>
+      <p class="lead">
+        액트2의 가치는 추상적 감각이 아니라 구체적인 네 가지 설계 위에 서 있다.
+        모두 ‘오래 앉는 사람의 몸에 무슨 일이 일어나는가’에 대한 공학적 대답이다.
+      </p>
+
+      <figure style="margin:30px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/act2-elastomer-back.jpg" alt="액트2 엘라스토머 단책형 메쉬 등판 클로즈업 — 비침과 음영이 드러나는 디테일 컷">
+        <figcaption>Elastomer Mesh Back — 프레임 없는 단책형 메쉬 등판</figcaption>
+      </figure>
+
+      <div class="tech">
+        <div class="card"><div class="body">
+          <span class="num">1</span>
+          <h3>레스피텍(Respitec) 좌면</h3>
+          <p>
+            촉감층(폴리에스터 부직포)과 쿠션층(3차원 망상 섬유)의 2층 구조로, 통기성·체압 분산·내구성을 동시에 끌어올린 좌면이다.
+            우레탄 좌면이 시간이 지나며 겪는 답답함과 꺼짐을, 소재 구조 자체로 해결하려는 접근이다.
+          </p>
+          <p>
+            공기가 좌면을 통과하므로 장시간 착석에도 열과 습기가 갇히지 않고, 망상 섬유가 체중을 면으로 분산해 좌골에 하중이 쏠리지 않는다.
+            ‘처음의 편안함’이 오래 유지되도록 설계된, 액트2의 정체성이다.
+          </p>
+        </div></div>
+
+        <div class="card"><div class="body">
+          <span class="num">2</span>
+          <h3>엘라스토머 메쉬 등판</h3>
+          <p>
+            수지와 고무의 중간 성질을 가진 엘라스토머 메쉬가 상체의 움직임을 유연하게 받친다. 통기성과 내구성이 우수하며,
+            단단한 등 프레임이 없어 등 전체가 한 장의 유연한 면처럼 작동한다.
+          </p>
+          <p>
+            덕분에 체격이 큰 사용자도 프레임이 배기는 스트레스 없이 자연스럽게 안긴다. 직물 질감을 선호한다면
+            텍스처드 패브릭 메쉬도 선택할 수 있다.
+          </p>
+        </div></div>
+
+        <div class="card"><div class="body">
+          <span class="num">3</span>
+          <h3>펠비스 &amp; 럼버 서포트 · 헤드 서포트</h3>
+          <p>
+            인체 측정 데이터를 바탕으로 설계된 펠비스(골반)&amp;럼버(요추) 서포트가 골반과 허리를 함께 받쳐
+            앉은 자세를 안정시킨다. 단순히 허리만 미는 것이 아니라, 골반부터 받쳐 자세의 토대를 잡아 주는 접근이다.
+          </p>
+          <p>
+            높이·각도를 맞출 수 있는 조절식 헤드 서포트(옵션)를 더하면, 목과 머리까지 받쳐 장시간 작업이나
+            잠깐의 휴식에서 상체 전체의 부담을 덜 수 있다. (펠비스&amp;럼버·헤드 서포트는 옵션 구성)
+          </p>
+        </div></div>
+
+        <div class="card"><div class="body">
+          <span class="num">4</span>
+          <h3>싱크로 로킹 · 앵클 무브 · 좌면 깊이 조절</h3>
+          <p>
+            등판과 좌면이 일정 비율로 함께 기우는 싱크로 로킹은 뒤로 기댈 때 자세를 안정적으로 유지시킨다.
+            여기에 발목을 기준으로 자연스러운 회전을 돕는 ‘앵클 무브’ 설계가 더해져, 기대고 일어서는 동작이 매끄럽다.
+          </p>
+          <p>
+            좌면 깊이 조절 기구로 좌판의 앞뒤 길이를 자신의 다리 길이에 맞출 수 있다. 무릎 안쪽이 좌판에 눌리지 않는
+            지점을 찾으면, 다리 혈류가 막히지 않아 오래 앉아도 덜 피로하다.
+          </p>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [5] 타임라인 -->
+  <section class="section" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">Timeline</span>
+      <h2 class="title serif">이토키, 그리고 액트의 시간</h2>
+      <div class="timeline">
+        <div class="tl"><div class="yr">1890</div><div class="ev">이토키(ITOKI) 창업 — 일본의 사무 공간과 일하는 방식을 연구해 온 오피스 가구 제조사.</div></div>
+        <div class="tl"><div class="yr">2018</div><div class="ev">초대 ‘액트(Act)’ 출시 — ‘워크 퍼포먼스를 최대한 끌어올린다’를 컨셉으로, 다양한 워크스타일을 지원.</div></div>
+        <div class="tl"><div class="yr">2025</div><div class="ev">‘액트2(Act2)’ 발매(6월 4일) — 6년 만의 풀 모델체인지. 신소재 레스피텍 좌면, 펠비스&amp;럼버·헤드 서포트 탑재.</div></div>
+        <div class="tl"><div class="yr">현재</div><div class="ev">우레탄리스 좌면과 친환경 적합성, 다크그레이 CMF로 오피스와 홈을 아우르는 워크체어로 확장.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [6] 액트 → 액트2, 무엇이 달라졌나 -->
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Act → Act2</span>
+      <h2 class="title serif">무엇이, 어떻게 진화했나</h2>
+      <p class="lead">
+        액트2는 초대 액트의 컨셉과 가동성을 계승하면서, 좌면의 통기성·지지 성능·소재의 지속가능성에 초점을 두고
+        근본부터 다시 설계됐다. 외형의 페이스리프트가 아니라 ‘앉는 면’을 바꾼 풀 모델체인지라는 점이 핵심이다.
+      </p>
+      <figure style="margin:30px 0;border-radius:6px;overflow:hidden">
+        <img src="이미지위치/act2-side-darkgray.jpg" alt="액트2 측면 다크그레이 컷 — 싱크로 로킹 등판과 헤드 서포트 옵션이 보이는 사진">
+        <figcaption>Act2 — 측면에서 본 등판 곡선과 헤드 서포트(옵션)</figcaption>
+      </figure>
+      <ul class="points">
+        <li><b>좌면</b> — 기존 몰드 우레탄 → 신개발 레스피텍 2층 구조(우레탄리스). 답답함·꺼짐 문제를 구조적으로 개선.</li>
+        <li><b>서포트</b> — 인체 측정 기반의 펠비스&amp;럼버 서포트와 조절식 헤드 서포트로 상·하체 지지를 강화(옵션).</li>
+        <li><b>마감</b> — 전담 CMF 팀의 다크그레이 신컬러·무광 마감·색상 통일로 공간 조화성을 끌어올림.</li>
+        <li><b>지향</b> — 오피스 전용을 넘어, 재택·홈 인테리어까지 자연스럽게 어울리는 워크체어로 확장.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- [7] 이 의자가 잘하는 것 -->
+  <section class="section" style="background:var(--offwhite)" id="strength">
+    <div class="wrap">
+      <span class="eyebrow">Strengths</span>
+      <h2 class="title serif">액트2가 특히 잘하는 것</h2>
+      <div class="certs">
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></div>
+          <div><b>오래가는 통기성</b><span>공기가 통과하는 레스피텍 좌면 + 엘라스토머 메쉬 등판으로 장시간 착석에도 쾌적.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v18M5 8l7-5 7 5"/></svg></div>
+          <div><b>자세를 잡아주는 지지</b><span>골반·요추를 함께 받치는 서포트로 앉은 자세의 토대를 안정.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V5m4 14V9m4 10V7m4 12v-6m4 6V4"/></svg></div>
+          <div><b>꺼지지 않는 내구성</b><span>망상 섬유 쿠션층으로 우레탄 특유의 ‘꺼짐’을 줄여 오래 사용.</span></div>
+        </div>
+        <div class="cert">
+          <div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>
+          <div><b>공간을 가리지 않는 마감</b><span>CMF 팀이 다듬은 다크그레이·무광 톤으로 오피스와 홈 양쪽에 조화.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- [8] 지속가능성 -->
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">Sustainability</span>
+      <h2 class="title serif">우레탄을 덜어낸다는 선택</h2>
+      <p class="lead">
+        레스피텍은 편안함만을 위한 소재가 아니다. 이토키는 이 좌면을 ‘인간공학적 쾌적성과 환경 적합성을 양립시킨
+        새 발상의 좌면 구조’로 설명한다. 기존 오피스 의자가 폭넓게 쓰던 우레탄을 걷어낸 ‘우레탄리스’ 좌면이라는 점이 그 핵심이다.
+      </p>
+      <p>
+        그러나 액트2의 가장 본질적인 친환경성은, 역시 ‘오래 쓰도록 만든다’는 데 있다. 답답함과 꺼짐을 줄여 좌면이 빨리 늙지 않게 하고,
+        프레임 없는 유연한 등판으로 다양한 체격을 오래 받아내는 설계는 결국 ‘덜 버리는 의자’로 이어진다.
+        자주 교체하지 않아도 되는 내구성 자체가, 가장 조용하면서도 확실한 환경 전략이다.
+      </p>
+      <p>
+        가장 빨리 버려지는 가구는 ‘싸게 사서 금방 망가지는 의자’다. 좌면이 꺼지고, 메쉬가 늘어지고, 부품이 헐거워지면 사람은 다시 새 의자를 산다.
+        반대로 한 자리에서 오래 버티는 의자는, 만들어질 때 쓴 자원을 그만큼 길게 나눠 쓴다. 좋은 소재와 단단한 설계는 비용이 아니라 ‘시간을 버는 투자’인 셈이다.
+        액트2가 좌면 소재 하나에 6년을 들인 것은, 화려한 친환경 구호 대신 ‘오래 쓰이는 물건’이라는 가장 근본적인 답을 택했기 때문이다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [9] 사용 가이드 -->
+  <section class="section" style="background:var(--offwhite)">
+    <div class="wrap">
+      <span class="eyebrow">How to Adjust</span>
+      <h2 class="title serif">처음 앉는 날, 내 몸에 맞추기</h2>
+      <p class="lead">좋은 의자는 ‘맞춰 쓰는’ 의자다. 아래 순서로 한 번만 맞춰두면 그 다음부터는 몸이 먼저 기억한다.</p>
+      <ul class="points">
+        <li><b>좌면 높이</b> — 레버로 높이를 조절해 발바닥이 바닥에 닿고 허벅지가 바닥과 수평이 되는 지점에 맞춘다.</li>
+        <li><b>좌면 깊이</b> — 좌면 깊이 조절 기구로 좌판 앞뒤 길이를 조절한다. 등을 등판에 붙였을 때 무릎 안쪽과 좌판 사이에 손가락 두세 개가 들어가는 깊이가 기준이다.</li>
+        <li><b>펠비스 &amp; 럼버 서포트</b> — 골반·요추 지지가 내 허리 곡선에 닿도록 위치를 맞춘다. 허리가 ‘받쳐진다’는 느낌이 드는 자리가 정답이다.</li>
+        <li><b>싱크로 로킹</b> — 로킹 강도를 체중에 맞게 조절하고, 필요하면 각도를 고정한다. 작업할 때는 직립에 가깝게, 쉴 때는 한 단 풀어준다.</li>
+        <li><b>헤드 서포트(옵션)</b> — 높이·각도를 조절해 뒤통수와 목이 자연스럽게 닿도록 맞춘다.</li>
+        <li><b>관리</b> — 프레임·다리·팔패드는 중성세제를 적신 부드러운 천으로 닦는다. 메쉬·좌면은 진공청소기로 가볍게 흡입하고, 얼룩은 부분적으로만 제거한다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- [10] 옵션 가이드 -->
+  <section class="section" id="option">
+    <div class="wrap">
+      <span class="eyebrow">Options</span>
+      <h2 class="title serif">내 환경에 맞춰 고르는 구성</h2>
+      <p class="lead">액트2는 사이즈가 아니라 ‘구성’으로 핏을 맞춘다. 등판 소재, 서포트, 컬러를 환경과 취향에 맞게 선택한다.</p>
+      <div class="opts">
+        <div class="opt">
+          <div class="tag">Back</div>
+          <div class="h">엘라스토머 메쉬</div>
+          <div class="d">프레임 없는 유연한 면. 통기성·내구성이 좋고 체격이 큰 사용자도 편안하게 받친다.</div>
+        </div>
+        <div class="opt">
+          <div class="tag">Back</div>
+          <div class="h">텍스처드 패브릭</div>
+          <div class="d">직물의 질감을 살린 메쉬. 부드러운 등 닿임과 차분한 인상으로 홈 인테리어에도 잘 어울린다.</div>
+        </div>
+        <div class="opt">
+          <div class="tag">Support</div>
+          <div class="h">헤드 / 펠비스&amp;럼버</div>
+          <div class="d">조절식 헤드 서포트와 골반·요추 서포트(옵션)로 상·하체 지지를 강화.</div>
+        </div>
+      </div>
+      <p class="dim" style="margin-top:22px">
+        ※ 등판 소재·서포트·팔걸이·프레임 컬러 등 세부 구성은 사양에 따라 달라집니다.
+        가장 정확한 구성과 핏은 체어파크 쇼룸에서 직접 앉아 확인하시길 권합니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- [11] 제품 사양 -->
+  <section class="section" style="background:var(--offwhite)" id="spec">
+    <div class="wrap">
+      <span class="eyebrow">Specification</span>
+      <h2 class="title serif">제품 사양</h2>
+      <table class="spec">
+        <tbody>
+          <tr><th>제조</th><td>ITOKI (일본)</td></tr>
+          <tr><th>시리즈</th><td>Act2 (아크트2) — 2025년 출시, 초대 Act(2018)의 풀 모델체인지</td></tr>
+          <tr><th>좌면</th><td>Respitec — 촉감층(폴리에스터 부직포, Fibre Cushion VL) + 쿠션층(3차원 망상 섬유, Breath Air®)의 2층 구조 / 우레탄리스</td></tr>
+          <tr><th>등판</th><td>엘라스토머 메쉬(프레임리스) / 텍스처드 패브릭 메쉬 (선택)</td></tr>
+          <tr><th>서포트</th><td>펠비스 &amp; 럼버 서포트(옵션), 조절식 헤드 서포트(옵션)</td></tr>
+          <tr><th>메커니즘</th><td>싱크로 로킹, 앵클 무브, 좌면 깊이 조절</td></tr>
+          <tr><th>팔걸이</th><td>조절식 팔걸이 (구성에 따라 상이)</td></tr>
+          <tr><th>컬러</th><td>다크그레이 등 — 무광 마감, 레버·커버 색상 통일 (CMF)</td></tr>
+          <tr><th>보증·가격</th><td>제조사/판매 정책 및 옵션·환율에 따라 변동 — 정확한 내용은 쇼룸 방문 또는 문의 바랍니다.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- [12] FAQ -->
+  <section class="section" id="qa">
+    <div class="wrap">
+      <span class="eyebrow">Q&amp;A</span>
+      <h2 class="title serif">자주 묻는 질문</h2>
+      <div class="faq">
+        <details open>
+          <summary>초대 액트(Act)와 액트2(Act2)는 무엇이 다른가요?</summary>
+          <div class="ans">
+            <p>액트2는 2018년 액트의 컨셉을 계승하되, 6년 만에 좌면을 근본부터 다시 설계한 풀 모델체인지입니다.</p>
+            <p>가장 큰 차이는 좌면입니다. 기존의 몰드 우레탄 대신 통기성·내구성을 높인 ‘레스피텍’ 2층 구조(우레탄리스)를 적용했고, 펠비스&amp;럼버·헤드 서포트와 다크그레이 CMF 마감이 더해졌습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>‘레스피텍 좌면’이 일반 메쉬·우레탄과 어떻게 다른가요?</summary>
+          <div class="ans">
+            <p>레스피텍은 촉감층(폴리에스터 부직포)과 쿠션층(3차원 망상 섬유)을 겹친 2층 구조입니다. 위층은 부드러운 첫 촉감을, 아래층은 체압 분산과 통기를 담당합니다.</p>
+            <p>공기가 좌면을 통과해 답답함이 적고, 망상 섬유가 눌림에 강해 우레탄 특유의 ‘꺼짐’을 줄여 오래 사용할 수 있도록 설계됐습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>엘라스토머 등판은 체격이 큰 사람에게도 괜찮나요?</summary>
+          <div class="ans">
+            <p>네. 엘라스토머 메쉬 등판은 단단한 등 프레임이 없어 등 전체가 한 장의 유연한 면처럼 작동합니다.</p>
+            <p>그래서 특정 부위에 프레임이 배기는 스트레스 없이, 다양한 체격을 자연스럽게 받쳐줍니다. 직물 질감을 선호하면 텍스처드 패브릭 메쉬도 선택할 수 있습니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>장시간 작업이나 재택근무에도 좋은가요?</summary>
+          <div class="ans">
+            <p>통기성 좌면·등판으로 오래 앉아도 열이 차지 않고, 좌면 깊이 조절로 다리 혈류를 방해하지 않아 장시간 착석에 유리합니다.</p>
+            <p>또한 차분한 다크그레이 마감 덕분에 오피스뿐 아니라 집 안에 두어도 잘 어울려, 재택근무 환경에도 적합합니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>옵션은 어떻게 고르면 되나요?</summary>
+          <div class="ans">
+            <p>액트2는 사이즈가 아니라 구성으로 맞춥니다. 등판 소재(엘라스토머 / 텍스처드 패브릭), 헤드·펠비스&amp;럼버 서포트, 팔걸이, 프레임 컬러를 환경과 취향에 맞게 선택하면 됩니다.</p>
+            <p>구성에 따라 착좌감과 인상이 달라지므로, 가능하면 쇼룸에서 직접 비교해 보시길 권합니다.</p>
+          </div>
+        </details>
+        <details>
+          <summary>직접 앉아볼 수 있나요?</summary>
+          <div class="ans">
+            <p>물론입니다. 체어파크는 한남·강남·일산·마포 네 곳의 쇼룸을 운영합니다. 액트2의 등판 소재와 서포트 구성을 직접 비교해 보실 수 있습니다.</p>
+            <p>방문 전 예약을 남겨주시면 더 여유롭게 안내해 드립니다.</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- [13] CTA -->
+  <section class="cta" id="cta">
+    <div class="wrap">
+      <h2 class="serif">‘숨 쉬는 좌면’을 직접 느껴보세요</h2>
+      <p>레스피텍 좌면과 엘라스토머 등판의 감각은 글로 다 전해지지 않습니다. 한남 쇼룸에서 직접 앉아 확인해 보세요.</p>
+      <div class="btns">
+        <a class="btn btn--primary" href="#">한남 쇼룸 예약하기</a>
+        <a class="btn btn--ghost" href="#">제품 문의하기</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+<!-- ==================== /제품 상세: ITOKI Act2 ==================== -->
+
+<!-- ====================== CHAIRPARK 공통 푸터 (다른 제품에 재사용) ====================== -->
+<footer class="ft">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h4>CHAIRPARK</h4>
+        <p>688개 이상의 의자를 직접 테스트한 프리미엄 체어 셀렉트샵. 우리는 ‘가장 비싼 의자’가 아니라 ‘당신에게 맞는 의자’를 찾아드립니다.</p>
+      </div>
+      <div>
+        <h4>쇼룸</h4>
+        <ul>
+          <li>한남 쇼룸</li>
+          <li>강남 쇼룸</li>
+          <li>일산 쇼룸</li>
+          <li>마포 쇼룸</li>
+        </ul>
+      </div>
+      <div>
+        <h4>문의</h4>
+        <ul>
+          <li>hello@chairpark.com</li>
+          <li>02-532-1113</li>
+          <li>쇼룸 방문 예약</li>
+          <li>B2B 대량 구매 문의</li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      © 2026 CHAIRPARK · 서울특별시 용산구 한남대로 55, 2층
+    </div>
+  </div>
+</footer>
+<!-- ==================== /CHAIRPARK 공통 푸터 ==================== -->
+</div>

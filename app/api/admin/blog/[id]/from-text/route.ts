@@ -3,40 +3,25 @@ import { after } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
-import {
-  generateBlogPostFromImages,
-  type BlogImageInput,
-  type CatalogChair,
-} from "@/lib/blog/generate"
+import { generateBlogPost, type CatalogChair } from "@/lib/blog/generate"
 import { tagAmazonLinks } from "@/lib/blog/postprocess"
 
 export const runtime = "nodejs"
 export const maxDuration = 300
 
-const MAX_IMAGES = 8
-
-/** data:image/png;base64,XXXX -> { media_type, data } */
-function parseDataUrl(dataUrl: string): BlogImageInput | null {
-  const m = dataUrl.match(/^data:(image\/(png|jpeg|jpg|webp|gif));base64,(.+)$/)
-  if (!m) return null
-  const mt = m[1] === "image/jpg" ? "image/jpeg" : (m[1] as BlogImageInput["media_type"])
-  return { media_type: mt, data: m[3] }
-}
-
+// Convert pasted article text (Korean or English) into an English SEO blog post.
+// Async fire-and-poll — the editor polls gen_status.
 export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const denied = requireAdmin(request)
   if (denied) return denied
   const { id } = await context.params
   try {
-    const body = (await request.json()) as { images?: string[] }
-    const images = (body.images ?? [])
-      .slice(0, MAX_IMAGES)
-      .map(parseDataUrl)
-      .filter((x): x is BlogImageInput => x !== null)
-
-    if (images.length === 0) {
-      return NextResponse.json({ error: "Add at least one screenshot." }, { status: 400 })
+    const body = (await request.json()) as { text?: string; title?: string }
+    const text = (body.text ?? "").trim()
+    if (text.length < 100) {
+      return NextResponse.json({ error: "Paste the full article text (at least a paragraph)." }, { status: 400 })
     }
+    const sourceTitle = (body.title ?? "").trim() || undefined
 
     const supabase = createAdminClient()
     await supabase
@@ -62,7 +47,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
           name: c.name as string,
         }))
 
-        const draft = await generateBlogPostFromImages({ images, catalog })
+        const draft = await generateBlogPost({ sourceText: text, sourceTitle, catalog })
 
         await db
           .from("blog_posts")
