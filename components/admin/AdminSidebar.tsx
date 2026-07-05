@@ -77,7 +77,7 @@ export function AdminSidebar() {
           Furniblog Admin
         </Link>
       </div>
-      <nav className="flex-1 p-3 space-y-1">
+      <nav className="flex-1 overflow-y-auto p-3 space-y-1">
         {NAV.map(({ href, label, icon: Icon }) => {
           const displayLabel =
             href === "/admin/reviews" && reviewCount != null

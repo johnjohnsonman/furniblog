@@ -14,7 +14,7 @@ export default async function AdminPanelLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex h-screen bg-background">
       <AdminSidebar />
       <main className="flex-1 overflow-auto">{children}</main>
       <Toaster />

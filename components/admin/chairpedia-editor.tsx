@@ -49,7 +49,7 @@ function Toolbar({ editor }: { editor: Editor }) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-0.5 border-b border-border bg-muted/40 p-1.5 sticky top-0 z-10">
+    <div className="flex flex-wrap items-center gap-0.5 rounded-t-lg border-b border-border bg-muted/95 p-1.5 backdrop-blur sticky top-0 z-20">
       <Btn title="Bold" active={editor.isActive("bold")} onClick={() => editor.chain().focus().toggleBold().run()}><Bold className="h-4 w-4" /></Btn>
       <Btn title="Italic" active={editor.isActive("italic")} onClick={() => editor.chain().focus().toggleItalic().run()}><Italic className="h-4 w-4" /></Btn>
       <Btn title="Strike" active={editor.isActive("strike")} onClick={() => editor.chain().focus().toggleStrike().run()}><Strikethrough className="h-4 w-4" /></Btn>
@@ -135,7 +135,7 @@ export function ChairpediaEditor({
   }
 
   return (
-    <div className="rounded-lg border border-border bg-white overflow-hidden">
+    <div className="rounded-lg border border-border bg-white">
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
     </div>
