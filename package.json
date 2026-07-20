@@ -18,6 +18,7 @@
     "seed:executive": "ts-node --project scripts/tsconfig.json scripts/seed-executive-chairs.ts",
     "seed:lounge": "ts-node --project scripts/tsconfig.json scripts/seed-lounge-chairs.ts",
     "backfill:news-images": "ts-node --project scripts/tsconfig.json scripts/backfill-news-images.ts",
+    "backfill:reviews": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/backfill-thin-reviews.ts",
     "verify:catalog": "ts-node --project scripts/tsconfig.json scripts/verify-catalog.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },

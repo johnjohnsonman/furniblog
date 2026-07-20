@@ -46,6 +46,7 @@ npm run seed:additional    # 추가 의자 시드
 npm run seed:gallery       # 갤러리 시드
 npm run sync:thumbnails    # 제품 썸네일 동기화
 npm run test:pipeline      # 파이프라인 테스트
+npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 로 실제 수집
 ```
 
 ## 환경변수 (`.env.local`)
@@ -245,7 +246,7 @@ npm run test:pipeline      # 파이프라인 테스트
 - [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
 - [ ] **GSC 색인 요청 이어서**: `/products`·`/best/best-chairs-to-buy` 등 핵심 페이지 추가 색인 요청. 1~2주 후 색인 수 추이 확인.
 - [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts` 2026 확장분 19개 일부 직접 클릭 확인(틀리면 교체).
-- [ ] **리뷰 0건 제품 45개 보강**(2026-07-20 실측, 235 중 190은 리뷰 있음): 크론 로테이션이 계속 채우는 중. 얇은 페이지=색인 거부 원인이라 우선순위 있음.
+- [ ] **리뷰 0건 제품 45개 보강**(2026-07-20 실측, 235 중 190은 리뷰 있음) — **도구 완성**: `npm run backfill:reviews`(dry-run) / `-- --apply`. 크론과 동일한 `executeServerPipeline`을 쓰되 대상을 "리뷰 최소" 순으로 잡음(크론은 "마지막 시도" 순이라 한 바퀴에 10~24일 걸림, 로컬은 Vercel 300s 한도 없음). 3개 스모크테스트 통과(Allsteel Mimeo +2). **남은 42개 미실행.** 수집 0건으로 반복되는 의자는 카탈로그 정리 후보로 출력됨.
 - [ ] (선택) 폼 페이지(`/experience`,`/reviews/new`) noindex / 이미지 최적화(`images.unoptimized:true` 해제) / breadcrumb·FAQ 스키마.
 - [ ] (선택) 수익화: ⑤Chairpark 퍼널 CTA PoC → D2C 직제휴 1곳 → Levanta. 광고망 졸업은 트래픽 2.5만+ 후.
 - [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정.
