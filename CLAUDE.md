@@ -210,11 +210,33 @@ npm run test:pipeline      # 파이프라인 테스트
   - **상세(Chairpark식, 어필리에이트 각색)**: 히어로(쇼룸사진)+**브랜드 철학 인용구**+제품수 → 제품그리드(있음)에 재고badge 대신 **리뷰수·평점·Buy on Amazon** → **허브 레일 추가**(그 브랜드 Chairpedia/리뷰/뉴스 묶기, 내부링크·thin 완화). 제네릭 Unsplash 폴백 제거.
   - **단계**: ①워드마크 카드+Brand Images 어드민 ②리스팅 A–Z+Online점 ③상세 Chairpark화(인용·레일·배지) ④major 15~20 히어로 채움.
 
+### 2026-07-20 집 데스크탑 동기화 + 마이그레이션 038 적용 + 데이터 실측 스냅샷
+- **집 데스크탑 최신화**: 3주 밀려 있던 21커밋(`bb08829`→`901a46e`) fast-forward pull 완료. 새 env·새 npm 의존성 **없음**(package.json은 `seed:lounge` 스크립트 한 줄만 추가). 회사 컴퓨터/프로덕션엔 영향 없음(push 안 함).
+- **마이그레이션 038 적용 완료**: 실측 결과 039(chairpedia 비용)·040(brand images)은 이미 적용돼 있었고 **038(reviews.country)만 미적용** → SQL Editor 실행함. 이제 031~040 전부 적용 상태.
+- **⚠️ 문서 정합성 주의**: 이 파일의 06-20 / 06-26 섹션에 있는 "제품 썸네일 141중 1개", "신규 48종 thumbnail 전부 비어있음", "브랜드 이미지 0/83"은 **전부 옛 정보**다. 아래 실측치가 최신이며, 상충하면 **날짜가 늦은 섹션을 따를 것**.
+
+**2026-07-20 프로덕션 DB 실측 (직접 쿼리)**
+
+| 항목 | 실측 |
+|---|---|
+| products | **235** (office 129 / executive 29 / dining 26 / lounge 17 / gaming 15 / design 7 / standing 6 / conference 6) |
+| 제품 썸네일 | **235/235 채워짐** ✅ 전부 Supabase Storage `product-images/` 실파일 |
+| 제품 `images` 배열 | **0/235** (다중 이미지 미사용 — 썸네일만 씀) |
+| brands | **83**, `images` **83/83 각 1장** ✅ / `logo_url` **0/83** ❌ / `hero_image_url` **0/83** ❌ |
+| chairpedia | **48** (published **43**, draft 5) — 발행분 hero 이미지 **43/43** ✅ |
+| reviews | **1,631** — 리뷰 있는 제품 **190/235**, 리뷰 0건 제품 **45** |
+| 리뷰 소스 | youtube 639 / naver 373 / dcinside 230 / reddit 169 / community 98 / hackernews 92 / japan_community 16 / review_sites 14 / **kakaku 0** |
+| blog_posts 174 · news 150 · videos 512 · gallery_images **0** | |
+
+- **국가별 리뷰 = 절반만 구현됨**: 파이프라인 쪽은 이미 들어와 있음(다국가 YouTube `regionCode`/`relevanceLanguage`, 전언어 Trustpilot, 일본 Kakaku 소스 `4da4786`·`ad1259c`). **그러나 수집 시 `reviews.country`에 태깅하는 코드가 없어 1,631건 전부 country=NULL.** 컬럼만 준비된 상태. Kakaku도 아직 수집 0건.
+- **`products.review_count`는 죽은 컬럼**: 235개 전부 0인데 실제 리뷰는 1,631건. 집계는 쿼리 시점에 함(`280f849`). 이 컬럼 보고 판단하지 말 것.
+- **최대 시각 약점 = 브랜드 로고**: 사진은 83/83 채워졌지만 로고 0/83, 그리고 사진이 전부 1장씩이라 캐러셀(`37ecf57`, 최대 4장)이 단일 이미지로 동작 중.
+
 ### 남은 과제 (TODO)
-- [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드): 워드마크 카드 + Brand Images 어드민 → 리스팅 A–Z+Online점 → 상세 Chairpark화(인용·허브레일·리뷰/Amazon 배지). 쇼룸 실촬영 사진 우선.
-- [ ] **🌍 국가별 리뷰 수집 구현**(2026-06-26 기획): 0단계 migration 038(reviews.country+백필) → 1단계 YouTube 다국가(regionCode/relevanceLanguage)+국기 필터 → 2단계 country-profiles config+크론 로테이션. 대상 "온갖 나라"지만 소스 품질순 점진 활성화.
-- [ ] **신규 카탈로그 48종 썸네일 채우기**: 어드민 Chair Images "missing only"로. Walter Knoll·Poltrona Frau·Vitra 등 공식 제품컷 깔끔.
-- [ ] **🔴 SEO 트래픽: Chairpedia 10개 GSC 색인요청 + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
+- [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
+- [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
+- [ ] **🌍 국가별 리뷰 수집 구현**(2026-06-26 기획) — **0단계 완료 + 1단계 절반**: migration 038 적용됨(2026-07-20), 다국가 YouTube·전언어 Trustpilot·Kakaku 소스 배포됨. **남은 것**: ①수집 시 `reviews.country` 태깅(현재 1,631건 전부 NULL — 이게 핵심 누락) ②기존 행 source 기준 백필 ③`/reviews` 국기 필터 ④country-profiles config+크론 로테이션.
+- [ ] **🔴 SEO 트래픽: Chairpedia GSC 색인요청(현재 발행 43개) + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
 - [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
 - [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
 - [ ] **Chairpedia 콘텐츠 채우기**: `/admin/chairpedia`에서 핵심 의자들 AI 생성→검토→발행. featured 몇 개 지정(홈 랜덤 노출), collections 분류. 생성 후 본문 사실/슬러그/제품연결 확인 후 Publish.
@@ -223,7 +245,7 @@ npm run test:pipeline      # 파이프라인 테스트
 - [ ] **트래픽 성장(최우선)**: 구매의도 콘텐츠("best office chair for back pain" 등) + 백링크(chairpark→furniblog 등). 기술 SEO는 끝, 이제 콘텐츠/권위 싸움.
 - [ ] **GSC 색인 요청 이어서**: `/products`·`/best/best-chairs-to-buy` 등 핵심 페이지 추가 색인 요청. 1~2주 후 색인 수 추이 확인.
 - [ ] **추가 제휴 ASIN 스팟체크**: `affiliate-links-data.ts` 2026 확장분 19개 일부 직접 클릭 확인(틀리면 교체).
-- [ ] **신규 제품 20개 디테일 보강**: 크론이 리뷰/영상 채우는 중. 브랜드 `hero_image_url` 채우면 이미지 자동 개선.
+- [ ] **리뷰 0건 제품 45개 보강**(2026-07-20 실측, 235 중 190은 리뷰 있음): 크론 로테이션이 계속 채우는 중. 얇은 페이지=색인 거부 원인이라 우선순위 있음.
 - [ ] (선택) 폼 페이지(`/experience`,`/reviews/new`) noindex / 이미지 최적화(`images.unoptimized:true` 해제) / breadcrumb·FAQ 스키마.
 - [ ] (선택) 수익화: ⑤Chairpark 퍼널 CTA PoC → D2C 직제휴 1곳 → Levanta. 광고망 졸업은 트래픽 2.5만+ 후.
 - [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정.
