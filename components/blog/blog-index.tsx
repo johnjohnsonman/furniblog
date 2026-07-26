@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
+import { ArrowRight, ChevronLeft, ChevronRight, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { shuffle } from "@/lib/utils/shuffle"
 
@@ -75,6 +75,7 @@ function Card({ post }: { post: BlogCard }) {
 
 export function BlogIndex({ posts }: { posts: BlogCard[] }) {
   const [tab, setTab] = useState("All")
+  const [search, setSearch] = useState("")
   const [page, setPage] = useState(1)
 
   const categories = useMemo(() => {
@@ -83,7 +84,11 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
     return ["All", ...Array.from(set)]
   }, [posts])
 
+  const q = search.trim().toLowerCase()
+  const searching = q.length > 0
   const isDefault = tab === "All"
+  // Hero shows only on the default view with no active search.
+  const showHero = isDefault && !searching
 
   // Hero pool: flagged-featured posts, else the most recent few.
   const heroPool = useMemo(() => {
@@ -99,24 +104,34 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
 
   // Auto-rotate the hero every 6s on the default view.
   const [heroIdx, setHeroIdx] = useState(0)
-  useEffect(() => setHeroIdx(0), [heroList.length, tab])
+  useEffect(() => setHeroIdx(0), [heroList.length, tab, search])
   useEffect(() => {
-    if (!isDefault || heroList.length < 2) return
+    if (!showHero || heroList.length < 2) return
     const t = setInterval(() => setHeroIdx((i) => (i + 1) % heroList.length), 6000)
     return () => clearInterval(t)
-  }, [isDefault, heroList.length])
+  }, [showHero, heroList.length])
 
   const featured =
-    isDefault && heroList.length > 0 ? heroList[heroIdx % heroList.length] : null
+    showHero && heroList.length > 0 ? heroList[heroIdx % heroList.length] : null
   const heroSlugs = useMemo(() => new Set(heroList.map((p) => p.slug)), [heroList])
 
   const filtered = useMemo(() => {
-    if (isDefault) return posts.filter((p) => !heroSlugs.has(p.slug))
-    return posts.filter((p) => p.category === tab)
-  }, [posts, isDefault, tab, heroSlugs])
+    let list = isDefault ? posts : posts.filter((p) => p.category === tab)
+    if (q) {
+      list = list.filter((p) =>
+        [p.title, p.subtitle, p.excerpt, p.category].some(
+          (f) => f && f.toLowerCase().includes(q)
+        )
+      )
+    } else if (showHero) {
+      // Hero posts are surfaced up top, so keep them out of the grid.
+      list = list.filter((p) => !heroSlugs.has(p.slug))
+    }
+    return list
+  }, [posts, isDefault, tab, q, showHero, heroSlugs])
 
-  // Reset to the first page whenever the tab changes.
-  useEffect(() => setPage(1), [tab])
+  // Reset to the first page whenever the tab or search changes.
+  useEffect(() => setPage(1), [tab, search])
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -126,26 +141,52 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
 
   return (
     <div>
-      {/* Topic filter tabs */}
-      {categories.length > 1 && (
-        <div className="mb-8 flex flex-wrap gap-2">
-          {categories.map((c) => (
+      {/* Filter tabs + search */}
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        {categories.length > 1 ? (
+          <div className="flex flex-wrap gap-2">
+            {categories.map((c) => (
+              <button
+                key={c}
+                type="button"
+                onClick={() => setTab(c)}
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                  tab === c
+                    ? "bg-foreground text-background"
+                    : "border border-border bg-background text-foreground hover:border-foreground/30"
+                )}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div />
+        )}
+
+        <div className="relative w-full sm:max-w-xs">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search posts…"
+            aria-label="Search blog posts"
+            className="w-full rounded-full border border-border bg-background py-2 pl-9 pr-9 text-sm focus:border-foreground/30 focus:outline-none"
+          />
+          {search && (
             <button
-              key={c}
               type="button"
-              onClick={() => setTab(c)}
-              className={cn(
-                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
-                tab === c
-                  ? "bg-foreground text-background"
-                  : "border border-border bg-background text-foreground hover:border-foreground/30"
-              )}
+              aria-label="Clear search"
+              onClick={() => setSearch("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
-              {c}
+              <X className="h-4 w-4" />
             </button>
-          ))}
+          )}
         </div>
-      )}
+      </div>
 
       {/* Featured hero — rotates through several posts (default view only) */}
       {featured && (
@@ -227,9 +268,13 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
       {/* Grid */}
       {pageItems.length > 0 ? (
         <>
-          {isDefault && (
+          {searching ? (
+            <h2 className="mb-5 text-sm text-muted-foreground">
+              {filtered.length} result{filtered.length === 1 ? "" : "s"} for &ldquo;{search.trim()}&rdquo;
+            </h2>
+          ) : showHero ? (
             <h2 className="mb-5 font-serif text-xl font-medium text-foreground">Latest</h2>
-          )}
+          ) : null}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {pageItems.map((p) => (
               <Card key={p.slug} post={p} />
@@ -269,7 +314,9 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
       ) : (
         !featured && (
           <p className="py-12 text-center text-sm text-muted-foreground">
-            No posts in this category yet.
+            {searching
+              ? `No posts found for “${search.trim()}”.`
+              : "No posts in this category yet."}
           </p>
         )
       )}
