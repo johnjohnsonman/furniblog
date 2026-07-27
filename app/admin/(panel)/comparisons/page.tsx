@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Loader2, Plus, ExternalLink, Trash2 } from "lucide-react"
+import { Loader2, Plus, ExternalLink, Trash2, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
@@ -22,7 +22,24 @@ export default function AdminComparisonsList() {
   const [entries, setEntries] = useState<Entry[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
+  const [suggesting, setSuggesting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  async function suggestDrafts() {
+    if (!confirm("Auto-generate 3 comparison drafts from suggested matchups? (drafts only — you review + publish)")) return
+    setSuggesting(true)
+    try {
+      const res = await fetch("/api/cron/comparisons?count=3", { method: "POST" })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Failed")
+      alert(`Created ${data.created ?? 0} draft(s). Review them below.`)
+      await load()
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Failed")
+    } finally {
+      setSuggesting(false)
+    }
+  }
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -68,10 +85,16 @@ export default function AdminComparisonsList() {
     <div className="p-8 max-w-4xl">
       <div className="flex items-center justify-between mb-2">
         <h1 className="font-serif text-2xl font-medium">Comparisons</h1>
-        <Button size="sm" onClick={() => void createNew()} disabled={creating}>
-          {creating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-          <span className="ml-2">New comparison</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="outline" onClick={() => void suggestDrafts()} disabled={suggesting}>
+            {suggesting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+            <span className="ml-2">Auto-draft 3</span>
+          </Button>
+          <Button size="sm" onClick={() => void createNew()} disabled={creating}>
+            {creating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
+            <span className="ml-2">New comparison</span>
+          </Button>
+        </div>
       </div>
       <p className="mb-8 text-sm text-muted-foreground">
         Pick two chairs, generate a data-grounded &ldquo;A vs B&rdquo; page, review, then publish to <code className="text-xs">/compare</code>.

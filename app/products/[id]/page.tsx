@@ -84,6 +84,25 @@ async function getRecentBlogPosts(limit = 3): Promise<RecentPost[]> {
   }
 }
 
+/** Published comparisons that feature this product (internal links + crawl). */
+async function getProductComparisons(productSlug: string): Promise<{ slug: string; title: string }[]> {
+  try {
+    const supabase = createPublicServerClient()
+    const { data: prod } = await supabase.from("products").select("id").eq("slug", productSlug).maybeSingle()
+    const pid = (prod as { id: string } | null)?.id
+    if (!pid) return []
+    const { data } = await supabase
+      .from("comparisons")
+      .select("slug,title")
+      .eq("status", "published")
+      .or(`product_a_id.eq.${pid},product_b_id.eq.${pid}`)
+      .limit(6)
+    return (data as { slug: string; title: string }[] | null) ?? []
+  } catch {
+    return []
+  }
+}
+
 export async function generateStaticParams() {
   if (isSupabaseConfigured()) {
     return []
@@ -139,6 +158,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const slug = product.slug ?? product.id
   const chairpediaSlug = await getChairpediaSlug(slug)
   const recentBlog = isSupabaseConfigured() ? await getRecentBlogPosts(3) : []
+  const productComparisons = isSupabaseConfigured() ? await getProductComparisons(slug) : []
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
 
@@ -334,6 +354,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 productId={product.id}
                 amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
               />
+            </div>
+          )}
+
+          {productComparisons.length > 0 && (
+            <div className="mt-10 border-t border-border pt-6">
+              <h2 className="font-serif text-lg font-medium text-foreground">
+                Compare {product.name}
+              </h2>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {productComparisons.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/compare/${c.slug}`}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  >
+                    {c.title}
+                    <ArrowUpRight className="h-4 w-4 opacity-60" />
+                  </Link>
+                ))}
+              </div>
             </div>
           )}
 

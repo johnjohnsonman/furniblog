@@ -1,6 +1,7 @@
 {
   "crons": [
     { "path": "/api/cron/collect?window=morning", "schedule": "0 21 * * *" },
-    { "path": "/api/cron/collect?window=evening", "schedule": "0 9 * * *" }
+    { "path": "/api/cron/collect?window=evening", "schedule": "0 9 * * *" },
+    { "path": "/api/cron/comparisons", "schedule": "0 3 * * *" }
   ]
 }
