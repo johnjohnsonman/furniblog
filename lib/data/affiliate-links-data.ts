@@ -65,6 +65,13 @@ export const AFFILIATE_LINKS_DATA: Record<
   "boss-office-b991": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00J5WJRMG", isOfficial: false }],
   "flash-furniture-mid-back-mesh": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B001EJK3MG", isOfficial: false }],
   "sihoo-doro-s300": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0DQTRVSHS", isOfficial: false }],
+  // Direct-buyable chairs (verified July 2026 — title-matched, HTTP 200).
+  "andaseat-kaiser-3": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CXF83J7Y", isOfficial: false }],
+  "flexispot-oc3": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07MKMPQ29", isOfficial: false }],
+  "steelcase-series-2": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B08L8J5Q9K", isOfficial: false }],
+  "noblechairs-hero": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07DCPSK74", isOfficial: false }],
+  "noblechairs-epic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01EMA3TX8", isOfficial: false }],
+  "sidiz-t80": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07K6BBZZK", isOfficial: false }],
   // uplift-vert: not sold on Amazon US (DTC / Amazon.ca only) → auto search-link fallback.
   "herman-miller-aeron-b": [
     {
