@@ -39,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/products", now, "daily", 0.9),
     url("/chairpedia", now, "daily", 0.9),
     url("/blog", now, "daily", 0.7),
+    url("/compare", now, "weekly", 0.7),
     url("/chair", now, "weekly", 0.6),
     url("/reviews", now, "daily", 0.9),
     url("/videos", now, "daily", 0.8),
@@ -127,6 +128,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch {
     // Blog table may not exist yet — ignore.
+  }
+
+  // Comparisons — queried separately (table may not exist before migration 041).
+  try {
+    const supabase = createPublicServerClient()
+    const { data: comparisons } = await supabase
+      .from("comparisons")
+      .select("slug, updated_at")
+      .eq("status", "published")
+      .limit(5000)
+    for (const c of comparisons ?? []) {
+      if (c.slug)
+        dynamicPages.push(url(`/compare/${c.slug}`, toDate(c.updated_at), "weekly", 0.7))
+    }
+  } catch {
+    // Comparisons table may not exist yet — ignore.
   }
 
   return [...staticPages, ...bestPages, ...dynamicPages]

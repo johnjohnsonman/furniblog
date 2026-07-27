@@ -56,6 +56,20 @@ export function generateArticleSchema(params: {
   }
 }
 
+/** ItemList of named URLs — helps Google/AI engines parse comparisons & lists. */
+export function generateItemListSchema(items: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+    })),
+  }
+}
+
 export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
