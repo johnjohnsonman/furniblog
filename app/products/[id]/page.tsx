@@ -66,6 +66,24 @@ async function getChairpediaSlug(productSlug: string): Promise<string | null> {
   }
 }
 
+type RecentPost = { slug: string; title: string; hero_image_url: string | null }
+
+/** A few recent blog posts — internal links from product pages into the blog. */
+async function getRecentBlogPosts(limit = 3): Promise<RecentPost[]> {
+  try {
+    const supabase = createPublicServerClient()
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug,title,hero_image_url")
+      .eq("status", "published")
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .limit(limit)
+    return (data as RecentPost[] | null) ?? []
+  } catch {
+    return []
+  }
+}
+
 export async function generateStaticParams() {
   if (isSupabaseConfigured()) {
     return []
@@ -120,6 +138,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const slug = product.slug ?? product.id
   const chairpediaSlug = await getChairpediaSlug(slug)
+  const recentBlog = isSupabaseConfigured() ? await getRecentBlogPosts(3) : []
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
 
@@ -320,6 +339,54 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
           <div className="h-20 lg:hidden" />
         </div>
+
+        {recentBlog.length > 0 && (
+          <section className="border-t border-border bg-card">
+            <div className="mx-auto max-w-6xl px-4 py-10">
+              <div className="mb-5 flex items-baseline justify-between">
+                <h2 className="font-serif text-xl font-medium text-foreground">
+                  From the Furniblog blog
+                </h2>
+                <Link
+                  href="/blog"
+                  className="text-sm font-medium text-premium-accent transition-opacity hover:opacity-80"
+                >
+                  All posts →
+                </Link>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                {recentBlog.map((b) => (
+                  <Link
+                    key={b.slug}
+                    href={`/blog/${b.slug}`}
+                    className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background transition-all hover:border-foreground/20"
+                  >
+                    <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
+                      {b.hero_image_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={b.hero_image_url}
+                          alt={b.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
+                          Furniblog
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-serif text-base font-medium leading-snug text-foreground transition-colors group-hover:text-foreground/80">
+                        {b.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />

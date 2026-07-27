@@ -8,6 +8,7 @@ import { shuffle } from "@/lib/utils/shuffle"
 
 const PAGE_SIZE = 9
 const HERO_POOL_MAX = 5
+const RAIL_SIZE = 4
 
 export type BlogCard = {
   slug: string
@@ -129,6 +130,18 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
     }
     return list
   }, [posts, isDefault, tab, q, showHero, heroSlugs])
+
+  // Category rails for the default view (magazine feel + more internal links).
+  const rails = useMemo(() => {
+    if (!showHero) return []
+    return categories
+      .filter((c) => c !== "All")
+      .map((c) => ({
+        category: c,
+        posts: posts.filter((p) => p.category === c).slice(0, RAIL_SIZE),
+      }))
+      .filter((r) => r.posts.length > 0)
+  }, [showHero, categories, posts])
 
   // Reset to the first page whenever the tab or search changes.
   useEffect(() => setPage(1), [tab, search])
@@ -265,6 +278,31 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
         </div>
       )}
 
+      {/* Category rails (default view) */}
+      {showHero && rails.length > 0 && (
+        <div className="mb-14 space-y-12">
+          {rails.map((rail) => (
+            <section key={rail.category}>
+              <div className="mb-4 flex items-baseline justify-between">
+                <h2 className="font-serif text-xl font-medium text-foreground">{rail.category}</h2>
+                <button
+                  type="button"
+                  onClick={() => setTab(rail.category)}
+                  className="text-sm font-medium text-premium-accent transition-opacity hover:opacity-80"
+                >
+                  See all →
+                </button>
+              </div>
+              <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+                {rail.posts.map((p) => (
+                  <Card key={p.slug} post={p} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+
       {/* Grid */}
       {pageItems.length > 0 ? (
         <>
@@ -273,7 +311,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
               {filtered.length} result{filtered.length === 1 ? "" : "s"} for &ldquo;{search.trim()}&rdquo;
             </h2>
           ) : showHero ? (
-            <h2 className="mb-5 font-serif text-xl font-medium text-foreground">Latest</h2>
+            <h2 className="mb-5 font-serif text-xl font-medium text-foreground">All posts</h2>
           ) : null}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {pageItems.map((p) => (
