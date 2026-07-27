@@ -11,15 +11,15 @@ export const maxDuration = 300
 
 type AdminDb = ReturnType<typeof createAdminClient>
 
-const COST_COLS = ["gen_cost_usd", "gen_input_tokens", "gen_output_tokens", "gen_tier"] as const
+// Columns from later migrations — stripped + retried if not applied yet.
+const OPTIONAL_COLS = ["gen_cost_usd", "gen_input_tokens", "gen_output_tokens", "gen_tier", "faq"] as const
 
 async function updateEntry(db: AdminDb, id: string, payload: Record<string, unknown>): Promise<void> {
   const { error } = await db.from("comparisons").update(payload).eq("id", id)
   if (!error) return
-  // Retry without cost columns if migration hasn't added them (defensive).
   const stripped = { ...payload }
   let had = false
-  for (const k of COST_COLS) if (k in stripped) { delete stripped[k]; had = true }
+  for (const k of OPTIONAL_COLS) if (k in stripped) { delete stripped[k]; had = true }
   if (had) await db.from("comparisons").update(stripped).eq("id", id)
 }
 
@@ -74,6 +74,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
           seo_description: draft.seo_description || null,
           tier: draft.tier,
           content_html: draft.content_html,
+          faq: draft.faq,
           gen_status: "done",
           gen_error: null,
           gen_cost_usd: usage.costUsd,

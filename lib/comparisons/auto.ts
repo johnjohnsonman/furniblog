@@ -44,7 +44,7 @@ export async function generateComparisonDrafts(
       const slug = `${base}-${Date.now().toString(36)}`
       const title = draft.title || `${m.aName} vs ${m.bName}`
 
-      const { error } = await supabase.from("comparisons").insert({
+      const row: Record<string, unknown> = {
         slug,
         title,
         subtitle: draft.subtitle || null,
@@ -53,6 +53,7 @@ export async function generateComparisonDrafts(
         seo_description: draft.seo_description || null,
         tier: draft.tier,
         content_html: draft.content_html,
+        faq: draft.faq,
         product_a_id: m.aId,
         product_b_id: m.bId,
         status: "draft", // ← never auto-publish
@@ -60,7 +61,13 @@ export async function generateComparisonDrafts(
         gen_cost_usd: usage.costUsd,
         gen_input_tokens: usage.inputTokens,
         gen_output_tokens: usage.outputTokens,
-      })
+      }
+      let { error } = await supabase.from("comparisons").insert(row)
+      if (error) {
+        // Retry without the `faq` column if migration 042 isn't applied yet.
+        const { faq: _faq, ...withoutFaq } = row
+        ;({ error } = await supabase.from("comparisons").insert(withoutFaq))
+      }
       if (error) { errors++; continue }
 
       created++

@@ -20,6 +20,8 @@ export type ComparisonProductInput = {
   consFromReviews: string[]
 }
 
+export type ComparisonFaq = { q: string; a: string }
+
 export type ComparisonDraft = {
   title: string
   subtitle: string
@@ -28,6 +30,7 @@ export type ComparisonDraft = {
   seo_description: string
   tier: "premium" | "value" | "mixed"
   content_html: string
+  faq: ComparisonFaq[]
 }
 
 export type GenUsage = {
@@ -78,6 +81,25 @@ function parseDraft(raw: string): ComparisonDraft {
     const h2 = body.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i)
     if (h2) title = h2[1].replace(/<[^>]+>/g, "").trim()
   }
+
+  // FAQ_JSON: [{"q":"…","a":"…"}] on one line before the body.
+  let faq: ComparisonFaq[] = []
+  const faqLine = field(text, "FAQ_JSON")
+  if (faqLine) {
+    try {
+      const parsed = JSON.parse(faqLine)
+      if (Array.isArray(parsed)) {
+        faq = parsed
+          .filter((x) => x && typeof x.q === "string" && typeof x.a === "string")
+          .map((x) => ({ q: String(x.q).trim(), a: String(x.a).trim() }))
+          .filter((x) => x.q && x.a)
+          .slice(0, 5)
+      }
+    } catch {
+      /* ignore malformed FAQ */
+    }
+  }
+
   return {
     title,
     subtitle: field(text, "SUBTITLE"),
@@ -86,6 +108,7 @@ function parseDraft(raw: string): ComparisonDraft {
     seo_description: field(text, "SEO_DESCRIPTION"),
     tier: normalizeTier(field(text, "TIER") || "mixed"),
     content_html: body,
+    faq,
   }
 }
 
@@ -141,6 +164,7 @@ EXCERPT: 1–2 sentence summary (max ~160 chars)
 SEO_TITLE: ~55–60 chars, include both chair names and "vs"
 SEO_DESCRIPTION: ~150–158 chars, compelling
 TIER: one of premium | value | mixed (premium if both are high-end brands, value if both are budget/bestseller, else mixed)
+FAQ_JSON: a JSON array of 3 genuine buyer questions with concise answers, grounded ONLY in the data above, on ONE line. Format: [{"q":"Is ${a.name} better than ${b.name}?","a":"…"},{"q":"…","a":"…"},{"q":"…","a":"…"}]
 ===BODY===
 the full HTML body per the structure above
 

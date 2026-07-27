@@ -79,6 +79,7 @@ export type PublicComparison = {
   hero_image_url: string | null
   content_html: string
   tier: string | null
+  faq: { q: string; a: string }[]
   published_at: string | null
   updated_at: string | null
   productA: PublicComparisonProduct | null
@@ -133,6 +134,9 @@ export async function getPublicComparison(
     hero_image_url: (data.hero_image_url as string | null) ?? null,
     content_html: (data.content_html as string) ?? "",
     tier: (data.tier as string | null) ?? null,
+    faq: Array.isArray(data.faq)
+      ? (data.faq as { q: string; a: string }[]).filter((f) => f && f.q && f.a)
+      : [],
     published_at: (data.published_at as string | null) ?? null,
     updated_at: (data.updated_at as string | null) ?? null,
     productA,

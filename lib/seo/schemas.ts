@@ -70,6 +70,19 @@ export function generateItemListSchema(items: { name: string; url: string }[]) {
   }
 }
 
+/** FAQPage — genuine on-page Q&A (rich results + AI-engine citations). */
+export function generateFAQSchema(items: { q: string; a: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((it) => ({
+      "@type": "Question",
+      name: it.q,
+      acceptedAnswer: { "@type": "Answer", text: it.a },
+    })),
+  }
+}
+
 export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",

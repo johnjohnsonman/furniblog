@@ -12,6 +12,7 @@ import {
   generateArticleSchema,
   generateBreadcrumbSchema,
   generateItemListSchema,
+  generateFAQSchema,
 } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
@@ -140,6 +141,22 @@ export default async function ComparePage({
             dangerouslySetInnerHTML={{ __html: wrapTables(c.content_html) }}
           />
 
+          {c.faq.length > 0 && (
+            <section className="mt-12 border-t border-border pt-8">
+              <h2 className="font-serif text-2xl font-medium text-foreground">
+                Frequently asked
+              </h2>
+              <dl className="mt-5 space-y-5">
+                {c.faq.map((f, i) => (
+                  <div key={i}>
+                    <dt className="font-medium text-foreground">{f.q}</dt>
+                    <dd className="mt-1.5 text-muted-foreground leading-relaxed">{f.a}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+
           {(c.productA || c.productB) && (
             <div className="mt-12 grid gap-3">
               {c.productA && <BuyRow product={c.productA} />}
@@ -153,6 +170,9 @@ export default async function ComparePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listSchema) }} />
+      {c.faq.length > 0 && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema(c.faq)) }} />
+      )}
     </div>
   )
 }
