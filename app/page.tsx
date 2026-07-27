@@ -16,6 +16,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { NewsCard } from "@/components/news/news-card"
 import { ChairBand } from "@/components/home/chair-band"
+import { ChairpediaHero } from "@/components/home/chairpedia-hero"
 import { StatBand } from "@/components/home/stat-band"
 import { Reveal } from "@/components/home/reveal"
 import { bestLists } from "@/lib/data"
@@ -100,9 +101,6 @@ export default async function HomePage() {
   const { brands } = await import("@/lib/data")
   const topBrands = brands.slice(0, 6)
 
-  const cpFeatured = chairpedia[0] ?? null
-  const cpRest = chairpedia.slice(1)
-
   return (
     <div className="flex min-h-screen flex-col bg-premium-bg">
       <script
@@ -130,76 +128,9 @@ export default async function HomePage() {
               </p>
             </Reveal>
 
-            {cpFeatured && (
-              <Reveal className="mt-9">
-                <Link
-                  href={`/chairpedia/${cpFeatured.slug}`}
-                  className="group grid overflow-hidden rounded-2xl border border-premium-border bg-white md:grid-cols-2"
-                >
-                  <div className="aspect-[4/3] overflow-hidden bg-premium-cream md:aspect-auto md:min-h-[360px]">
-                    {cpFeatured.heroImage && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={cpFeatured.heroImage}
-                        alt={cpFeatured.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                      />
-                    )}
-                  </div>
-                  <div className="flex flex-col justify-center p-7 sm:p-10">
-                    <span className="text-[11px] font-medium uppercase tracking-[0.16em] text-premium-accent">
-                      From Chairpedia
-                    </span>
-                    <h2 className="mt-2 font-serif text-2xl font-medium leading-snug text-premium-text sm:text-3xl">
-                      {cpFeatured.title}
-                    </h2>
-                    {(cpFeatured.excerpt || cpFeatured.subtitle) && (
-                      <p className="mt-3 line-clamp-3 text-base leading-relaxed text-premium-text-secondary">
-                        {cpFeatured.excerpt || cpFeatured.subtitle}
-                      </p>
-                    )}
-                    <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-premium-accent">
-                      Read the deep-dive →
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            )}
-
-            {cpRest.length > 0 && (
-              <Reveal className="mt-8">
-                <div className="mb-4 flex items-end justify-between">
-                  <h3 className="font-serif text-lg font-medium text-premium-text">
-                    More from Chairpedia
-                  </h3>
-                  <Link href="/chairpedia" className="text-sm text-premium-text-secondary hover:text-premium-text">
-                    View all →
-                  </Link>
-                </div>
-                <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2">
-                  {cpRest.map((c) => (
-                    <Link
-                      key={c.slug}
-                      href={`/chairpedia/${c.slug}`}
-                      className="group w-[240px] shrink-0 snap-start sm:w-[280px]"
-                    >
-                      <div className="aspect-[16/10] overflow-hidden rounded-xl border border-premium-border bg-premium-cream">
-                        {c.heroImage && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={c.heroImage}
-                            alt={c.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        )}
-                      </div>
-                      <h4 className="mt-2 line-clamp-2 font-serif text-base font-medium leading-snug text-premium-text">
-                        {c.title}
-                      </h4>
-                    </Link>
-                  ))}
-                </div>
+            {chairpedia.length > 0 && (
+              <Reveal>
+                <ChairpediaHero entries={chairpedia} />
               </Reveal>
             )}
           </div>
