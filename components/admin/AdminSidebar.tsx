@@ -24,6 +24,7 @@ import {
   ImageIcon,
   GalleryHorizontal,
   GitCompareArrows,
+  Instagram,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -33,6 +34,7 @@ const NAV = [
   { href: "/admin/products", label: "Products", icon: Armchair },
   { href: "/admin/chairpedia", label: "Chairpedia", icon: BookOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/carousel", label: "IG Carousel", icon: Instagram },
   { href: "/admin/comparisons", label: "Comparisons", icon: GitCompareArrows },
   { href: "/admin/best", label: "Best Lists", icon: ListOrdered },
   { href: "/admin/reviews", label: "Reviews", icon: Star },
