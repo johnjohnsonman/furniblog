@@ -19,6 +19,8 @@ export type BlogCard = {
   published_at: string | null
   featured: boolean | null
   category: string | null
+  /** Override link target (e.g. comparisons live at /compare/[slug]). */
+  href?: string
 }
 
 function fmtDate(s: string | null): string {
@@ -40,7 +42,7 @@ function Badge({ category }: { category: string | null }) {
 function Card({ post }: { post: BlogCard }) {
   return (
     <Link
-      href={`/blog/${post.slug}`}
+      href={post.href ?? `/blog/${post.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_34px_rgba(0,0,0,0.07)]"
     >
       <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
@@ -204,7 +206,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
       {/* Featured hero — rotates through several posts (default view only) */}
       {featured && (
         <div className="mb-12">
-          <Link href={`/blog/${featured.slug}`} className="group block">
+          <Link href={featured.href ?? `/blog/${featured.slug}`} className="group block">
             <div className="grid items-center gap-6 md:grid-cols-2">
               <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-muted">
                 {featured.hero_image_url ? (

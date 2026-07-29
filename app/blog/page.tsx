@@ -47,8 +47,47 @@ async function getPosts(): Promise<BlogCard[]> {
   }
 }
 
+// Published A-vs-B comparisons (separate `comparisons` table) surfaced in the
+// blog under the "Comparisons" category — cards link out to /compare/[slug].
+async function getComparisonCardsAsBlog(): Promise<BlogCard[]> {
+  const supabase = createPublicServerClient()
+  try {
+    const { data, error } = await supabase
+      .from("comparisons")
+      .select("slug,title,subtitle,excerpt,hero_image_url,published_at")
+      .eq("status", "published")
+      .order("published_at", { ascending: false, nullsFirst: false })
+      .limit(100)
+    if (error) throw error
+    return ((data as Array<Omit<BlogCard, "featured" | "category" | "href">> | null) ?? []).map(
+      (c) => ({
+        ...c,
+        featured: false, // don't let comparisons dominate the rotating hero
+        category: "Comparisons",
+        href: `/compare/${c.slug}`,
+      })
+    )
+  } catch {
+    return []
+  }
+}
+
 export default async function BlogIndexPage() {
-  const posts = await getPosts()
+  const [blogPosts, comparisonCards] = await Promise.all([
+    getPosts(),
+    getComparisonCardsAsBlog(),
+  ])
+
+  // Merge, then sort featured-first and newest-first so comparisons interleave
+  // by date with regular posts (matching getPosts' ordering).
+  const posts = [...blogPosts, ...comparisonCards].sort((a, b) => {
+    const fa = a.featured ? 1 : 0
+    const fb = b.featured ? 1 : 0
+    if (fa !== fb) return fb - fa
+    const ta = a.published_at ? new Date(a.published_at).getTime() : 0
+    const tb = b.published_at ? new Date(b.published_at).getTime() : 0
+    return tb - ta
+  })
 
   return (
     <div className="flex min-h-screen flex-col bg-white">
