@@ -1,7 +1,17 @@
 import { createAdminClient } from "@/lib/supabase/admin"
 import { isUuid } from "@/lib/pipeline/queue-mapper"
 
-export type AffiliateCountry = "US" | "KR" | "JP"
+export type AffiliateCountry =
+  | "US"
+  | "KR"
+  | "JP"
+  // Southeast Asia (routed to Shopee / Lazada, see lib/affiliate/sea.ts)
+  | "SG"
+  | "MY"
+  | "ID"
+  | "TH"
+  | "PH"
+  | "VN"
 
 const RETAILER_ALIASES: Record<string, string> = {
   amazon: "amazon",

@@ -2,6 +2,7 @@ import type { CatalogAffiliateLink } from "@/lib/data/affiliate-links"
 import type { PriceRow } from "@/lib/affiliate/price-rows"
 import { formatUsdPrice } from "@/lib/pricing"
 import type { AffiliateLink } from "@/types/affiliate-link"
+import type { AffiliateCountry } from "@/lib/affiliate/links"
 
 function formatKrw(priceKrw: number): string {
   return `₩${priceKrw.toLocaleString("en-US")}`
@@ -52,7 +53,7 @@ export function buildPriceRowsFromCatalog(
 
 export function sortCatalogLinksForCountry(
   links: CatalogAffiliateLink[],
-  country: "US" | "KR" | "JP"
+  country: AffiliateCountry
 ): CatalogAffiliateLink[] {
   if (country !== "KR") return links
   const coupang = links.filter((l) => detectChannel(l.retailer, l.url) === "coupang")

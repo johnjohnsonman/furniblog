@@ -20,7 +20,7 @@ import { ChairProductSpecs } from "@/components/chairs/ChairProductSpecs"
 import { ProductImageGallery } from "@/components/chairs/ProductImageGallery"
 import { ProductVideosSection } from "@/components/videos/product-videos-section"
 import { fetchProductVideos } from "@/lib/videos/product-videos"
-import { BuyButtonGroup } from "@/components/affiliate/BuyButton"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import {
   generateBreadcrumbSchema,
   generateChairSchema,
@@ -338,9 +338,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                 <div className="p-5 bg-card rounded-xl border border-border">
                   <h3 className="font-medium text-foreground mb-4">Where to Buy</h3>
-                  <BuyButtonGroup
+                  <SmartBuyLink
+                    variant="block"
                     productId={product.id}
+                    name={product.name}
                     amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                    showDisclaimer
                   />
                 </div>
 
@@ -348,14 +351,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          {(buyUrls.amazonUrl ?? product.amazonUrl) && (
-            <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
-              <BuyButtonGroup
-                productId={product.id}
-                amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-              />
-            </div>
-          )}
+          <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
+            <SmartBuyLink
+              variant="block"
+              productId={product.id}
+              name={product.name}
+              amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+            />
+          </div>
 
           {productComparisons.length > 0 && (
             <div className="mt-10 border-t border-border pt-6">

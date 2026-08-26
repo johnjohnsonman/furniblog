@@ -71,7 +71,16 @@ export function middleware(request: NextRequest) {
     request.headers.get("x-vercel-ip-country") ??
     (request as NextRequest & { geo?: { country?: string } }).geo?.country ??
     "US"
-  const country = geoCountry === "KR" ? "KR" : geoCountry === "JP" ? "JP" : "US"
+  // Southeast Asia → routed to Shopee/Lazada; KR → Coupang; JP → Amazon.co.jp.
+  const SEA = new Set(["SG", "MY", "ID", "TH", "PH", "VN"])
+  const country =
+    geoCountry === "KR"
+      ? "KR"
+      : geoCountry === "JP"
+        ? "JP"
+        : SEA.has(geoCountry)
+          ? geoCountry
+          : "US"
 
   const response = NextResponse.next()
   response.headers.set("x-country", country)

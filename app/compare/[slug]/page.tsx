@@ -1,12 +1,13 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowUpRight, ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { getPublicComparison } from "@/lib/comparisons/resolve"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { wrapTables } from "@/lib/blog/postprocess"
 import {
   generateArticleSchema,
@@ -52,14 +53,14 @@ function BuyRow({ product }: { product: { slug: string; name: string } }) {
         </Link>
         <p className="text-xs text-muted-foreground">Specs, reviews & details</p>
       </div>
-      <a
-        href={buy.url}
-        target="_blank"
-        rel="sponsored nofollow noopener"
-        className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-foreground px-4 py-2 text-sm font-semibold text-background"
-      >
-        View on Amazon <ArrowUpRight className="h-4 w-4" />
-      </a>
+      <SmartBuyLink
+        variant="inline"
+        productId={product.slug}
+        name={product.name}
+        amazonUrl={buy.url}
+        amazonLabel="View on Amazon"
+        className="shrink-0"
+      />
     </div>
   )
 }

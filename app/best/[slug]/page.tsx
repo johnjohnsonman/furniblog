@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Check, X, ExternalLink, ChevronRight } from "lucide-react"
+import { Check, X, ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { getResolvedBestList, getBestListCards } from "@/lib/best/resolve"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 
 export const dynamic = "force-dynamic"
 
@@ -179,16 +180,13 @@ export default async function BestListPage({ params }: BestListPageProps) {
                     )}
 
                     <div className="mt-5 flex flex-wrap gap-2">
-                      {p.amazonUrl && (
-                        <a
-                          href={p.amazonUrl}
-                          target="_blank"
-                          rel="sponsored nofollow noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
-                        >
-                          View on Amazon <ExternalLink className="h-3.5 w-3.5" />
-                        </a>
-                      )}
+                      <SmartBuyLink
+                        variant="inline"
+                        productId={p.slug}
+                        name={p.name}
+                        amazonUrl={p.amazonUrl}
+                        amazonLabel="View on Amazon"
+                      />
                       <Link href={`/products/${p.slug}`} className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted">
                         Full Review
                       </Link>
