@@ -94,7 +94,7 @@ export default async function BlogIndexPage() {
       <Header />
       <main className="flex-1">
         <div className="border-b border-border bg-card">
-          <div className="mx-auto max-w-5xl px-4 py-10">
+          <div className="mx-auto max-w-6xl px-4 py-10">
             <h1 className="font-serif text-3xl font-medium text-foreground">Blog</h1>
             <p className="mt-1 text-muted-foreground">
               Guides, comparisons and stories about chairs.

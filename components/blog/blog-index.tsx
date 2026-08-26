@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { ArrowRight, ChevronLeft, ChevronRight, Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { shuffle } from "@/lib/utils/shuffle"
@@ -9,6 +10,82 @@ import { shuffle } from "@/lib/utils/shuffle"
 const PAGE_SIZE = 9
 const HERO_POOL_MAX = 5
 const RAIL_SIZE = 4
+
+// One-line intro shown at the top of a category view (fills the header, adds
+// context + crawlable text). Falls back to a generic line for unknown tabs.
+const CATEGORY_INTRO: Record<string, string> = {
+  Reviews: "Hands-on, in-depth reviews of the chairs worth knowing about.",
+  "Design Stories": "The people, history and design behind iconic chairs.",
+  Comparisons: "Head-to-head matchups — real specs and reviews to settle “A vs B.”",
+  Guides: "Practical buying and ergonomics guides for picking the right chair.",
+}
+
+// Build a compact page list with ellipses, e.g. 1 … 4 5 6 … 20.
+function pageList(current: number, total: number): (number | "…")[] {
+  const out: (number | "…")[] = []
+  for (let p = 1; p <= total; p++) {
+    if (p === 1 || p === total || (p >= current - 1 && p <= current + 1)) {
+      out.push(p)
+    } else if (out[out.length - 1] !== "…") {
+      out.push("…")
+    }
+  }
+  return out
+}
+
+function Pagination({
+  page,
+  totalPages,
+  onGo,
+}: {
+  page: number
+  totalPages: number
+  onGo: (p: number) => void
+}) {
+  if (totalPages <= 1) return null
+  return (
+    <nav className="mt-10 flex flex-wrap items-center justify-center gap-1.5 text-sm">
+      <button
+        type="button"
+        disabled={page <= 1}
+        onClick={() => onGo(page - 1)}
+        className="rounded-md border border-border bg-background px-3 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40"
+      >
+        Prev
+      </button>
+      {pageList(page, totalPages).map((it, i) =>
+        it === "…" ? (
+          <span key={`e${i}`} className="px-2 text-muted-foreground">
+            …
+          </span>
+        ) : (
+          <button
+            key={it}
+            type="button"
+            onClick={() => onGo(it)}
+            aria-current={it === page ? "page" : undefined}
+            className={cn(
+              "min-w-9 rounded-md px-3 py-2 font-medium transition-colors",
+              it === page
+                ? "bg-foreground text-background"
+                : "border border-border bg-background hover:border-foreground/30"
+            )}
+          >
+            {it}
+          </button>
+        )
+      )}
+      <button
+        type="button"
+        disabled={page >= totalPages}
+        onClick={() => onGo(page + 1)}
+        className="rounded-md border border-border bg-background px-3 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40"
+      >
+        Next
+      </button>
+    </nav>
+  )
+}
 
 export type BlogCard = {
   slug: string
@@ -77,9 +154,23 @@ function Card({ post }: { post: BlogCard }) {
 }
 
 export function BlogIndex({ posts }: { posts: BlogCard[] }) {
-  const [tab, setTab] = useState("All")
-  const [search, setSearch] = useState("")
-  const [page, setPage] = useState(1)
+  // Initialize from the URL so browser Back restores the tab / page / search.
+  const searchParams = useSearchParams()
+  const initialPage = Number(searchParams.get("page") ?? "1")
+  const [tab, setTab] = useState(searchParams.get("tab") || "All")
+  const [search, setSearch] = useState(searchParams.get("q") || "")
+  const [page, setPage] = useState(Number.isFinite(initialPage) && initialPage > 0 ? initialPage : 1)
+
+  // Mirror tab / page / search into the URL (lightweight — no server refetch)
+  // so navigating into a post and hitting Back returns to the same view.
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (tab !== "All") params.set("tab", tab)
+    if (search.trim()) params.set("q", search.trim())
+    if (page > 1) params.set("page", String(page))
+    const qs = params.toString()
+    window.history.replaceState(null, "", qs ? `?${qs}` : window.location.pathname)
+  }, [tab, search, page])
 
   const categories = useMemo(() => {
     const set = new Set<string>()
@@ -145,8 +236,16 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
       .filter((r) => r.posts.length > 0)
   }, [showHero, categories, posts])
 
-  // Reset to the first page whenever the tab or search changes.
-  useEffect(() => setPage(1), [tab, search])
+  // Reset to the first page whenever the tab or search changes — but not on the
+  // initial mount, so a page restored from the URL (Back button) is preserved.
+  const mounted = useRef(false)
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true
+      return
+    }
+    setPage(1)
+  }, [tab, search])
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -314,42 +413,34 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
             </h2>
           ) : showHero ? (
             <h2 className="mb-5 font-serif text-xl font-medium text-foreground">All posts</h2>
-          ) : null}
+          ) : (
+            <div className="mb-8 border-b border-border pb-6">
+              <p className="mb-2 text-xs font-medium uppercase tracking-[0.16em] text-premium-accent">
+                Blog
+              </p>
+              <h2 className="font-serif text-3xl font-medium text-foreground">{tab}</h2>
+              <p className="mt-2 max-w-2xl text-muted-foreground">
+                {CATEGORY_INTRO[tab] ?? `Stories and guides in ${tab}.`}
+              </p>
+              <p className="mt-3 text-xs text-muted-foreground">
+                {filtered.length} post{filtered.length === 1 ? "" : "s"}
+              </p>
+            </div>
+          )}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {pageItems.map((p) => (
               <Card key={p.slug} post={p} />
             ))}
           </div>
 
-          {totalPages > 1 && (
-            <div className="mt-10 flex items-center justify-center gap-3 text-sm">
-              <button
-                type="button"
-                disabled={page <= 1}
-                onClick={() => {
-                  setPage((p) => Math.max(1, p - 1))
-                  window.scrollTo({ top: 0, behavior: "smooth" })
-                }}
-                className="rounded-md border border-border bg-background px-4 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40"
-              >
-                Prev
-              </button>
-              <span className="px-2 text-muted-foreground">
-                {page} / {totalPages}
-              </span>
-              <button
-                type="button"
-                disabled={page >= totalPages}
-                onClick={() => {
-                  setPage((p) => Math.min(totalPages, p + 1))
-                  window.scrollTo({ top: 0, behavior: "smooth" })
-                }}
-                className="rounded-md border border-border bg-background px-4 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40"
-              >
-                Next
-              </button>
-            </div>
-          )}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onGo={(p) => {
+              setPage(Math.min(Math.max(1, p), totalPages))
+              window.scrollTo({ top: 0, behavior: "smooth" })
+            }}
+          />
         </>
       ) : (
         !featured && (
