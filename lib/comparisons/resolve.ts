@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { ComparisonProductInput } from "@/lib/comparisons/generate"
+import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 
 /** Assemble one product's grounding data for the AI generator (admin/server). */
 export async function loadProductInput(
@@ -15,11 +16,18 @@ export async function loadProductInput(
     .maybeSingle()
   if (!p) return null
 
-  const { data: reviews } = await supabase
-    .from("reviews")
-    .select("summary_ko, scores, pros, cons")
-    .eq("product_id", productId)
-    .limit(12)
+  // Exclude hidden reviews (P1-3) from the pros/cons that feed comparison pages
+  // and the AI generator. NOTE: comparisons already generated store their prose
+  // in content_html — regenerate those to drop pros/cons from now-excluded rows.
+  const { data: reviews } = await runPublicReviewQuery((applyFilter) => {
+    let q = supabase
+      .from("reviews")
+      .select("summary_ko, scores, pros, cons")
+      .eq("product_id", productId)
+      .limit(12)
+    if (applyFilter) q = q.eq("excluded", false)
+    return q
+  })
 
   const rows = reviews ?? []
   const ratings = rows

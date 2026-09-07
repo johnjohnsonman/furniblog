@@ -1,4 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js"
+import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 
 export type Matchup = {
   aId: string
@@ -30,7 +31,11 @@ export async function suggestMatchups(
     .eq("track", "chair")
   const products = (prods ?? []) as Prod[]
 
-  const { data: revs } = await supabase.from("reviews").select("product_id").limit(5000)
+  const { data: revs } = await runPublicReviewQuery((applyFilter) => {
+    let q = supabase.from("reviews").select("product_id").limit(5000)
+    if (applyFilter) q = q.eq("excluded", false)
+    return q
+  })
   const reviewCount = new Map<string, number>()
   for (const r of revs ?? []) {
     const id = r.product_id as string

@@ -7,7 +7,7 @@ import { toProductView, toDesignerView } from "@/lib/data/mappers"
 import { isChairCategory } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
 import { formatProductPrice } from "@/lib/pricing"
-import { runPublicReviewQuery, notExcluded } from "@/lib/reviews/exclusion"
+import { runPublicReviewQuery, notExcluded, reviewsSupportExclusion } from "@/lib/reviews/exclusion"
 import { createPublicServerClient } from "./public-server"
 
 export function isSupabaseConfigured(): boolean {
@@ -885,6 +885,7 @@ export async function getSiteStats(): Promise<SiteStats> {
   }
 
   const supabase = createPublicServerClient()
+  const excludedOk = await reviewsSupportExclusion(supabase)
 
   const [productsRes, brandRowsRes, reviewsRes] = await Promise.all([
     supabase
@@ -897,7 +898,12 @@ export async function getSiteStats(): Promise<SiteStats> {
       .select("brand_id")
       .eq("published", true)
       .eq("track", "chair"),
-    supabase.from("reviews").select("*", { count: "exact", head: true }),
+    (() => {
+      // Public review total excludes hidden reviews (P1-3).
+      let q = supabase.from("reviews").select("*", { count: "exact", head: true })
+      if (excludedOk) q = q.eq("excluded", false)
+      return q
+    })(),
   ])
 
   const brandIds = new Set(
