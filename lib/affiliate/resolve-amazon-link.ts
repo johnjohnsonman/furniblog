@@ -43,7 +43,12 @@ export function resolveAmazonAffiliateLink(
   brandName?: string
 ): ResolvedAmazonLink {
   const catalog = AFFILIATE_LINKS_DATA[slug]
-  const fromCatalog = catalog?.find((l) => isAmazonEntry(l.retailer, l.url))
+  // Exclude amazon.co.jp: it's a Japan-only listing and the US associate tag
+  // earns nothing there. Fall back to an amazon.com search so a global visitor
+  // gets a usable link (JP-specific routing is handled elsewhere, not here).
+  const fromCatalog = catalog?.find(
+    (l) => isAmazonEntry(l.retailer, l.url) && !l.url.includes("amazon.co.jp")
+  )
 
   if (fromCatalog) {
     return {

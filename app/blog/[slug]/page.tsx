@@ -66,7 +66,9 @@ export async function generateMetadata({
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) return { title: "Blog" }
-  const title = post.seo_title?.trim() || post.title
+  // Strip a baked-in "| Furniblog" suffix: the layout template already appends
+  // it, so seo_titles that include it rendered as "… | Furniblog | Furniblog".
+  const title = (post.seo_title?.trim() || post.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
   const description =
     post.seo_description?.trim() || post.excerpt?.trim() || post.subtitle?.trim() || undefined
   return {
