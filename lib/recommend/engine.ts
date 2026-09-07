@@ -435,11 +435,11 @@ function scoreProduct(
   const editorial = p.editorial ?? 0.3 // neutral-ish for untested
   const quality = pop * conf + editorial * (1 - conf)
 
-  // buyability (budget-sensitive)
-  const budgetConscious = a.budget ? TIER[a.budget] <= 2 : false
-  const buyWeight = W.buyBase + (budgetConscious ? W.buyBudgetBoost : 0)
-  const buy = p.hasDirectBuy ? 1 : 0
-
+  // Buyability score boost REMOVED: a `/dp/`-format link is not verified to point
+  // at the correct product, so an unverified link must not raise ranking. Link
+  // display is unaffected; a verified-product-link system is a follow-up. (The
+  // "affordable, easy-to-buy" set guarantee below is a diversity slot, not a
+  // per-chair score boost.)
   let score =
     W.priority * priority +
     W.use * use +
@@ -450,8 +450,7 @@ function scoreProduct(
     W.weight * weight +
     W.sit * sit +
     W.style * style +
-    W.quality * quality +
-    buyWeight * buy
+    W.quality * quality
 
   // light rotation so near-ties vary per visit / similar users
   score += (seeded(p.id, a.seed ?? 1) - 0.5) * JITTER

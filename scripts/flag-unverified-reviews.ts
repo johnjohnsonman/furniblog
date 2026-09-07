@@ -1,73 +1,92 @@
 import { config } from "dotenv"
 config({ path: ".env.local" })
 import { createClient } from "@supabase/supabase-js"
+import { mkdirSync, writeFileSync, readFileSync } from "fs"
 
-// P1-3: mark the UNVERIFIED CANDIDATE set — rows matching the error-path pattern
-// (overall=3 with empty pros AND cons). This is a CANDIDATE pattern, NOT a
-// confirmed mis-link: a normal review can also be 3/empty. Confirmed mis-links
-// are established separately by re-running the relevance gate (a re-verify pass);
-// only those should carry a "confirmed" reason. Reversible: sets excluded=true;
-// nothing is deleted. Run with `-- --apply` to write.
+// P1-3 review exclusion tool. Reversible: sets reviews.excluded=true; never
+// deletes. Requires migration 043 (excluded / exclude_reason / excluded_at).
 //
-// ORDER: apply the public/aggregation filters FIRST (so hidden == not shown AND
-// not counted), verify on a small set, THEN expand. Requires migration 043.
+// Usage:
+//   (default)                 dry-run: report the candidate pattern count only.
+//   --apply --ids=ID1,ID2     exclude a SMALL, human-confirmed set of ids. Writes
+//                             a backup (prior values + run id) before changing.
+//   --reason="..."            reason recorded on excluded rows.
+//   --restore=<backup.json>   revert ONLY the rows changed by that run.
+//
+// NOTE: this does NOT bulk-exclude the 292 pattern candidates. "overall=3 +
+// empty pros/cons" is a REVIEW CANDIDATE pattern, not a confirmed mis-link.
+// Confirm mis-links from the source first, then pass their ids to --apply.
 
-const APPLY = process.argv.includes("--apply")
-const REASON = "unverified-candidate: overall=3 + empty pros/cons (pattern only — NOT confirmed mislink)"
+const args = process.argv.slice(2)
+const has = (f: string) => args.includes(f)
+const val = (f: string) => { const a = args.find((x) => x.startsWith(f + "=")); return a ? a.slice(f.length + 1) : null }
 
-async function main() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 
-  // Verify the migration ran.
-  const probe = await supabase.from("reviews").select("id,excluded").limit(1)
-  if (probe.error) {
-    console.error("Cannot read reviews.excluded — run migration 043 first:", probe.error.message)
-    process.exit(1)
+async function ensureColumn() {
+  const { error } = await db.from("reviews").select("id,excluded").limit(1)
+  if (error) { console.error("Run migration 043 first —", error.message); process.exit(1) }
+}
+
+async function restore(file: string) {
+  await ensureColumn()
+  const backup = JSON.parse(readFileSync(file, "utf8")) as { runId: string; rows: { id: string; excluded: boolean; exclude_reason: string | null; excluded_at: string | null }[] }
+  for (const r of backup.rows) {
+    const { error } = await db.from("reviews").update({ excluded: r.excluded, exclude_reason: r.exclude_reason, excluded_at: r.excluded_at }).eq("id", r.id)
+    if (error) { console.error("restore error", r.id, error.message); process.exit(1) }
   }
+  console.log(`Restored ${backup.rows.length} rows to their pre-run values (run ${backup.runId}).`)
+}
 
-  // Pull all overall=3 rows (paged past the 1000-row cap) and keep the ones
-  // with BOTH pros and cons empty — the exact error-path signature.
-  const targets: string[] = []
-  let from = 0
-  const PAGE = 1000
+async function dryRunReport() {
+  // Count the candidate pattern (overall=3 + pros & cons empty), site-wide.
+  let overall3 = 0, candidate = 0, from = 0
   for (;;) {
-    const { data, error } = await supabase
-      .from("reviews")
-      .select("id,pros,cons,excluded")
-      .filter("scores->>overall", "eq", "3")
-      .range(from, from + PAGE - 1)
+    const { data, error } = await db.from("reviews").select("id,pros,cons").filter("scores->>overall", "eq", "3").range(from, from + 999)
     if (error) { console.error(error.message); process.exit(1) }
     const rows = data ?? []
     for (const r of rows) {
-      const prosEmpty = !r.pros || (r.pros as unknown[]).length === 0
-      const consEmpty = !r.cons || (r.cons as unknown[]).length === 0
-      if (prosEmpty && consEmpty && !r.excluded) targets.push(r.id as string)
+      overall3++
+      const pe = !r.pros || (r.pros as unknown[]).length === 0
+      const ce = !r.cons || (r.cons as unknown[]).length === 0
+      if (pe && ce) candidate++
     }
-    if (rows.length < PAGE) break
-    from += PAGE
+    if (rows.length < 1000) break
+    from += 1000
   }
-
-  console.log(`Matched ${targets.length} error-path reviews (overall=3, pros+cons empty, not yet excluded).`)
-  if (!APPLY) {
-    console.log("DRY RUN — re-run with `-- --apply` to set excluded=true (reversible).")
-    return
-  }
-
-  let done = 0
-  for (let i = 0; i < targets.length; i += 200) {
-    const batch = targets.slice(i, i + 200)
-    const { error } = await supabase
-      .from("reviews")
-      .update({ excluded: true, exclude_reason: REASON, excluded_at: new Date().toISOString() })
-      .in("id", batch)
-    if (error) { console.error(error.message); process.exit(1) }
-    done += batch.length
-    console.log(`  excluded ${done}/${targets.length}`)
-  }
-  console.log("Done. To restore: set excluded=false where exclude_reason =", JSON.stringify(REASON))
+  console.log(`SITE-WIDE candidate pattern (overall=3 + empty pros/cons): ${candidate} of ${overall3} overall=3 rows.`)
+  console.log("These are CANDIDATES, not confirmed. Confirm from source, then: --apply --ids=ID1,ID2 --reason=\"...\"")
 }
 
+async function apply(ids: string[], reason: string) {
+  await ensureColumn()
+  if (ids.length === 0) { console.error("No --ids provided."); process.exit(1) }
+  const runId = new Date().toISOString().replace(/[:.]/g, "-")
+  // Preserve prior values for exactly these ids.
+  const { data: prior, error: pErr } = await db.from("reviews").select("id,excluded,exclude_reason,excluded_at").in("id", ids)
+  if (pErr) { console.error(pErr.message); process.exit(1) }
+  mkdirSync("scripts/backups", { recursive: true })
+  const file = `scripts/backups/exclude-${runId}.json`
+  writeFileSync(file, JSON.stringify({ runId, reason, ids, rows: prior ?? [] }, null, 2))
+  console.log(`Backup written: ${file} (${(prior ?? []).length} rows).`)
+  const { data: updated, error } = await db
+    .from("reviews")
+    .update({ excluded: true, exclude_reason: reason, excluded_at: new Date().toISOString() })
+    .in("id", ids)
+    .select("id")
+  if (error) { console.error(error.message); process.exit(1) }
+  console.log(`Excluded ${updated?.length ?? 0} / ${ids.length} requested (run ${runId}).`)
+  console.log(`Restore this run: -- --restore=${file}`)
+}
+
+async function main() {
+  const restoreFile = val("--restore")
+  if (restoreFile) return restore(restoreFile)
+  if (has("--apply")) {
+    const ids = (val("--ids") ?? "").split(",").map((s) => s.trim()).filter(Boolean)
+    const reason = val("--reason") ?? "confirmed mis-link (source-verified)"
+    return apply(ids, reason)
+  }
+  return dryRunReport()
+}
 main().catch((e) => { console.error(e); process.exit(1) })
