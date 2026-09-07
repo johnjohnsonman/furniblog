@@ -1,12 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-// Legacy Korean WordPress URLs (old furniblog.com content) 301 to the live
-// Chairpark store. Previously pointed at blog.chairpark.com, which no longer
-// resolves (NXDOMAIN) — sending that traffic to a dead page — so redirect to
-// the live www.chairpark.com instead.
-const LEGACY_BLOG_HOME = "https://www.chairpark.com"
-
 // Top-level routes that belong to the new (English) Furniblog site.
 const KNOWN_ROUTES = new Set([
   "products",
@@ -36,7 +30,13 @@ const KNOWN_ROUTES = new Set([
   "robots.txt",
 ])
 
-function isLegacyWordpressPath(pathname: string): boolean {
+// Confirmed-gone legacy content from the old Korean WordPress site: the flat
+// Korean post slugs (a single non-ASCII path segment) and the WP category/tag
+// archives. These have no live equivalent and are NOT being restored, so they
+// return 410 Gone. We deliberately DO NOT blanket-redirect unknown paths to an
+// unrelated homepage (Google treats that as a soft 404); unknown *ASCII*
+// single-segment paths (typos / future routes) fall through to a normal 404.
+function isLegacyGone(pathname: string): boolean {
   // Old WordPress category & tag archives (incl. /tag/x/page/2/ pagination).
   if (
     pathname === "/category" ||
@@ -47,24 +47,35 @@ function isLegacyWordpressPath(pathname: string): boolean {
   ) {
     return true
   }
-  // Old WordPress flat post slugs: a single path segment that isn't a known new
-  // route and isn't a file.
+  // Old Korean flat post slugs: a single path segment (not a file, not a known
+  // route) containing non-ASCII (Korean) characters.
   const segments = pathname.split("/").filter(Boolean)
-  if (segments.length === 1) {
-    const seg = segments[0]
-    if (!KNOWN_ROUTES.has(seg) && !seg.includes(".")) return true
+  if (segments.length === 1 && !segments[0].includes(".") && !KNOWN_ROUTES.has(segments[0])) {
+    let decoded = segments[0]
+    try {
+      decoded = decodeURIComponent(segments[0])
+    } catch {
+      /* keep raw */
+    }
+    if ([...decoded].some((ch) => ch.charCodeAt(0) > 127)) return true
   }
   return false
 }
 
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
   // Retired standalone money page — its chairs are now regular products.
-  if (request.nextUrl.pathname === "/amazon-picks") {
+  if (pathname === "/amazon-picks") {
     return NextResponse.redirect(new URL("/products", request.url), 308)
   }
 
-  if (isLegacyWordpressPath(request.nextUrl.pathname)) {
-    return NextResponse.redirect(LEGACY_BLOG_HOME, 301)
+  // Legacy Korean WordPress content that is permanently gone.
+  if (isLegacyGone(pathname)) {
+    return new NextResponse("410 Gone — this page has been removed.", {
+      status: 410,
+      headers: { "content-type": "text/plain; charset=utf-8" },
+    })
   }
 
   const geoCountry =
