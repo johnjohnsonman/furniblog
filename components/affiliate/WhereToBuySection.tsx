@@ -38,14 +38,17 @@ export function WhereToBuySection({
 
   // Coupang removed site-wide: the curated Coupang links were generic partner
   // landings (no itemId) that dead-ended on the homepage. Drop them here too.
+  // Also hide amazon.co.jp rows outside Japan — a US/KR visitor shouldn't be
+  // sent to the Japan marketplace (and the US tag earns nothing there).
   const buyableLinks = useMemo(
     () =>
       catalogLinks.filter(
         (l) =>
           !l.retailer.toLowerCase().includes("coupang") &&
-          !l.url.includes("coupang.com")
+          !l.url.includes("coupang.com") &&
+          !(country !== "JP" && l.url.includes("amazon.co.jp"))
       ),
-    [catalogLinks]
+    [catalogLinks, country]
   )
 
   const sortedLinks = useMemo(

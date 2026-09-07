@@ -526,7 +526,16 @@ export function recommend(
   answers: QuizAnswers,
   topN = 5
 ): Recommendation[] {
-  const scored = products
+  // Hard budget gate: never surface a chair above the stated budget tier — no
+  // "one tier over" allowance. Unknown price tiers are kept (can't confirm a
+  // violation). The soft budget score still orders picks within budget.
+  const eligible = answers.budget
+    ? products.filter(
+        (p) => !p.priceRange || TIER[p.priceRange] <= TIER[answers.budget!]
+      )
+    : products
+
+  const scored = eligible
     .map((p) => ({ p, ...scoreProduct(p, answers, affinity) }))
     .sort((x, y) => y.score - x.score)
 

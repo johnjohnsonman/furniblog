@@ -42,6 +42,20 @@ function priceStr(usd: number | null, range: string | null): string {
   return range || "Price on request"
 }
 
+// Best lists whose title is a hard price ceiling. Enforced with the real USD
+// price (a `$/$$/$$$` tier can't verify an exact "under $1,000" condition).
+// Items without a numeric price, or above the cap, are excluded.
+const PRICE_CAP: Record<string, number> = {
+  "best-under-1000": 1000,
+  "best-under-500": 500,
+}
+
+function parseUsd(s: string | null): number | null {
+  if (!s) return null
+  const m = s.replace(/,/g, "").match(/\$?\s*(\d+(?:\.\d+)?)/)
+  return m ? Number(m[1]) : null
+}
+
 type Rel = { name?: string | null; slug?: string | null } | Array<{ name?: string | null; slug?: string | null }> | null
 function first<T>(rel: T | T[] | null | undefined): T | null {
   if (!rel) return null
@@ -87,9 +101,15 @@ function staticResolved(slug: string): ResolvedBestList | null {
   const list = staticLists.find((l) => l.id === slug)
   if (!list) return null
   const ids = listProductMap[slug] ?? []
+  const cap = PRICE_CAP[slug]
   const items: BestItem[] = ids
     .map((id) => staticProducts.find((p) => p.id === id))
     .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .filter((p) => {
+      if (cap == null) return true
+      const usd = parseUsd(p.price ?? null)
+      return usd != null && usd <= cap
+    })
     .map((p) => ({
       slug: p.id,
       name: p.name,
@@ -154,6 +174,9 @@ export async function getResolvedBestList(slug: string): Promise<ResolvedBestLis
                 brands?: Rel
               }>)
           if (!p?.slug || !p?.name) return null
+          // Enforce the list's price ceiling using the real USD price.
+          const cap = PRICE_CAP[slug]
+          if (cap != null && (p.price_usd == null || p.price_usd > cap)) return null
           const brand = first(p.brands)
           const aff = resolveAmazonAffiliateLink(p.slug, p.name)
           return {
@@ -189,13 +212,15 @@ export async function getResolvedBestList(slug: string): Promise<ResolvedBestLis
           items,
         }
       }
-      const fallback = staticResolved(slug)
+      // Price-capped lists must NOT fall back to unfiltered static picks (those
+      // could reintroduce over-cap items). Show an empty list instead.
+      const fallbackItems = PRICE_CAP[slug] != null ? [] : (staticResolved(slug)?.items ?? [])
       return {
         slug: data.slug as string,
         title: data.title as string,
         intro: (data.intro as string | null) ?? null,
         heroImage: (data.hero_image_url as string | null) ?? null,
-        items: fallback?.items ?? [],
+        items: fallbackItems,
       }
     }
   } catch {

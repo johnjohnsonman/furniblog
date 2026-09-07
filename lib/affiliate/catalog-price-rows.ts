@@ -73,6 +73,9 @@ export function urlsFromCatalog(links: CatalogAffiliateLink[]) {
         !l.url.includes("amazon.co.jp")
     ),
     coupangUrl: find((l) => detectChannel(l.retailer, l.url) === "coupang"),
-    rakutenUrl: find((l) => l.url.includes("amazon.co.jp")),
+    // Real Rakuten only. amazon.co.jp is an Amazon-Japan link, not Rakuten —
+    // labeling it "rakuten" mislabeled the retailer.
+    rakutenUrl: find((l) => detectChannel(l.retailer, l.url) === "rakuten"),
+    amazonJpUrl: find((l) => l.url.includes("amazon.co.jp")),
   }
 }
