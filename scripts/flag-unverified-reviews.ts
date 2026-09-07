@@ -2,16 +2,18 @@ import { config } from "dotenv"
 config({ path: ".env.local" })
 import { createClient } from "@supabase/supabase-js"
 
-// P1-3: flag the high-confidence "error-path" reviews — rows the old pipeline
-// inserted WITHOUT any relevance check (Claude status=error → overall:3, empty
-// pros/cons, raw title as summary). These are the confirmed unverified set
-// (e.g. a Wreck-It-Ralph video-game post saved as a chair review). Reversible:
-// sets excluded=true; nothing is deleted. Run with `-- --apply` to write.
+// P1-3: mark the UNVERIFIED CANDIDATE set — rows matching the error-path pattern
+// (overall=3 with empty pros AND cons). This is a CANDIDATE pattern, NOT a
+// confirmed mis-link: a normal review can also be 3/empty. Confirmed mis-links
+// are established separately by re-running the relevance gate (a re-verify pass);
+// only those should carry a "confirmed" reason. Reversible: sets excluded=true;
+// nothing is deleted. Run with `-- --apply` to write.
 //
-// Requires migration 043 (reviews.excluded / exclude_reason / excluded_at).
+// ORDER: apply the public/aggregation filters FIRST (so hidden == not shown AND
+// not counted), verify on a small set, THEN expand. Requires migration 043.
 
 const APPLY = process.argv.includes("--apply")
-const REASON = "unverified-error-path (overall=3, empty pros+cons)"
+const REASON = "unverified-candidate: overall=3 + empty pros/cons (pattern only — NOT confirmed mislink)"
 
 async function main() {
   const supabase = createClient(

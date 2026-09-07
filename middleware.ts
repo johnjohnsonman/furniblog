@@ -30,12 +30,35 @@ const KNOWN_ROUTES = new Set([
   "robots.txt",
 ])
 
-// Confirmed-gone legacy content from the old Korean WordPress site: the flat
-// Korean post slugs (a single non-ASCII path segment) and the WP category/tag
-// archives. These have no live equivalent and are NOT being restored, so they
-// return 410 Gone. We deliberately DO NOT blanket-redirect unknown paths to an
-// unrelated homepage (Google treats that as a soft 404); unknown *ASCII*
-// single-segment paths (typos / future routes) fall through to a normal 404.
+// Confirmed-gone legacy content from the old Korean WordPress site, returned as
+// 410 Gone (no live equivalent; not restored). This is a CONFIRMED list — the
+// flat post slugs actually indexed by Google (from Search Console) plus the WP
+// /tag & /category archives. Any other unknown path (including other non-ASCII
+// or symbol paths) falls through to a normal 404 — we do NOT block by a broad
+// pattern.
+const LEGACY_SLUGS = new Set([
+  "2026-코엑스-리빙페어-5일-동안-의자-얘기만-해도-시간",
+  "2026-트렌드-인체공학-의자-추천",
+  "ceo-의자-추천-애플-ceo는-어떤-의자에-앉을까",
+  "ing-cloud-고쿠요-체어파크",
+  "✔️프리미엄-의자-구매-전-체크리스트-실패-확률-확",
+  "꼬리뼈-안-아픈-의자-체어파크에-있어요",
+  "뉴욕현대미술관moma이-사랑한-브랜드는-일하는-의자",
+  "메쉬-패브릭-의자-차이-지금-고민-끝내기",
+  "목-건강에-좋은-의자-거북목-의자-헤드레스트-편한-의",
+  "서울리빙디자인페어에서-프리미엄-오피스체어-만",
+  "성공한-사람의-데스크테리어",
+  "의자-쇼룸-방문-전-필독",
+  "의자-텐션-조절-하이엔드-의자-유격-체어파크",
+  "의자-향기-관리",
+  "임스-체어-가-아직도-사랑받는-이유",
+  "주식용-의자-게이밍-의자-단점",
+  "직업-별로-잘-맞는-하이엔드-의자는-따로-있다",
+  "코쿠요-ing-체어-다이어트-의자-앉아서-살-빼는-의자",
+  "하루-8시간-앉아도-다이어트-고쿠요-다이어트-의자",
+  "하이엔드-의자-매장-체어파크에서-프리미엄-의자-체",
+])
+
 function isLegacyGone(pathname: string): boolean {
   // Old WordPress category & tag archives (incl. /tag/x/page/2/ pagination).
   if (
@@ -47,17 +70,16 @@ function isLegacyGone(pathname: string): boolean {
   ) {
     return true
   }
-  // Old Korean flat post slugs: a single path segment (not a file, not a known
-  // route) containing non-ASCII (Korean) characters.
+  // Confirmed flat Korean post slugs only.
   const segments = pathname.split("/").filter(Boolean)
-  if (segments.length === 1 && !segments[0].includes(".") && !KNOWN_ROUTES.has(segments[0])) {
-    let decoded = segments[0]
+  if (segments.length === 1) {
+    let seg = segments[0]
     try {
-      decoded = decodeURIComponent(segments[0])
+      seg = decodeURIComponent(seg)
     } catch {
       /* keep raw */
     }
-    if ([...decoded].some((ch) => ch.charCodeAt(0) > 127)) return true
+    if (LEGACY_SLUGS.has(seg)) return true
   }
   return false
 }
@@ -70,7 +92,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/products", request.url), 308)
   }
 
-  // Legacy Korean WordPress content that is permanently gone.
+  // Confirmed legacy Korean WordPress content that is permanently gone.
   if (isLegacyGone(pathname)) {
     return new NextResponse("410 Gone — this page has been removed.", {
       status: 410,

@@ -1,6 +1,7 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { buildAffiliateUrl } from "@/lib/affiliate/links"
+import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links-data"
 import {
   products as staticProducts,
   bestLists as staticLists,
@@ -56,6 +57,19 @@ function parseUsd(s: string | null): number | null {
   return m ? Number(m[1]) : null
 }
 
+// A price-capped list is US-facing, but some products are only listed on
+// amazon.co.jp (Japan) with a Japan-market price. Until a verified US price is
+// confirmed, exclude Japan-only items from US budget lists (their product page
+// still stays live). This does NOT treat a stored USD number as a verified US
+// price.
+function isJapanMarketOnly(slug: string): boolean {
+  const links = AFFILIATE_LINKS_DATA[slug]
+  if (!links) return false
+  const hasJp = links.some((l) => l.url.includes("amazon.co.jp"))
+  const hasUsAmazon = links.some((l) => l.url.includes("amazon.com"))
+  return hasJp && !hasUsAmazon
+}
+
 type Rel = { name?: string | null; slug?: string | null } | Array<{ name?: string | null; slug?: string | null }> | null
 function first<T>(rel: T | T[] | null | undefined): T | null {
   if (!rel) return null
@@ -108,7 +122,7 @@ function staticResolved(slug: string): ResolvedBestList | null {
     .filter((p) => {
       if (cap == null) return true
       const usd = parseUsd(p.price ?? null)
-      return usd != null && usd <= cap
+      return usd != null && usd <= cap && !isJapanMarketOnly(p.id)
     })
     .map((p) => ({
       slug: p.id,
@@ -174,9 +188,10 @@ export async function getResolvedBestList(slug: string): Promise<ResolvedBestLis
                 brands?: Rel
               }>)
           if (!p?.slug || !p?.name) return null
-          // Enforce the list's price ceiling using the real USD price.
+          // Enforce the list's price ceiling using the stored USD price, and
+          // drop Japan-only items whose US purchase price isn't confirmed.
           const cap = PRICE_CAP[slug]
-          if (cap != null && (p.price_usd == null || p.price_usd > cap)) return null
+          if (cap != null && (p.price_usd == null || p.price_usd > cap || isJapanMarketOnly(p.slug))) return null
           const brand = first(p.brands)
           const aff = resolveAmazonAffiliateLink(p.slug, p.name)
           return {

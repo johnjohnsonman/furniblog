@@ -99,6 +99,10 @@ export function SmartBuyLink({
 
   // Everyone else → Amazon (OneLink localizes the store client-side).
   const href = amazonUrl || amazonSearchUrl(query)
+  // A search URL is NOT a verified product/price — label it honestly so it isn't
+  // presented as a confirmed listing.
+  const isSearch = /[?&]k=/.test(href) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(href)
+  const label = isSearch ? "Search on Amazon" : amazonLabel
   return (
     <div className={cn(variant === "block" ? "space-y-2" : "inline-block", className)}>
       <a
@@ -108,7 +112,7 @@ export function SmartBuyLink({
         onClick={() => track("amazon")}
         className={cn(base, RETAILER_STYLE.amazon)}
       >
-        {amazonLabel}
+        {label}
         <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
       </a>
       {showDisclaimer && (
