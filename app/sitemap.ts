@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { bestLists } from "@/lib/data"
 
 const SITE_URL =
@@ -72,7 +73,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .select("slug")
         .eq("published", true)
         .eq("track", "chair"),
-      supabase.from("reviews").select("id, created_at").limit(5000),
+      runPublicReviewQuery((f) => {
+        let q = supabase.from("reviews").select("id, created_at").limit(5000)
+        if (f) q = q.eq("excluded", false)
+        return q
+      }),
       supabase
         .from("news")
         .select("slug, published_at")

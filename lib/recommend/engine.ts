@@ -513,7 +513,7 @@ function tagFor(
 ): RecTag | null {
   if (editorialNew && p.editorial != null && p.picks < 5) return "new-noteworthy"
   if (p.picks >= 25) return "reviewer-favorite"
-  if (p.hasDirectBuy && p.priceRange && TIER[p.priceRange] <= 2) return "best-value"
+  if (p.priceRange && TIER[p.priceRange] <= 2) return "best-value"
   if (isTop) return "best-match"
   return null
 }
@@ -567,17 +567,14 @@ export function recommend(
     brandCount.set(b, (brandCount.get(b) ?? 0) + 1)
   }
 
-  // Guarantee at least one affordable, easy-to-buy option.
+  // Guarantee at least one affordable option (price tier only — NOT gated on a
+  // /dp/ link, whose product match isn't verified).
   const hasValue = selected.some(
-    (s) => s.p.hasDirectBuy && s.p.priceRange && TIER[s.p.priceRange] <= 2
+    (s) => s.p.priceRange && TIER[s.p.priceRange] <= 2
   )
   if (!hasValue) {
     const value = scored.find(
-      (s) =>
-        s.p.hasDirectBuy &&
-        s.p.priceRange &&
-        TIER[s.p.priceRange] <= 2 &&
-        !selected.includes(s)
+      (s) => s.p.priceRange && TIER[s.p.priceRange] <= 2 && !selected.includes(s)
     )
     if (value && selected.length) selected[selected.length - 1] = value
   }

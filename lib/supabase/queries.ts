@@ -7,6 +7,7 @@ import { toProductView, toDesignerView } from "@/lib/data/mappers"
 import { isChairCategory } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
 import { formatProductPrice } from "@/lib/pricing"
+import { runPublicReviewQuery, notExcluded } from "@/lib/reviews/exclusion"
 import { createPublicServerClient } from "./public-server"
 
 export function isSupabaseConfigured(): boolean {
@@ -594,7 +595,11 @@ export async function getProductReviews(productId: string): Promise<Review[]> {
 
   if (error || !data) return []
 
-  return (data as DbReview[]).map(mapDbReview)
+  // Hide publicly-excluded reviews (P1-3). select("*") means `excluded` is
+  // present post-043 and simply absent (→ kept) before it.
+  return (data as Array<DbReview & { excluded?: boolean | null }>)
+    .filter(notExcluded)
+    .map(mapDbReview)
 }
 
 export async function getBrands(): Promise<Brand[]> {
@@ -839,11 +844,15 @@ export async function getReviewCounts(
     // YouTube, Naver, etc.) are unverified but are exactly what the feed and
     // product pages show, so cards must reflect them too. .limit raises the
     // default 1000-row cap so later products aren't undercounted.
-    const { data: reviews, error: reviewError } = await supabase
-      .from("reviews")
-      .select("product_id, scores")
-      .in("product_id", uuids)
-      .limit(5000)
+    const { data: reviews, error: reviewError } = await runPublicReviewQuery((applyFilter) => {
+      let q = supabase
+        .from("reviews")
+        .select("product_id, scores")
+        .in("product_id", uuids)
+        .limit(5000)
+      if (applyFilter) q = q.eq("excluded", false)
+      return q
+    })
 
     if (reviewError || !reviews?.length) {
       return getReviewCountsLocal(uniqueIds)

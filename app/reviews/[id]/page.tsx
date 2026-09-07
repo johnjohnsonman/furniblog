@@ -6,6 +6,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BackToReviewsLink } from "@/components/reviews/back-to-reviews-link"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import {
   generateArticleSchema,
   generateBreadcrumbSchema,
@@ -75,11 +76,13 @@ async function getReview(id: string): Promise<ReviewDetailRow | null> {
   // Guard against non-uuid ids hitting the DB.
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null
   const supabase = createPublicServerClient()
-  const { data } = await supabase
-    .from("reviews")
-    .select(DETAIL_SELECT)
-    .eq("id", id)
-    .maybeSingle()
+  // Excluded reviews (P1-3) must not be reachable by direct URL → returns null
+  // → the page calls notFound() (404).
+  const { data } = await runPublicReviewQuery((applyFilter) => {
+    let q = supabase.from("reviews").select(DETAIL_SELECT).eq("id", id)
+    if (applyFilter) q = q.eq("excluded", false)
+    return q.maybeSingle()
+  })
   return (data as ReviewDetailRow | null) ?? null
 }
 

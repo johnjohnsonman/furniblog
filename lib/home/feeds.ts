@@ -1,4 +1,5 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
+import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { shuffle } from "@/lib/utils/shuffle"
 import type { NewsItem } from "@/components/news/news-card"
 
@@ -59,11 +60,15 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
   if (!isConfigured()) return []
   try {
     const supabase = createPublicServerClient()
-    const { data } = await supabase
-      .from("reviews")
-      .select("id, summary_ko, source, products!inner(slug, name, thumbnail_url, brands(name))")
-      .order("created_at", { ascending: false })
-      .limit(poolSize(limit))
+    const { data } = await runPublicReviewQuery((applyFilter) => {
+      let q = supabase
+        .from("reviews")
+        .select("id, summary_ko, source, products!inner(slug, name, thumbnail_url, brands(name))")
+        .order("created_at", { ascending: false })
+        .limit(poolSize(limit))
+      if (applyFilter) q = q.eq("excluded", false)
+      return q
+    })
 
     const items = (data ?? [])
       .map((row): HomeReview | null => {

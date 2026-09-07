@@ -1,6 +1,7 @@
 import type { ReviewSource } from "@/types/review"
 import { getChairCategoryLabel, isChairCategory } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
+import { reviewsSupportExclusion } from "@/lib/reviews/exclusion"
 import { getFeedReviews } from "@/lib/data/reviews"
 import type {
   GetReviewsParams,
@@ -298,11 +299,16 @@ export async function getReviews(
       ? await resolveProductIdsByNameSearch(supabase, searchTerm)
       : []
 
+    const excludedOk = await reviewsSupportExclusion(supabase)
+
     let query = supabase
       .from("reviews")
       .select(REVIEW_SELECT, { count: "exact" })
       .not("summary_ko", "is", null)
       .neq("summary_ko", "")
+
+    // Hide publicly-excluded reviews (P1-3) once migration 043 is applied.
+    if (excludedOk) query = query.eq("excluded", false)
 
     if (productIds) {
       query = query.in("product_id", productIds)
@@ -417,19 +423,28 @@ export async function getReviewsFeedMeta(): Promise<ReviewsFeedMeta> {
 
   try {
     const supabase = createPublicServerClient()
+    const excludedOk = await reviewsSupportExclusion(supabase)
 
     const [reviewsRes, brandsRes, sourcesRes] = await Promise.all([
-      supabase
-        .from("reviews")
-        .select("*", { count: "exact", head: true })
-        .not("summary_ko", "is", null)
-        .neq("summary_ko", ""),
+      (() => {
+        let q = supabase
+          .from("reviews")
+          .select("*", { count: "exact", head: true })
+          .not("summary_ko", "is", null)
+          .neq("summary_ko", "")
+        if (excludedOk) q = q.eq("excluded", false)
+        return q
+      })(),
       supabase.from("brands").select("*", { count: "exact", head: true }),
-      supabase
-        .from("reviews")
-        .select("source")
-        .not("summary_ko", "is", null)
-        .neq("summary_ko", ""),
+      (() => {
+        let q = supabase
+          .from("reviews")
+          .select("source")
+          .not("summary_ko", "is", null)
+          .neq("summary_ko", "")
+        if (excludedOk) q = q.eq("excluded", false)
+        return q
+      })(),
     ])
 
     const sourceSet = new Set(
