@@ -98,7 +98,10 @@ async function collectFromSite(
     )
 
     const body = excerpt.length > 20 ? `${title}\n\n${excerpt}` : title
-    if (!isRelevant(body, chairName) && site.name !== "rtings") return
+    // Coarse pre-filter for all sources (incl. rtings — the name-check bypass was
+    // removed). Subject identification is enforced downstream by the Claude
+    // relevance gate (processor CONFIDENCE_MIN), which is the authoritative check.
+    if (!isRelevant(body, chairName)) return
 
     seenUrls.add(articleUrl)
     results.push({

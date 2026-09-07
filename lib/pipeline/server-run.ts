@@ -447,9 +447,6 @@ export async function executeServerPipeline(params: {
   }
 
   for (const item of itemsToProcess) {
-    const rawSummary =
-      item.title?.trim() || item.body.slice(0, 200).trim() || "Collected review"
-
     try {
       const outcome = await processWithClaude(item, productName)
 
@@ -464,15 +461,11 @@ export async function executeServerPipeline(params: {
       }
 
       if (outcome.status === "error") {
-        const ok = await insertReview({
-          summary: rawSummary,
-          pros: [],
-          cons: [],
-          overall: 3,
-          item,
-        })
-        if (ok) saved++
-        else failed++
+        // Analysis failed → do NOT publish. Never fabricate a rating or attach an
+        // unverified, unrelevance-checked item to the product (that turns an
+        // error into public content). Count as failed; it can be retried later.
+        console.log("[PIPELINE] Skipped: analysis failed, not inserted:", item.url)
+        failed++
         continue
       }
 
@@ -491,21 +484,9 @@ export async function executeServerPipeline(params: {
       if (ok) saved++
       else failed++
     } catch (e) {
-      console.error("[PIPELINE] Process error:", e)
-      try {
-        const ok = await insertReview({
-          summary: rawSummary,
-          pros: [],
-          cons: [],
-          overall: 3,
-          item,
-        })
-        if (ok) saved++
-        else failed++
-      } catch (e2) {
-        console.error("[PIPELINE] Raw save error:", e2)
-        failed++
-      }
+      // Processing threw → do NOT publish a fabricated/unchecked review.
+      console.error("[PIPELINE] Process error, not inserted:", e)
+      failed++
     }
 
     await new Promise((r) => setTimeout(r, 200))
