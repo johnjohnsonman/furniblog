@@ -74,7 +74,7 @@ export function RichReview({
       productId={productSlug}
       name={productName ?? data.buy.productTitle}
       amazonUrl={amazonUrl}
-      amazonLabel="Check price on Amazon"
+      amazonLabel={data.buy.ctaLabel ?? "Check price on Amazon"}
     />
   ) : null
 
@@ -165,8 +165,8 @@ export function RichReview({
       {/* ── Quick facts (Tier A) ── */}
       <div className="mt-10 border-y border-border bg-muted px-5 py-6 -mx-4 md:mx-0 md:px-6">
         <div className="mb-4 text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
-          <span className="font-semibold">Quick facts</span> · Confirmed on the Amazon listing we
-          link (ASIN {data.asin ?? "—"})
+          <span className="font-semibold">Quick facts</span> ·{" "}
+          {data.quickFactsNote ?? `Confirmed on the Amazon listing we link (ASIN ${data.asin ?? "—"})`}
         </div>
         <div className="grid grid-cols-2 gap-x-7 gap-y-4 md:grid-cols-5">
           {data.quickFacts.map((f) => (
@@ -386,6 +386,16 @@ export function RichReview({
                   {data.buy.officialStore?.note ?? data.buy.sihooTrialNote}
                 </div>
               </div>
+              {data.buy.officialStore?.url && (
+                <a
+                  href={data.buy.officialStore.url}
+                  target="_blank"
+                  rel="nofollow noopener noreferrer"
+                  className="inline-flex shrink-0 items-center gap-2 border border-foreground px-5 py-3 text-sm font-medium hover:bg-muted transition-colors"
+                >
+                  Visit official store <span className="opacity-55">→</span>
+                </a>
+              )}
             </div>
           )}
         </section>

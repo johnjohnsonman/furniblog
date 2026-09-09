@@ -77,8 +77,12 @@ export type RichReview = {
     productTitle: string
     retailerNote: string
     rows: BuyRow[]
-    /** Optional secondary "official store" box (e.g. brand trial policy). Rendered only if set. */
-    officialStore?: { label: string; note: string }
+    /** Label for the Amazon CTA. Use "Search on Amazon" when the link is a
+     *  search (no verified single ASIN). Defaults to "Check price on Amazon". */
+    ctaLabel?: string
+    /** Optional secondary box (e.g. official store, trial policy). Rendered only
+     *  if set; becomes a link when `url` is present. */
+    officialStore?: { label: string; note: string; url?: string }
     /** @deprecated use officialStore. Kept for the C300 pilot. */
     sihooTrialNote?: string
     disclaimer: string
@@ -93,6 +97,8 @@ export type RichReview = {
   sources: SpecRow[]
 
   /** Optional per-product copy overrides (generic defaults are used otherwise). */
+  /** Provenance line under "Quick facts". Defaults to the Amazon-listing wording. */
+  quickFactsNote?: string
   checksTitle?: string
   checksIntro?: string
   dimsIntro?: string
