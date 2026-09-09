@@ -15,6 +15,7 @@ export type ProductImageItem = {
   alt?: string | null
   caption?: string | null
   source?: string | null
+  rights?: string | null
 }
 
 type ImageUploaderProps = {
@@ -40,7 +41,11 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
   const [savingMeta, setSavingMeta] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  function updateMeta(id: string, field: "alt" | "caption" | "source", value: string) {
+  function updateMeta(
+    id: string,
+    field: "alt" | "caption" | "source" | "rights",
+    value: string
+  ) {
     setImages((prev) => prev.map((img) => (img.id === id ? { ...img, [field]: value } : img)))
   }
 
@@ -67,6 +72,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
         alt: img.alt ?? null,
         caption: img.caption ?? null,
         source: img.source ?? null,
+        rights: img.rights ?? null,
       }))
       setImages(next)
       onPrimaryImageChange?.(primaryImageUrl(next))
@@ -94,6 +100,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
           alt: img.alt ?? null,
           caption: img.caption ?? null,
           source: img.source ?? null,
+          rights: img.rights ?? null,
         })),
       }),
     })
@@ -354,7 +361,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
                     alt=""
                     className="h-12 w-12 shrink-0 rounded border border-border object-cover"
                   />
-                  <div className="grid flex-1 gap-1.5 sm:grid-cols-3">
+                  <div className="grid flex-1 gap-1.5 sm:grid-cols-4">
                     <input
                       className="rounded border border-border px-2 py-1 text-xs"
                       placeholder={index === 0 ? "Alt text (primary)" : "Alt text"}
@@ -369,10 +376,20 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
                     />
                     <input
                       className="rounded border border-border px-2 py-1 text-xs"
-                      placeholder="Source / rights note"
+                      placeholder="Source / provenance"
                       value={img.source ?? ""}
                       onChange={(e) => updateMeta(img.id, "source", e.target.value)}
                     />
+                    <select
+                      className="rounded border border-border px-2 py-1 text-xs"
+                      value={img.rights ?? "kept"}
+                      onChange={(e) => updateMeta(img.id, "rights", e.target.value)}
+                      title="candidate = held, hidden from public until reviewed"
+                    >
+                      <option value="kept">kept (retained)</option>
+                      <option value="confirmed">confirmed</option>
+                      <option value="candidate">candidate (held)</option>
+                    </select>
                   </div>
                 </div>
               ))}

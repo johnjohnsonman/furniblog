@@ -23,6 +23,7 @@ type ProductImageRow = {
   alt?: string | null
   caption?: string | null
   source?: string | null
+  rights?: string | null
 }
 
 function toImagePayload(row: ProductImageRow) {
@@ -34,6 +35,7 @@ function toImagePayload(row: ProductImageRow) {
     alt: row.alt ?? null,
     caption: row.caption ?? null,
     source: row.source ?? null,
+    rights: row.rights ?? null,
     createdAt: row.created_at,
   }
 }
@@ -184,6 +186,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       alt?: string | null
       caption?: string | null
       source?: string | null
+      rights?: string | null
     }>
 
     if (!Array.isArray(images)) {
@@ -208,6 +211,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       if ("alt" in img) withMeta.alt = img.alt ?? null
       if ("caption" in img) withMeta.caption = img.caption ?? null
       if ("source" in img) withMeta.source = img.source ?? null
+      if ("rights" in img && img.rights) withMeta.rights = img.rights
 
       if (metaSupported && Object.keys(withMeta).length > Object.keys(base).length) {
         const { error } = await supabase
