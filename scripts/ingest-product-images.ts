@@ -108,6 +108,35 @@ async function assertMigration(): Promise<boolean> {
   return true
 }
 
+/**
+ * Auto-extract candidate product-image URLs from ONE product page (manufacturer
+ * or trusted retailer) so the next product needs only a slug + page URL, not a
+ * hand-written URL list. Targets og:image, JSON-LD product images and common
+ * product-gallery/CDN images — not every image on the page. Everything found
+ * here is registered as 'candidate' (held) for human review, never auto-public.
+ */
+async function extractImageUrls(pageUrl: string, max: number): Promise<string[]> {
+  const res = await axios.get<string>(pageUrl, {
+    timeout: 20000,
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; FurniblogImageIngest/1.0)" },
+    responseType: "text",
+  })
+  const html = res.data
+  const out = new Set<string>()
+  const add = (u: string) => {
+    const clean = u.replace(/&amp;/g, "&").replace(/\\\//g, "/").split("?")[0]
+    if (/\.(jpe?g|png|webp)$/i.test(clean) && /^https?:\/\//.test(clean)) out.add(clean)
+  }
+  // og:image
+  for (const m of html.matchAll(/<meta[^>]+property=["']og:image[^"']*["'][^>]+content=["']([^"']+)["']/gi)) add(m[1])
+  // JSON-LD "image": "..." or ["...", ...]
+  for (const m of html.matchAll(/"image"\s*:\s*"([^"]+)"/gi)) add(m[1])
+  for (const m of html.matchAll(/"(?:contentUrl|url)"\s*:\s*"([^"]+\.(?:jpe?g|png|webp)[^"]*)"/gi)) add(m[1])
+  // Shopify / common product CDN media
+  for (const m of html.matchAll(/https?:\/\/[^\s"'<>\\]+\/cdn\/shop\/[^\s"'<>\\]+\.(?:jpe?g|png|webp)/gi)) add(m[0])
+  return Array.from(out).slice(0, max)
+}
+
 async function resolveProduct(
   item: ManifestItem
 ): Promise<{ id: string; slug: string; explicit: boolean } | null> {
@@ -165,14 +194,49 @@ async function storeImage(
 async function main() {
   const args = process.argv.slice(2).filter((a) => a !== "--")
   const apply = args.includes("--apply")
-  const retryIdx = args.indexOf("--retry")
-  const retryFile = retryIdx !== -1 ? args[retryIdx + 1] : null
-  const manifestPath = args.find((a) => !a.startsWith("--") && a !== retryFile)
+  const flag = (name: string): string | null => {
+    const i = args.indexOf(name)
+    return i !== -1 ? args[i + 1] ?? null : null
+  }
+  const retryFile = flag("--retry")
+  const fromUrl = flag("--from-url")
+  const slug = flag("--slug")
+  const max = Number(flag("--max") ?? "6")
+  if (!(await assertMigration())) process.exit(1)
+
+  // Mode B: auto-extract from a product page (next products: slug + URL only).
+  if (fromUrl) {
+    if (!slug) {
+      console.error("Usage: npm run images:ingest -- --slug <product-slug> --from-url <page> [--max N] [--apply]")
+      process.exit(1)
+    }
+    const urls = await extractImageUrls(fromUrl, max)
+    console.log(`\n${apply ? "APPLY" : "DRY RUN"} · from-url=${fromUrl}\n  extracted ${urls.length} candidate image(s) (all held for review):`)
+    urls.forEach((u) => console.log(`   - ${u}`))
+    const manifest: Manifest = {
+      source: new URL(fromUrl).hostname,
+      sourceUrl: fromUrl,
+      items: urls.map((u) => ({
+        productSlug: slug,
+        image: u,
+        rights: "owner_policy" as const,
+        modelStatus: "candidate" as const, // auto-extracted -> always review first
+        matchBasis: `auto-extracted from ${fromUrl}`,
+      })),
+    }
+    await ingest(manifest, manifest.items, apply)
+    return
+  }
+
+  // Mode A: explicit manifest.
+  const manifestPath = args.find(
+    (a) => !a.startsWith("--") && a !== retryFile && a !== fromUrl && a !== slug && a !== String(max)
+  )
   if (!manifestPath) {
     console.error("Usage: npm run images:ingest -- <manifest.json> [--apply] [--retry <failures.json>]")
+    console.error("   or: npm run images:ingest -- --slug <slug> --from-url <page> [--max N] [--apply]")
     process.exit(1)
   }
-  if (!(await assertMigration())) process.exit(1)
 
   const manifest = JSON.parse(readFileSync(resolve(manifestPath), "utf8")) as Manifest
   let items = manifest.items ?? []
@@ -182,7 +246,16 @@ async function main() {
     console.log(`Retry mode: ${items.length} previously failed item(s).`)
   }
 
-  console.log(`\n${apply ? "APPLY" : "DRY RUN"} · manifest=${manifestPath} · items=${items.length}\n`)
+  console.log(`\n${apply ? "APPLY" : "DRY RUN"} · manifest=${manifestPath} · items=${items.length}`)
+  await ingest(manifest, items, apply, resolve(manifestPath))
+}
+
+async function ingest(
+  manifest: Manifest,
+  items: ManifestItem[],
+  apply: boolean,
+  failuresPath?: string
+) {
   const summary = { verified: 0, candidate: 0, skipped: 0, failed: 0 }
   const failures: { item: ManifestItem; reason: string }[] = []
 
@@ -258,8 +331,8 @@ async function main() {
     `\nSummary: verified=${summary.verified} candidate(held)=${summary.candidate} ` +
       `skipped=${summary.skipped} failed=${summary.failed}`
   )
-  if (failures.length > 0) {
-    const out = `${resolve(manifestPath)}.failures.json`
+  if (failures.length > 0 && failuresPath) {
+    const out = `${failuresPath}.failures.json`
     writeFileSync(out, JSON.stringify(failures, null, 2), "utf8")
     console.log(`Failures written to ${out} (re-run with --retry <that file>).`)
   }
