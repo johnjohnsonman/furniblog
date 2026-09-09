@@ -183,11 +183,10 @@ export function RichReview({
         {/* ── 5 checks ── */}
         <section id="verify" className="flex flex-col gap-5">
           <Eyebrow>Before you buy</Eyebrow>
-          <SectionH2>Check these five things before you buy</SectionH2>
-          <p className="text-base leading-relaxed">
-            The Doro name covers several chairs that share photography and spec language. Most
-            disappointment comes from ordering a neighbouring model, so start here.
-          </p>
+          <SectionH2>{data.checksTitle ?? "Check these before you buy"}</SectionH2>
+          {data.checksIntro && (
+            <p className="text-base leading-relaxed">{data.checksIntro}</p>
+          )}
           <div className="flex flex-col border-t border-border">
             {data.checks.map((c) => (
               <div key={c.n} className="grid grid-cols-[34px_minmax(0,1fr)] gap-4 border-b border-border py-5">
@@ -206,9 +205,8 @@ export function RichReview({
           <Eyebrow>Dimensions &amp; fit</Eyebrow>
           <SectionH2>Dimensions and fit</SectionH2>
           <p className="text-base leading-relaxed">
-            Manufacturer figures come from SIHOO&apos;s official product page; we check them against
-            the Amazon listing before treating them as confirmed. Values we can&apos;t confirm for the
-            linked listing are marked as such — take those from the listing you buy from.
+            {data.dimsIntro ??
+              "Manufacturer figures come from the maker's official product page; we check them against the Amazon listing before treating them as confirmed. Values we can't confirm for the linked listing are marked as such — take those from the listing you buy from."}
           </p>
 
           {/* Mobile: stacked cards */}
@@ -292,7 +290,7 @@ export function RichReview({
           <SectionH2>Who it&apos;s for, and who should skip it</SectionH2>
           <div className="grid gap-8 md:grid-cols-2">
             <div className="flex flex-col gap-3">
-              <div className="text-sm font-semibold">The C300 shines for</div>
+              <div className="text-sm font-semibold">{data.forWhoTitle ?? "This chair shines for"}</div>
               {data.forWho.map((w, i) => (
                 <div key={i} className="grid grid-cols-[14px_minmax(0,1fr)] gap-2.5 text-[15px] leading-relaxed">
                   <span>✓</span>
@@ -378,12 +376,18 @@ export function RichReview({
             </div>
             <p className="text-xs leading-relaxed text-muted-foreground">{data.buy.disclaimer}</p>
           </div>
-          <div className="border border-border p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-1 min-w-0">
-              <div className="text-[15px] font-medium">SIHOO official store</div>
-              <div className="text-[13px] leading-relaxed text-muted-foreground">{data.buy.sihooTrialNote}</div>
+          {(data.buy.officialStore || data.buy.sihooTrialNote) && (
+            <div className="border border-border p-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-1 min-w-0">
+                <div className="text-[15px] font-medium">
+                  {data.buy.officialStore?.label ?? "Manufacturer store"}
+                </div>
+                <div className="text-[13px] leading-relaxed text-muted-foreground">
+                  {data.buy.officialStore?.note ?? data.buy.sihooTrialNote}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </section>
 
         {/* ── FAQ ── */}
@@ -414,10 +418,8 @@ export function RichReview({
             ))}
           </div>
           <p className="border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
-            Specifications are recorded as published on the dates shown and are not independently
-            verified by Furniblog. Where the manufacturer page and the Amazon listing disagree, this
-            page follows the listing. Manufacturers revise Doro-series hardware without renaming it;
-            always check the listing you buy from.
+            {data.sourcesFooter ??
+              "Specifications are recorded as published on the dates shown and are not independently verified by Furniblog. Where the manufacturer page and the Amazon listing disagree, this page follows the listing you buy from. Manufacturers sometimes revise hardware without renaming a model; always check the listing before buying."}
           </p>
         </section>
       </div>

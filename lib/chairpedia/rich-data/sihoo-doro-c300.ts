@@ -108,7 +108,10 @@ export const SIHOO_DORO_C300: RichReview = {
       { k: "Warranty", v: "3 years, as documented by SIHOO. Confirm on the listing you order from." },
       { k: "What to check", v: 'Title says "Doro C300" (not Pro), "3D Armrests", colour Black, and who the item is sold and shipped by.' },
     ],
-    sihooTrialNote: "30-day trial applies to orders from SIHOO's own store only. Not an affiliate link.",
+    officialStore: {
+      label: "SIHOO official store",
+      note: "30-day trial applies to orders from SIHOO's own store only. Not an affiliate link.",
+    },
     disclaimer:
       'Not verified by Furniblog: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this review says.',
   },
@@ -134,9 +137,13 @@ export const SIHOO_DORO_C300: RichReview = {
     { k: "SIHOO official product page", v: "Fetched 2026-09-08. Basis for manufacturer-documented dimensions, capacity, recline, weight, warranty and the 30-day store trial." },
     { k: "Published reviews", v: "Third-party reviews summarised in the existing research copy. Basis for the Cautions and the sitting-experience notes; not first-hand." },
   ],
-}
 
-/** Registry: slug → rich review data. Add entries here as they are built out. */
-export const RICH_REVIEWS: Record<string, RichReview> = {
-  "sihoo-doro-c300-advanced-ergonomic-office-chair-review": SIHOO_DORO_C300,
+  checksTitle: "Check these five things before you buy",
+  checksIntro:
+    "The Doro name covers several chairs that share photography and spec language. Most disappointment comes from ordering a neighbouring model, so start here.",
+  dimsIntro:
+    "Manufacturer figures come from SIHOO's official product page; we check them against the Amazon listing before treating them as confirmed. Values we can't confirm for the linked listing are marked as such — take those from the listing you buy from.",
+  forWhoTitle: "The C300 shines for",
+  sourcesFooter:
+    "Specifications are recorded as published on the dates shown and are not independently verified by Furniblog. Where the manufacturer page and the Amazon listing disagree, this page follows the listing. Manufacturers revise Doro-series hardware without renaming it; always check the listing you buy from.",
 }

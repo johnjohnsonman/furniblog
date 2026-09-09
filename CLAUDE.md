@@ -270,6 +270,15 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **C300 실제 수집(대기: 045 실행 후 --apply)**: SIHOO 공식 기본형 페이지(fr.sihoo.com/products/doro-c300-ergonomic-office-chair)에서 **눈으로 선별** — Black 정면(ASIN B0C3T865C2 파일명)=hero, Black 측면(11.webp), Black 팔걸이(1_.webp)=verified 공개 / 헤드레스트(4_.webp, 색상애매)=candidate 보류. 제외: 인증배지 배너, White 색상, 분해도. rights=owner_policy(권리자 허가 아님, 운영 판단). 제품 기존 대표는 유지(append). 매니페스트=scratchpad/c300-manifest.json.
 - **빌드/타입 통과**, 코드 배포 완료. **남은 조건: 대표님 045 실행 → `npm run images:ingest -- <manifest> --apply` → 검증.**
 
+### 2026-09-09 (4) Amazon 구매 가이드 3종(rich 템플릿 재사용) — M18·Hbada P5·Nouhaus Ergo3D
+- **선정**(Amazon 전환 목표, $150±~500): SIHOO M18($145, 서브-$150), Hbada P5($198, 기존 chairpedia 강화), Nouhaus Ergo3D($299). 셋 다 /dp/ 직링크 확인. **⚠️ Amazon BSR 숫자는 미확인**(zgbs 503 차단, /dp/ JS셸) → 검색으로 카테고리 상위 브랜드임만 확인, /dp/ 타이틀로 모델 확인. 제목에 "베스트셀러" 안 붙임.
+- **rich 템플릿 재사용화**(`rich-review.tsx` + `rich-types.ts`): C300 하드코딩(체크 인트로/치수 인트로/"The C300 shines for"/SIHOO official store/sources 푸터)을 선택 필드로 파라미터화(checksTitle/checksIntro/dimsIntro/forWhoTitle/buy.officialStore/sourcesFooter). C300은 해당 필드에 기존 문구 세팅해 무변경 유지. 새 디자인/CMS 없음.
+- **가이드 데이터**(검증 사양만, 환각 금지): `rich-data/sihoo-m18.ts`·`hbada-p5.ts`·`nouhaus-ergo3d.ts` + 중앙 레지스트리 `rich-data/index.ts`(C300 파일의 RICH_REVIEWS 제거, 페이지 import 변경). 사양 출처=Amazon 리스팅 타이틀(모델/팔걸이/헤드레스트/용량) + 제조사/리테일러(치수/리클라인). 외부 후기는 "published reviews (research)"로 귀속, 점수·측정·내구성·체형적합 창작 안 함. 가격 고정 안 함(버튼 "Check price on Amazon"). Nouhaus 용량은 출처 상충(275 vs 330) → tier C "리스팅 확인".
+- **DB**(`chairpedia`): M18(`sihoo-m18-ergonomic-office-chair`)·Nouhaus(`nouhaus-ergo3d-ergonomic-office-chair`) 신규 발행, Hbada P5는 기존 `untitled-entry-mqxfe29l` **백업 후 `hbada-p5-ergonomic-office-chair`로 개명+강화**. 전부 product 연결 + use_product_image=true + content_html(In-depth 서사). 임시 스크립트 `_upsert-guides.ts`(백업+dry-run, 커밋 제외).
+- **이미지**(기존 ingest 재사용, 공식 출처): M18 3장(sihoo.com), P5 1장(hbada.ca; 공식 갤러리 대부분 텍스트 배너라 깨끗한 1장만), Nouhaus 3장(nouhaus.com). 전부 눈으로 선별, Black, 배지/텍스트/타색상 제외, rights=owner_policy·verified. 기존 대표 유지.
+- **내부링크·계측(기존 재사용)**: 제품→가이드 "Read the Chairpedia deep-dive" 자동(제품이 발행 chairpedia 연결 시), 가이드→Amazon buy CTA(SmartBuyLink). 계측 `affiliate_clicks`=product_id·retailer·country·referrer(출발페이지) 이미 기록(중복 이벤트 추가 안 함, CTA위치는 별도 미기록). buy=직접 /dp/(검색 아님)+기존 태그 furniblog0e-20, 페이지별 주문 귀속은 미확인.
+- **빌드/타입 통과**, 배포. 검증: 모바일 오버플로·빈 섹션·이미지 모델일치·구매링크.
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).

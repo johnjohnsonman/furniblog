@@ -77,7 +77,10 @@ export type RichReview = {
     productTitle: string
     retailerNote: string
     rows: BuyRow[]
-    sihooTrialNote: string
+    /** Optional secondary "official store" box (e.g. brand trial policy). Rendered only if set. */
+    officialStore?: { label: string; note: string }
+    /** @deprecated use officialStore. Kept for the C300 pilot. */
+    sihooTrialNote?: string
     disclaimer: string
   }
 
@@ -88,4 +91,11 @@ export type RichReview = {
 
   /** Labelled source lines (what each tier of claim is based on). */
   sources: SpecRow[]
+
+  /** Optional per-product copy overrides (generic defaults are used otherwise). */
+  checksTitle?: string
+  checksIntro?: string
+  dimsIntro?: string
+  forWhoTitle?: string
+  sourcesFooter?: string
 }
