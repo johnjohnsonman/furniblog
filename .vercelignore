@@ -1,0 +1,6 @@
+# Large / local-only files that must never be uploaded to Vercel.
+furniblog.zip
+*.zip
+design-handoff/
+scripts/backups/
+*.local-backup.html

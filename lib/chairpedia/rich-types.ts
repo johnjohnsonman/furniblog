@@ -49,6 +49,8 @@ export type RichReview = {
   /** ASIN used to pull product images via the Creators API (empty frame if none/ineligible). */
   asin: string | null
   eyebrow: string
+  /** Feature-based hero intro (confirmed copy; not pulled from stale DB fields). */
+  heroIntro: string
   verdictOneLiner: string
   verdictNote: string
 

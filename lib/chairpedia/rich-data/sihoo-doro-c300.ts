@@ -8,9 +8,11 @@ import type { RichReview } from "@/lib/chairpedia/rich-types"
  */
 export const SIHOO_DORO_C300: RichReview = {
   asin: "B0C3T865C2",
-  eyebrow: "SIHOO · Office chairs · Review",
-  verdictOneLiner: "Best all-round ergonomic chair on a budget.",
-  verdictNote: "Research-based editorial verdict. Hands-on testing has not yet been completed.",
+  eyebrow: "SIHOO · Office chairs · Buying guide",
+  heroIntro:
+    "The SIHOO Doro C300 pairs self-adaptive lumbar support with an all-mesh build and 3D armrests at a mid-range price. This guide covers its confirmed features, fit and what to check before buying.",
+  verdictOneLiner: "Self-adaptive lumbar, all-mesh build and 3D armrests at a mid-range price.",
+  verdictNote: "Research-based guide — hands-on testing not yet completed.",
 
   heroShotBrief: "Hero: three-quarter front view, black C300, neutral backdrop. Our own photography only.",
   galleryBriefs: [
@@ -41,7 +43,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { k: "Seat-to-floor height", v: "Not published for the base C300; only overall height is given", tier: "C" },
     { k: "Seat depth", v: "17.13–18.11 in (range as published; adjustability on the base model to be confirmed)", tier: "B" },
     { k: "Backrest height", v: "18.11–21.65 in, adjustable", tier: "B" },
-    { k: "Weight capacity", v: "330 lbs per SIHOO; not readable on the Amazon listing — confirm there", tier: "B" },
+    { k: "Weight capacity", v: "Not confirmed for the linked listing — SIHOO documents 330 lb, some sources say 300 lb; check the Amazon listing", tier: "C" },
     { k: "Recline", v: "Up to 130°", tier: "B" },
     { k: "Recline lock stages", v: "Stop count not confirmed for the base model", tier: "C" },
     { k: "Recommended user height", v: "Not confirmed; published ranges appear to describe the Pro", tier: "C" },
@@ -113,7 +115,7 @@ export const SIHOO_DORO_C300: RichReview = {
 
   verdict: [
     "The SIHOO Doro C300 is a legitimately impressive feat of value engineering. It delivers genuinely adaptive lumbar support—something usually reserved for chairs costing far more—alongside credible build quality and a design that feels more considered than most mid-tier mesh chairs. The self-adjusting lumbar system works; the all-mesh construction breathes beautifully; and the kudu-inspired aesthetic avoids the plasticky anonymity of budget competitors. For professionals spending 6–9 hours a day seated, especially those working from home on a budget, the C300 offers a compelling blend of biomechanics and affordability.",
-    "That said, it is not flawless. The armrests lack a locking mechanism, the headrest clicks audibly during adjustment, and taller or wider users may find the fit constraining. The automatic lumbar—while effective—cannot be manually depth-adjusted, which some purists will miss. But these are quibbles in the context of what the C300 achieves: bringing premium-tier ergonomic thinking to a tier where most chairs still rely on fixed lumbar pads and basic tilt mechanisms.",
+    "That said, it is not flawless. Reviewers report that the armrests lack a locking mechanism, the headrest can click audibly during adjustment, and taller or wider users may find the fit constraining. The automatic lumbar—while effective—cannot be manually depth-adjusted, which some purists will miss. But these are quibbles in the context of what the C300 achieves: bringing premium-tier ergonomic thinking to a tier where most chairs still rely on fixed lumbar pads and basic tilt mechanisms.",
   ],
   verdictPullQuote:
     "A chair that adapts rather than resists—proof that smart engineering can democratize ergonomics without sacrificing integrity.",

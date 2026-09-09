@@ -153,7 +153,6 @@ export default async function ChairpediaEntryPage({
             <RichReview
               data={rich}
               title={entry.title}
-              subtitle={entry.subtitle ?? entry.excerpt}
               contentHtml={entry.content_html}
               images={richImages}
               heroImageUrl={entry.hero_image_url}
