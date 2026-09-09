@@ -12,8 +12,8 @@ import { RICH_REVIEWS } from "@/lib/chairpedia/rich-data/sihoo-doro-c300"
 import { RichReview } from "@/components/chairpedia/rich-review"
 import { getProductImages } from "@/lib/amazon/paapi"
 import { extractAsin } from "@/lib/amazon/asin"
-import { getProductBySlug } from "@/lib/supabase/queries"
-import { resolveProductGallery, hasImageRegistry } from "@/lib/data/product-images"
+import { getProductImageBundle, getUseProductImage } from "@/lib/supabase/queries"
+import { hasImageRegistry } from "@/lib/data/product-images"
 
 export const dynamic = "force-dynamic"
 
@@ -113,12 +113,17 @@ export default async function ChairpediaEntryPage({
 
   // Reuse the linked product's own images (registered once via the admin product
   // form) across this article — no separate per-article image entry needed.
-  const productView = product ? await getProductBySlug(product.slug) : undefined
-  const productGallery = resolveProductGallery(productView)
-  // Legacy (content_html) articles: prefer the product image only for products
-  // we've opted in; otherwise keep the article's own curated hero.
+  const productGallery = product
+    ? await getProductImageBundle(product.slug, product.name)
+    : { hero: null, gallery: [] }
+  // Per-article opt-in: DB flag (admin toggle, no code edit) when migration 044
+  // is applied; otherwise fall back to the legacy code registry for the pilots.
+  const dbOptIn = product ? await getUseProductImage(entry.slug) : null
+  const optInLegacy = dbOptIn !== null ? dbOptIn : hasImageRegistry(product?.slug)
+  // Legacy (content_html) articles: use the product image only when opted in;
+  // otherwise keep the article's own curated hero (unchecking reverts).
   const legacyHero =
-    hasImageRegistry(product?.slug) && productGallery.hero
+    optInLegacy && productGallery.hero
       ? productGallery.hero
       : entry.hero_image_url
         ? { url: entry.hero_image_url, alt: entry.title }

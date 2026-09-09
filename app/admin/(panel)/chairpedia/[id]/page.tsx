@@ -32,6 +32,7 @@ type Entry = {
   status: string
   product_id: string | null
   products: { slug: string; name: string } | { slug: string; name: string }[] | null
+  use_product_image: boolean | null
   gen_status: string | null
   gen_error: string | null
   gen_sources: string[] | null
@@ -96,6 +97,7 @@ export default function AdminChairpediaEditor() {
       collections: e.collections ?? [], featured: e.featured ?? false,
       seo_title: e.seo_title, seo_description: e.seo_description,
       product_id: e.product_id, // persists an unlink; product_slug (below) overrides to link
+      use_product_image: e.use_product_image ?? false,
       status: nextStatus ?? e.status,
     }
     if (productSlug.trim()) body.product_slug = productSlug.trim()
@@ -355,6 +357,18 @@ export default function AdminChairpediaEditor() {
                 </>
               )
             })()}
+            <label className="flex items-center gap-2 text-sm mt-2">
+              <input
+                type="checkbox"
+                checked={Boolean(e.use_product_image)}
+                onChange={(ev) => set("use_product_image", ev.target.checked)}
+              />
+              Use the linked product&apos;s image as this article&apos;s hero
+            </label>
+            <p className="text-[11px] text-muted-foreground mt-1">
+              On: the article reuses the product&apos;s own image (register it once on the product).
+              Off: keeps the hero image below. Needs a linked product.
+            </p>
           </div>
 
           <div>

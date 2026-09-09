@@ -244,6 +244,10 @@ export async function getProductImages(
   asin: string | null | undefined
 ): Promise<ProductImages | null> {
   if (!asin) return null
+  // Eligibility gate: until the Associates account qualifies (10 sales / 30d),
+  // GetItems returns AssociateNotEligible. Don't call it on every page view —
+  // keep it OFF until the owner sets AMAZON_IMAGES_ENABLED=true post-eligibility.
+  if (process.env.AMAZON_IMAGES_ENABLED !== "true") return null
   const outcome = await fetchItemImages(asin)
   if (outcome.ok && outcome.images?.primary) return outcome.images
   if (!outcome.ok && outcome.errorCode !== "NotConfigured") {

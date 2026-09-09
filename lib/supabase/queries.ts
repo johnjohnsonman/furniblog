@@ -395,6 +395,104 @@ export async function getProductBySlug(
   }
 }
 
+export type PublicProductImage = { url: string; alt: string; caption?: string }
+
+/**
+ * Publishable image bundle for a product (hero + gallery), reused across the
+ * product page, Chairpedia and Compare. Reads `product_images` with metadata;
+ * falls back gracefully when the 044 metadata columns aren't applied yet, and
+ * never throws. Held candidates (rights='candidate') are excluded, so ambiguous
+ * auto-matches stay out of public view until reviewed.
+ */
+export async function getProductImageBundle(
+  slug: string,
+  fallbackName?: string
+): Promise<{ hero: PublicProductImage | null; gallery: PublicProductImage[] }> {
+  const empty = { hero: null, gallery: [] as PublicProductImage[] }
+  if (!slug || !isSupabaseConfigured()) return empty
+  try {
+    const supabase = createPublicServerClient()
+    const { data: product } = await supabase
+      .from("products")
+      .select("id,name")
+      .eq("slug", slug)
+      .maybeSingle()
+    if (!product?.id) return empty
+    const name = (product.name as string) || fallbackName || "Chair"
+
+    type Row = { url: string; alt: string | null; caption: string | null; rights: string | null }
+    const withMeta = await supabase
+      .from("product_images")
+      .select("url,sort_order,is_thumbnail,alt,caption,rights")
+      .eq("product_id", product.id)
+      .order("is_thumbnail", { ascending: false })
+      .order("sort_order", { ascending: true })
+
+    let rows: Row[] | null = withMeta.data as Row[] | null
+    if (withMeta.error) {
+      if (withMeta.error.code === "42703") {
+        // Migration 044 not applied yet — read base columns only.
+        const base = await supabase
+          .from("product_images")
+          .select("url,sort_order,is_thumbnail")
+          .eq("product_id", product.id)
+          .order("is_thumbnail", { ascending: false })
+          .order("sort_order", { ascending: true })
+        rows =
+          (base.data as { url: string }[] | null)?.map((r) => ({
+            url: r.url,
+            alt: null,
+            caption: null,
+            rights: "kept",
+          })) ?? null
+      } else {
+        return empty
+      }
+    }
+
+    const seen = new Set<string>()
+    const pub = (rows ?? []).filter((r) => {
+      if (r.rights === "candidate") return false
+      const url = r.url?.trim()
+      if (!url || url.includes("images.unsplash.com")) return false
+      if (seen.has(url)) return false
+      seen.add(url)
+      return true
+    })
+    if (pub.length === 0) return empty
+
+    const toImg = (r: Row, i: number): PublicProductImage => ({
+      url: r.url,
+      alt: r.alt?.trim() || (i === 0 ? name : `${name} — view ${i + 1}`),
+      caption: r.caption?.trim() || undefined,
+    })
+    return { hero: toImg(pub[0], 0), gallery: pub.slice(1, 5).map((r, i) => toImg(r, i + 1)) }
+  } catch {
+    return empty
+  }
+}
+
+/**
+ * Reads `chairpedia.use_product_image` defensively. Returns null when the column
+ * doesn't exist yet (pre-044) so callers can fall back to the legacy code opt-in.
+ */
+export async function getUseProductImage(slug: string): Promise<boolean | null> {
+  if (!slug || !isSupabaseConfigured()) return null
+  try {
+    const supabase = createPublicServerClient()
+    const { data, error } = await supabase
+      .from("chairpedia")
+      .select("use_product_image")
+      .eq("slug", slug)
+      .maybeSingle()
+    if (error) return null
+    const v = (data as { use_product_image?: boolean } | null)?.use_product_image
+    return typeof v === "boolean" ? v : null
+  } catch {
+    return null
+  }
+}
+
 function normalizeCategoryFilter(category?: string): string | null {
   if (!category || category === "All" || category === "all") return null
   return category

@@ -12,6 +12,9 @@ export type ProductImageItem = {
   url: string
   sortOrder: number
   isThumbnail: boolean
+  alt?: string | null
+  caption?: string | null
+  source?: string | null
 }
 
 type ImageUploaderProps = {
@@ -34,7 +37,12 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
   const [error, setError] = useState<string | null>(null)
   const [dragOver, setDragOver] = useState(false)
   const [dragIndex, setDragIndex] = useState<number | null>(null)
+  const [savingMeta, setSavingMeta] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  function updateMeta(id: string, field: "alt" | "caption" | "source", value: string) {
+    setImages((prev) => prev.map((img) => (img.id === id ? { ...img, [field]: value } : img)))
+  }
 
   const loadImages = useCallback(async () => {
     setLoading(true)
@@ -56,6 +64,9 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
         url: img.url,
         sortOrder: img.sortOrder,
         isThumbnail: img.isThumbnail,
+        alt: img.alt ?? null,
+        caption: img.caption ?? null,
+        source: img.source ?? null,
       }))
       setImages(next)
       onPrimaryImageChange?.(primaryImageUrl(next))
@@ -80,6 +91,9 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
           id: img.id,
           sortOrder: index,
           isThumbnail: index === 0,
+          alt: img.alt ?? null,
+          caption: img.caption ?? null,
+          source: img.source ?? null,
         })),
       }),
     })
@@ -150,6 +164,18 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
         setUploading(false)
         setProgress(0)
       }, 400)
+    }
+  }
+
+  async function saveMeta() {
+    setSavingMeta(true)
+    setError(null)
+    try {
+      await persistOrder(images)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed")
+    } finally {
+      setSavingMeta(false)
     }
   }
 
@@ -301,6 +327,57 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
               </>
             )}
           </div>
+
+          {images.length > 0 && (
+            <div className="space-y-3 border-t border-border pt-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-xs text-muted-foreground">
+                  Image details — alt text (shown to search engines &amp; screen readers),
+                  caption, and a source / usage-rights note.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => void saveMeta()}
+                  disabled={savingMeta}
+                  className="shrink-0"
+                >
+                  {savingMeta ? "Saving…" : "Save details"}
+                </Button>
+              </div>
+              {images.map((img, index) => (
+                <div key={img.id} className="flex items-start gap-3">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={img.url}
+                    alt=""
+                    className="h-12 w-12 shrink-0 rounded border border-border object-cover"
+                  />
+                  <div className="grid flex-1 gap-1.5 sm:grid-cols-3">
+                    <input
+                      className="rounded border border-border px-2 py-1 text-xs"
+                      placeholder={index === 0 ? "Alt text (primary)" : "Alt text"}
+                      value={img.alt ?? ""}
+                      onChange={(e) => updateMeta(img.id, "alt", e.target.value)}
+                    />
+                    <input
+                      className="rounded border border-border px-2 py-1 text-xs"
+                      placeholder="Caption (optional)"
+                      value={img.caption ?? ""}
+                      onChange={(e) => updateMeta(img.id, "caption", e.target.value)}
+                    />
+                    <input
+                      className="rounded border border-border px-2 py-1 text-xs"
+                      placeholder="Source / rights note"
+                      value={img.source ?? ""}
+                      onChange={(e) => updateMeta(img.id, "source", e.target.value)}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
 

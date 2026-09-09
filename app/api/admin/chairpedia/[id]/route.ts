@@ -15,6 +15,7 @@ const EDITABLE = [
   "excerpt",
   "content_html",
   "product_id",
+  "use_product_image",
   "origin",
   "collections",
   "featured",
@@ -76,12 +77,23 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       if (!cur?.published_at) patch.published_at = new Date().toISOString()
     }
     const supabase = createAdminClient()
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from("chairpedia")
       .update(patch)
       .eq("id", id)
       .select("id,slug,status")
       .single()
+    // Tolerate saving before migration 044 is applied: retry without the new
+    // column so existing chairpedia edits never hard-fail.
+    if (error?.code === "42703" && "use_product_image" in patch) {
+      delete patch.use_product_image
+      ;({ data, error } = await supabase
+        .from("chairpedia")
+        .update(patch)
+        .eq("id", id)
+        .select("id,slug,status")
+        .single())
+    }
     if (error) {
       if (error.code === "23505") {
         return NextResponse.json({ error: `Slug "${patch.slug}" is already taken — choose another.` }, { status: 409 })

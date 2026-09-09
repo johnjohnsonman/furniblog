@@ -20,6 +20,22 @@ type ProductImageRow = {
   sort_order: number
   is_thumbnail: boolean
   created_at: string
+  alt?: string | null
+  caption?: string | null
+  source?: string | null
+}
+
+function toImagePayload(row: ProductImageRow) {
+  return {
+    id: row.id,
+    url: row.url,
+    sortOrder: row.sort_order,
+    isThumbnail: row.is_thumbnail,
+    alt: row.alt ?? null,
+    caption: row.caption ?? null,
+    source: row.source ?? null,
+    createdAt: row.created_at,
+  }
 }
 
 export async function GET(request: NextRequest, context: RouteContext) {
@@ -49,13 +65,7 @@ export async function GET(request: NextRequest, context: RouteContext) {
     }
 
     return NextResponse.json({
-      images: (data ?? []).map((row: ProductImageRow) => ({
-        id: row.id,
-        url: row.url,
-        sortOrder: row.sort_order,
-        isThumbnail: row.is_thumbnail,
-        createdAt: row.created_at,
-      })),
+      images: (data ?? []).map((row: ProductImageRow) => toImagePayload(row)),
       productSlug: product.slug,
     })
   } catch (error) {
@@ -146,13 +156,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json({
       thumbnailUrl,
-      images: inserted.map((row) => ({
-        id: row.id,
-        url: row.url,
-        sortOrder: row.sort_order,
-        isThumbnail: row.is_thumbnail,
-        createdAt: row.created_at,
-      })),
+      images: inserted.map((row) => toImagePayload(row)),
     })
   } catch (error) {
     return jsonInternalError(error)
@@ -177,6 +181,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       id: string
       sortOrder: number
       isThumbnail?: boolean
+      alt?: string | null
+      caption?: string | null
+      source?: string | null
     }>
 
     if (!Array.isArray(images)) {
@@ -188,15 +195,41 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       .update({ is_thumbnail: false })
       .eq("product_id", product.id)
 
+    // Include alt/caption/source only when the editor sent them. If the 044
+    // metadata columns aren't applied yet, retry once without them so ordering
+    // and thumbnail selection still save.
+    let metaSupported = true
     for (const img of images) {
-      await supabase
-        .from("product_images")
-        .update({
-          sort_order: img.sortOrder,
-          is_thumbnail: Boolean(img.isThumbnail),
-        })
-        .eq("id", img.id)
-        .eq("product_id", product.id)
+      const base: Record<string, unknown> = {
+        sort_order: img.sortOrder,
+        is_thumbnail: Boolean(img.isThumbnail),
+      }
+      const withMeta: Record<string, unknown> = { ...base }
+      if ("alt" in img) withMeta.alt = img.alt ?? null
+      if ("caption" in img) withMeta.caption = img.caption ?? null
+      if ("source" in img) withMeta.source = img.source ?? null
+
+      if (metaSupported && Object.keys(withMeta).length > Object.keys(base).length) {
+        const { error } = await supabase
+          .from("product_images")
+          .update(withMeta)
+          .eq("id", img.id)
+          .eq("product_id", product.id)
+        if (error?.code === "42703") {
+          metaSupported = false
+          await supabase
+            .from("product_images")
+            .update(base)
+            .eq("id", img.id)
+            .eq("product_id", product.id)
+        }
+      } else {
+        await supabase
+          .from("product_images")
+          .update(base)
+          .eq("id", img.id)
+          .eq("product_id", product.id)
+      }
     }
 
     const thumbnailUrl = await syncProductThumbnail(supabase, product.id)
@@ -209,13 +242,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
     return NextResponse.json({
       thumbnailUrl,
-      images: (data ?? []).map((row: ProductImageRow) => ({
-        id: row.id,
-        url: row.url,
-        sortOrder: row.sort_order,
-        isThumbnail: row.is_thumbnail,
-        createdAt: row.created_at,
-      })),
+      images: (data ?? []).map((row: ProductImageRow) => toImagePayload(row)),
     })
   } catch (error) {
     return jsonInternalError(error)

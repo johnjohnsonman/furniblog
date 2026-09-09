@@ -251,6 +251,16 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **PA-API(이미지 자동수집)는 여전히 eligibility 대기**(AssociateNotEligible) → 이미지는 현재 "기존 이미지 재사용" 소스로만 채움. 자동수집/권리검증(candidate 보류)은 eligibility 확보 후 단계.
 - **빌드/타입 통과**, Vercel CLI로 배포(자동배포 깨진 상태 유지).
 
+### 2026-09-09 (2) 제품 이미지 자동화 2단계: 코드 레지스트리 탈피(DB화) + 수집 입력경로 + Amazon 게이팅
+- **목표 전환**: "한번 업로드→재사용"(1단계 완료)에서 → "**공급원 연결 시 이미지 유입 + 새 제품도 코드수정 없이 공개화면 연결**"로.
+- **🔴 마이그레이션 044**(`lib/supabase/migrations/044_product_images_meta.sql`, **대표님이 SQL Editor 실행 필요**): `product_images`에 `alt/caption/source/match_basis/rights`(기본 'kept'), `chairpedia`에 `use_product_image`(bool) 추가. 전부 `add column if not exists`(멱등·안전). **적용 전에도 사이트 안 깨지게 모든 읽기/쓰기 경로에 42703 방어 폴백** 넣음.
+- **읽기 DB화**(`lib/supabase/queries.ts`): `getProductImageBundle(slug)`=product_images에서 메타 포함 발행(candidate 제외, unsplash 제외, 중복 제거, 044 미적용 시 베이스 컬럼 폴백), `getUseProductImage(slug)`=chairpedia opt-in(컬럼 없으면 null→레거시 코드 레지스트리 폴백). Chairpedia 페이지가 이걸 사용 → **opt-in이 DB 토글로 이동**(코드 레지스트리는 3개 파일럿 폴백으로만 잔존).
+- **어드민 확장(코드수정 없이 연결)**: ①Chairpedia 에디터에 "**Use linked product's image as hero**" 체크박스(+API `EDITABLE`에 `use_product_image`, 42703 시 그 컬럼만 빼고 재시도) → 제품 연결+토글만으로 기사에 제품이미지 반영, 해제 시 기존 hero 복귀. ②제품 이미지 업로더(`ImageUploader.tsx`)에 **alt/캡션/출처 편집 UI + "Save details"**(images API PATCH가 메타 저장, 042703 폴백). 대표 이미지=여전히 첫 번째(수동 순서), **덮어쓰기 안 함**.
+- **수집 입력경로**(`scripts/ingest-product-images.ts`, `npm run images:ingest -- <manifest.json> [--apply] [--retry <f>]`): 라이선스 매니페스트(제조사/공급사 폴더·허용 URL 목록) 하나 연결 시 실행. **명시적 slug/코드 매칭만 자동등록(confirmed), 이름만/애매하면 candidate로 보류(공개 제외)**, 시각적 유사성 매칭 안 함, 중복 URL/결정적 업로드경로로 **멱등**, 기존 있으면 is_thumbnail 안 건드리고 뒤에 append, 실패는 `<manifest>.failures.json`→`--retry`. dry-run 기본. **웹 스크래이핑/검색이미지 수집/접근우회 안 함.**
+- **⚠️ 실제 자동수집 이미지 = 0**: 연결된 외부 라이선스 피드가 없어 --apply 미실행(정직 원칙). 파이프라인은 dry-run으로 멱등(기존 C300 이미지=skip)·candidate·append·retry 검증 완료. 대표님이 라이선스 폴더/URL을 매니페스트로 주면 즉시 유입.
+- **Amazon 정확화**(`lib/amazon/paapi.ts`): 상태 구분 = 자격미충족 / 인증·호출가능(현재 여기) / 이미지조회 / 제품·옵션확인 / 페이지반영. **`AMAZON_IMAGES_ENABLED!=='true'`면 즉시 null**(자격 확보 전 매 페이지뷰 반복호출 방지). 자격 확보 후 대표님이 env=true.
+- **빌드/타입 통과**, CLI 배포.
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
