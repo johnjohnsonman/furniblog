@@ -16,6 +16,7 @@ export type ProductImageItem = {
   caption?: string | null
   source?: string | null
   rights?: string | null
+  modelStatus?: string | null
 }
 
 type ImageUploaderProps = {
@@ -43,7 +44,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
 
   function updateMeta(
     id: string,
-    field: "alt" | "caption" | "source" | "rights",
+    field: "alt" | "caption" | "source" | "rights" | "modelStatus",
     value: string
   ) {
     setImages((prev) => prev.map((img) => (img.id === id ? { ...img, [field]: value } : img)))
@@ -73,6 +74,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
         caption: img.caption ?? null,
         source: img.source ?? null,
         rights: img.rights ?? null,
+        modelStatus: img.modelStatus ?? null,
       }))
       setImages(next)
       onPrimaryImageChange?.(primaryImageUrl(next))
@@ -101,6 +103,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
           caption: img.caption ?? null,
           source: img.source ?? null,
           rights: img.rights ?? null,
+          modelStatus: img.modelStatus ?? null,
         })),
       }),
     })
@@ -361,7 +364,7 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
                     alt=""
                     className="h-12 w-12 shrink-0 rounded border border-border object-cover"
                   />
-                  <div className="grid flex-1 gap-1.5 sm:grid-cols-4">
+                  <div className="grid flex-1 gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
                     <input
                       className="rounded border border-border px-2 py-1 text-xs"
                       placeholder={index === 0 ? "Alt text (primary)" : "Alt text"}
@@ -380,16 +383,31 @@ export function ImageUploader({ productId, onPrimaryImageChange }: ImageUploader
                       value={img.source ?? ""}
                       onChange={(e) => updateMeta(img.id, "source", e.target.value)}
                     />
-                    <select
-                      className="rounded border border-border px-2 py-1 text-xs"
-                      value={img.rights ?? "kept"}
-                      onChange={(e) => updateMeta(img.id, "rights", e.target.value)}
-                      title="candidate = held, hidden from public until reviewed"
-                    >
-                      <option value="kept">kept (retained)</option>
-                      <option value="confirmed">confirmed</option>
-                      <option value="candidate">candidate (held)</option>
-                    </select>
+                    <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                      Usage
+                      <select
+                        className="flex-1 rounded border border-border px-2 py-1 text-xs"
+                        value={img.rights ?? "kept"}
+                        onChange={(e) => updateMeta(img.id, "rights", e.target.value)}
+                        title="Usage/licence only — does NOT publish or hide the image"
+                      >
+                        <option value="kept">kept (retained)</option>
+                        <option value="owner_policy">owner policy</option>
+                        <option value="permitted">permitted (on file)</option>
+                      </select>
+                    </label>
+                    <label className="flex items-center gap-1 text-[11px] text-muted-foreground">
+                      Model
+                      <select
+                        className="flex-1 rounded border border-border px-2 py-1 text-xs"
+                        value={img.modelStatus ?? "verified"}
+                        onChange={(e) => updateMeta(img.id, "modelStatus", e.target.value)}
+                        title="candidate = wrong/uncertain model, held & hidden from public"
+                      >
+                        <option value="verified">verified (public)</option>
+                        <option value="candidate">candidate (held)</option>
+                      </select>
+                    </label>
                   </div>
                 </div>
               ))}

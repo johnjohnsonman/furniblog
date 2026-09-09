@@ -261,6 +261,15 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **Amazon 정확화**(`lib/amazon/paapi.ts`): 상태 구분 = 자격미충족 / 인증·호출가능(현재 여기) / 이미지조회 / 제품·옵션확인 / 페이지반영. **`AMAZON_IMAGES_ENABLED!=='true'`면 즉시 null**(자격 확보 전 매 페이지뷰 반복호출 방지). 자격 확보 후 대표님이 env=true.
 - **빌드/타입 통과**, CLI 배포.
 
+### 2026-09-09 (3) 온라인 이미지 수집(C300) + 사용권/모델일치 축 분리 + 공개 필터 완성
+- **마이그레이션 044는 이미 적용됨**(대표님이 furniblog 프로젝트 SQL Editor에서 실행, "Success"). 예전 버전이었지만 핵심 컬럼(alt/caption/source/match_basis/rights + chairpedia.use_product_image)은 정상 추가됨. **주의: SQL Editor 프로젝트를 반드시 `bvytheznlotwgavmytfr`(furniblog)로** — "mukbo" 등 다른 프로젝트에서 돌리면 42P01(테이블 없음).
+- **🔴 마이그레이션 045 필요**(`045_product_images_provenance.sql`, 대표님 실행): product_images에 `source_url/origin_image_url/collected_at/model_status`(기본 'verified') 추가 + 인덱스. **두 축 분리**: `rights`=사용권(permitted/owner_policy/kept, 공개 게이트 아님), `model_status`=제품일치(verified/candidate, **이게 공개 게이트**). 045가 rights의 옛 값(confirmed/candidate)을 새 모델로 리매핑(no-op if none). 전부 `add column if not exists`(멱등).
+- **공개 candidate 필터 완성**: getProductImageBundle(Chairpedia)·sortedProductImageUrls(제품페이지/카드/Best/Compare 썸네일)에서 `model_status='candidate'` 제외. PRODUCT_SELECT에 model_status 추가 + **045 미적용 시 nomodel 폴백**(이미지 유지)으로 무회귀.
+- **어드민 두 축 UI**: ImageUploader에 Usage(rights) select + Model(model_status) select 분리. images API가 각각 저장(42703 폴백).
+- **수집 스크립트 재작성**(`ingest-product-images.ts`): 원격 URL 다운로드→스토리지 저장(결정적 경로, 멱등)→product_images 등록(source_url/origin_image_url/collected_at/rights/model_status). 명시적 slug만 verified 가능, 이름만/애매→candidate 강제. 045 필요. 스크래이핑/우회/워터마크제거 안 함.
+- **C300 실제 수집(대기: 045 실행 후 --apply)**: SIHOO 공식 기본형 페이지(fr.sihoo.com/products/doro-c300-ergonomic-office-chair)에서 **눈으로 선별** — Black 정면(ASIN B0C3T865C2 파일명)=hero, Black 측면(11.webp), Black 팔걸이(1_.webp)=verified 공개 / 헤드레스트(4_.webp, 색상애매)=candidate 보류. 제외: 인증배지 배너, White 색상, 분해도. rights=owner_policy(권리자 허가 아님, 운영 판단). 제품 기존 대표는 유지(append). 매니페스트=scratchpad/c300-manifest.json.
+- **빌드/타입 통과**, 코드 배포 완료. **남은 조건: 대표님 045 실행 → `npm run images:ingest -- <manifest> --apply` → 검증.**
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).

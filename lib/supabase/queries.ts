@@ -91,6 +91,7 @@ type DbProductImage = {
   url: string
   sort_order: number
   is_thumbnail: boolean
+  model_status?: string | null
 }
 
 type DbAffiliateLink = {
@@ -197,6 +198,8 @@ function sortedProductImageUrls(
 ): string[] {
   if (!images?.length) return []
   return [...images]
+    // Held candidates (unconfirmed model match) never surface publicly.
+    .filter((img) => img.model_status !== "candidate")
     .sort((a, b) => {
       if (a.is_thumbnail !== b.is_thumbnail) {
         return a.is_thumbnail ? -1 : 1
@@ -313,6 +316,20 @@ const PRODUCT_SELECT = `
     id,
     url,
     sort_order,
+    is_thumbnail,
+    model_status
+  )
+`
+
+// Same as PRODUCT_SELECT but without model_status, for projects where migration
+// 045 hasn't been applied yet (avoids an undefined-column error while keeping
+// images). Candidate filtering is simply skipped there (no candidates exist yet).
+const PRODUCT_SELECT_NOMODEL = `
+  ${PRODUCT_SELECT_BASE},
+  product_images (
+    id,
+    url,
+    sort_order,
     is_thumbnail
   )
 `
@@ -322,16 +339,25 @@ function isProductImagesPermissionError(error: { message?: string } | null): boo
   return msg.includes("product_images") && msg.includes("permission")
 }
 
+/** Undefined-column (e.g. model_status before migration 045). */
+function isUndefinedColumnError(error: { code?: string } | null): boolean {
+  return error?.code === "42703"
+}
+
+type ProductQueryMode = "full" | "nomodel" | "noimages"
+
 function productListQuery(
   supabase: ReturnType<typeof createPublicServerClient>,
-  includeImages = true
+  mode: ProductQueryMode | boolean = "full"
 ) {
+  const resolved: ProductQueryMode =
+    mode === true ? "full" : mode === false ? "noimages" : mode
   const base = supabase.from("products")
-  if (!includeImages) {
+  if (resolved === "noimages") {
     return base.select(PRODUCT_SELECT_BASE)
   }
   return base
-    .select(PRODUCT_SELECT)
+    .select(resolved === "nomodel" ? PRODUCT_SELECT_NOMODEL : PRODUCT_SELECT)
     .order("sort_order", {
       foreignTable: "product_images",
       ascending: true,
@@ -369,6 +395,14 @@ export async function getProductBySlug(
       .eq("slug", slug)
       .eq("published", true)
       .maybeSingle()
+
+    if (isUndefinedColumnError(error)) {
+      // migration 045 not applied — retry without model_status (keeps images)
+      ;({ data, error } = await productListQuery(supabase, "nomodel")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle())
+    }
 
     if (isProductImagesPermissionError(error)) {
       console.warn(
@@ -420,10 +454,10 @@ export async function getProductImageBundle(
     if (!product?.id) return empty
     const name = (product.name as string) || fallbackName || "Chair"
 
-    type Row = { url: string; alt: string | null; caption: string | null; rights: string | null }
+    type Row = { url: string; alt: string | null; caption: string | null; model_status: string | null }
     const withMeta = await supabase
       .from("product_images")
-      .select("url,sort_order,is_thumbnail,alt,caption,rights")
+      .select("url,sort_order,is_thumbnail,alt,caption,model_status")
       .eq("product_id", product.id)
       .order("is_thumbnail", { ascending: false })
       .order("sort_order", { ascending: true })
@@ -431,7 +465,7 @@ export async function getProductImageBundle(
     let rows: Row[] | null = withMeta.data as Row[] | null
     if (withMeta.error) {
       if (withMeta.error.code === "42703") {
-        // Migration 044 not applied yet — read base columns only.
+        // Migration 045 not applied yet — read base columns only (all publishable).
         const base = await supabase
           .from("product_images")
           .select("url,sort_order,is_thumbnail")
@@ -443,7 +477,7 @@ export async function getProductImageBundle(
             url: r.url,
             alt: null,
             caption: null,
-            rights: "kept",
+            model_status: "verified",
           })) ?? null
       } else {
         return empty
@@ -452,7 +486,8 @@ export async function getProductImageBundle(
 
     const seen = new Set<string>()
     const pub = (rows ?? []).filter((r) => {
-      if (r.rights === "candidate") return false
+      // Only product-match-verified images are public; candidates stay hidden.
+      if (r.model_status === "candidate") return false
       const url = r.url?.trim()
       if (!url || url.includes("images.unsplash.com")) return false
       if (seen.has(url)) return false
@@ -541,6 +576,21 @@ export async function getProducts(filters?: {
   }
 
   let { data, error } = await query
+
+  if (isUndefinedColumnError(error)) {
+    // migration 045 not applied — retry without model_status (keeps images)
+    let q = productListQuery(supabase, "nomodel")
+      .eq("published", true)
+      .order("rating_overall", { ascending: false, nullsFirst: false })
+      .eq("track", "chair")
+    if (categoryFilter) q = q.eq("category", categoryFilter)
+    if (filters?.brand) {
+      const { data: brandRow } = await supabase.from("brands").select("id").eq("slug", filters.brand).maybeSingle()
+      if (!brandRow) return []
+      q = q.eq("brand_id", brandRow.id)
+    }
+    ;({ data, error } = await q)
+  }
 
   if (isProductImagesPermissionError(error)) {
     console.warn(
