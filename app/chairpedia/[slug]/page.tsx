@@ -8,6 +8,10 @@ import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo/schemas"
+import { RICH_REVIEWS } from "@/lib/chairpedia/rich-data/sihoo-doro-c300"
+import { RichReview } from "@/components/chairpedia/rich-review"
+import { getProductImages } from "@/lib/amazon/paapi"
+import { extractAsin } from "@/lib/amazon/asin"
 
 export const dynamic = "force-dynamic"
 
@@ -129,10 +133,37 @@ export default async function ChairpediaEntryPage({
     { name: entry.title, url: `/chairpedia/${entry.slug}` },
   ])
 
+  // Rich structured layout (pilot: C300). Falls back to content_html otherwise.
+  const rich = RICH_REVIEWS[entry.slug]
+  const richImages = rich
+    ? await getProductImages(rich.asin ?? extractAsin(buy?.url))
+    : null
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <main className="flex-1">
+        {rich ? (
+          <article className="mx-auto max-w-5xl px-4 py-10">
+            <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+              <Link href="/" className="hover:text-foreground">Home</Link>
+              <ChevronRight className="h-3 w-3" />
+              <Link href="/chairpedia" className="hover:text-foreground">Chairpedia</Link>
+            </nav>
+            <RichReview
+              data={rich}
+              title={entry.title}
+              subtitle={entry.subtitle ?? entry.excerpt}
+              contentHtml={entry.content_html}
+              images={richImages}
+              heroImageUrl={entry.hero_image_url}
+              amazonUrl={buy?.url ?? null}
+              productSlug={product?.slug}
+              productName={product?.name}
+              updatedStr={updatedStr}
+            />
+          </article>
+        ) : (
         <article className="mx-auto max-w-3xl px-4 py-10">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
             <Link href="/" className="hover:text-foreground">Home</Link>
@@ -226,6 +257,7 @@ export default async function ChairpediaEntryPage({
             </div>
           )}
         </article>
+        )}
       </main>
       <Footer />
 
