@@ -12,6 +12,8 @@ import { RICH_REVIEWS } from "@/lib/chairpedia/rich-data/sihoo-doro-c300"
 import { RichReview } from "@/components/chairpedia/rich-review"
 import { getProductImages } from "@/lib/amazon/paapi"
 import { extractAsin } from "@/lib/amazon/asin"
+import { getProductBySlug } from "@/lib/supabase/queries"
+import { resolveProductGallery, hasImageRegistry } from "@/lib/data/product-images"
 
 export const dynamic = "force-dynamic"
 
@@ -109,6 +111,19 @@ export default async function ChairpediaEntryPage({
     ? resolveAmazonAffiliateLink(product.slug, product.name)
     : null
 
+  // Reuse the linked product's own images (registered once via the admin product
+  // form) across this article — no separate per-article image entry needed.
+  const productView = product ? await getProductBySlug(product.slug) : undefined
+  const productGallery = resolveProductGallery(productView)
+  // Legacy (content_html) articles: prefer the product image only for products
+  // we've opted in; otherwise keep the article's own curated hero.
+  const legacyHero =
+    hasImageRegistry(product?.slug) && productGallery.hero
+      ? productGallery.hero
+      : entry.hero_image_url
+        ? { url: entry.hero_image_url, alt: entry.title }
+        : null
+
   // De-duplicated research sources, surfaced publicly for trust + E-E-A-T.
   const sources = Array.from(
     new Set((entry.gen_sources ?? []).filter((u) => /^https?:\/\//.test(u)))
@@ -155,6 +170,7 @@ export default async function ChairpediaEntryPage({
               title={entry.title}
               contentHtml={entry.content_html}
               images={richImages}
+              productImages={productGallery}
               heroImageUrl={entry.hero_image_url}
               amazonUrl={buy?.url ?? null}
               productSlug={product?.slug}
@@ -188,11 +204,11 @@ export default async function ChairpediaEntryPage({
             </div>
           </header>
 
-          {entry.hero_image_url && (
+          {legacyHero && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={entry.hero_image_url}
-              alt={entry.title}
+              src={legacyHero.url}
+              alt={legacyHero.alt}
               className="w-full rounded-xl mb-8"
             />
           )}

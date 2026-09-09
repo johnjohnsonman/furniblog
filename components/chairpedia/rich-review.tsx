@@ -2,6 +2,7 @@ import Link from "next/link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import type { RichReview, DataTier } from "@/lib/chairpedia/rich-types"
 import type { ProductImages } from "@/lib/amazon/paapi"
+import type { ResolvedGallery } from "@/lib/data/product-images"
 
 const ACCENT = "oklch(0.60 0.12 25)"
 
@@ -37,6 +38,7 @@ export function RichReview({
   title,
   contentHtml,
   images,
+  productImages,
   heroImageUrl,
   amazonUrl,
   productSlug,
@@ -48,16 +50,23 @@ export function RichReview({
   contentHtml: string
   /** PA-API images (auto, once the account is eligible); null otherwise. */
   images: ProductImages | null
-  /** Manual hero image (admin upload) — used when PA-API has none. */
+  /** Linked product's own images (reused across the site); null if none. */
+  productImages?: ResolvedGallery | null
+  /** Manual hero image (admin upload) — used when nothing else resolves. */
   heroImageUrl?: string | null
   amazonUrl: string | null
   productSlug?: string
   productName?: string
   updatedStr: string | null
 }) {
-  // Image resolution: PA-API primary → manual hero upload → none (no placeholder).
-  const heroSrc = images?.primary ?? heroImageUrl ?? null
-  const gallery = images?.variants?.slice(0, 4) ?? [] // only real (PA-API) images
+  // Image resolution: PA-API (auto) → linked product's own images (reused) →
+  // manual hero upload → none (no placeholder). Alt from registry/derived.
+  const paapiGallery =
+    images?.variants?.slice(0, 4).map((url) => ({ url, alt: productName ?? data.buy.productTitle })) ?? []
+  const heroSrc = images?.primary ?? productImages?.hero?.url ?? heroImageUrl ?? null
+  const heroAlt = productImages?.hero?.alt ?? productName ?? data.buy.productTitle
+  const gallery: { url: string; alt: string }[] =
+    paapiGallery.length > 0 ? paapiGallery : productImages?.gallery ?? []
 
   const cta = amazonUrl ? (
     <SmartBuyLink
@@ -128,12 +137,22 @@ export function RichReview({
           {heroText}
           <div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroSrc} alt={productName ?? data.buy.productTitle} className="w-full border border-border bg-card" />
+            <img
+              src={heroSrc}
+              alt={heroAlt}
+              className="w-full aspect-[4/3] object-contain border border-border bg-card"
+            />
             {gallery.length > 0 && (
               <div className="mt-2.5 grid grid-cols-4 gap-2">
-                {gallery.map((url, i) => (
+                {gallery.map((g, i) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img key={i} src={url} alt="" className="w-full aspect-square object-contain border border-border bg-card" />
+                  <img
+                    key={i}
+                    src={g.url}
+                    alt={g.alt}
+                    loading="lazy"
+                    className="w-full aspect-square object-contain border border-border bg-card"
+                  />
                 ))}
               </div>
             )}

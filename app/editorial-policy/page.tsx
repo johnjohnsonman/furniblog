@@ -29,14 +29,22 @@ export default function EditorialPolicyPage() {
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Independence</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Our editorial team operates independently from our business and advertising teams. Product recommendations are based solely on our testing and research, not on advertising relationships or commission rates.
+              Our editorial work is independent from our advertising and affiliate relationships. Recommendations are based on our research and analysis, not on commission rates or advertising deals.
             </p>
-            
-            <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Testing Process</h2>
+
+            <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">How we evaluate</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Every product we review is tested by our team of ergonomics experts. We evaluate products across six key criteria: Comfort, Ergonomics, Build Quality, Design, Value, and Long-Hour Use. Each score is based on objective measurements and hands-on testing.
+              Our content comes in a few different forms, and we label which one you are reading:
             </p>
-            
+            <ul className="list-disc space-y-2 pl-5 text-muted-foreground leading-relaxed">
+              <li><strong className="text-foreground">Research-based buying guides.</strong> Most of our chair write-ups are built from manufacturer documentation, published specifications, retailer listings and a wide reading of existing reviews. Where a guide has not been hands-on tested, we say so.</li>
+              <li><strong className="text-foreground">Summaries of published reviews.</strong> Many entries condense real, publicly available reviews and videos, with each summary linking back to its original source.</li>
+              <li><strong className="text-foreground">First-hand notes.</strong> When we have physically handled a chair, we mark that clearly and describe what we observed.</li>
+            </ul>
+            <p className="text-muted-foreground leading-relaxed">
+              Where we show scores across criteria such as Comfort, Ergonomics, Build Quality, Design, Value and Long-Hour Use, those are editorial assessments drawn from this research and from published reviews — not the results of independent laboratory testing.
+            </p>
+
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Summaries &amp; Sources</h2>
             <p className="text-muted-foreground leading-relaxed">
               Many review summaries on Furniblog condense real, publicly available reviews and videos so you can scan them quickly. These summaries are produced with AI assistance and reviewed by our team, and every one links back to its original source so you can read it in full. The opinions in a summary belong to the original author, not to Furniblog.

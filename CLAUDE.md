@@ -233,12 +233,30 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **`products.review_count`는 죽은 컬럼**: 235개 전부 0인데 실제 리뷰는 1,631건. 집계는 쿼리 시점에 함(`280f849`). 이 컬럼 보고 판단하지 말 것.
 - **최대 시각 약점 = 브랜드 로고**: 사진은 83/83 채워졌지만 로고 0/83, 그리고 사진이 전부 1장씩이라 캐러셀(`37ecf57`, 최대 4장)이 단일 이미지로 동작 중.
 
+### 2026-09-08 분석 스택 실태 확인(코드 감사) + C300 디자인 핸드오프 준비
+- **GA4 실태 정정**: `components/analytics/GoogleAnalytics.tsx`(gtag, `NEXT_PUBLIC_GA_ID` 게이팅)로 **코드에 설치돼 있고 프로덕션 동작 중**(대시보드 오늘 34활성/35세션 확인). 이전 메모 "GA_ID 비어있음"은 **틀림 → 정정함**.
+- **분석 스택 4중**: GA4 + Microsoft Clarity(`NEXT_PUBLIC_CLARITY_ID`) + Vercel Analytics(`@vercel/analytics`, prod만) + 자체 `PageviewTracker`(→ `page_views`, 028). 전부 `app/layout.tsx`에서 로드.
+- **제휴 클릭은 이미 자체 로깅됨**: `components/affiliate/SmartBuyLink.tsx`/`BuyButton.tsx` → `app/api/affiliate/track` → `affiliate_clicks`(국가 포함, 029) → `/admin` 분석. 즉 "Check price" 클릭은 자체 DB에 기록됨. **GA4 '주요 이벤트' 0은 이 클릭이 GA 전환으로만 정의 안 된 것**(측정 자체는 됨). C300 구현 시 GA key event 추가는 선택(중복 주의).
+- ⚠️ 클릭 로깅 ≠ 아마존 주문/커미션. 실제 귀속은 Associates **Tracking ID(미발급)** 로 아마존 리포트에서 확인.
+- **C300 디자인 핸드오프**: `design-handoff/`에 분류 정리(업로드용/`_DO-NOT-UPLOAD` 분리). 정본 데이터=`design-handoff/02-data-USE-THIS/06-corrections-for-design.md`. 검증결과: Amazon ASIN **B0C3T865C2 = base C300(Pro 아님), 팔걸이 3D**(공식 Advanced 페이지 4D 표기와 불일치 → 리스팅 3D 채택). 30일 트라이얼=SIHOO 공식몰 한정, Amazon 반품은 별개. `design-handoff/`는 git 미추적(스크린샷 ~12MB) — 커밋 원치 않으면 `.gitignore`에 추가 권장.
+
+### 2026-09-09 제품 이미지 재사용(파일럿 3종) + Editorial Policy/평점 스키마 정정
+- **핵심 원칙**: 이미지 URL·순서는 **DB `product_images`가 단일 소스**(대표님이 어드민 제품폼에서 한 번 업로드 → 여러 화면 재사용). DB 스키마가 못 담는 메타(alt/캡션/출처/사용권)만 코드 레지스트리 `lib/data/product-images-data.ts`(제품 slug 키)에 둠. DDL 불필요(로컬에 DATABASE_URL 없음 → 마이그레이션은 대표님 실행 몫이라 회피).
+- **신규 파일**: `lib/data/product-images-data.ts`(메타+레거시 템플릿 히어로 재사용 opt-in 스위치), `lib/data/product-images.ts`(`resolveProductGallery` — 제품 이미지→{hero,gallery} 발행, 데이터 없으면 `{hero:null,gallery:[]}`로 프레임 자체 숨김, unsplash 플레이스홀더 제외, alt는 레지스트리/제품명 파생).
+- **재사용 배선**: ①Chairpedia rich(C300)=제품 이미지 hero+gallery 재사용(`getProductBySlug`로 조회) ②Chairpedia 레거시(content_html) 템플릿=opt-in 제품만 히어로를 제품 이미지로(그 외는 기존 curated hero 유지) ③Compare `BuyRow`=이미 로드하던 제품 thumbnail을 실제 렌더(48px 썸네일, 있을 때만). 제품페이지/카드/Best는 원래부터 `product_images` 재사용(무변경).
+- **파일럿 3종**(chairpedia+제품+이미지 모두 보유 확인): `sihoo-doro-c300`(rich), `steelcase-gesture`, `herman-miller-aeron`(레거시, opt-in). 참고: 발행 chairpedia 43개 중 36개가 이미지 보유 제품과 연결, 각 제품 product_images 1장씩.
+- **6A Editorial Policy**(`app/editorial-policy/page.tsx`): 허위 "모든 제품을 전문가팀이 직접 테스트" 문구 제거 → 콘텐츠 유형 3구분(리서치 기반 가이드 / 게시된 리뷰 요약 / 직접 확인 노트)으로 정직화. 점수는 "독립 실험실 테스트 아님" 명시.
+- **6B C300 본문**: 1인칭 잔여 1건("which I found helpful")만 발견 → "which reviewers report is helpful"로 교체(DB content_html, 백업 후 `--apply`). 제조사 화법/중복은 없었음(모바일 패스에서 이미 정리됨).
+- **🔴 6C 평점 구조화 데이터 중단**(`lib/seo/schemas.ts` `generateChairSchema`): `aggregateRating`+per-review `reviewRating`가 **외부/AI 요약 리뷰 점수** 기반이라 구글 리뷰 별점용으로 부적합 → **emit 중단**(리뷰 원본 DB·제외정책은 불변, 스키마 출력만 보류). `reviews` 파라미터는 `_reviews`로.
+- **PA-API(이미지 자동수집)는 여전히 eligibility 대기**(AssociateNotEligible) → 이미지는 현재 "기존 이미지 재사용" 소스로만 채움. 자동수집/권리검증(candidate 보류)은 eligibility 확보 후 단계.
+- **빌드/타입 통과**, Vercel CLI로 배포(자동배포 깨진 상태 유지).
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
 - [ ] **🌍 국가별 리뷰 수집 구현**(2026-06-26 기획) — **0단계 완료 + 1단계 절반**: migration 038 적용됨(2026-07-20), 다국가 YouTube·전언어 Trustpilot·Kakaku 소스 배포됨. **남은 것**: ①수집 시 `reviews.country` 태깅(현재 1,631건 전부 NULL — 이게 핵심 누락) ②기존 행 source 기준 백필 ③`/reviews` 국기 필터 ④country-profiles config+크론 로테이션.
 - [ ] **🔴 SEO 트래픽: Chairpedia GSC 색인요청(현재 발행 43개) + 내부링크 점검 + 별점 리치스니펫**(2026-06-20 기획 참조, 우선순위 최상위).
-- [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. GA도 `NEXT_PUBLIC_GA_ID` 비어있음.
+- [ ] **🔴 AdSense 실제 활성화**: 승인받고 `NEXT_PUBLIC_ADSENSE_ID` 실제값 입력(현재 placeholder=광고수익 0). 자리는 `app/layout.tsx`에 이미 있음. **(정정 2026-09-08) GA4는 프로덕션에서 동작 중** — `NEXT_PUBLIC_GA_ID` 프로덕션 설정됨(GA4 대시보드 실데이터 확인). 단 GA4 주요이벤트(전환) 0 — 구매 클릭이 GA 전환으로 미정의(자체 `affiliate_clicks`는 이미 로깅). 아래 2026-09-08 섹션 참조.
 - [ ] **🔴 GSC 대시보드 Vercel env**: 프로덕션 `/admin/seo`가 되려면 Vercel에 `GSC_CLIENT_EMAIL`/`GSC_PRIVATE_KEY`/`GSC_SITE_URL` 추가+재배포(변수명 정확히). 로컬은 이미 동작.
 - [ ] **Chairpedia 콘텐츠 채우기**: `/admin/chairpedia`에서 핵심 의자들 AI 생성→검토→발행. featured 몇 개 지정(홈 랜덤 노출), collections 분류. 생성 후 본문 사실/슬러그/제품연결 확인 후 Publish.
 - [ ] (선택) Chairpedia 에디터 고급 기능: 유튜브 임베드, 구매버튼 블록, 이미지 캡션/정렬(현재 핵심 기능만).

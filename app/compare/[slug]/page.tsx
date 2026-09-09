@@ -43,15 +43,26 @@ export async function generateMetadata({
   }
 }
 
-function BuyRow({ product }: { product: { slug: string; name: string } }) {
+function BuyRow({ product }: { product: { slug: string; name: string; image?: string | null } }) {
   const buy = resolveAmazonAffiliateLink(product.slug, product.name)
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4">
-      <div className="min-w-0">
-        <Link href={`/products/${product.slug}`} className="font-medium text-foreground hover:underline">
-          {product.name}
-        </Link>
-        <p className="text-xs text-muted-foreground">Specs, reviews & details</p>
+      <div className="flex min-w-0 items-center gap-3">
+        {product.image && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="lazy"
+            className="h-14 w-14 shrink-0 rounded-lg border border-border bg-white object-contain"
+          />
+        )}
+        <div className="min-w-0">
+          <Link href={`/products/${product.slug}`} className="font-medium text-foreground hover:underline">
+            {product.name}
+          </Link>
+          <p className="text-xs text-muted-foreground">Specs, reviews & details</p>
+        </div>
       </div>
       <SmartBuyLink
         variant="inline"

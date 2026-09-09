@@ -109,7 +109,7 @@ export function generateWebsiteSchema() {
 
 export function generateChairSchema(
   product: ProductView,
-  reviews: Review[],
+  _reviews: Review[],
   affiliateLinks: AffiliateLink[] = product.affiliateLinks ?? []
 ) {
   const priceUsd = resolvePriceUsd(
@@ -162,45 +162,12 @@ export function generateChairSchema(
     category: product.categoryLabel ?? product.category,
   }
 
-  if (reviews.length > 0) {
-    const ratingOf = (r: Review): number | null => {
-      const v = (r.scores as { overall?: number } | null)?.overall
-      return typeof v === "number" && v > 0 ? v : null
-    }
-
-    schema.review = reviews.slice(0, 5).map((review) => {
-      const rating = ratingOf(review)
-      return {
-        "@type": "Review",
-        reviewBody: review.summary,
-        author: { "@type": "Person", name: review.source },
-        ...(rating
-          ? {
-              reviewRating: {
-                "@type": "Rating",
-                ratingValue: rating,
-                bestRating: 5,
-                worstRating: 1,
-              },
-            }
-          : {}),
-      }
-    })
-
-    // AggregateRating drives the ★ stars in Google/Bing results. Only emit it
-    // when we actually have rated reviews (Google requires genuine ratings).
-    const rated = reviews.map(ratingOf).filter((n): n is number => n !== null)
-    if (rated.length > 0) {
-      const avg = rated.reduce((a, b) => a + b, 0) / rated.length
-      schema.aggregateRating = {
-        "@type": "AggregateRating",
-        ratingValue: Math.round(avg * 10) / 10,
-        reviewCount: reviews.length,
-        bestRating: 5,
-        worstRating: 1,
-      }
-    }
-  }
+  // Review / AggregateRating structured data is intentionally NOT emitted.
+  // Our per-product scores are derived from third-party and AI-summarised
+  // reviews, not genuine first-party ratings, so surfacing them as Google
+  // review stars would be non-compliant. The original review data in the DB
+  // and the existing exclusion policy are unchanged; only the schema output
+  // is withheld.
 
   if (offers.length > 0) {
     schema.offers =
