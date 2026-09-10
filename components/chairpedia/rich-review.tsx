@@ -44,6 +44,7 @@ export function RichReview({
   productSlug,
   productName,
   updatedStr,
+  sourceUrls = [],
 }: {
   data: RichReview
   title: string
@@ -58,6 +59,7 @@ export function RichReview({
   productSlug?: string
   productName?: string
   updatedStr: string | null
+  sourceUrls?: string[]
 }) {
   // Image resolution: PA-API (auto) → linked product's own images (reused) →
   // manual hero upload → none (no placeholder). Alt from registry/derived.
@@ -332,7 +334,13 @@ export function RichReview({
               <tbody>
                 {data.rivals.map((r) => (
                   <tr key={r.name} className={`border-b border-border align-top ${r.isSelf ? "bg-muted" : ""}`}>
-                    <td className="p-3.5 text-sm font-medium leading-snug">{r.name}</td>
+                    <td className="p-3.5 text-sm font-medium leading-snug">
+                      {r.href && !r.isSelf ? (
+                        <Link href={r.href} className="underline underline-offset-4 hover:text-muted-foreground">
+                          {r.name}
+                        </Link>
+                      ) : r.name}
+                    </td>
                     <td className="p-3.5 text-[13.5px] leading-snug">{r.lumbar}</td>
                     <td className="p-3.5 text-[13.5px] leading-snug">{r.arms}</td>
                     <td className="p-3.5 text-[13.5px] leading-snug">{r.standout}</td>
@@ -419,10 +427,27 @@ export function RichReview({
         {/* ── Sources ── */}
         <section id="sources" className="flex flex-col gap-4">
           <h2 className="font-serif text-xl font-medium text-foreground">Sources</h2>
+          {sourceUrls.length > 0 && (
+            <ul className="list-disc space-y-2 pl-5 text-sm">
+              {sourceUrls.map((url) => (
+                <li key={url}>
+                  <a href={url} target="_blank" rel="noopener noreferrer" className="break-words underline underline-offset-4">
+                    {url}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
           <div className="flex flex-col gap-3">
             {data.sources.map((s) => (
               <div key={s.k} className="grid gap-2 text-[13.5px] leading-relaxed sm:grid-cols-[160px_minmax(0,1fr)] sm:gap-4">
-                <span className="font-semibold">{s.k}</span>
+                <span className="font-semibold">
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" className="break-words underline underline-offset-4">
+                      {s.k}
+                    </a>
+                  ) : s.k}
+                </span>
                 <span>{s.v}</span>
               </div>
             ))}

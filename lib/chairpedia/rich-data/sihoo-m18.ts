@@ -41,7 +41,7 @@ export const SIHOO_M18: RichReview = {
     { k: "Overall dimensions", v: "27.55 in W × 27.56 in D × 49.2 in H", tier: "B" },
     { k: "Seat height (floor to seat)", v: "17.32–21.26 in (gas lift)", tier: "B" },
     { k: "Weight capacity", v: "330 lb", tier: "A" },
-    { k: "Recline", v: "Up to 126° with tilt lock", tier: "B" },
+    { k: "Recline", v: "Not confirmed for the linked SKU; manufacturer and retailer figures differ", tier: "C" },
     { k: "Seat", v: "Wide W-shaped cushioned seat (documented ~8.5 cm padding)", tier: "B" },
     { k: "Armrests", v: "2D (height and width)", tier: "A" },
     { k: "Lumbar", v: "Adjustable (height and depth)", tier: "A" },
@@ -56,7 +56,7 @@ export const SIHOO_M18: RichReview = {
     { k: "Lumbar support", v: "Adjustable for height and depth.", src: "Amazon listing (confirmed)" },
     { k: "Headrest", v: "Adjustable.", src: "Amazon listing (confirmed)" },
     { k: "Armrests — 2D", v: "Height and width.", src: "Amazon listing (confirmed)" },
-    { k: "Recline", v: "Up to 126° with a tilt lock.", src: "SIHOO / retailer (documented)" },
+    { k: "Recline", v: "Tilt lock; confirm the maximum angle for the selected SKU.", src: "Manufacturer / retailer figures differ" },
   ],
   fixed: [
     { k: "Seat material", v: "Cushioned fabric seat — not adjustable and not mesh.", src: "Amazon listing" },
@@ -89,9 +89,9 @@ export const SIHOO_M18: RichReview = {
 
   rivals: [
     { name: "SIHOO M18", lumbar: "Adjustable (height + depth)", arms: "2D", standout: "Budget price with headrest + cushioned seat", isSelf: true },
-    { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar and full mesh, a step up" },
-    { name: "Hbada P5", lumbar: "2D adjustable", arms: "Adjustable", standout: "Retractable footrest, mesh back" },
-    { name: "Nouhaus Ergo3D", lumbar: "3D adjustable", arms: "4D", standout: "Full mesh with 4D arms" },
+    { name: "SIHOO Doro C300", href: "/products/sihoo-doro-c300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar and full mesh, a step up" },
+    { name: "Hbada P5", href: "/products/hbada-p5", lumbar: "2D adjustable", arms: "Adjustable", standout: "Retractable footrest, mesh back" },
+    { name: "Nouhaus Ergo3D", href: "/products/nouhaus-ergo3d", lumbar: "3D adjustable", arms: "4D", standout: "Full mesh with 4D arms" },
   ],
 
   buy: {
@@ -122,8 +122,8 @@ export const SIHOO_M18: RichReview = {
   ],
 
   sources: [
-    { k: "Amazon listing", v: "SIHOO M18, Black — ASIN B07GNDDNMW. Title checked 2026-09-09. Basis for capacity (330 lb), 2D armrests, adjustable lumbar and headrest, mesh back and cushioned seat." },
-    { k: "SIHOO / retailer specs", v: "SIHOO product information and major retailers (e.g. Best Buy), read 2026-09-09. Basis for dimensions, seat height, 126° recline and the 3-year warranty." },
+    { k: "Amazon listing", url: "https://www.amazon.com/dp/B07GNDDNMW", v: "SIHOO M18, Black — ASIN B07GNDDNMW. Title checked 2026-09-09. Basis for capacity (330 lb), 2D armrests, adjustable lumbar and headrest, mesh back and cushioned seat." },
+    { k: "SIHOO M18 manufacturer page", url: "https://wholesale.sihoo.com/products/m18/", v: "Checked 2026-09-10: documents lumbar height/depth adjustment and a cushioned seat. Its recline figures differ from earlier retailer figures; it is a wholesale specification, not confirmation of every Amazon variant." },
     { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and comfort notes; not first-hand." },
   ],
 }

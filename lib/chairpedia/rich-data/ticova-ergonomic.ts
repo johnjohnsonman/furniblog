@@ -31,7 +31,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
   checksIntro:
     "The Ticova is unusually adjustable for the price; the things to confirm are the recline rating on your listing and whether the size and capacity fit you.",
   checks: [
-    { n: "01", title: "Check the recline rating on the listing", body: "Ticova listings vary — some say 130°, others 140° — reflecting different batches. It's a minor difference, but confirm the figure on the exact listing you buy so you know what you're getting." },
+    { n: "01", title: "Check the linked model's recline rating", body: "The linked Amazon listing (B08LBJXVSP) advertises 130° recline. Do not assume a 140° specification from another listing applies to this model. Confirm the selected version before buying." },
     { n: "02", title: "Confirm the fit range and capacity", body: "The chair is rated to 280 lb and reviewers put the comfortable fit around 5'4\"–6'2\". The seat is roughly 20.5 in deep and does not adjust, so shorter sitters should check it isn't too deep." },
     { n: "03", title: "Use the two-axis lumbar and 3D arms", body: "Unusually for the price, the lumbar adjusts for both height (~1.6 in) and depth (~1.4 in) via a knob, and the arms move in three directions (height ~2.8 in, 40° rotation, forward/back ~2.4 in). If you want a chair you can dial in, this is a strength — set it up rather than leaving defaults." },
     { n: "04", title: "Weigh the durability reports", body: "The most common long-term complaints are the gas cylinder sinking after a year or two and the mesh softening over time. Keep your receipt and register for warranty; note the warranty term differs by source (see below)." },
@@ -41,12 +41,12 @@ export const TICOVA_ERGONOMIC: RichReview = {
     { k: "Seat height", v: "≈ 16.5–20.5 in (gas lift)", tier: "B" },
     { k: "Seat", v: "≈ 20.5 in wide × 20.5 in deep, fixed (no depth slider)", tier: "B" },
     { k: "Weight capacity", v: "280 lb", tier: "A" },
-    { k: "Recline", v: "130° or 140° depending on the listing", tier: "B" },
+    { k: "Recline", v: "130° advertised on the linked Amazon listing (B08LBJXVSP)", tier: "A" },
     { k: "Armrests — 3D", v: "Height ~2.8 in, 40° rotation, forward/back ~2.4 in", tier: "B" },
     { k: "Lumbar", v: "Adjustable height ~1.6 in and depth ~1.4 in", tier: "B" },
     { k: "Headrest", v: "Adjustable height ~5.1 in and angle to ~135°; removable", tier: "B" },
     { k: "Back / seat", v: "Breathable mesh back; high-density foam seat (≈ 3–3.5 in)", tier: "B" },
-    { k: "Warranty", v: "1 year + 30-day returns (official); one review cites 2 years", tier: "B" },
+    { k: "Warranty", v: "1 year per Ticova support page; confirm seller return terms", tier: "B" },
   ],
   dimsSourceNote:
     "Source: Ticova manual (ASIN B08LBJXVSP), official site and published reviews (checked 2026-09-10). Assembled overall dimensions are not reliably published. Confirm recline and warranty on the listing you buy from.",
@@ -56,7 +56,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
     { k: "Lumbar", v: "Height and depth via a backrest knob.", src: "Ticova manual (documented)" },
     { k: "Headrest", v: "Height and angle; fully removable.", src: "Ticova manual (documented)" },
     { k: "Seat height", v: "Gas lift, ≈ 16.5–20.5 in.", src: "Published reviews (research)" },
-    { k: "Recline", v: "Tilt with adjustable resilience; 130°/140° by listing.", src: "Listing (documented)" },
+    { k: "Recline", v: "130° advertised recline on ASIN B08LBJXVSP.", src: "Amazon listing" },
   ],
   fixed: [
     { k: "Seat depth", v: "≈ 20.5 in, no depth adjustment.", src: "Published reviews" },
@@ -89,9 +89,9 @@ export const TICOVA_ERGONOMIC: RichReview = {
 
   rivals: [
     { name: "Ticova Ergonomic", lumbar: "2-axis (height + depth)", arms: "3D", standout: "Lots of adjustment for a budget mesh chair", isSelf: true },
-    { name: "Duramont Ergonomic", lumbar: "Adjustable (small range)", arms: "~2D", standout: "High-back mesh, 5-yr warranty" },
-    { name: "Gabrylly Ergonomic", lumbar: "Adjustable pad", arms: "Flip-up", standout: "Breathable double mesh, flip-up arms" },
-    { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar, all-mesh" },
+    { name: "Duramont Ergonomic", href: "/products/duramont-ergonomic", lumbar: "Adjustable (small range)", arms: "~2D", standout: "High-back mesh, 5-yr warranty" },
+    { name: "Gabrylly Ergonomic", href: "/products/gabrylly-ergonomic", lumbar: "Adjustable pad", arms: "Flip-up", standout: "Breathable double mesh, flip-up arms" },
+    { name: "SIHOO Doro C300", href: "/products/sihoo-doro-c300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar, all-mesh" },
   ],
 
   buy: {
@@ -100,8 +100,8 @@ export const TICOVA_ERGONOMIC: RichReview = {
     ctaLabel: "Check price on Amazon",
     rows: [
       { k: "Returns", v: "Amazon's return window applies and depends on the seller; Ticova also lists a 30-day money-back. Check the listing." },
-      { k: "Warranty", v: "Ticova's official term is 1 year (one review cites 2). Confirm on the listing you order from." },
-      { k: "What to check", v: "The recline rating (130° vs 140°), the colour, and that it's the high-back mesh model with headrest." },
+      { k: "Warranty", v: "Ticova support states 1 year. Confirm eligibility and coverage with the seller." },
+      { k: "What to check", v: "Match ASIN B08LBJXVSP, the advertised 130° recline, colour and headrest to the selected listing." },
     ],
     disclaimer:
       "Not verified by Furniblog: price, seller, stock and the exact recline batch change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
@@ -115,16 +115,17 @@ export const TICOVA_ERGONOMIC: RichReview = {
     "Premium-style adjustability at a budget price — best for average-to-taller sitters who'll actually dial it in.",
 
   faqs: [
-    { q: "Is the recline 130° or 140°?", a: "It depends on the listing/batch — some Ticova listings state 130°, others 140°. Confirm the figure on the exact listing you buy." },
+    { q: "Is the recline 130° or 140°?", a: "The linked Amazon listing, ASIN B08LBJXVSP, advertises 130°. A 140° claim from another listing is not confirmed for this model. Check the selected version before ordering." },
     { q: "What's the weight capacity and fit range?", a: "280 lb, with a comfortable fit around 5'4\"–6'2\" per reviewers. The seat is deep and doesn't adjust." },
     { q: "Are the armrests really 3D?", a: "Yes — the manual specifies height, 40° rotation and forward/back movement." },
-    { q: "How long is the warranty?", a: "Ticova's official term is 1 year plus 30-day returns; one third-party review cites 2 years. Treat 1 year as official and confirm on the listing." },
+    { q: "How long is the warranty?", a: "Ticova's installation/support page states a one-year warranty. Return eligibility is separate and should be checked with the seller." },
     { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from the Ticova manual, official specs and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
     { k: "Ticova manual / official", v: "Manual for ASIN B08LBJXVSP and ticova.net, checked 2026-09-10. Basis for capacity, 3D arms, 2-axis lumbar, headrest and materials." },
-    { k: "Amazon listing", v: "Ticova Ergonomic Office Chair — ASIN B08LBJXVSP. Basis for the model and recline rating (varies by listing)." },
+    { k: "Amazon listing", url: "https://www.amazon.com/dp/B08LBJXVSP", v: "ASIN B08LBJXVSP: the retrieved listing title specifies 130-degree recline, 3D arms and adjustable lumbar support. Listing content is not a hands-on measurement." },
+    { k: "Ticova installation and support", url: "https://www.ticova.net/installation-guide/", v: "Checked 2026-09-10: states a one-year warranty for ergonomic chairs and directs customers to contact Ticova through Amazon." },
     { k: "Published reviews", v: "Third-party reviews summarised for the value and durability notes; not first-hand." },
   ],
   sourcesFooter:

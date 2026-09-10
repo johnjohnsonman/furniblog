@@ -18,7 +18,7 @@ export const FLEXISPOT_C7: RichReview = {
   heroShotBrief: "Front, black FlexiSpot C7.",
   galleryBriefs: [],
 
-  quickFactsNote: "Confirmed from FlexiSpot's official specs and the Amazon listing (base C7).",
+  quickFactsNote: "Manufacturer-documented features for the base C7. Confirm the selected Amazon configuration.",
   quickFacts: [
     { label: "Model", value: "C7 (base)", note: "Not C7 Max / Morpher / Lite" },
     { label: "Lumbar", value: "Self-adaptive", note: "Dynamic; can be locked" },
@@ -32,7 +32,7 @@ export const FLEXISPOT_C7: RichReview = {
     "The C7 comes in several trims and two seat types. Pick the right one and confirm the fit numbers, which differ between FlexiSpot's page and reviews.",
   checks: [
     { n: "01", title: "Base C7 vs C7 Max / Morpher / Lite", body: "The base C7 has 3D arms and a 2D headrest. The C7 Max adds 5D arms, a 3D headrest, a hybrid seat and deeper recline; the Morpher adds forward tilt and a 380 lb capacity; the Lite is budget. Confirm you're buying the trim you intend (the base C7 is the linked one)." },
-    { n: "02", title: "Choose the seat and footrest", body: "The C7 is sold with either a breathable mesh seat or a cushioned foam seat, and with or without a retractable footrest — separate SKUs. Decide seat type and footrest before ordering; capacity is listed as 300 lb (foam) / 350 lb (mesh)." },
+    { n: "02", title: "Choose the seat and footrest", body: "The C7 is sold with either a breathable mesh seat or a cushioned foam seat, and with or without a retractable footrest — separate SKUs. Decide seat type and footrest before ordering; capacity is listed as 300 lb in the base C7 specification table; confirm the selected SKU." },
     { n: "03", title: "Confirm the fit numbers", body: "FlexiSpot's current spec table and review articles disagree (seat height ≈ 18.3–21.7 in official vs ≈ 19.9–22.6 in in reviews; recline ≈ 93–110° official vs 90–128° in reviews). Treat the official page as the reference and confirm on the listing for your SKU." },
     { n: "04", title: "Mind the arm/desk clearance", body: "Reviewers note the arms can sit a little high to tuck fully under some desks, and the strong adaptive lumbar can nudge you into a reclined posture. If you sit close and upright, check clearance." },
   ],
@@ -41,12 +41,12 @@ export const FLEXISPOT_C7: RichReview = {
     { k: "Seat width", v: "≈ 21 in", tier: "B" },
     { k: "Seat depth", v: "≈ 17–20 in (slider, ~2.4 in)", tier: "B" },
     { k: "Seat height", v: "≈ 18.3–21.7 in (official); reviews cite ≈ 19.9–22.6 in", tier: "C" },
-    { k: "Weight capacity", v: "300 lb (foam) / 350 lb (mesh)", tier: "B" },
+    { k: "Weight capacity", v: "300 lb in the base C7 specification table; confirm the selected SKU", tier: "B" },
     { k: "Recline", v: "≈ 93–110° (official); reviews cite 90–128°, lockable", tier: "C" },
-    { k: "Armrests", v: "3D (height, forward/back, swivel) — base C7", tier: "A" },
+    { k: "Armrests", v: "3D (height, forward/back, swivel) — base C7", tier: "B" },
     { k: "Lumbar", v: "Self-adaptive dynamic; can be locked", tier: "B" },
     { k: "Headrest", v: "Included, 2D (≈ 2.36 in height, ~45° tilt)", tier: "B" },
-    { k: "Seat material", v: "Choice of breathable mesh or foam cushion", tier: "A" },
+    { k: "Seat material", v: "Choice of breathable mesh or foam cushion", tier: "B" },
     { k: "Warranty", v: "10 years", tier: "B" },
   ],
   dimsSourceNote:
@@ -90,9 +90,9 @@ export const FLEXISPOT_C7: RichReview = {
 
   rivals: [
     { name: "FlexiSpot C7", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar, seat choice, 10-yr warranty", isSelf: true },
-    { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "All-mesh, adaptive lumbar, cheaper" },
-    { name: "Nouhaus Ergo3D", lumbar: "3D adjustable", arms: "4D", standout: "Full mesh with 4D arms" },
-    { name: "Branch Ergonomic Chair", lumbar: "Adjustable, removable", arms: "3D", standout: "Seat-depth slider, 7-yr parts warranty" },
+    { name: "SIHOO Doro C300", href: "/products/sihoo-doro-c300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "All-mesh, adaptive lumbar, cheaper" },
+    { name: "Nouhaus Ergo3D", href: "/products/nouhaus-ergo3d", lumbar: "3D adjustable", arms: "4D", standout: "Full mesh with 4D arms" },
+    { name: "Branch Ergonomic Chair", href: "/products/branch-ergonomic-chair", lumbar: "Adjustable, removable", arms: "3D", standout: "Seat-depth slider, 7-yr parts warranty" },
   ],
 
   buy: {
@@ -122,14 +122,14 @@ export const FLEXISPOT_C7: RichReview = {
 
   faqs: [
     { q: "Does the base C7 have 4D arms?", a: "No — the base C7 has 3D arms. The C7 Max has 5D arms and a 3D headrest." },
-    { q: "Mesh or foam seat?", a: "Both are offered as separate SKUs (capacity 350 lb mesh / 300 lb foam), with or without a retractable footrest. Choose before ordering." },
+    { q: "Mesh or foam seat?", a: "Both are offered as separate SKUs (base C7 specification table lists 300 lb; confirm your SKU), with or without a retractable footrest. Choose before ordering." },
     { q: "What's the recline and seat height?", a: "FlexiSpot's page lists ≈ 93–110° recline and ≈ 18.3–21.7 in seat height; some reviews cite wider ranges. Treat the official page as the reference and confirm your SKU." },
     { q: "Is the lumbar adjustable?", a: "It's a self-adaptive dynamic lumbar that responds to your posture, and it can also be locked." },
     { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from FlexiSpot's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
-    { k: "FlexiSpot (official) / Amazon", v: "flexispot.com and the Amazon listing (ASIN B0DPQQ2L22), checked 2026-09-10. Basis for the adaptive lumbar, 3D arms, seat options, capacity and 10-year warranty." },
+    { k: "FlexiSpot C7 specifications", url: "https://www.flexispot.com/flexispot-best-ergonomic-office-chair-c7", v: "Checked 2026-09-10: the base C7 table lists 3D arms, 300 lb capacity, seat-depth adjustment and a 10-year warranty. This page contains several models; do not apply other tables to the base C7. The Amazon SKU was not independently reverified in this check." },
     { k: "Published reviews", v: "Third-party reviews summarised for comfort, arm-clearance and the conflicting fit figures; not first-hand." },
   ],
   sourcesFooter:

@@ -19,7 +19,7 @@ const inter = Inter({
 })
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://furniblog.vercel.app'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.furniblog.com'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
