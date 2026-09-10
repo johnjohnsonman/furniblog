@@ -19,6 +19,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/chairpedia/sihoo-m18",
+        destination: "/chairpedia/sihoo-m18-ergonomic-office-chair",
+        permanent: true,
+      },
+      {
         source: "/products/herman-miller-aeron-b",
         destination: "/products/herman-miller-aeron",
         permanent: true,
