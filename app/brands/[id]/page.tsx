@@ -6,6 +6,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { BrandProductsGrid } from "@/components/brands/brand-products-grid"
 import { BrandHeroCarousel } from "@/components/brands/brand-hero-carousel"
+import { getPublishedBrandGuides } from "@/lib/chairpedia/brand-guides"
 import {
   getBrandBySlug,
   getProductsByBrandSlug,
@@ -56,6 +57,7 @@ export default async function BrandPage({ params }: BrandPageProps) {
 
   const products = await getProductsByBrandSlug(brand.slug)
   const reviewCounts = await getReviewCounts(products.map((p) => p.id))
+  const guides = await getPublishedBrandGuides(products.map((p) => p.slug ?? p.id))
 
   const longDescription = getBrandLongDescription(brand)
   const warrantyLabel = getBrandWarrantyLabel(brand.slug)
@@ -164,6 +166,26 @@ export default async function BrandPage({ params }: BrandPageProps) {
           reviewCounts={reviewCounts}
           brandName={brand.name}
         />
+
+        {guides.length > 0 && (
+          <section aria-labelledby="brand-guides-heading" className="border-t border-border">
+            <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+              <h2 id="brand-guides-heading" className="font-serif text-xl font-medium">
+                {brand.name} buying guides
+              </h2>
+              <ul className="mt-4 divide-y divide-border">
+                {guides.map((guide) => (
+                  <li key={guide.slug}>
+                    <Link href={`/chairpedia/${guide.slug}`} className="flex items-center justify-between gap-4 py-3 text-sm font-medium hover:underline">
+                      <span className="min-w-0 break-words">{guide.title}</span>
+                      <ArrowUpRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        )}
 
         <div className="border-t border-border">
           <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
