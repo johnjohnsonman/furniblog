@@ -69,7 +69,7 @@ type NewsRow = {
   brand: string | null
   summary: string | null
   why_it_matters: string | null
-  status: "published"
+  status: "hidden"
   source_query: string
 }
 
@@ -173,7 +173,7 @@ export async function collectNewsForBrand(params: {
       brand: resolvedBrand,
       summary: relevance.summary,
       why_it_matters: relevance.whyItMatters,
-      status: "published",
+      status: "hidden",
       source_query: query,
     })
   }
@@ -184,16 +184,18 @@ export async function collectNewsForBrand(params: {
       sourceQuery: query,
       fetched: items.length,
       inserted: 0,
-      skippedDuplicates: 0,
+      skippedDuplicates: items.length - skippedIrrelevant,
       skippedIrrelevant,
       skippedOld,
       rejected,
     }
   }
 
-  const { error: upsertError } = await supabase
+  // A concurrent collector must never overwrite an editor's existing article.
+  const { data: insertedRows, error: upsertError } = await supabase
     .from("news")
-    .upsert(rows, { onConflict: "url" })
+    .upsert(rows, { onConflict: "url", ignoreDuplicates: true })
+    .select("id")
 
   if (upsertError) throw new Error(upsertError.message)
 
@@ -201,8 +203,8 @@ export async function collectNewsForBrand(params: {
     brand,
     sourceQuery: query,
     fetched: items.length,
-    inserted: rows.length,
-    skippedDuplicates: 0,
+    inserted: insertedRows?.length ?? 0,
+    skippedDuplicates: items.length - skippedIrrelevant - (insertedRows?.length ?? 0),
     skippedIrrelevant,
     skippedOld,
     rejected,

@@ -12,6 +12,7 @@ type NewsItem = {
   source_name: string | null
   brand: string | null
   summary: string | null
+  why_it_matters: string | null
   image_url: string | null
   published_at: string | null
   created_at: string | null
@@ -35,6 +36,8 @@ export default function AdminNewsPage() {
   const [log, setLog] = useState<string[]>([])
   const [news, setNews] = useState<NewsItem[]>([])
   const [filterBrand, setFilterBrand] = useState("all")
+  const [filterStatus, setFilterStatus] = useState("all")
+  const [editing, setEditing] = useState<NewsItem | null>(null)
   const [sort, setSort] = useState<"newest" | "oldest">("newest")
   const [page, setPage] = useState(1)
   const PAGE_SIZE = 20
@@ -44,9 +47,19 @@ export default function AdminNewsPage() {
   }, [])
 
   const loadNews = useCallback(async () => {
-    const res = await fetch("/api/admin/news/feature?limit=300")
-    const data = await res.json()
-    if (Array.isArray(data.news)) setNews(data.news)
+    try {
+      const items: NewsItem[] = []
+      for (let offset = 0; ; offset += 300) {
+        const res = await fetch(`/api/admin/news/feature?limit=300&offset=${offset}`)
+        const data = await res.json()
+        if (!res.ok || !Array.isArray(data.news)) throw new Error(data.error ?? "Could not load news")
+        items.push(...data.news)
+        if (data.news.length < 300) break
+      }
+      setNews(items)
+    } catch (error) {
+      setLog((prev) => [error instanceof Error ? error.message : "Could not load news", ...prev])
+    }
   }, [])
 
   useEffect(() => {
@@ -175,6 +188,7 @@ export default function AdminNewsPage() {
     new Date(n.published_at ?? n.created_at ?? 0).getTime()
 
   const filteredNews = news
+    .filter((n) => filterStatus === "all" || n.status === filterStatus)
     .filter((n) => filterBrand === "all" || n.brand === filterBrand)
     .sort((a, b) =>
       sort === "newest" ? dateValue(b) - dateValue(a) : dateValue(a) - dateValue(b)
@@ -186,7 +200,7 @@ export default function AdminNewsPage() {
   // Reset to the first page whenever the filter or sort changes.
   useEffect(() => {
     setPage(1)
-  }, [filterBrand, sort])
+  }, [filterBrand, filterStatus, sort])
 
   return (
     <div className="max-w-5xl p-8">
@@ -199,6 +213,7 @@ export default function AdminNewsPage() {
 
       {/* Manual add by URL */}
       <AddByUrlCard onPublished={loadNews} />
+      {editing && <NewsReview key={editing.id} item={editing} onClose={() => setEditing(null)} onSaved={() => { setEditing(null); void loadNews() }} />}
 
       {/* Collection controls */}
       <div className="mb-8 rounded-lg border border-border p-5">
@@ -280,6 +295,11 @@ export default function AdminNewsPage() {
       </div>
 
       <div className="mb-4 flex flex-wrap items-center gap-3">
+        <select aria-label="Publication status" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} className="h-10 rounded-md border border-input bg-background px-3 text-sm">
+          <option value="all">All statuses</option>
+          <option value="hidden">Private / awaiting review</option>
+          <option value="published">Published</option>
+        </select>
         <select
           value={filterBrand}
           onChange={(e) => setFilterBrand(e.target.value)}
@@ -339,7 +359,7 @@ export default function AdminNewsPage() {
                   </td>
                   <td className="px-4 py-3">
                     <a
-                      href={n.slug ? `/news/${n.slug}` : n.url}
+                      href={n.slug && n.status === "published" ? `/news/${n.slug}` : n.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-foreground hover:underline"
@@ -376,19 +396,14 @@ export default function AdminNewsPage() {
                   <td className="px-4 py-3">
                     <button
                       type="button"
-                      onClick={() =>
-                        patchNews(n.id, {
-                          status:
-                            n.status === "published" ? "hidden" : "published",
-                        })
-                      }
+                      onClick={() => setEditing(n)}
                       className={`rounded-md border px-2.5 py-1 text-xs font-medium transition-colors ${
                         n.status === "published"
                           ? "border-border hover:bg-muted"
                           : "border-red-300 bg-red-50 text-red-700"
                       }`}
                     >
-                      {n.status === "published" ? "Published" : "Hidden"}
+                      {n.status === "published" ? "Edit published" : "Review private"}
                     </button>
                   </td>
                 </tr>
@@ -444,6 +459,7 @@ type NewsPreview = {
 }
 
 function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
+  const [reviewed, setReviewed] = useState(false)
   const [url, setUrl] = useState("")
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string>("")
@@ -451,6 +467,7 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
   const [preview, setPreview] = useState<NewsPreview | null>(null)
 
   function reset() {
+    setReviewed(false)
     setUrl("")
     setPreview(null)
     setError("")
@@ -458,6 +475,7 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
   }
 
   async function handleFetch() {
+    setReviewed(false)
     const trimmed = url.trim()
     if (!trimmed || busy) return
     setBusy(true)
@@ -500,7 +518,7 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
       const res = await fetch("/api/admin/news/add-url", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "publish", ...preview }),
+        body: JSON.stringify({ action: "publish", ...preview, reviewed }),
       })
       const data = await res.json()
       if (!res.ok) {
@@ -517,6 +535,7 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
   }
 
   function patchPreview(update: Partial<NewsPreview>) {
+    setReviewed(false)
     setPreview((prev) => (prev ? { ...prev, ...update } : prev))
   }
 
@@ -646,11 +665,15 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
                 className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>
+            <label className="flex items-start gap-2 text-sm">
+              <input type="checkbox" checked={reviewed} onChange={(e) => setReviewed(e.target.checked)} />
+              I checked the original source, factual claims, and reader context.
+            </label>
             <div className="flex items-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={handlePublish}
-                disabled={busy || !preview.title.trim()}
+                disabled={busy || !reviewed || !preview.title.trim()}
                 className="h-10 rounded-md bg-foreground px-4 text-sm font-medium text-background transition-opacity hover:opacity-90 disabled:opacity-40"
               >
                 {busy ? "Publishing…" : "Publish"}
@@ -669,6 +692,46 @@ function AddByUrlCard({ onPublished }: { onPublished: () => void }) {
       )}
     </div>
   )
+}
+
+function NewsReview({ item, onClose, onSaved }: { item: NewsItem; onClose: () => void; onSaved: () => void }) {
+  const [title, setTitle] = useState(item.title ?? "")
+  const [summary, setSummary] = useState(item.summary ?? "")
+  const [context, setContext] = useState(item.why_it_matters ?? "")
+  const [reviewed, setReviewed] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState("")
+  async function save(status: "published" | "hidden") {
+    if (busy) return
+    setBusy(true)
+    setError("")
+    try {
+      const res = await fetch("/api/admin/news/feature", {
+        method: "PATCH", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: item.id, title, summary, whyItMatters: context, reviewed, status }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? "Save failed")
+      onSaved()
+    } catch (err) { setError(err instanceof Error ? err.message : "Save failed") }
+    finally { setBusy(false) }
+  }
+  return <section aria-label="Editorial review" className="mb-8 space-y-4 border-y border-border py-5">
+    <h2 className="text-lg font-medium">Editorial review</h2>
+    <a href={item.url} target="_blank" rel="noopener noreferrer" className="block break-all text-sm underline">Original source: {item.source_name || item.url}</a>
+    <fieldset disabled={busy} className="space-y-3">
+      <label className="block text-sm">Title<input value={title} onChange={(e) => { setTitle(e.target.value); setReviewed(false) }} className="mt-1 block w-full rounded-md border bg-background p-2" /></label>
+      <label className="block text-sm">Summary<textarea rows={4} value={summary} onChange={(e) => { setSummary(e.target.value); setReviewed(false) }} className="mt-1 block w-full rounded-md border bg-background p-2" /></label>
+      <label className="block text-sm">Why it matters<textarea rows={4} value={context} onChange={(e) => { setContext(e.target.value); setReviewed(false) }} className="mt-1 block w-full rounded-md border bg-background p-2" /></label>
+      <label className="flex items-start gap-2 text-sm"><input type="checkbox" checked={reviewed} onChange={(e) => setReviewed(e.target.checked)} />I checked the original source, factual claims, and reader context.</label>
+    </fieldset>
+    {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+    <div className="flex flex-wrap gap-3">
+      <button disabled={busy || !reviewed} onClick={() => void save("published")} className="rounded-md bg-foreground px-4 py-2 text-sm text-background disabled:opacity-40">Approve and publish</button>
+      <button disabled={busy} onClick={() => void save("hidden")} className="rounded-md border px-4 py-2 text-sm disabled:opacity-40">Save private</button>
+      <button disabled={busy} onClick={onClose} className="px-4 py-2 text-sm">Cancel</button>
+    </div>
+  </section>
 }
 
 function NewsThumbCell({

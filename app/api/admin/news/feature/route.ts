@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { newsPublicationError } from "@/lib/news/publication"
 
 /** List recent news for admin management (newest first). */
 export async function GET(request: NextRequest) {
@@ -8,18 +9,19 @@ export async function GET(request: NextRequest) {
   if (denied) return denied
 
   const { searchParams } = new URL(request.url)
-  const limit = Math.max(1, Math.min(Number(searchParams.get("limit") ?? 100), 300))
+  const limit = Math.max(1, Math.min(Number(searchParams.get("limit")) || 100, 300))
+  const offset = Math.max(0, Math.floor(Number(searchParams.get("offset")) || 0))
 
   try {
     const supabase = createAdminClient()
     const { data, error } = await supabase
       .from("news")
       .select(
-        "id, slug, url, title, source_name, brand, summary, image_url, published_at, status, featured, created_at"
+        "id, slug, url, title, source_name, brand, summary, why_it_matters, image_url, published_at, status, featured, created_at"
       )
-      .order("featured", { ascending: false })
-      .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(limit)
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(offset, offset + limit - 1)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
@@ -35,6 +37,10 @@ type PatchBody = {
   id?: string
   featured?: boolean
   status?: "published" | "hidden"
+  reviewed?: boolean
+  title?: string
+  summary?: string
+  whyItMatters?: string
 }
 
 /** Toggle a news item's featured flag and/or published/hidden status. */
@@ -49,12 +55,23 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
-  const id = body.id?.trim()
+  const id = typeof body?.id === "string" ? body.id.trim() : ""
   if (!id) {
     return NextResponse.json({ error: "id is required" }, { status: 400 })
   }
 
-  const update: { featured?: boolean; status?: "published" | "hidden" } = {}
+  const update: { featured?: boolean; status?: "published" | "hidden"; title?: string; summary?: string; why_it_matters?: string } = {}
+  const editing = body.title !== undefined || body.summary !== undefined || body.whyItMatters !== undefined
+  if (editing) {
+    if ([body.title, body.summary, body.whyItMatters].some((value) => typeof value !== "string")) {
+      return NextResponse.json({ error: "Provide title, summary and whyItMatters as text." }, { status: 400 })
+    }
+    update.title = body.title!.trim()
+    update.summary = body.summary!.trim()
+    update.why_it_matters = body.whyItMatters!.trim()
+    // Saving edited content without approval always makes it private.
+    update.status = "hidden"
+  }
   if (typeof body.featured === "boolean") update.featured = body.featured
   if (body.status === "published" || body.status === "hidden") {
     update.status = body.status
@@ -69,6 +86,13 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const supabase = createAdminClient()
+    if (update.status === "published") {
+      const { data: current, error } = await supabase.from("news").select("url").eq("id", id).maybeSingle()
+      if (error) throw new Error(error.message)
+      if (!current) return NextResponse.json({ error: "News item not found" }, { status: 404 })
+      const problem = newsPublicationError({ ...body, url: current.url })
+      if (problem) return NextResponse.json({ error: problem }, { status: 422 })
+    }
     const { data, error } = await supabase
       .from("news")
       .update(update)

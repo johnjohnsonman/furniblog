@@ -5,6 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { fetchWithTimeout } from "@/lib/pipeline/fetch-with-timeout"
 import { checkNewsRelevance } from "@/lib/news/relevance"
 import { newsSlug } from "@/lib/news/slug"
+import { newsPublicationError } from "@/lib/news/publication"
 import { loadKnownBrands } from "@/lib/news/collect"
 import { loadBrandImages, pickBrandImage } from "@/lib/news/brand-images"
 
@@ -14,6 +15,7 @@ export const maxDuration = 60
 type RequestBody = {
   /** "preview" extracts + summarizes without saving; "publish" stores the (edited) fields. */
   action?: "preview" | "publish"
+  reviewed?: boolean
   url?: string
   brand?: string | null
   // Publish-only (already reviewed/edited by the admin):
@@ -113,8 +115,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
-  const action = body.action ?? "preview"
-  const url = body.url?.trim()
+  const action = body?.action ?? "preview"
+  if (action !== "preview" && action !== "publish") {
+    return NextResponse.json({ error: "Unknown action" }, { status: 400 })
+  }
+  const url = typeof body?.url === "string" ? body.url.trim() : ""
   if (!url || !/^https?:\/\//i.test(url)) {
     return NextResponse.json(
       { error: "A valid http(s) URL is required" },
@@ -122,6 +127,10 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  if (action === "publish") {
+    const problem = newsPublicationError({ ...body, url })
+    if (problem) return NextResponse.json({ error: problem }, { status: 422 })
+  }
   const supabase = createAdminClient()
 
   try {
