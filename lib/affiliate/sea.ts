@@ -1,7 +1,6 @@
-// Southeast Asia affiliate routing. SEA shoppers buy furniture on Shopee /
-// Lazada (not Amazon), so for visitors geolocated to these countries we swap the
-// Amazon buy button for Shopee + Lazada *search* deep links built from the
-// product name. Tracking is wrapped via Involve Asia deep links when the env
+// Supplemental Southeast Asian marketplace searches built from product names.
+// These do not establish availability or replace the supplied Amazon link.
+// Tracking is wrapped via Involve Asia deep links when the env
 // templates are set; otherwise the raw marketplace search URL is used (still a
 // working link, just no commission until the templates are configured).
 
