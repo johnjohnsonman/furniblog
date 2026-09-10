@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { isUuid } from "@/lib/pipeline/queue-mapper"
-import type { AffiliateCountry } from "@/lib/affiliate/links"
 
 async function resolveProductUuid(
   supabase: ReturnType<typeof createAdminClient>,
@@ -26,16 +25,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, skipped: true })
   }
 
-  let body: { productId?: string; retailer?: string; country?: AffiliateCountry }
+  let body: { productId?: unknown; retailer?: unknown } | null
   try {
     body = await request.json()
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
 
-  const { productId, retailer } = body
-  const country: AffiliateCountry =
-    body.country === "KR" || body.country === "JP" ? body.country : "US"
+  const productId = typeof body?.productId === "string" ? body.productId.trim() : ""
+  const retailer = typeof body?.retailer === "string" ? body.retailer.trim() : ""
+  // Merchant routing defaults are not visitor location. Vercel supplies this
+  // geolocation header; absent/unknown locations remain null, never inferred US.
+  const geoCountry = request.headers.get("x-vercel-ip-country")?.trim().toUpperCase()
+  const country = geoCountry && /^[A-Z]{2}$/.test(geoCountry) && !["XX", "ZZ"].includes(geoCountry)
+    ? geoCountry
+    : null
 
   if (!productId || !retailer) {
     return NextResponse.json(
