@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import { Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -54,10 +54,10 @@ function Card({ c }: { c: ComparisonCard }) {
   )
 }
 
-export function ComparisonsIndex({ cards }: { cards: ComparisonCard[] }) {
+export function ComparisonsIndex({ cards, initialPage = 1 }: { cards: ComparisonCard[]; initialPage?: number }) {
   const [tier, setTier] = useState("All")
   const [search, setSearch] = useState("")
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(initialPage)
 
   const tiers = useMemo(() => {
     const set = new Set<string>()
@@ -76,7 +76,8 @@ export function ComparisonsIndex({ cards }: { cards: ComparisonCard[] }) {
     return list
   }, [cards, tier, q])
 
-  useEffect(() => setPage(1), [tier, search])
+  const unfiltered = tier === "All" && !q
+  const pageHref = (n: number) => n === 1 ? "/compare" : `/compare?page=${n}`
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const pageItems = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -93,7 +94,7 @@ export function ComparisonsIndex({ cards }: { cards: ComparisonCard[] }) {
               <button
                 key={t}
                 type="button"
-                onClick={() => setTier(t)}
+                onClick={() => { setTier(t); setPage(1) }}
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   tier === t
@@ -114,13 +115,13 @@ export function ComparisonsIndex({ cards }: { cards: ComparisonCard[] }) {
           <input
             type="search"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setPage(1) }}
             placeholder="Search comparisons…"
             aria-label="Search comparisons"
             className="w-full rounded-full border border-border bg-background py-2 pl-9 pr-9 text-sm focus:border-foreground/30 focus:outline-none"
           />
           {search && (
-            <button type="button" aria-label="Clear search" onClick={() => setSearch("")} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+            <button type="button" aria-label="Clear search" onClick={() => { setSearch(""); setPage(1) }} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
               <X className="h-4 w-4" />
             </button>
           )}
@@ -140,11 +141,19 @@ export function ComparisonsIndex({ cards }: { cards: ComparisonCard[] }) {
             ))}
           </div>
           {totalPages > 1 && (
-            <div className="mt-10 flex items-center justify-center gap-3 text-sm">
+            <nav aria-label="Comparison pages" className="mt-10 flex items-center justify-center gap-3 text-sm">
+              {unfiltered ? (
+                <>
+                  {page > 1 && <a href={pageHref(page - 1)} rel="prev" className="rounded-md border border-border px-4 py-2">Previous</a>}
+                  <span aria-current="page">{page} / {totalPages}</span>
+                  {page < totalPages && <a href={pageHref(page + 1)} rel="next" className="rounded-md border border-border px-4 py-2">Next</a>}
+                </>
+              ) : (<>
               <button type="button" disabled={page <= 1} onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }) }} className="rounded-md border border-border bg-background px-4 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40">Prev</button>
               <span className="px-2 text-muted-foreground">{page} / {totalPages}</span>
               <button type="button" disabled={page >= totalPages} onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }) }} className="rounded-md border border-border bg-background px-4 py-2 font-medium transition-colors hover:border-foreground/30 disabled:opacity-40">Next</button>
-            </div>
+              </>)}
+            </nav>
           )}
         </>
       ) : (
