@@ -1,0 +1,18 @@
+const assert = require('node:assert/strict');
+const { load } = require('cheerio');
+const { revise, sections, sources } = require('./repair-ingcloud-buying-evidence.cjs');
+const original = '<section id="model-answers"><h2>Model answer</h2><p>Existing indexed introduction.</p></section>' + sections.map((s, i) => `<h2>${s.match}</h2><p>Old copy</p><img src="https://example.com/${i}.jpg" alt="Chair ${i}">`).join('');
+const revised = revise(original);
+assert.equal(revised.images, sections.length);
+assert.equal(revise(revised.html).html, revised.html, 'Reapplying must not change HTML');
+assert.throws(() => revise(original + '<h2>New user section</h2>'), /inventory/);
+assert.throws(() => revise(original + '<iframe src="https://example.com"></iframe>'), /media/);
+const $ = load(revised.html);
+assert.match($.text(), /headrest cannot be retrofitted/);
+assert.match($.text(), /432862-410/);
+assert.match($.text(), /not a Furniblog comfort rating/);
+assert.match($.text(), /not confirmation that ingCloud is listed or available/);
+assert.equal($('a[href="/compare/sihoo-m18-vs-sihoo-doro-c300"]').length, 1);
+assert.equal($('a[href="/chairpedia/okamura-contessa-ii-contessa-seconda"]').length, 1);
+assert.ok(sources.every(url => $('a').toArray().some(el => $(el).attr('href') === url)));
+console.log('PASS: evidence, purchase caveats, related guides, media preservation, idempotence and fail-closed section guards.');
