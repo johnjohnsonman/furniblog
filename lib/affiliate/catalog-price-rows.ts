@@ -1,12 +1,7 @@
 import type { CatalogAffiliateLink } from "@/lib/data/affiliate-links"
 import type { PriceRow } from "@/lib/affiliate/price-rows"
-import { formatUsdPrice } from "@/lib/pricing"
 import type { AffiliateLink } from "@/types/affiliate-link"
 import type { AffiliateCountry } from "@/lib/affiliate/links"
-
-function formatKrw(priceKrw: number): string {
-  return `₩${priceKrw.toLocaleString("en-US")}`
-}
 
 export function detectChannel(
   retailer: string,
@@ -26,24 +21,11 @@ export function buildPriceRowsFromCatalog(
 ): PriceRow[] {
   return links.map((link) => {
     const channel = detectChannel(link.retailer, link.url)
-    let priceDisplay = "Check price"
-    if (link.priceUsd != null && link.priceUsd > 0) {
-      priceDisplay = formatUsdPrice(link.priceUsd)
-    } else if (link.priceKrw != null && link.priceKrw > 0) {
-      priceDisplay = formatKrw(link.priceKrw)
-    }
-
     return {
       retailer: link.retailer,
-      priceDisplay,
-      shipping:
-        channel === "official"
-          ? "Free (brand policy)"
-          : channel === "amazon"
-            ? "Free shipping eligible"
-            : channel === "coupang"
-              ? "Rocket delivery available"
-              : "—",
+      // Catalog prices have no verified listing, currency market or checked-at date.
+      priceDisplay: "Check at retailer",
+      shipping: "Check at checkout",
       isOfficial: link.isOfficial,
       url: link.url,
       channel,

@@ -1,7 +1,6 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-import { parsePriceNumber, type PriceRow } from "@/lib/affiliate/price-rows"
+import type { PriceRow } from "@/lib/affiliate/price-rows"
 import { BuyButton } from "./BuyButton"
 
 export type { PriceRow } from "@/lib/affiliate/price-rows"
@@ -34,12 +33,6 @@ export function PriceCompareTable({
     )
   }
 
-  const lowestIndex = rows.reduce((best, row, i, arr) => {
-    const price = parsePriceNumber(row.priceDisplay)
-    const bestPrice = parsePriceNumber(arr[best].priceDisplay)
-    return price < bestPrice ? i : best
-  }, 0)
-
   return (
     <div className="space-y-4">
       <div className="overflow-x-auto rounded-lg border border-border">
@@ -66,18 +59,10 @@ export function PriceCompareTable({
               return (
                 <tr
                   key={`${row.retailer}-${index}`}
-                  className={cn(
-                    "border-b border-border last:border-0",
-                    index === lowestIndex && "bg-emerald-500/5"
-                  )}
+                  className="border-b border-border last:border-0"
                 >
                   <td className="py-3 px-4 font-medium text-foreground">
                     {row.retailer}
-                    {index === lowestIndex && (
-                      <span className="ml-2 text-xs px-1.5 py-0.5 rounded bg-emerald-600 text-white font-medium">
-                        Best Price
-                      </span>
-                    )}
                   </td>
                   <td className="py-3 px-4 text-foreground">{row.priceDisplay}</td>
                   <td className="py-3 px-4 text-muted-foreground">{row.shipping}</td>
@@ -112,7 +97,7 @@ export function PriceCompareTable({
         </p>
       )}
       <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-        Affiliate link — we may earn a commission. Prices may change in real time.
+        Affiliate link — we may earn a commission. Confirm the model, seller, price and delivery terms at the retailer.
       </p>
     </div>
   )
