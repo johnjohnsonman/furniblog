@@ -78,6 +78,9 @@ type ManifestItem = {
   rights?: "permitted" | "owner_policy" | "kept"
   modelStatus?: "verified" | "candidate"
   matchBasis?: string
+  /** Reuse an existing stored file as-is (no download/copy) — e.g. an image
+   *  already in our own bucket. The URL is registered directly. */
+  noStore?: boolean
   source?: string
   sourceUrl?: string
 }
@@ -280,7 +283,7 @@ async function ingest(
         .from("product_images")
         .select("id,url,sort_order,is_thumbnail,origin_image_url")
         .eq("product_id", product.id)
-      const storedUrl = await storeImage(product.slug, item.image, apply)
+      const storedUrl = item.noStore ? item.image : await storeImage(product.slug, item.image, apply)
       const dup = (existingRows ?? []).some(
         (r) => r.url === storedUrl || (originUrl && r.origin_image_url === originUrl)
       )
