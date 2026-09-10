@@ -6,6 +6,16 @@ import { NOUHAUS_ERGO3D } from "./nouhaus-ergo3d"
 import { HERMAN_MILLER_AERON } from "./herman-miller-aeron"
 import { STEELCASE_LEAP_V2 } from "./steelcase-leap-v2"
 import { HAWORTH_FERN } from "./haworth-fern"
+import { TICOVA_ERGONOMIC } from "./ticova-ergonomic"
+import { GABRYLLY_ERGONOMIC } from "./gabrylly-ergonomic"
+import { DURAMONT_ERGONOMIC } from "./duramont-ergonomic"
+import { MIMOGLAD_HIGH_BACK } from "./mimoglad-high-back"
+import { BRANCH_ERGONOMIC_CHAIR } from "./branch-ergonomic-chair"
+import { FLEXISPOT_C7 } from "./flexispot-c7"
+import { HON_IGNITION_2 } from "./hon-ignition-2"
+import { SIHOO_DORO_S300 } from "./sihoo-doro-s300"
+import { OFFICE_STAR_PROGRID } from "./office-star-progrid"
+import { SIDIZ_T50 } from "./sidiz-t50"
 
 /**
  * Registry: chairpedia slug → rich buying-guide data.
@@ -21,4 +31,15 @@ export const RICH_REVIEWS: Record<string, RichReview> = {
   "herman-miller-aeron-chair-review": HERMAN_MILLER_AERON,
   "steelcase-leap-v2": STEELCASE_LEAP_V2,
   "haworth-fern": HAWORTH_FERN,
+  // Batch 1 (2026-09-10)
+  "ticova-ergonomic-office-chair": TICOVA_ERGONOMIC,
+  "gabrylly-ergonomic-office-chair": GABRYLLY_ERGONOMIC,
+  "duramont-ergonomic-office-chair": DURAMONT_ERGONOMIC,
+  "mimoglad-high-back-office-chair": MIMOGLAD_HIGH_BACK,
+  "branch-ergonomic-chair": BRANCH_ERGONOMIC_CHAIR,
+  "flexispot-c7-office-chair": FLEXISPOT_C7,
+  "hon-ignition-2-office-chair": HON_IGNITION_2,
+  "sihoo-doro-s300-office-chair": SIHOO_DORO_S300,
+  "office-star-progrid-office-chair": OFFICE_STAR_PROGRID,
+  "sidiz-t50-office-chair": SIDIZ_T50,
 }
