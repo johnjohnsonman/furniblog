@@ -218,7 +218,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+gesture",
+      url: "https://www.amazon.com/dp/B08KL9JMVB",
       isOfficial: false,
       priceUsd: 1199,
     },

@@ -16,6 +16,16 @@ import { HON_IGNITION_2 } from "./hon-ignition-2"
 import { SIHOO_DORO_S300 } from "./sihoo-doro-s300"
 import { OFFICE_STAR_PROGRID } from "./office-star-progrid"
 import { SIDIZ_T50 } from "./sidiz-t50"
+import { STEELCASE_GESTURE } from "./steelcase-gesture"
+import { HERMAN_MILLER_SAYL } from "./herman-miller-sayl"
+import { HERMAN_MILLER_COSM } from "./herman-miller-cosm"
+import { OKAMURA_CONTESSA_II } from "./okamura-contessa-ii"
+import { HUMANSCALE_FREEDOM } from "./humanscale-freedom"
+import { HAWORTH_ZODY } from "./haworth-zody"
+import { HERMAN_MILLER_EMBODY } from "./herman-miller-embody"
+import { HERMAN_MILLER_MIRRA_2 } from "./herman-miller-mirra-2"
+import { STEELCASE_SERIES_1 } from "./steelcase-series-1"
+import { VITRA_ID_TRIM } from "./vitra-id-trim"
 
 /**
  * Registry: chairpedia slug → rich buying-guide data.
@@ -42,4 +52,16 @@ export const RICH_REVIEWS: Record<string, RichReview> = {
   "sihoo-doro-s300-office-chair": SIHOO_DORO_S300,
   "office-star-progrid-office-chair": OFFICE_STAR_PROGRID,
   "sidiz-t50-office-chair": SIDIZ_T50,
+  // Batch 2 — famous brands (2026-09-10). Group A keys reuse existing Chairpedia
+  // deep-dives (rendered as the "In depth" section); Group B are new entries.
+  "steelcase-gesture": STEELCASE_GESTURE,
+  "herman-miller-sayl-chair": HERMAN_MILLER_SAYL,
+  "herman-miller-cosm": HERMAN_MILLER_COSM,
+  "okamura-contessa-ii-contessa-seconda": OKAMURA_CONTESSA_II,
+  "humanscale-freedom-task-chair": HUMANSCALE_FREEDOM,
+  "haworth-zody-ii": HAWORTH_ZODY,
+  "herman-miller-embody-chair": HERMAN_MILLER_EMBODY,
+  "herman-miller-mirra-2-chair": HERMAN_MILLER_MIRRA_2,
+  "steelcase-series-1-chair": STEELCASE_SERIES_1,
+  "vitra-id-trim-chair": VITRA_ID_TRIM,
 }
