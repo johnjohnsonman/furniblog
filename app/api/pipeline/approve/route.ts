@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { verifyAdminSecret } from "@/lib/pipeline/auth"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { collectionFailureReason } from "@/lib/reviews/collection-quality"
 
 export async function POST(request: NextRequest) {
   if (!verifyAdminSecret(request)) {
@@ -55,12 +56,18 @@ export async function POST(request: NextRequest) {
     confidence?: number
   }
 
+  const summary = ai.summary ?? (ai as { summaryKo?: string }).summaryKo
+  const failure = collectionFailureReason(summary, row.source_url)
+  if (failure) {
+    return NextResponse.json({ error: failure }, { status: 422 })
+  }
+
   const { data: review, error: insertError } = await supabase
     .from("reviews")
     .insert({
       product_id: row.item_id,
       source: row.source_type,
-      summary_ko: ai.summary ?? (ai as { summaryKo?: string }).summaryKo,
+      summary_ko: summary,
       pros: ai.pros ?? [],
       cons: ai.cons ?? [],
       scores: ai.scores,
