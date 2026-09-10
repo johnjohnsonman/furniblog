@@ -17,8 +17,6 @@ function readCountryCookie(): string {
 
 const RETAILER_STYLE: Record<string, string> = {
   amazon: "bg-foreground text-background hover:bg-foreground/90",
-  shopee: "bg-[#EE4D2D] text-white hover:bg-[#d8431f]",
-  lazada: "bg-[#0F146E] text-white hover:bg-[#0b0f54]",
 }
 
 type Variant = "block" | "inline"
@@ -33,7 +31,7 @@ export interface SmartBuyLinkProps {
   /** For click tracking (product id or slug). */
   productId?: string
   variant?: Variant
-  /** Amazon button label (non-SEA visitors). */
+  /** Amazon button label for direct product links. */
   amazonLabel?: string
   /** Show the "affiliate link" disclaimer (block variant). */
   showDisclaimer?: boolean
@@ -71,33 +69,7 @@ export function SmartBuyLink({
       ? "inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors"
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
 
-  // Southeast Asia → Shopee + Lazada search deep links.
-  if (sea) {
-    return (
-      <div className={cn(variant === "block" ? "space-y-2" : "flex flex-wrap gap-2", className)}>
-        {sea.map((l) => (
-          <a
-            key={l.retailer}
-            href={l.url}
-            target="_blank"
-            rel="sponsored nofollow noopener noreferrer"
-            onClick={() => track(l.retailer)}
-            className={cn(base, RETAILER_STYLE[l.retailer])}
-          >
-            {variant === "block" ? `Search ${l.label}` : l.label}
-            <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
-          </a>
-        ))}
-        {showDisclaimer && (
-          <p className="text-[11px] italic leading-relaxed text-muted-foreground">
-            Affiliate link — we may earn a commission
-          </p>
-        )}
-      </div>
-    )
-  }
-
-  // Everyone else → Amazon (OneLink localizes the store client-side).
+  // Local searches supplement the supplied Amazon product link.
   const href = amazonUrl || amazonSearchUrl(query)
   // A search URL is NOT a verified product/price — label it honestly so it isn't
   // presented as a confirmed listing.
@@ -115,6 +87,23 @@ export function SmartBuyLink({
         {label}
         <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
       </a>
+      {sea && (
+        <div className="mt-2 flex flex-col items-start gap-2">
+          {sea.map((link) => (
+            <a
+              key={link.retailer}
+              href={link.url}
+              target="_blank"
+              rel="sponsored nofollow noopener noreferrer"
+              onClick={() => track(link.retailer)}
+              className="inline-flex items-center gap-1.5 py-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            >
+              Search {link.label}
+              <ExternalLink className="h-3 w-3 shrink-0" />
+            </a>
+          ))}
+        </div>
+      )}
       {showDisclaimer && (
         <p className="text-[11px] italic leading-relaxed text-muted-foreground">
           Affiliate link — we may earn a commission
