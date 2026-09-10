@@ -8,7 +8,7 @@ import {
 } from "@/lib/pricing"
 import { buildAffiliateUrl } from "@/lib/affiliate/links"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://furniblog.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.furniblog.com"
 
 export function generateBreadcrumbSchema(
   items: { name: string; url: string }[]

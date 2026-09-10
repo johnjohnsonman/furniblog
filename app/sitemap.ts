@@ -4,7 +4,7 @@ import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { bestLists } from "@/lib/data"
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://furniblog.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.furniblog.com"
 
 function isConfigured(): boolean {
   return Boolean(

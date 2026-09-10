@@ -4,18 +4,18 @@ import type { RichReview } from "@/lib/chairpedia/rich-types"
  * SIDIZ T50 (TNB500) — research-based buying guide data.
  * Facts from SIDIZ America, the Amazon listing and published reviews (checked
  * 2026-09-10). Headrest is SKU-dependent (H-suffix includes it). Arms are 3D
- * (not 4D). Capacity 275 lb official (some reviews say 300). Warranty 3 yr
- * reliable (one outlier says 5). No fixed prices.
+ * (not 4D). Capacity 275 lb official (some reviews say 300). Warranty component/seller-dependent.
+ * No fixed prices.
  */
 export const SIDIZ_T50: RichReview = {
   asin: "B083FBN9BH",
   eyebrow: "SIDIZ · Office chairs · Buying guide",
   heroIntro:
-    "The SIDIZ T50 is a Korean-designed mesh-back chair that packs 3D arms, two-way lumbar, seat-depth and forward-tilt adjustment into a sub-$400 price. This guide covers its confirmed features, which version to buy, and what to check.",
-  verdictOneLiner: "Feature-dense sub-$400 ergonomics — arms are 3D and the headrest is a version choice.",
+    "The SIDIZ T50 is a Korean-designed mesh-back chair that packs 3D arms, two-way lumbar, seat-depth and forward-tilt adjustment into one chair. This guide covers its confirmed features, which version to buy, and what to check.",
+  verdictOneLiner: "Adjustable seat depth and forward tilt — arms are 3D and the headrest is a version choice.",
   verdictNote: "Research-based guide — hands-on testing not yet completed.",
 
-  heroShotBrief: "Front, black SIDIZ T50.",
+  heroShotBrief: "Front SIDIZ T50; match the photographed colour to the selected listing.",
   galleryBriefs: [],
 
   quickFactsNote: "Confirmed from SIDIZ America, the Amazon listing and published specs (checked 2026-09-10).",
@@ -48,7 +48,7 @@ export const SIDIZ_T50: RichReview = {
     { k: "Headrest", v: "Included only on H-suffix models (height + angle)", tier: "B" },
     { k: "Extras", v: "Forward-tilt (seat slope) adjustment", tier: "B" },
     { k: "Back / seat", v: "Ventilated mesh back; fabric-cushion seat (washable cover on some)", tier: "B" },
-    { k: "Warranty", v: "3 years + 30-day money-back", tier: "B" },
+    { k: "Warranty", v: "Coverage for the linked Amazon purchase is not confirmed; check component and seller terms", tier: "C" },
   ],
   dimsSourceNote:
     "Sources: SIDIZ America, Amazon listings and published reviews (checked 2026-09-10). Seat height/depth ranges differ slightly between sources; headrest and colour are SKU-dependent. GREENGUARD/BIFMA certified. Confirm the version on the listing.",
@@ -67,7 +67,7 @@ export const SIDIZ_T50: RichReview = {
   ],
 
   pros: [
-    { t: "Feature density for the price — 3D arms, 2-way lumbar, seat-depth and forward-tilt adjustment rarely seen sub-$400.", src: "SIDIZ · published reviews" },
+    { t: "Feature density for the price — 3D arms, 2-way lumbar, seat-depth and forward-tilt adjustment in one chair.", src: "SIDIZ · published reviews" },
     { t: "Wide, usable seat-height range plus forward tilt that mimics pricier chairs.", src: "Published reviews (research)" },
     { t: "Well-regarded sculpted design; GREENGUARD-certified materials.", src: "SIDIZ · published reviews" },
   ],
@@ -79,7 +79,7 @@ export const SIDIZ_T50: RichReview = {
 
   forWhoTitle: "The T50 suits",
   forWho: [
-    "Buyers who want lots of real adjustment (seat depth, forward tilt, 2-way lumbar) under $400",
+    "Buyers who want lots of real adjustment (seat depth, forward tilt, 2-way lumbar)",
     "People who like a mesh back and a clean, modern design",
     "Those who'll pick the right headrest version for their needs",
   ],
@@ -90,19 +90,19 @@ export const SIDIZ_T50: RichReview = {
   ],
 
   rivals: [
-    { name: "SIDIZ T50", lumbar: "2-way (height + depth)", arms: "3D", standout: "Seat-depth + forward tilt sub-$400", isSelf: true },
-    { name: "Ticova Ergonomic", lumbar: "2-axis (height + depth)", arms: "3D", standout: "Similar adjustment, cheaper" },
-    { name: "Branch Ergonomic Chair", lumbar: "Adjustable, removable", arms: "3D", standout: "Seat-depth slider, 7-yr warranty" },
-    { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "All-mesh, adaptive lumbar" },
+    { name: "SIDIZ T50", lumbar: "2-way (height + depth)", arms: "3D", standout: "Seat-depth + forward tilt", isSelf: true },
+    { name: "Ticova Ergonomic", href: "/products/ticova-ergonomic", lumbar: "2-axis (height + depth)", arms: "3D", standout: "Similar adjustment, cheaper" },
+    { name: "Branch Ergonomic Chair", href: "/products/branch-ergonomic-chair", lumbar: "Adjustable, removable", arms: "3D", standout: "Seat-depth slider, 7-yr warranty" },
+    { name: "SIHOO Doro C300", href: "/products/sihoo-doro-c300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "All-mesh, adaptive lumbar" },
   ],
 
   buy: {
     productTitle: "SIDIZ T50",
-    retailerNote: "Amazon · ASIN B083FBN9BH · headrest is a version (H-suffix) choice",
+    retailerNote: "Amazon · ASIN B083FBN9BH · linked listing title specifies Blue with headrest; confirm selected options",
     ctaLabel: "Check price on Amazon",
     rows: [
       { k: "Returns", v: "Amazon's return window applies and depends on the seller; SIDIZ lists a 30-day money-back. Check the listing." },
-      { k: "Warranty", v: "3 years (one outlier source says 5). Confirm current US terms on the listing." },
+      { k: "Warranty", v: "SIDIZ America advertises up to 12 years on its product page. This is not a blanket term for all parts or Amazon sellers; confirm coverage for your purchase." },
       { k: "What to check", v: "Whether the version includes a headrest (H-suffix), the colour, and the seat-height/depth ranges." },
     ],
     officialStore: {
@@ -115,11 +115,11 @@ export const SIDIZ_T50: RichReview = {
   },
 
   verdict: [
-    "The SIDIZ T50 punches above its price on adjustment: 3D arms, a two-way lumbar, an adjustable seat depth and a forward tilt — a combination usually reserved for pricier chairs — wrapped in a clean, award-cited design with GREENGUARD-certified materials. For a sub-$400 chair you can genuinely dial in, it's one of the stronger options.",
+    "The SIDIZ T50 punches above its price on adjustment: 3D arms, a two-way lumbar, an adjustable seat depth and a forward tilt — a combination usually reserved for pricier chairs — wrapped in a clean, award-cited design with GREENGUARD-certified materials. Compare the current price and selected configuration before buying.",
     "Where it shows its price is in the details: reviewers find the arms, headrest, knobs and thin seat padding a bit cheap, it rolls fast on hard floors, and it doesn't recline deeply. Also decide up front whether you want the headrest version, since it's a separate SKU. Accept those trade-offs and the T50 is a lot of adjustable chair for the money.",
   ],
   verdictPullQuote:
-    "Seat-depth and forward-tilt adjustment under $400 — just pick the right headrest version and expect budget-grade knobs.",
+    "Seat-depth and forward-tilt adjustment — just pick the right headrest version and expect budget-grade knobs.",
 
   faqs: [
     { q: "Does the T50 include a headrest?", a: "Only on the H-suffix version (e.g. TNB500HLDA). The LDA version has no headrest — check the listing before buying." },
@@ -130,7 +130,8 @@ export const SIDIZ_T50: RichReview = {
   ],
 
   sources: [
-    { k: "SIDIZ (official) / Amazon", v: "SIDIZ America and the Amazon listing (ASIN B083FBN9BH), checked 2026-09-10. Basis for 3D arms, 2-way lumbar, seat-depth/forward-tilt, capacity and warranty." },
+    { k: "SIDIZ America T50", url: "https://www.sidiz.com/collections/t50/products/sidiz-t50-white-home-office-desk-chair", v: "Checked 2026-09-10: documents 275 lb capacity, seat depth/angle and lumbar adjustments. Advertises up to 12 years of warranty; confirm component and seller eligibility." },
+    { k: "Amazon linked T50", url: "https://www.amazon.com/dp/B083FBN9BH", v: "Retrieved title identifies a blue T50 with headrest, lumbar support, 3D arms and seat-depth adjustment. Confirm selected options at checkout." },
     { k: "Published reviews", v: "Third-party reviews (e.g. ChairsFX, Ergonomic Trends) summarised for value and the build-quality cautions; not first-hand." },
   ],
   sourcesFooter:

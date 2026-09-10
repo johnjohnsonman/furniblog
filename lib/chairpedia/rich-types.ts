@@ -29,6 +29,7 @@ export type BasisItem = { t: string; src: string }
 
 export type Rival = {
   name: string
+  href?: string
   lumbar: string
   arms: string
   standout: string
@@ -94,7 +95,7 @@ export type RichReview = {
   faqs: FaqItem[]
 
   /** Labelled source lines (what each tier of claim is based on). */
-  sources: SpecRow[]
+  sources: (SpecRow & { url?: string })[]
 
   /** Optional per-product copy overrides (generic defaults are used otherwise). */
   /** Provenance line under "Quick facts". Defaults to the Amazon-listing wording. */

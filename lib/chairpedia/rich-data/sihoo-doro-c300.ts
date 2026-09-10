@@ -97,7 +97,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { name: "Herman Miller Aeron", lumbar: "PostureFit SL (manual, dual-pad)", arms: "Fully adjustable", standout: "Iconic design, 12-year warranty, three sizes" },
     { name: "Steelcase Gesture", lumbar: "Adjustable LiveBack", arms: "360° arm movement", standout: "Best-in-class armrests, supports tablet/phone postures" },
     { name: "Autonomous ErgoChair Pro", lumbar: "Adjustable mesh lumbar", arms: "3D", standout: "Footrest included, direct-to-consumer value" },
-    { name: "SIHOO M18", lumbar: "Fixed lumbar pad", arms: "2D", standout: "Entry-level ergonomics, budget pick" },
+    { name: "SIHOO M18", href: "/products/sihoo-m18", lumbar: "Adjustable lumbar support", arms: "2D", standout: "Mesh back with a cushioned seat" },
   ],
 
   buy: {

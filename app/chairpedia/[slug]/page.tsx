@@ -181,6 +181,7 @@ export default async function ChairpediaEntryPage({
               productSlug={product?.slug}
               productName={product?.name}
               updatedStr={updatedStr}
+              sourceUrls={sources}
             />
           </article>
         ) : (
