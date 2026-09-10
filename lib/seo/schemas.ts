@@ -1,12 +1,6 @@
 import type { ProductView } from "@/lib/data/mappers"
 import type { Review } from "@/types/review"
 import type { AffiliateLink } from "@/types/affiliate-link"
-import {
-  formatProductPrice,
-  resolvePriceUsd,
-  PRICE_ON_REQUEST,
-} from "@/lib/pricing"
-import { buildAffiliateUrl } from "@/lib/affiliate/links"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.furniblog.com"
 
@@ -110,42 +104,9 @@ export function generateWebsiteSchema() {
 export function generateChairSchema(
   product: ProductView,
   _reviews: Review[],
-  affiliateLinks: AffiliateLink[] = product.affiliateLinks ?? []
+  _affiliateLinks: AffiliateLink[] = product.affiliateLinks ?? []
 ) {
-  const priceUsd = resolvePriceUsd(
-    product.priceUsd,
-    product.priceLabel
-  )
-  const price = formatProductPrice(priceUsd)
   const productUrl = `${SITE_URL}/products/${product.slug ?? product.id}`
-
-  const offers = affiliateLinks
-    .filter((link) => link.url)
-    .map((link) => ({
-      "@type": "Offer",
-      url: buildAffiliateUrl(link.url, link.channel, "US"),
-      priceCurrency: "USD",
-      price: priceUsd ?? undefined,
-      availability: "https://schema.org/InStock",
-      seller: {
-        "@type": "Organization",
-        name: link.label,
-      },
-    }))
-
-  if (offers.length === 0 && product.officialUrl) {
-    offers.push({
-      "@type": "Offer",
-      url: product.officialUrl,
-      priceCurrency: "USD",
-      price: priceUsd ?? undefined,
-      availability: "https://schema.org/InStock",
-      seller: {
-        "@type": "Organization",
-        name: product.brand,
-      },
-    })
-  }
 
   const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -169,26 +130,9 @@ export function generateChairSchema(
   // and the existing exclusion policy are unchanged; only the schema output
   // is withheld.
 
-  if (offers.length > 0) {
-    schema.offers =
-      offers.length === 1
-        ? offers[0]
-        : {
-            "@type": "AggregateOffer",
-            offerCount: offers.length,
-            lowPrice: priceUsd ?? undefined,
-            priceCurrency: "USD",
-            offers,
-          }
-  }
-
-  if (price !== PRICE_ON_REQUEST) {
-    schema.offers = schema.offers ?? {
-      "@type": "Offer",
-      price,
-      priceCurrency: "USD",
-    }
-  }
+  // AffiliateLink has no verified model-specific price, market or inventory.
+  // Keep product identity, but do not turn catalog estimates/search URLs into
+  // merchant offers. Restore offers only when verified listing data is available.
 
   return schema
 }

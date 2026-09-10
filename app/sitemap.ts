@@ -15,51 +15,54 @@ function isConfigured(): boolean {
 
 function url(
   path: string,
-  lastModified: Date,
+  lastModified: Date | undefined,
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
   priority: number
 ): MetadataRoute.Sitemap[number] {
-  return { url: `${SITE_URL}${path}`, lastModified, changeFrequency, priority }
+  return {
+    url: `${SITE_URL}${path}`,
+    ...(lastModified ? { lastModified } : {}),
+    changeFrequency,
+    priority,
+  }
 }
 
-function toDate(value: unknown): Date {
+function toDate(value: unknown): Date | undefined {
   if (typeof value === "string") {
     const d = new Date(value)
     if (!Number.isNaN(d.getTime())) return d
   }
-  return new Date()
+  return undefined
 }
 
 export const dynamic = "force-dynamic"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const now = new Date()
-
   const staticPages: MetadataRoute.Sitemap = [
-    url("", now, "daily", 1),
-    url("/products", now, "daily", 0.9),
-    url("/chairpedia", now, "daily", 0.9),
-    url("/blog", now, "daily", 0.7),
-    url("/compare", now, "weekly", 0.7),
-    url("/chair", now, "weekly", 0.6),
-    url("/reviews", now, "daily", 0.9),
-    url("/videos", now, "daily", 0.8),
-    url("/news", now, "daily", 0.8),
-    url("/brands", now, "weekly", 0.7),
-    url("/best", now, "weekly", 0.8),
-    url("/best/best-chairs-to-buy", now, "weekly", 0.9),
-    url("/designers", now, "monthly", 0.5),
-    url("/gallery", now, "monthly", 0.5),
-    url("/about", now, "yearly", 0.3),
-    url("/contact", now, "yearly", 0.3),
-    url("/editorial-policy", now, "yearly", 0.2),
-    url("/affiliate-disclosure", now, "yearly", 0.2),
-    url("/privacy", now, "yearly", 0.2),
-    url("/terms", now, "yearly", 0.2),
+    url("", undefined, "daily", 1),
+    url("/products", undefined, "daily", 0.9),
+    url("/chairpedia", undefined, "daily", 0.9),
+    url("/blog", undefined, "daily", 0.7),
+    url("/compare", undefined, "weekly", 0.7),
+    url("/chair", undefined, "weekly", 0.6),
+    url("/reviews", undefined, "daily", 0.9),
+    url("/videos", undefined, "daily", 0.8),
+    url("/news", undefined, "daily", 0.8),
+    url("/brands", undefined, "weekly", 0.7),
+    url("/best", undefined, "weekly", 0.8),
+    url("/best/best-chairs-to-buy", undefined, "weekly", 0.9),
+    url("/designers", undefined, "monthly", 0.5),
+    url("/gallery", undefined, "monthly", 0.5),
+    url("/about", undefined, "yearly", 0.3),
+    url("/contact", undefined, "yearly", 0.3),
+    url("/editorial-policy", undefined, "yearly", 0.2),
+    url("/affiliate-disclosure", undefined, "yearly", 0.2),
+    url("/privacy", undefined, "yearly", 0.2),
+    url("/terms", undefined, "yearly", 0.2),
   ]
 
   const bestPages: MetadataRoute.Sitemap = bestLists.map((list) =>
-    url(`/best/${list.id}`, now, "weekly", 0.7)
+    url(`/best/${list.id}`, undefined, "weekly", 0.7)
   )
 
   if (!isConfigured()) return [...staticPages, ...bestPages]
@@ -70,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const [products, reviews, news, brands, chairpedia] = await Promise.all([
       supabase
         .from("products")
-        .select("slug")
+        .select("slug, updated_at")
         .eq("published", true)
         .eq("track", "chair"),
       runPublicReviewQuery((f) => {
@@ -92,7 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ])
 
     for (const p of products.data ?? []) {
-      if (p.slug) dynamicPages.push(url(`/products/${p.slug}`, now, "weekly", 0.8))
+      if (p.slug) dynamicPages.push(url(`/products/${p.slug}`, toDate(p.updated_at), "weekly", 0.8))
     }
     for (const r of reviews.data ?? []) {
       if (r.id)
@@ -107,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         )
     }
     for (const b of brands.data ?? []) {
-      if (b.slug) dynamicPages.push(url(`/brands/${b.slug}`, now, "weekly", 0.6))
+      if (b.slug) dynamicPages.push(url(`/brands/${b.slug}`, undefined, "weekly", 0.6))
     }
     for (const c of chairpedia.data ?? []) {
       if (c.slug)

@@ -1,4 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin"
+import { collectionFailureReason } from "@/lib/reviews/collection-quality"
 import { processWithClaude } from "@/lib/pipeline/processor"
 import { collectFromDCInside } from "@/lib/pipeline/sources/dcinside"
 import { collectFromHackerNews } from "@/lib/pipeline/sources/hackernews"
@@ -421,6 +422,11 @@ export async function executeServerPipeline(params: {
     backIssueSentiment?: "positive" | "negative" | "neutral" | null
     item: RawContent
   }): Promise<boolean> {
+    const failure = collectionFailureReason(row.summary, row.item.url)
+    if (failure) {
+      console.warn("[PIPELINE] Review not published:", failure)
+      return false
+    }
     const scores: Record<string, unknown> = { overall: row.overall }
     if (row.mentionsBackPain === true) scores.mentionsBackPain = true
     if (row.mentionsLumbar === true) scores.mentionsLumbar = true

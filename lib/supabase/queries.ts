@@ -1002,9 +1002,10 @@ export async function getReviewCounts(
       return q
     })
 
-    if (reviewError || !reviews?.length) {
+    if (reviewError) {
       return getReviewCountsLocal(uniqueIds)
     }
+    if (!reviews?.length) return {}
 
     return aggregateReviewCounts(
       reviews as Array<{

@@ -151,7 +151,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     ? await fetchProductVideos(product.id)
     : { videos: [], total: 0, chairId: null }
   const chairReviews =
-    supabaseReviews.length > 0
+    isSupabaseConfigured()
       ? supabaseReviews
       : getChairReviewsForProduct(product.id)
 
@@ -165,7 +165,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = getSimilarProducts(productWithLinks, 3)
   const reviewCount =
-    chairReviews.length > 0
+    isSupabaseConfigured() || chairReviews.length > 0
       ? chairReviews.length
       : product.reviewCount ?? 0
   const galleryImages =
