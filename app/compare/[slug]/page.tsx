@@ -46,7 +46,7 @@ export async function generateMetadata({
 function BuyRow({ product }: { product: { slug: string; name: string; image?: string | null } }) {
   const buy = resolveAmazonAffiliateLink(product.slug, product.name)
   return (
-    <div className="flex items-center justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4">
+    <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4 sm:flex-row sm:items-center">
       <div className="flex min-w-0 items-center gap-3">
         {product.image && (
           // eslint-disable-next-line @next/next/no-img-element
