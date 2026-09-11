@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { jsonInternalError } from "@/lib/admin/api-response"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { load } from "cheerio"
 
 export const runtime = "nodejs"
 
@@ -20,6 +21,7 @@ const EDITABLE = [
   "seo_title",
   "seo_description",
   "status",
+  "faq",
 ] as const
 
 async function slugToId(supabase: ReturnType<typeof createAdminClient>, slug: string): Promise<string | null> {
@@ -60,10 +62,26 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
   const { id } = await context.params
   try {
     const body = await request.json()
+    if (!body || typeof body !== "object" || Array.isArray(body)) {
+      return NextResponse.json({ error: "Invalid request" }, { status: 400 })
+    }
     const patch: Record<string, unknown> = { updated_at: new Date().toISOString() }
     for (const k of EDITABLE) if (k in body) patch[k] = body[k]
 
     const supabase = createAdminClient()
+    const { data: current, error: readError } = await supabase.from("comparisons").select("*").eq("id", id).maybeSingle()
+    if (readError) throw new Error(readError.message)
+    if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 })
+    if (current.gen_status === "generating") {
+      return NextResponse.json({ error: "Wait for generation to finish before editing or publishing." }, { status: 409 })
+    }
+    if (body.status !== undefined && !["draft", "published"].includes(body.status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 })
+    }
+    if (body.faq !== undefined && (!Array.isArray(body.faq) || body.faq.some((item: { q?: unknown; a?: unknown } | null) =>
+      !item || typeof item.q !== "string" || typeof item.a !== "string" || !item.q.trim() || !item.a.trim()))) {
+      return NextResponse.json({ error: "FAQ requires question and answer text." }, { status: 400 })
+    }
     // Product selection by slug → id.
     if (typeof body.product_a_slug === "string") {
       patch.product_a_id = body.product_a_slug.trim() ? await slugToId(supabase, body.product_a_slug) : null
@@ -71,23 +89,37 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     if (typeof body.product_b_slug === "string") {
       patch.product_b_id = body.product_b_slug.trim() ? await slugToId(supabase, body.product_b_slug) : null
     }
-    if (body.status === "published") {
-      const { data: cur } = await supabase.from("comparisons").select("published_at").eq("id", id).maybeSingle()
-      if (!cur?.published_at) patch.published_at = new Date().toISOString()
+    if ((patch.status ?? current.status) === "published") {
+      const next = { ...current, ...patch }
+      if (body.reviewed !== true) {
+        return NextResponse.json({ error: "Confirm source and FAQ review before publishing or updating a published comparison." }, { status: 400 })
+      }
+      const $ = load(typeof next.content_html === "string" ? next.content_html : "")
+      const hasSource = $('a[href]').toArray().some(el => {
+        try { return ["https:", "http:"].includes(new URL($(el).attr("href") || "").protocol) } catch { return false }
+      })
+      if (typeof next.title !== "string" || !next.title.trim() || $('body').text().trim().length < 100 ||
+          !next.product_a_id || !next.product_b_id || next.product_a_id === next.product_b_id || !hasSource) {
+        return NextResponse.json({ error: "Publication requires two different products, a title, substantive body and linked evidence sources." }, { status: 400 })
+      }
+      if (!current.published_at) patch.published_at = new Date().toISOString()
     }
 
-    const { data, error } = await supabase
+    let update = supabase
       .from("comparisons")
       .update(patch)
       .eq("id", id)
+    update = current.updated_at === null ? update.is("updated_at", null) : update.eq("updated_at", current.updated_at)
+    const { data, error } = await update
       .select("id,slug,status")
-      .single()
+      .maybeSingle()
     if (error) {
       if (error.code === "23505") {
         return NextResponse.json({ error: `Slug "${patch.slug}" is already taken — choose another.` }, { status: 409 })
       }
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
+    if (!data) return NextResponse.json({ error: "Comparison changed; reload before saving." }, { status: 409 })
     return NextResponse.json({ entry: data })
   } catch (error) {
     return jsonInternalError(error)

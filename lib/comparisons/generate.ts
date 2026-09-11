@@ -116,11 +116,9 @@ function productBlock(label: string, p: ComparisonProductInput): string {
   const specs = p.specs ? JSON.stringify(p.specs) : "(none)"
   return `${label}: ${p.name}
 - Brand: ${p.brand}
-- Price: ${p.priceLabel}
 - Category: ${p.category}
-- Specs: ${specs}
-- Editorial description: ${p.description || "(none)"}
-- Aggregate rating: ${p.rating ?? "n/a"} from ${p.reviewCount} reviews
+- Unverified catalog specs (research leads, NOT established facts): ${specs}
+- Unverified catalog description: ${p.description || "(none)"}
 - Pros mentioned in reviews: ${p.prosFromReviews.join("; ") || "(none)"}
 - Cons mentioned in reviews: ${p.consFromReviews.join("; ") || "(none)"}
 - Sample review snippets:
@@ -129,7 +127,7 @@ ${p.sampleReviews.map((r) => `  • ${r}`).join("\n") || "  (none)"}`
 
 /**
  * Draft an "A vs B" comparison strictly from the supplied product data.
- * No web search — everything is grounded in DB specs + real review snippets.
+ * No web search: catalog fields and review snippets still need source verification.
  */
 export async function generateComparisonDraft(
   a: ComparisonProductInput,
@@ -142,20 +140,24 @@ export async function generateComparisonDraft(
   const prompt = `You are a senior office-chair editor for Furniblog. Write a head-to-head comparison of TWO chairs using ONLY the data provided below. This is buying-decision content: shoppers deciding between these two.
 
 STRICT RULES
-- Use ONLY the supplied data (specs, prices, ratings, review snippets). NEVER invent specs, prices, awards, or numbers. If a detail isn't provided, omit it or say it's not specified.
-- Be genuinely useful and even-handed. Base each chair's strengths/weaknesses on the review data given. It's fine (good, even) to say which one wins for which type of buyer.
-- Clear, confident editorial English. Short paragraphs, scannable.
+- This is a private research draft requiring human source verification, not a publish-ready review. Catalog fields and snippets have no verified provenance.
+- Do not state catalog numbers, dimensions, capacity, weight, warranty duration, fit ranges or option availability as established facts. Turn unverified differences into specific checks for an editor or buyer. Never invent a source or claim to have consulted one.
+- Prices and aggregate scores are deliberately withheld. Never infer prices, savings, ratings, review counts, value winners or universal comfort winners from names, descriptions or snippets.
+- Review snippets and pros/cons are unverified research leads, not representative evidence. Do not quote them, repeat medical claims or present them as tested strengths, weaknesses or durability findings.
+- Distinguish model generations and optional configurations. Do not assume regional availability, shipping or returns. Say that Furniblog has not hands-on tested the pair.
+- Make recommendations conditional on independently verified features and a trial. No decisive winner without evidence. Apply these rules to metadata, tables and FAQ as well as prose.
+- Clear editorial English. Short paragraphs, scannable.
 
 ALLOWED HTML TAGS ONLY: <h2>, <h3>, <p>, <ul>, <li>, <ol>, <blockquote>, <strong>, <em>, <table>, <thead>, <tbody>, <tr>, <th>, <td>. No <h1>, <img>, <a>, <div>, <span>, class/style attributes, scripts.
 
 STRUCTURE (each section opens with <h2>):
 1. Intro — one paragraph framing the matchup.
-2. "At a glance" — a comparison <table> with a header row (Spec | ${a.name} | ${b.name}) covering price, category, key adjustments, weight capacity, warranty, and rating where available.
-3. "${a.name} — strengths & weaknesses" (from its reviews).
-4. "${b.name} — strengths & weaknesses" (from its reviews).
-5. "How they differ" — the real trade-offs.
-6. "Who should buy which" — clear recommendations per buyer type.
-7. "The verdict" — a decisive bottom line.
+2. "Configuration checks" — a table of questions to verify for each exact model; do not print unverified numbers.
+3. "${a.name}: evidence to verify" — model-specific research questions.
+4. "${b.name}: evidence to verify" — model-specific research questions.
+5. "Fit and trial checks" — what a buyer should test, without predicting comfort.
+6. "Purchase checks" — seller condition, configuration, returns and regional support.
+7. "Before deciding" — evidence gaps, not a winner.
 
 Return EXACTLY this plain-text format (no code fences):
 TITLE: e.g. "${a.name} vs ${b.name}: Which Should You Buy?" — do NOT append "Review".
