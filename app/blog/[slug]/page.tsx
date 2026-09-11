@@ -8,6 +8,9 @@ import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo/schemas"
 import { wrapTables } from "@/lib/blog/postprocess"
 import { getBlogBuyingNotes } from "@/lib/blog/buying-notes"
+import { isBlogPostGoogleSearchable, GOOGLEBOT_NOINDEX } from "@/lib/seo/search-visibility"
+import { rewriteAmazonHrefs } from "@/lib/affiliate/content-links"
+import { pageSubtag } from "@/lib/affiliate/links"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 
@@ -24,11 +27,12 @@ type Post = {
   seo_description: string | null
   published_at: string | null
   updated_at: string | null
+  source_url: string | null
   category: string | null
 }
 
 const BASE_COLS =
-  "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,updated_at"
+  "slug,title,subtitle,hero_image_url,excerpt,content_html,seo_title,seo_description,published_at,updated_at,source_url"
 
 async function getPost(slug: string): Promise<Post | null> {
   const supabase = createPublicServerClient()
@@ -78,6 +82,7 @@ export async function generateMetadata({
     title,
     description,
     alternates: { canonical: `/blog/${post.slug}` },
+    ...(isBlogPostGoogleSearchable(post) ? {} : GOOGLEBOT_NOINDEX),
     openGraph: {
       type: "article",
       title,
@@ -163,7 +168,7 @@ export default async function BlogPostPage({
 
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(post.content_html) }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(post.content_html, pageSubtag(`/blog/${post.slug}`))) }}
           />
 
           {buying && (

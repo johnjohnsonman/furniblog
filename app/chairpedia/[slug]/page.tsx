@@ -10,6 +10,8 @@ import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo/schemas"
 import { RICH_REVIEWS } from "@/lib/chairpedia/rich-data"
 import { RichReview } from "@/components/chairpedia/rich-review"
+import { rewriteAmazonHrefs } from "@/lib/affiliate/content-links"
+import { pageSubtag } from "@/lib/affiliate/links"
 import { getProductImages } from "@/lib/amazon/paapi"
 import { extractAsin } from "@/lib/amazon/asin"
 import { getProductImageBundle, getUseProductImage } from "@/lib/supabase/queries"
@@ -173,7 +175,7 @@ export default async function ChairpediaEntryPage({
             <RichReview
               data={rich}
               title={entry.title}
-              contentHtml={entry.content_html}
+              contentHtml={rewriteAmazonHrefs(entry.content_html, pageSubtag(`/chairpedia/${entry.slug}`))}
               images={richImages}
               productImages={productGallery}
               heroImageUrl={entry.hero_image_url}
@@ -236,7 +238,7 @@ export default async function ChairpediaEntryPage({
           {/* Authored content (admin/AI). Styles for plain authored HTML below. */}
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(entry.content_html) }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(entry.content_html, pageSubtag(`/chairpedia/${entry.slug}`))) }}
           />
 
           {sources.length > 0 && (

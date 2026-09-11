@@ -49,3 +49,26 @@ export function isNewsSearchable(news: {
 
 /** Metadata fragment for pages excluded from search. Links still followed. */
 export const NOINDEX_FOLLOW = { robots: { index: false, follow: true } } as const
+
+/**
+ * Blog posts adapted from the Naver source blog are hidden from GOOGLE ONLY
+ * (googlebot noindex): the July 2026 mass-import of that cluster coincides
+ * exactly with the site-wide Google demotion, and the cluster has had zero
+ * Google impressions since — while it is the site's top landing section on
+ * Bing/DuckDuckGo/AI search, which keep serving it. Re-enable a post for
+ * Google via the allowlist after a sourced rewrite.
+ */
+const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([])
+
+export function isBlogPostGoogleSearchable(post: {
+  slug: string | null
+  source_url: string | null
+}): boolean {
+  if (post.slug && BLOG_GOOGLE_REENABLED_SLUGS.has(post.slug)) return true
+  return !/blog\.naver\.com|naver\.me/i.test(post.source_url ?? "")
+}
+
+/** Indexable everywhere except Google. Links still followed by all. */
+export const GOOGLEBOT_NOINDEX = {
+  robots: { index: true, follow: true, googleBot: { index: false, follow: true } },
+} as const
