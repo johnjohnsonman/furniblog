@@ -51,6 +51,9 @@ async function main() {
   }
   report.incomingLinks = Object.fromEntries(incoming);
   report.missingHubLinks = [...incoming].filter(([, sources]) => !sources.length).map(([target]) => target);
+  if (process.argv.includes('--expect-first-page')) {
+    for (const [target, sources] of incoming) assert.deepEqual(sources, ['/compare'], `Expected first-page-only card: ${target}`);
+  }
   const dir = resolve(__dirname, '../data/seo-audit');
   mkdirSync(dir, { recursive: true });
   const file = resolve(dir, `comparison-crawl-paths-${Date.now()}.json`);
