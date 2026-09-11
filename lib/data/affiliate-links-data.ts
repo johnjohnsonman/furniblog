@@ -11,6 +11,23 @@ export const AFFILIATE_LINKS_DATA: Record<
   // Direct Amazon product (ASIN) links for chairs actually buyable on Amazon.
   // No tag here — buildAffiliateUrl injects NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG at
   // render time. ASINs verified June 2026; refresh periodically.
+
+  // Batch verified 2026-09-12 via listing-title research (model-name match
+  // required; ambiguous variants excluded — e.g. Zody vs Zody II, Ergohuman
+  // Plus/Pro). Spot-click checks recommended periodically.
+  "herman-miller-aeron": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01N0ZUN15", isOfficial: false }], // Aeron Size B, Graphite
+  "herman-miller-mirra-2": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01DGHTTJG", isOfficial: false }], // Mirra 2, tilt limiter + seat angle, TriFlex
+  "steelcase-karman": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CSHVBTND", isOfficial: false }], // Karman, black/black — official Steelcase Amazon store
+  "steelcase-amia": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B008DZ35E2", isOfficial: false }], // Amia, black, 4-way arms
+  "humanscale-diffrient-world": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07XWC5N7R", isOfficial: false }], // Diffrient World, black pinstripe
+  "humanscale-liberty": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B09SVQ7VB4", isOfficial: false }], // Liberty, black, Duron arms
+  "knoll-regeneration": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B009P9WFDM", isOfficial: false }], // ReGeneration by Knoll
+  "knoll-generation": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01KY41J24", isOfficial: false }], // Generation by Knoll, adjustable, fabric
+  "aeris-swopper": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0937FGGPC", isOfficial: false }], // Swopper New Edition with casters
+  "aeris-3dee": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00VG2ZW04", isOfficial: false }], // 3Dee — US listing is red seat / polished frame
+  "libernovo-omni": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0FYCKPWP9", isOfficial: false }], // Omni base 48cm, chair only, black
+  "varier-variable-balans": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B071ZM1CKG", isOfficial: false }], // Variable balans, black revive / black ash
+  "okamura-contessa-ii": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CZ6ZQGMQ", isOfficial: false }], // Contessa Seconda, white — US listing
   "ergohuman-elite": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B003Y5BF7A", isOfficial: false }],
   "ergohuman-classic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B002LK1YNO", isOfficial: false }],
   "duorest-alpha": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07Y3X1H5J", isOfficial: false }],

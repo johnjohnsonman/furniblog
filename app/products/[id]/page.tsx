@@ -66,6 +66,42 @@ async function getChairpediaSlug(productSlug: string): Promise<string | null> {
   }
 }
 
+/** Cluster-matched buying guides shown on every product page. */
+function buyingGuideRail(
+  category: string | null | undefined,
+  priceUsd: number | null | undefined
+): { label: string; href: string }[] {
+  const returns = {
+    label: "What returning a chair actually costs, by store",
+    href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon",
+  }
+  const fit = {
+    label: "Will this chair fit your desk? Seat height and armrest clearance",
+    href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance",
+  }
+  if (category === "standing") {
+    return [
+      { label: "Office chairs for standing and tall desks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
+      fit,
+      returns,
+    ]
+  }
+  if (typeof priceUsd === "number" && priceUsd >= 800) {
+    return [
+      { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+      { label: "Refurbished vs remanufactured vs open-box vs used", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+      returns,
+      fit,
+    ]
+  }
+  return [
+    { label: "How to read an Amazon office chair listing", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    returns,
+    fit,
+  ]
+}
+
 type RecentPost = { slug: string; title: string; hero_image_url: string | null }
 
 /** A few recent blog posts — internal links from product pages into the blog. */
@@ -345,6 +381,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
                     showDisclaimer
                   />
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    Amazon returns are typically 30 days of delivery but set per listing — check
+                    before ordering.{" "}
+                    <Link
+                      href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"
+                      className="underline underline-offset-2"
+                    >
+                      What returns cost across stores →
+                    </Link>
+                  </p>
                 </div>
 
               </div>
@@ -379,6 +425,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
           )}
+
+          <div className="mt-10 border-t border-border pt-6">
+            <h2 className="font-serif text-lg font-medium text-foreground">Buying guides</h2>
+            <ul className="mt-3 space-y-2 text-sm">
+              {buyingGuideRail(product.category, product.priceUsd).map((g) => (
+                <li key={g.href}>
+                  <Link href={g.href} className="underline underline-offset-4">
+                    {g.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="h-20 lg:hidden" />
         </div>

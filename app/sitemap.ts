@@ -146,6 +146,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Blog table may not exist yet — ignore.
   }
 
+  // DB-curated best lists (admin-created; code bestLists above covers legacy ids).
+  try {
+    const supabase = createPublicServerClient()
+    const { data: dbLists } = await supabase
+      .from("best_lists")
+      .select("slug, updated_at")
+      .eq("status", "published")
+      .limit(200)
+    const known = new Set([...bestLists.map((l) => l.id), "best-chairs-to-buy"])
+    for (const l of dbLists ?? []) {
+      if (l.slug && !known.has(l.slug))
+        dynamicPages.push(url(`/best/${l.slug}`, toDate(l.updated_at), "weekly", 0.7))
+    }
+  } catch {
+    // Best lists table may not exist yet — ignore.
+  }
+
   // Comparisons — queried separately (table may not exist before migration 041).
   try {
     const supabase = createPublicServerClient()
