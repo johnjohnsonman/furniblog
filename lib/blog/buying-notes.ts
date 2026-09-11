@@ -4,11 +4,13 @@ type BlogBuyingNotes = {
   heading: string
   description: string
   related: { href: string; label: string }[]
+  additionalProducts?: { productId: string; name: string }[]
 }
 
 const size = 'herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c'
 const controls = 'how-to-use-the-herman-miller-aeron-a-complete-control-guide'
 const leap = 'steelcase-leap-v2-review-the-chair-that-hugs-your-body'
+const leapGesture = 'steelcase-leap-vs-gesture-which-high-end-ergonomic-chair-is-right-for-you'
 const notes: Record<string, BlogBuyingNotes> = {
   [size]: {
     productId: 'herman-miller-aeron',
@@ -29,7 +31,35 @@ const notes: Record<string, BlogBuyingNotes> = {
     name: 'Steelcase Leap V2',
     heading: 'Check a Leap V2 offer',
     description: 'Confirm the seller, selected condition, delivery, return terms and warranty on Amazon. A listing is not a claim of manufacturer authorization.',
-    related: [{ href: '/products/steelcase-leap-v2', label: 'Explore Steelcase Leap V2 details' }],
+    related: [
+      { href: '/products/steelcase-leap-v2', label: 'Explore Steelcase Leap V2 details' },
+      { href: `/blog/${leapGesture}`, label: 'Compare Leap with Gesture' },
+    ],
+  },
+  [leapGesture]: {
+    productId: 'steelcase-leap-v2',
+    name: 'Steelcase Leap V2',
+    heading: 'Compare Leap and Gesture offers',
+    description: 'Compare the selected configurations, not just the listed prices. Check arm and lumbar options, condition, seller, delivery and return terms for each offer. Warranty coverage depends on the purchase and is not established by this comparison.',
+    additionalProducts: [{ productId: 'steelcase-gesture', name: 'Steelcase Gesture' }],
+    related: [
+      { href: `/blog/${leap}`, label: 'Read the Leap V2 overview' },
+      { href: '/products/steelcase-gesture', label: 'Explore Steelcase Gesture details' },
+    ],
+  },
+  'herman-miller-x-logitech-g-embody-gaming-chair-materials-and-features-explained': {
+    productId: 'herman-miller-embody-gaming',
+    name: 'Herman Miller x Logitech G Embody Gaming Chair',
+    heading: 'Look for the Embody Gaming edition',
+    description: 'Confirm that an offer is for the Logitech G Gaming edition rather than the standard Embody. Check the selected upholstery, condition, seller and return terms. Search results may also include accessories and other chairs; availability is not verified.',
+    related: [{ href: '/products/herman-miller-embody-gaming', label: 'Explore Embody Gaming details' }],
+  },
+  'libernovo-lineup-explained-omni-omni-se-omni-pro-maxis-compared': {
+    productId: 'libernovo-omni',
+    name: 'LiberNovo Omni',
+    heading: 'Looking for the original LiberNovo Omni?',
+    description: 'This search is for the original Omni, not a confirmed offer for every model in the lineup. Check the exact model, regional specifications, delivery and return terms. Availability and current prices are not verified; results may include accessories or other chairs.',
+    related: [{ href: '/products/libernovo-omni', label: 'Explore the original LiberNovo Omni' }],
   },
 }
 
