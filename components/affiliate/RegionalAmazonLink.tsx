@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { ExternalLink } from "lucide-react"
 import { readAmazonCountry, singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
-import { buildAffiliateUrl, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
+import { buildAffiliateUrl, pageSubtag, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 
 export function RegionalAmazonLink({ href, name, productId, className }: {
   href: string
@@ -13,7 +14,7 @@ export function RegionalAmazonLink({ href, name, productId, className }: {
 }) {
   const [country, setCountry] = useState("US")
   useEffect(() => setCountry(readAmazonCountry()), [])
-  const destination = singaporeAmazonUrl(buildAffiliateUrl(href, "amazon", "US"), name, country)
+  const destination = singaporeAmazonUrl(buildAffiliateUrl(href, "amazon", "US", pageSubtag(usePathname())), name, country)
   const search = /[?&]k=/.test(destination) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(destination)
   const retailer = /^https:\/\/(www\.)?amazon\.sg\//.test(destination) ? "Amazon.sg" : "Amazon"
   const trackingCountry: AffiliateCountry = country === "SG" || country === "JP" || country === "KR" ? country : "US"

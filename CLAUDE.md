@@ -318,6 +318,14 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **AdSense는 보류 결정**: 현 트래픽 기대수익 월 $1~5 vs 품질 강등 상태 신청 시 거절 리스크 + 재평가 구간 페이지 경험 마이너스 → 2주 후 색인 개선 신호 확인 후 신청.
 - **📈 첫 실수익 확인**(Associates 대시보드): 지난 30일 커미션 **$19.00**, 클릭 20(자체 로그 30일 18건과 일관), 8/18 부근 스파이크. 9월 현재 주문 0·클릭 9. SubTag 붙이면 다음부터 페이지별 귀속 가능.
 
+### 2026-09-12 (4) 성장 웨이브2 실행 완료 (대표님 승인 "한 번에 실행")
+- **git 이력 통합**: 원격에 병렬 작업 스트림(다른 세션이 같은 백로그 수행, 트리 거의 동일) 존재 → 일반 merge 후 충돌 5파일 전부 "우리 신규 기능 vs 부재"라 ours로 해소, push 완료. 이후 모든 커밋 push됨. **주의: 두 컴퓨터에서 자율 세션이 같은 백로그를 돌면 평행 이력 재발 — 작업 시작 전 pull 필수.**
+- **Wave A (IndexNow)**: 키 `public/4f43f721...txt` + `scripts/indexnow-submit.cjs`(전체 사이트맵/개별 URL 전송). 첫 제출 403 SiteVerificationNotCompleted(신규 키 검증 지연) → 재시도로 202 수락 확인. 신규 발행 후 `node scripts/indexnow-submit.cjs <url>`로 핑.
+- **Wave B**: ①**Amazon SubTag** — `pageSubtag()`+`buildAffiliateUrl(..,subtag)` 추가, SmartBuyLink/BuyButton/RegionalAmazonLink 3곳 usePathname 배선. 프로덕션 HTML에 `ascsubtag=products_sihoo-doro-c300` 확인. **이제 Associates SubTag 리포트에서 페이지별 주문 귀속 가능**(대표님: 보고서에서 SubTag 항목 확인). ②GA4 affiliate_click은 병렬 스트림에서 기구현(1b6789a) — 스킵 ③best-chairs-to-buy에 "Before you buy" 3링크 박스 ④related 레일 5→**27종 전체**(예산/톨데스크/프리미엄 클러스터별).
+- **Wave C**: 라운드업 3편 발행(기존 가이드의 검증·티어 수치만 재사용, 가격은 확인일 명시) — `best-office-chairs-under-300-verified-picks` / `office-chairs-for-standing-desks-and-tall-desks-documented-picks`(ProGrid 19.5–23in 니치) / `herman-miller-aeron-alternatives-by-budget`(중고 루트 포함).
+- **Wave D**: 홈에 "Buying guides" 고정 섹션(9카드) — StatBand 아래. 전 항목 프로덕션 라이브 검증 완료.
+- 관찰 항목 추가: Bing 색인 반응(수일), SubTag 리포트 주문 귀속(1~2주), 기존 2주 GSC 체크.
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).

@@ -127,4 +127,10 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
   ],
   sourcesFooter:
     "Specifications are for the classic Gabrylly (ASIN B07Y8BXBX8) as of the date shown and are not independently verified by Furniblog. Gabrylly's variants share spec language — confirm capacity, arms and dimensions on the exact listing you buy from.",
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

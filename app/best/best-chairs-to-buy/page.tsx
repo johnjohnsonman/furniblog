@@ -115,6 +115,32 @@ export default async function BestChairsToBuyPage() {
           <p className="mt-3 text-xs text-muted-foreground">
             {rows.length} chairs. As an Amazon Associate, Furniblog earns from qualifying purchases.
           </p>
+
+          <div className="mt-6 rounded-xl border border-border bg-muted/20 p-5">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Before you buy
+            </p>
+            <ul className="mt-2 space-y-1.5 text-sm leading-relaxed">
+              <li>
+                <a href="/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" className="underline underline-offset-4">
+                  How to read an Amazon chair listing
+                </a>{" "}
+                — seller types, capacity claims and what a BIFMA badge does (and doesn&apos;t) mean.
+              </li>
+              <li>
+                <a href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" className="underline underline-offset-4">
+                  What returning a chair actually costs
+                </a>{" "}
+                — Amazon vs the Herman Miller and Steelcase stores, from the official policy pages.
+              </li>
+              <li>
+                <a href="/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" className="underline underline-offset-4">
+                  Will it fit your desk?
+                </a>{" "}
+                — documented seat-height ranges and the three measurements that decide fit.
+              </li>
+            </ul>
+          </div>
         </div>
 
         <div className="mx-auto max-w-4xl px-4 pb-16">

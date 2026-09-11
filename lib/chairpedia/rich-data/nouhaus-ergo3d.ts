@@ -127,4 +127,10 @@ export const NOUHAUS_ERGO3D: RichReview = {
     { k: "Nouhaus / retailer specs", v: "Nouhaus product information and retailers, read 2026-09-09. Basis for dimensions, seat depth, 135° recline and 3D lumbar. Weight capacity conflicts between sources." },
     { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and rolling/comfort notes; not first-hand." },
   ],
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

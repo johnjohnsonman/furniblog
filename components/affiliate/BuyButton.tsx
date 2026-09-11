@@ -1,11 +1,13 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
 import {
   buildAffiliateUrl,
+  pageSubtag,
   trackAffiliateClick,
   type AffiliateCountry,
 } from "@/lib/affiliate/links"
@@ -61,7 +63,7 @@ export function BuyButton({
     setCountry(readCountryCookie())
   }, [countryProp])
 
-  const original = buildAffiliateUrl(baseUrl, retailer, country)
+  const original = buildAffiliateUrl(baseUrl, retailer, country, pageSubtag(usePathname()))
   const href = retailer === "amazon" ? singaporeAmazonUrl(original, productName, country) : original
   const singapore = retailer === "amazon" && country === "SG" && /^https:\/\/(www\.)?amazon\.sg\//.test(href)
 

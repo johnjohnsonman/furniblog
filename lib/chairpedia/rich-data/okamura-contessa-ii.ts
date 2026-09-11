@@ -137,4 +137,10 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   ],
   sourcesFooter:
     "Specifications are Okamura's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Warranty and US availability vary by seller — confirm the exact options, seller and coverage before buying.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

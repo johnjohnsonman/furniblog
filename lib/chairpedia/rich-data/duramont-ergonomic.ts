@@ -139,4 +139,10 @@ export const DURAMONT_ERGONOMIC: RichReview = {
   ],
   sourcesFooter:
     "Specifications combine Duramont's published figures with independent hands-on reviews as of the date shown and are not independently verified by Furniblog. Where marketing and testing disagree (armrests, headrest), the item is marked not confirmed — check the listing you buy from.",
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

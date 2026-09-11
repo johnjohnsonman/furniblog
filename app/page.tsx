@@ -149,6 +149,37 @@ export default async function HomePage() {
           ]}
         />
 
+        {/* Buying guides — fixed entry points to the purchase cluster */}
+        <section className="border-t border-border py-14 lg:py-20">
+          <div className="mx-auto max-w-6xl px-4">
+            <Reveal>
+              <SectionHead title="Buying guides" href="/blog" cta="All guides" />
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {[
+                  { href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon", t: "What a return actually costs", d: "Herman Miller vs Steelcase vs Amazon — fees, windows, warranties" },
+                  { href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it", t: "How to read an Amazon listing", d: "Seller types, capacity claims, BIFMA badges, warranty text" },
+                  { href: "/blog/best-office-chairs-under-300-verified-picks", t: "Best chairs under $300", d: "Budget picks backed by documented specs, not hype" },
+                  { href: "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide", t: "Aeron Classic vs Remastered", d: "The 60-second generation check for used listings" },
+                  { href: "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection", t: "Used Steelcase Leap: V1 vs V2", d: "Identification table and pre-purchase inspection" },
+                  { href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs", t: "Refurbished vs used, decoded", d: "What each second-hand tier really promises" },
+                  { href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance", t: "Will it fit your desk?", d: "Documented seat-height ranges for 13 chairs" },
+                  { href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks", t: "Chairs for tall desks", d: "The few chairs with documented tall ranges" },
+                  { href: "/blog/herman-miller-aeron-alternatives-by-budget", t: "Aeron alternatives by budget", d: "Documented trade-offs at every price tier" },
+                ].map((g) => (
+                  <Link
+                    key={g.href}
+                    href={g.href}
+                    className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+                  >
+                    <div className="text-sm font-semibold text-foreground group-hover:underline">{g.t}</div>
+                    <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{g.d}</p>
+                  </Link>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* Latest reviews — now image-forward */}
         {latestReviews.length > 0 && (
           <section className="border-t border-border py-14 lg:py-20">

@@ -133,4 +133,10 @@ export const HUMANSCALE_FREEDOM: RichReview = {
   ],
   sourcesFooter:
     "Specifications combine Humanscale documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Freedom is configured to order and mostly sold via dealers — confirm the version, capacity and seller before buying.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

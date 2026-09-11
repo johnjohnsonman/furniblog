@@ -134,4 +134,10 @@ export const STEELCASE_SERIES_1: RichReview = {
   ],
   sourcesFooter:
     "Specifications combine Steelcase documentation with retail-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Series 1 is sold in several back, arm and colour configurations — confirm the exact build on the listing you buy from.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

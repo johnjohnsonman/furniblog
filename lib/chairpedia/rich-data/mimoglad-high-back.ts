@@ -129,4 +129,10 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
   ],
   sourcesFooter:
     "Specifications are for the MIMOGLAD OC-5188H (ASIN B09N93L2RQ) as of the date shown and are not independently verified by Furniblog. MIMOGLAD's look-alike listings share spec language — confirm the model, capacity and colour on the exact listing you buy from.",
+  related: [
+    { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

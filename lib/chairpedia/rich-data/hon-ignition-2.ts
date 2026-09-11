@@ -134,4 +134,10 @@ export const HON_IGNITION_2: RichReview = {
   ],
   sourcesFooter:
     "Specifications are configuration-dependent and combine HON/dealer figures with published reviews as of the date shown; they are not independently verified by Furniblog. Confirm the exact build (back, arms, lumbar, capacity) on the listing you buy from.",
+  related: [
+    { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

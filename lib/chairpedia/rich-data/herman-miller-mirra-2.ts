@@ -134,4 +134,10 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
   ],
   sourcesFooter:
     "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Mirra 2 is sold in several back and arm configurations — confirm the back type, tilt, seat depth, arms and colour on the listing you buy from.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

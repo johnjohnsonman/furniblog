@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { buildAffiliateUrl, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
+import { buildAffiliateUrl, pageSubtag, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
 import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
 
@@ -54,6 +55,7 @@ export function SmartBuyLink({
 }: SmartBuyLinkProps) {
   const [country, setCountry] = useState("US")
   useEffect(() => setCountry(readCountryCookie()), [])
+  const subtag = pageSubtag(usePathname())
 
   const query = name.trim()
   const sea = isSeaCountry(country) ? resolveSeaLinks(query, country as SeaCountry) : null
@@ -71,7 +73,7 @@ export function SmartBuyLink({
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
 
   // Local searches supplement the supplied Amazon product link.
-  const href = singaporeAmazonUrl(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US"), query, country)
+  const href = singaporeAmazonUrl(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US", subtag), query, country)
   // A search URL is NOT a verified product/price — label it honestly so it isn't
   // presented as a confirmed listing.
   const isSearch = /[?&]k=/.test(href) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(href)

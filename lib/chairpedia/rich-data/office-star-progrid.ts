@@ -136,4 +136,10 @@ export const OFFICE_STAR_PROGRID: RichReview = {
   ],
   sourcesFooter:
     "Specifications reflect the common Office Star ProGrid manager's figures (official 92553 sheet plus dealers) as of the date shown and are not independently verified by Furniblog. The ProGrid line spans several SKUs and the linked ASIN is an older variant — confirm the exact model, capacity and features on the listing you buy from.",
+  related: [
+    { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

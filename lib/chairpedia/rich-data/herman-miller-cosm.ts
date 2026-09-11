@@ -132,4 +132,10 @@ export const HERMAN_MILLER_COSM: RichReview = {
   ],
   sourcesFooter:
     "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Cosm is sold in three back heights and three arm tiers — confirm the exact build and colour on the listing you buy from.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

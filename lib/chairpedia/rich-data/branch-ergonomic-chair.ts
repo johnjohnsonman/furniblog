@@ -134,4 +134,10 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
   ],
   sourcesFooter:
     "Specifications are for the base Branch Ergonomic Chair as of the date shown and are not independently verified by Furniblog. Seat height/depth vary by cylinder option and the headrest is a separate add-on — confirm the configuration on the listing you buy from.",
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

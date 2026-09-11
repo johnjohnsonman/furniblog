@@ -135,4 +135,10 @@ export const SIHOO_DORO_S300: RichReview = {
   ],
   sourcesFooter:
     "Specifications are SIHOO's published figures as of the date shown and are not independently verified by Furniblog. The recline angle isn't officially stated and a German Design Award is a manufacturer claim — confirm details on the listing you buy from.",
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

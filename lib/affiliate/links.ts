@@ -79,12 +79,27 @@ export function buildCoupangAffiliateUrl(baseUrl?: string): string {
 }
 
 /**
+ * Amazon SubTag (ascsubtag) value for a page path, so Associates reports can
+ * attribute orders back to the page the click came from. Amazon accepts
+ * letters, digits, hyphen and underscore; anything else is folded to "-".
+ */
+export function pageSubtag(pathname: string | null | undefined): string | undefined {
+  if (!pathname) return undefined
+  const cleaned = pathname
+    .replace(/^\/+|\/+$/g, "")
+    .replace(/\//g, "_")
+    .replace(/[^A-Za-z0-9_-]+/g, "-")
+  return (cleaned || "home").slice(0, 90)
+}
+
+/**
  * Append retailer-specific affiliate tracking parameters.
  */
 export function buildAffiliateUrl(
   baseUrl: string,
   retailer: string,
-  country: AffiliateCountry = "US"
+  country: AffiliateCountry = "US",
+  subtag?: string
 ): string {
   const r = normalizeRetailer(retailer)
 
@@ -106,6 +121,7 @@ export function buildAffiliateUrl(
     const usTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
     const tag = country === "JP" && jpTag ? jpTag : usTag
     if (tag) url.searchParams.set("tag", tag)
+    if (subtag) url.searchParams.set("ascsubtag", subtag)
     return url.toString()
   }
 

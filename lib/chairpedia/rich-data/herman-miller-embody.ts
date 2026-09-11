@@ -134,4 +134,10 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
   ],
   sourcesFooter:
     "Specifications combine Herman Miller documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Embody is sold in standard and Logitech G gaming editions and several configurations — confirm the edition, arms, textile and casters on the listing you buy from.",
+  related: [
+    { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }
