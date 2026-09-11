@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { verifyAdminSecret } from "@/lib/pipeline/auth"
 import { createAdminClient } from "@/lib/supabase/admin"
-import { collectionFailureReason } from "@/lib/reviews/collection-quality"
+import { collectionFailureReason, collectedAnalysisFailure } from "@/lib/reviews/collection-quality"
 
 export async function POST(request: NextRequest) {
   if (!verifyAdminSecret(request)) {
@@ -57,6 +57,10 @@ export async function POST(request: NextRequest) {
   }
 
   const summary = ai.summary ?? (ai as { summaryKo?: string }).summaryKo
+  const analysisFailure = collectedAnalysisFailure({ ...ai, summary, overall: ai.scores?.overall }, "")
+  if (analysisFailure) {
+    return NextResponse.json({ error: analysisFailure }, { status: 422 })
+  }
   const failure = collectionFailureReason(summary, row.source_url)
   if (failure) {
     return NextResponse.json({ error: failure }, { status: 422 })
