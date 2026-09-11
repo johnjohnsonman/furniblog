@@ -58,7 +58,16 @@ export const NOINDEX_FOLLOW = { robots: { index: false, follow: true } } as cons
  * Bing/DuckDuckGo/AI search, which keep serving it. Re-enable a post for
  * Google via the allowlist after a sourced rewrite.
  */
-const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([])
+const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([
+  // The five Naver-adapted posts with actual Google referral traffic in the
+  // 60 days to 2026-09-12 (page_views). Everything else in the cluster had
+  // zero Google visits, so hiding it from Google costs nothing.
+  "libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared",
+  "herman-miller-x-logitech-g-embody-gaming-chair-materials-and-features-explained",
+  "three-luxury-ergonomic-chairs-worth-the-investment-aeron-leap-and-contessa-compa",
+  "kokuyo-ing-cloud-review-the-3-000-chair-that-moves-with-you",
+  "mesh-vs-fabric-office-chairs-how-to-choose-based-on-how-you-actually-sit",
+])
 
 export function isBlogPostGoogleSearchable(post: {
   slug: string | null
