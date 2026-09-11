@@ -3,6 +3,7 @@ const { mkdirSync } = require('node:fs');
 const { resolve } = require('node:path');
 const { chromium } = require('playwright');
 const cases = [
+  ['libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared', 'libernovo-omni'],
   ['herman-miller-aeron-tilt-lock-why-your-chair-still-moves-and-why-that-s-normal', 'herman-miller-aeron'],
   ['herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c', 'herman-miller-aeron'],
   ['how-to-use-the-herman-miller-aeron-a-complete-control-guide', 'herman-miller-aeron'],
@@ -33,7 +34,7 @@ async function main() {
         document.addEventListener('click', e => { if (e.target instanceof Element && e.target.closest('a[rel~="sponsored"]')) e.preventDefault(); }, true);
       }, country);
       const page = await context.newPage();
-      for (const [slug, product] of cases) {
+      for (const [slug, product] of cases.filter(([slug]) => !process.argv.includes('--libernovo') || slug.startsWith('libernovo-'))) {
         const path = '/blog/' + slug;
         const response = await page.goto(base + path, { waitUntil: 'networkidle', timeout: 90000 });
         assert.equal(response.status(), 200);
