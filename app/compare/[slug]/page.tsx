@@ -143,6 +143,9 @@ export default async function ComparePage({
 
           {(c.productA || c.productB) && (
             <div className="mb-8 grid gap-3">
+              <p className="text-sm text-muted-foreground" data-testid="comparison-affiliate-disclosure">
+                As an Amazon Associate I earn from qualifying purchases. Search links may include other models or accessories; confirm the exact item, seller and condition before buying.
+              </p>
               {c.productA && <BuyRow product={c.productA} />}
               {c.productB && <BuyRow product={c.productB} />}
             </div>
@@ -171,6 +174,9 @@ export default async function ComparePage({
 
           {(c.productA || c.productB) && (
             <div className="mt-12 grid gap-3">
+              <p className="text-sm text-muted-foreground">
+                Affiliate links: we may earn a commission from qualifying purchases. Check current delivery, return and warranty terms on Amazon.
+              </p>
               {c.productA && <BuyRow product={c.productA} />}
               {c.productB && <BuyRow product={c.productB} />}
             </div>
