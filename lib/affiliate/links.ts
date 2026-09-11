@@ -147,6 +147,20 @@ export async function trackAffiliateClick(
   country: AffiliateCountry = "US"
 ): Promise<void> {
   if (typeof window !== "undefined") {
+    // A retailer click is purchase intent, not a completed order or revenue.
+    // Keep GA optional and independent of first-party click logging.
+    try {
+      const analytics = window as Window & {
+        gtag?: (command: string, event: string, parameters: Record<string, string>) => void
+      }
+      analytics.gtag?.("event", "affiliate_click", {
+        product_id: productId,
+        retailer: normalizeRetailer(retailer),
+        page_path: window.location.pathname,
+      })
+    } catch {
+      // Analytics failures must not prevent navigation or first-party logging.
+    }
     try {
       await fetch("/api/affiliate/track", {
         method: "POST",
