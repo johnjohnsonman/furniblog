@@ -100,13 +100,10 @@ export function buildAffiliateUrl(
   }
 
   if (r === "amazon") {
-    // Always stamp a valid associate tag so every Amazon link earns — even
-    // before the OneLink script runs and for non-JS crawlers. The OneLink
-    // script then localizes the domain + regional tracking client-side. The US
-    // store ID earns across all "Earn Globally" marketplaces (US/CA/UK/DE/FR/
-    // IT/NL/PL/ES/SE); Japan is a separate program with its own tag.
-    const jpTag = process.env.NEXT_PUBLIC_AMAZON_JP_TAG
-    const usTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG
+    // Keep US links attributable even when the public build-time tag is absent.
+    // Tracking tags alone do not guarantee commission or regional eligibility.
+    const jpTag = process.env.NEXT_PUBLIC_AMAZON_JP_TAG?.trim()
+    const usTag = process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
     const tag = country === "JP" && jpTag ? jpTag : usTag
     if (tag) url.searchParams.set("tag", tag)
     return url.toString()
