@@ -17,6 +17,7 @@ function load(file, imports = {}) {
   return mod.exports;
 }
 const sea = load('lib/affiliate/sea.ts');
+const region = load('lib/affiliate/amazon-region.ts');
 const affiliate = load('lib/affiliate/links.ts', {
   '@/lib/supabase/admin': { createAdminClient: () => { throw new Error('Unexpected database access'); } },
   '@/lib/pipeline/queue-mapper': { isUuid: () => false },
@@ -32,6 +33,7 @@ const { SmartBuyLink } = load('components/affiliate/SmartBuyLink.tsx', {
   '@/lib/utils': { cn: (...values) => values.filter(Boolean).join(' ') },
   '@/lib/affiliate/links': { buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
   '@/lib/affiliate/sea': sea,
+  '@/lib/affiliate/amazon-region': region,
 });
 function anchors(node) {
   if (!node || typeof node !== 'object') return [];
@@ -55,12 +57,16 @@ try {
           const links = anchors(tree);
           assert.equal(links.length, sea.isSeaCountry(country) ? 3 : 1);
           const amazon = new URL(links[0].props.href);
-          assert.equal(amazon.hostname, 'www.amazon.com');
+          assert.equal(amazon.hostname, country === 'SG' ? 'www.amazon.sg' : 'www.amazon.com');
           assert.ok(amazon.searchParams.get('tag'));
-          if (direct) assert.equal(links[0].props.href, url);
+          if (country === 'SG') {
+            assert.equal(amazon.searchParams.get('tag'), 'furniblog-22');
+            assert.equal(amazon.pathname, '/s');
+            assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
+          } else if (direct) assert.equal(links[0].props.href, url);
           else assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
           const html = renderToStaticMarkup(tree);
-          assert.match(html, direct ? /View on Amazon/ : /Search on Amazon/);
+          assert.match(html, country === 'SG' ? /Search on Amazon.sg/ : direct ? /View on Amazon/ : /Search on Amazon/);
           assert.match(html, /we may earn a commission/);
           for (const link of links) {
             assert.match(link.props.rel, /sponsored/);

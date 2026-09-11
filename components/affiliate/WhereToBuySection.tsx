@@ -13,7 +13,7 @@ function readCountryCookie(): AffiliateCountry {
   if (typeof document === "undefined") return "US"
   const match = document.cookie.match(/(?:^|;\s*)x-country=([^;]+)/)
   const value = match?.[1]?.toUpperCase()
-  if (value === "KR" || value === "JP") return value
+  if (value === "KR" || value === "JP" || value === "SG") return value
   return "US"
 }
 
@@ -57,8 +57,10 @@ export function WhereToBuySection({
   )
 
   const priceRows = useMemo(
-    () => buildPriceRowsFromCatalog(sortedLinks),
-    [sortedLinks]
+    () => buildPriceRowsFromCatalog(sortedLinks).map(row => country === "SG" && row.channel === "amazon"
+      ? { ...row, retailer: "Amazon.sg", priceDisplay: "Check on Amazon.sg", shipping: "Check delivery at retailer" }
+      : row),
+    [sortedLinks, country]
   )
 
   return (
@@ -69,7 +71,8 @@ export function WhereToBuySection({
       <PriceCompareTable
         rows={priceRows}
         productId={productId}
-        defaultPrice={defaultPrice}
+        productName={productName}
+        defaultPrice={country === "SG" ? undefined : defaultPrice}
       />
     </div>
   )

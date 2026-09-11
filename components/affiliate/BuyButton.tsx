@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
 import {
   buildAffiliateUrl,
   trackAffiliateClick,
@@ -27,12 +28,13 @@ function readCountryCookie(): AffiliateCountry {
   if (typeof document === "undefined") return "US"
   const match = document.cookie.match(/(?:^|;\s*)x-country=([^;]+)/)
   const value = match?.[1]?.toUpperCase()
-  if (value === "KR" || value === "JP") return value
+  if (value === "KR" || value === "JP" || value === "SG") return value
   return "US"
 }
 
 interface BuyButtonProps {
   productId: string
+  productName?: string
   baseUrl: string
   retailer: BuyButtonVariant
   country?: AffiliateCountry
@@ -42,6 +44,7 @@ interface BuyButtonProps {
 
 export function BuyButton({
   productId,
+  productName = "",
   baseUrl,
   retailer,
   country: countryProp,
@@ -58,7 +61,9 @@ export function BuyButton({
     setCountry(readCountryCookie())
   }, [countryProp])
 
-  const href = buildAffiliateUrl(baseUrl, retailer, country)
+  const original = buildAffiliateUrl(baseUrl, retailer, country)
+  const href = retailer === "amazon" ? singaporeAmazonUrl(original, productName, country) : original
+  const singapore = retailer === "amazon" && country === "SG" && /^https:\/\/(www\.)?amazon\.sg\//.test(href)
 
   const handleClick = useCallback(() => {
     void trackAffiliateClick(productId, retailer, country)
@@ -77,7 +82,7 @@ export function BuyButton({
         className
       )}
     >
-      {VARIANT_LABELS[retailer]}
+      {singapore ? (new URL(href).pathname === "/s" ? "Search on Amazon.sg" : "View on Amazon.sg") : VARIANT_LABELS[retailer]}
       <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
     </a>
   )
