@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
+import { buildAffiliateUrl, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
 
 const FALLBACK_AMAZON_TAG =
@@ -70,7 +70,7 @@ export function SmartBuyLink({
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
 
   // Local searches supplement the supplied Amazon product link.
-  const href = amazonUrl || amazonSearchUrl(query)
+  const href = buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US")
   // A search URL is NOT a verified product/price — label it honestly so it isn't
   // presented as a confirmed listing.
   const isSearch = /[?&]k=/.test(href) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(href)
