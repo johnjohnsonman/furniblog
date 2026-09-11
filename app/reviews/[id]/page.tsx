@@ -7,6 +7,9 @@ import { Footer } from "@/components/footer"
 import { BackToReviewsLink } from "@/components/reviews/back-to-reviews-link"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
+import { getReviewBuyingNotes } from "@/lib/reviews/buying-notes"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
+import { buildAmazonSearchUrl } from "@/lib/affiliate/resolve-amazon-link"
 import {
   generateArticleSchema,
   generateBreadcrumbSchema,
@@ -93,9 +96,11 @@ export async function generateMetadata(props: {
   const review = await getReview(id)
   if (!review?.products) return { title: "Review" }
   const name = review.products.name
+  const notes = getReviewBuyingNotes(id, review.products.slug, review.source_url)
   return {
-    title: `${name} review (${sourceLabel(review.source)})`,
+    title: notes?.title ?? `${name} review (${sourceLabel(review.source)})`,
     description:
+      notes?.description ||
       review.summary_ko?.trim().slice(0, 160) ||
       `A user review of the ${name} office chair, with a link to the original.`,
     alternates: { canonical: `/reviews/${id}` },
@@ -110,6 +115,7 @@ export default async function ReviewDetailPage(props: {
   if (!review || !review.products) notFound()
 
   const product = review.products
+  const notes = getReviewBuyingNotes(id, product.slug, review.source_url)
   const brand = brandName(product.brands)
   const pros = (review.pros ?? []).filter(Boolean)
   const cons = (review.cons ?? []).filter(Boolean)
@@ -123,12 +129,12 @@ export default async function ReviewDetailPage(props: {
 
   const jsonLd = [
     generateArticleSchema({
-      headline: `${product.name} review (${sourceLabel(review.source)})`,
-      description: review.summary_ko,
+      headline: notes?.title ?? `${product.name} review (${sourceLabel(review.source)})`,
+      description: notes?.description ?? review.summary_ko,
       path: `/reviews/${review.id}`,
       datePublished: review.created_at,
       image: product.thumbnail_url,
-      authorName: sourceLabel(review.source),
+      authorName: notes ? "Furniblog Editorial Team" : sourceLabel(review.source),
     }),
     generateBreadcrumbSchema([
       { name: "Reviews", url: "/reviews" },
@@ -159,11 +165,15 @@ export default async function ReviewDetailPage(props: {
         </div>
 
         <h1 className="mt-3 font-serif text-2xl font-medium leading-tight tracking-tight text-foreground md:text-3xl">
+          {notes ? notes.title : <>
           <Link href={`/products/${product.slug}`} className="hover:underline">
             {product.name}
           </Link>{" "}
           review
+          </>}
         </h1>
+
+        {notes && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{notes.sourceNote}</p>}
 
         {/* Summary (links out to the original below) */}
         {review.summary_ko?.trim() ? (
@@ -190,7 +200,7 @@ export default async function ReviewDetailPage(props: {
             {pros.length > 0 && (
               <div>
                 <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Pros
+                  {notes ? "Reported positives" : "Pros"}
                 </h2>
                 <ul className="space-y-1.5">
                   {pros.map((p, i) => (
@@ -205,7 +215,7 @@ export default async function ReviewDetailPage(props: {
             {cons.length > 0 && (
               <div>
                 <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                  Cons
+                  {notes ? "Reported concerns" : "Cons"}
                 </h2>
                 <ul className="space-y-1.5">
                   {cons.map((c, i) => (
@@ -238,6 +248,25 @@ export default async function ReviewDetailPage(props: {
             </p>
           </div>
         ) : null}
+
+        {notes && (
+          <section aria-labelledby="buying-checks" className="mt-10 border-t border-border pt-8">
+            <h2 id="buying-checks" className="font-serif text-xl font-medium">{notes.heading}</h2>
+            <p className="mt-3 leading-relaxed">{notes.answer}</p>
+            <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+              {notes.checks.map(check => <li key={check}>{check}</li>)}
+            </ul>
+            <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+              {notes.references.map(ref => (
+                <a key={ref.url} href={ref.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{ref.label}</a>
+              ))}
+            </div>
+            <div className="mt-6">
+              <SmartBuyLink name={notes.amazonQuery} productId={product.slug} amazonUrl={buildAmazonSearchUrl(notes.amazonQuery)} variant="block" showDisclaimer />
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">Search results may include other models, accessories or replicas. No particular seller, stock or authenticity is verified here.</p>
+          </section>
+        )}
 
         {/* Product funnel */}
         <section className="mt-10 border-t border-border pt-8">
