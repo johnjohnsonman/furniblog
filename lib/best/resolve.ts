@@ -1,6 +1,5 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
-import { buildAffiliateUrl } from "@/lib/affiliate/links"
 import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links-data"
 import {
   products as staticProducts,
@@ -135,7 +134,7 @@ function staticResolved(slug: string): ResolvedBestList | null {
       bestFor: p.bestFor ?? null,
       pros: p.pros ?? [],
       cons: p.cons ?? [],
-      amazonUrl: p.amazonUrl ? buildAffiliateUrl(p.amazonUrl, "amazon", "US") : null,
+      amazonUrl: resolveAmazonAffiliateLink(p.id, p.name).url,
       blurb: null,
     }))
   return { slug, title: list.title, intro: null, heroImage: null, items }

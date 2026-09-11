@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: BestListPageProps): Promise<M
   if (!list) return {}
   const description =
     list.intro?.trim() ||
-    `${list.title} — expert-curated picks with specs, real reviews and prices.`
+    `${list.title}: compare catalog details, options and purchase links before choosing a chair.`
   return {
     title: list.title,
     description,
@@ -33,14 +33,11 @@ export async function generateMetadata({ params }: BestListPageProps): Promise<M
   }
 }
 
-const WINNER_LABELS = ["Best overall", "Runner-up", "Also great"]
-
 export default async function BestListPage({ params }: BestListPageProps) {
   const { slug } = await params
   const list = await getResolvedBestList(slug)
   if (!list) notFound()
 
-  const winners = list.items.slice(0, 3)
   const related = (await getBestListCards()).filter((l) => l.slug !== slug).slice(0, 3)
 
   return (
@@ -51,7 +48,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
         {/* Breadcrumb */}
         <div className="border-b border-border">
           <div className="mx-auto max-w-5xl px-4 py-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-foreground">Home</Link>
               <ChevronRight className="h-3 w-3" />
               <Link href="/best" className="hover:text-foreground">Best Lists</Link>
@@ -66,11 +63,16 @@ export default async function BestListPage({ params }: BestListPageProps) {
           <h1 className="font-serif text-3xl font-medium text-foreground lg:text-4xl">{list.title}</h1>
           <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
             {list.intro?.trim() ||
-              `Our picks for the ${list.title.toLowerCase()}, tested and reviewed. Updated for ${new Date().getFullYear()}.`}
+              `Compare the options in ${list.title.toLowerCase()} against your space, preferences and purchase terms.`}
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
-            {list.items.length} chairs · updated {new Date().toLocaleDateString()}
+            {list.items.length} chairs in this list
           </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Catalog prices are reference figures, not live Amazon offers. Confirm the current price,
+            model, condition, delivery and return terms with the seller. List order is not a hands-on test score.
+          </p>
+          <p className="mt-3 text-xs text-muted-foreground">As an Amazon Associate, Furniblog earns from qualifying purchases.</p>
         </div>
 
         {/* Hero image */}
@@ -81,30 +83,29 @@ export default async function BestListPage({ params }: BestListPageProps) {
           </div>
         )}
 
-        {/* Quick winners */}
-        {winners.length > 0 && (
-          <div className="mx-auto mt-8 max-w-5xl px-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              {winners.map((w, i) => (
-                <div key={w.slug} className="rounded-xl border border-border bg-card p-4">
-                  <p className="mb-2 text-xs font-medium uppercase tracking-wider text-premium-accent">
-                    {WINNER_LABELS[i]}
-                  </p>
-                  <Link href={`/products/${w.slug}`} className="font-medium text-foreground hover:underline">
-                    {w.name}
-                  </Link>
-                  <p className="text-sm text-muted-foreground">{w.price}</p>
-                </div>
-              ))}
+        {list.items.length > 0 && (
+          <section aria-labelledby="shortlist-heading" className="mx-auto mt-8 max-w-5xl px-4">
+            <h2 id="shortlist-heading" className="mb-3 text-xl font-semibold">Compare the shortlist</h2>
+            <div className="max-w-full overflow-x-auto" tabIndex={0} role="region" aria-label="Chair shortlist">
+              <table className="w-full min-w-[480px] text-left text-sm">
+                <thead><tr className="border-b border-border"><th scope="col" className="py-3 pr-4">Chair</th><th scope="col" className="py-3 pr-4">Catalog reference</th><th scope="col" className="py-3">Details</th></tr></thead>
+                <tbody>{list.items.map(item => (
+                  <tr key={item.slug} className="border-b border-border">
+                    <th scope="row" className="py-3 pr-4 font-medium">{item.name}</th>
+                    <td className="py-3 pr-4">{item.price}</td>
+                    <td className="py-3"><a href={`#chair-${item.slug}`} aria-label={`Details for ${item.name}`} className="underline underline-offset-4">Details</a></td>
+                  </tr>
+                ))}</tbody>
+              </table>
             </div>
-          </div>
+          </section>
         )}
 
         {/* Rankings */}
         <div className="mx-auto max-w-5xl px-4 py-12">
           <div className="space-y-6">
             {list.items.map((p, index) => (
-              <div key={p.slug} className="overflow-hidden rounded-2xl border border-border bg-card">
+              <div key={p.slug} id={`chair-${p.slug}`} data-buying-product={p.slug} className="scroll-mt-24 overflow-hidden rounded-lg border border-border bg-card">
                 <div className="flex flex-col gap-6 p-6 lg:flex-row lg:gap-8 lg:p-8">
                   <div className="flex gap-4 lg:flex-col lg:items-center">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-foreground font-bold text-background">
@@ -118,7 +119,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
                     </div>
                   </div>
 
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1">
                     {p.brand && (
                       p.brandSlug ? (
                         <Link href={`/brands/${p.brandSlug}`} className="text-sm text-muted-foreground hover:text-foreground">
@@ -131,7 +132,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
                     <h2 className="mt-1 font-serif text-xl font-medium text-foreground">
                       <Link href={`/products/${p.slug}`} className="hover:underline">{p.name}</Link>
                     </h2>
-                    <p className="mt-2 text-lg font-semibold text-foreground">{p.price}</p>
+                    <p className="mt-2 text-sm text-muted-foreground">Catalog reference: {p.price}</p>
 
                     {p.blurb && (
                       <p className="mt-3 rounded-lg bg-muted/40 px-3 py-2 text-sm italic text-foreground">
@@ -188,7 +189,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
                         amazonLabel="View on Amazon"
                       />
                       <Link href={`/products/${p.slug}`} className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-muted">
-                        Full Review
+                        Product details
                       </Link>
                     </div>
                   </div>
@@ -196,6 +197,8 @@ export default async function BestListPage({ params }: BestListPageProps) {
               </div>
             ))}
           </div>
+
+          {list.items.length === 0 && <p className="text-sm text-muted-foreground">No matching chairs are currently listed. <Link href="/best" className="underline">Browse other buying guides</Link>.</p>}
 
           <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
             Furniblog may earn a commission when you purchase through links on this page, at no extra cost to you.

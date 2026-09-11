@@ -8,9 +8,9 @@ import { getBestListCards } from "@/lib/best/resolve"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Best Office Chairs — Curated Lists",
+  title: "Office Chair Buying Guides",
   description:
-    "Expert-curated best office chair lists — for back pain, tall people, long hours, and under budget. Specs, reviews and prices.",
+    "Compare office chair shortlists by budget and intended use. Explore product details and purchase options before choosing a chair.",
   alternates: { canonical: "/best" },
 }
 
@@ -34,9 +34,9 @@ export default async function BestListsPage() {
 
         {/* Header */}
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <h1 className="font-serif text-3xl font-medium text-foreground lg:text-4xl">Best Lists</h1>
+          <h1 className="font-serif text-3xl font-medium text-foreground lg:text-4xl">Office Chair Buying Guides</h1>
           <p className="mt-3 text-muted-foreground leading-relaxed max-w-2xl">
-            Our curated rankings of the best office chairs for every need. Expert-tested and regularly updated.
+            Compare chair options by budget and intended use. Check dimensions, available adjustments and seller terms before choosing.
           </p>
         </div>
 
@@ -47,13 +47,13 @@ export default async function BestListsPage() {
             className="mb-4 block rounded-xl border border-foreground/15 bg-card p-6 transition-all hover:border-foreground/30"
           >
             <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Editor&apos;s pick
+              Online purchase options
             </span>
             <h2 className="mt-1 font-serif text-xl font-medium text-foreground">
-              Best Office &amp; Gaming Chairs You Can Buy Online
+              Office &amp; Gaming Chairs: Amazon Listings
             </h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Budget to premium — the ergonomic chairs you can actually buy today, with specs and prices.
+              Explore chairs with Amazon listing links in our catalog. Availability and current prices vary by seller.
             </p>
           </Link>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

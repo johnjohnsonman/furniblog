@@ -4,19 +4,22 @@ import { ChevronRight, Check, ArrowRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
-import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links"
+import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links-data"
+import { amazonListingSlugs } from "@/lib/best/amazon-listings"
+import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Best Office & Gaming Chairs You Can Buy Online (2026)",
+  title: "Office & Gaming Chairs: Amazon Listings",
   description:
-    "Our editor picks of ergonomic office and gaming chairs you can actually buy online today — budget to premium, from SIHOO and Steelcase to Razer. Specs, pros and where to buy.",
+    "Compare office and gaming chairs with Amazon listing links. Check product details, seller, condition, delivery and return terms before buying.",
   alternates: { canonical: "/best/best-chairs-to-buy" },
   openGraph: {
-    title: "Best Office & Gaming Chairs You Can Buy Online (2026)",
+    title: "Office & Gaming Chairs: Amazon Listings",
     description:
-      "Ergonomic office and gaming chairs you can buy online today — budget to premium, with full specs and reviews.",
+      "Explore office and gaming chair listing links, product details and purchase checks. Current stock and prices are not verified.",
     url: "/best/best-chairs-to-buy",
   },
 }
@@ -24,6 +27,7 @@ export const metadata: Metadata = {
 type GuideRow = {
   slug: string
   name: string
+  thumbnail_url: string | null
   category: string | null
   chair_type: string | null
   description_ko: string | null
@@ -31,13 +35,6 @@ type GuideRow = {
   best_for: string | null
   pros: string[] | null
   brands?: { name?: string | null } | { name?: string | null }[] | null
-}
-
-// Chairs that have a direct buy link in the catalog are the buyable picks.
-function buyableSlugs(): string[] {
-  return Object.entries(AFFILIATE_LINKS_DATA)
-    .filter(([, links]) => links.some((l) => l.url.includes("/dp/")))
-    .map(([slug]) => slug)
 }
 
 const CATEGORY_ORDER = ["office", "gaming", "executive", "standing", "study"]
@@ -48,7 +45,7 @@ function brandName(row: GuideRow): string {
 }
 
 export default async function BestChairsToBuyPage() {
-  const slugs = buyableSlugs()
+  const slugs = amazonListingSlugs(AFFILIATE_LINKS_DATA)
   let rows: GuideRow[] = []
 
   if (process.env.NEXT_PUBLIC_SUPABASE_URL && slugs.length > 0) {
@@ -56,7 +53,7 @@ export default async function BestChairsToBuyPage() {
     const { data } = await supabase
       .from("products")
       .select(
-        "slug,name,category,chair_type,description_ko,description_en,best_for,pros,brands(name)"
+        "slug,name,thumbnail_url,category,chair_type,description_ko,description_en,best_for,pros,brands(name)"
       )
       .in("slug", slugs)
       .eq("published", true)
@@ -73,11 +70,11 @@ export default async function BestChairsToBuyPage() {
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Best Office & Gaming Chairs You Can Buy Online",
+    name: "Office & Gaming Chairs: Amazon Listings",
     itemListElement: rows.map((r, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `/products/${r.slug}`,
+      url: `https://www.furniblog.com/products/${r.slug}`,
       name: r.name,
     })),
   }
@@ -93,7 +90,7 @@ export default async function BestChairsToBuyPage() {
       <main className="flex-1">
         <div className="border-b border-border">
           <div className="mx-auto max-w-4xl px-4 py-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
               <ChevronRight className="h-3 w-3" />
               <Link href="/best" className="hover:text-foreground transition-colors">Best Lists</Link>
@@ -108,17 +105,15 @@ export default async function BestChairsToBuyPage() {
             Buying guide
           </p>
           <h1 className="mt-1 font-serif text-3xl font-medium text-foreground lg:text-4xl">
-            Best Office &amp; Gaming Chairs You Can Buy Online
+            Office &amp; Gaming Chairs: Amazon Listings
           </h1>
           <p className="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
-            Showroom icons like the Herman Miller Aeron are sold direct only.
-            These are the ergonomic office and gaming chairs you can actually buy
-            online today — chosen for real comfort-per-dollar, from budget mesh to
-            name-brand picks. Tap any chair for full specs, reviews and where to buy.
+            These published catalog chairs have Amazon.com listing links. A link does not confirm
+            stock, current price or seller authorization. Check the model, condition, delivery,
+            warranty and return terms on Amazon. Chairs are grouped by category, then name, not test score.
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
-            {rows.length} chairs · updated {new Date().getFullYear()} · Furniblog may
-            earn a commission from links, at no extra cost to you.
+            {rows.length} chairs. As an Amazon Associate, Furniblog earns from qualifying purchases.
           </p>
         </div>
 
@@ -129,12 +124,14 @@ export default async function BestChairsToBuyPage() {
               return (
                 <li
                   key={row.slug}
-                  className="rounded-xl border border-border bg-card p-5"
+                  data-buying-product={row.slug}
+                  className="rounded-lg border border-border bg-card p-5"
                 >
-                  <div className="flex gap-4">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-foreground text-sm font-semibold text-background">
-                      {i + 1}
-                    </div>
+                  <div className="flex flex-col gap-4 sm:flex-row">
+                    {row.thumbnail_url && <div className="h-36 w-36 shrink-0 self-center overflow-hidden rounded-lg bg-muted sm:self-start">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={row.thumbnail_url} alt={row.name} loading="lazy" className="h-full w-full object-contain p-2" />
+                    </div>}
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="rounded-full border border-border bg-background px-2 py-0.5 text-xs font-medium text-foreground">
@@ -171,12 +168,13 @@ export default async function BestChairsToBuyPage() {
                           ))}
                         </ul>
                       )}
-                      <div className="mt-4">
+                      <div className="mt-4 flex flex-wrap items-start gap-3">
+                        <SmartBuyLink name={row.name} productId={row.slug} amazonUrl={resolveAmazonAffiliateLink(row.slug, row.name).url} variant="inline" />
                         <Link
                           href={`/products/${row.slug}`}
                           className="inline-flex items-center gap-2 rounded-lg bg-foreground px-4 py-2 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
                         >
-                          View chair &amp; price
+                          Product details
                           <ArrowRight className="h-4 w-4" />
                         </Link>
                       </div>
