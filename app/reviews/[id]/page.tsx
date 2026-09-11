@@ -8,6 +8,7 @@ import { BackToReviewsLink } from "@/components/reviews/back-to-reviews-link"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { getReviewBuyingNotes } from "@/lib/reviews/buying-notes"
+import { isReviewSearchable, NOINDEX_FOLLOW } from "@/lib/seo/search-visibility"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { buildAmazonSearchUrl } from "@/lib/affiliate/resolve-amazon-link"
 import {
@@ -104,6 +105,7 @@ export async function generateMetadata(props: {
       review.summary_ko?.trim().slice(0, 160) ||
       `A user review of the ${name} office chair, with a link to the original.`,
     alternates: { canonical: `/reviews/${id}` },
+    ...(isReviewSearchable(review) ? {} : NOINDEX_FOLLOW),
   }
 }
 

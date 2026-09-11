@@ -13,6 +13,7 @@ import {
   generateArticleSchema,
   generateBreadcrumbSchema,
 } from "@/lib/seo/schemas"
+import { isNewsSearchable, NOINDEX_FOLLOW } from "@/lib/seo/search-visibility"
 import type { ProductView } from "@/lib/data/mappers"
 
 export const dynamic = "force-dynamic"
@@ -68,6 +69,7 @@ export async function generateMetadata(props: {
       news.summary?.trim() ||
       `${news.brand ?? "Furniture"} news curated by Furniblog.`,
     alternates: { canonical: `/news/${news.slug ?? slug}` },
+    ...(isNewsSearchable(news) ? {} : NOINDEX_FOLLOW),
   }
 }
 

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { loadReviewSitemapPages } from "@/lib/reviews/sitemap-pages"
+import { isNewsSearchable } from "@/lib/seo/search-visibility"
 import { bestLists } from "@/lib/data"
 
 const SITE_URL =
@@ -77,8 +78,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .eq("published", true)
         .eq("track", "chair"),
       loadReviewSitemapPages((after, size) => {
+        // Search-visibility policy: only reviews with a recorded original
+        // source earn a sitemap entry (their pages are noindexed otherwise).
         let q = supabase.from("reviews").select("id, created_at")
-          .eq("excluded", false).order("id").limit(size)
+          .eq("excluded", false).not("source_url", "is", null)
+          .order("id").limit(size)
         if (after) q = q.gt("id", after)
         return q
       }).catch((error) => {
@@ -87,7 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }),
       supabase
         .from("news")
-        .select("slug, published_at")
+        .select("slug, published_at, url, summary, why_it_matters")
         .eq("status", "published")
         .limit(5000),
       supabase.from("brands").select("slug"),
@@ -108,7 +112,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         )
     }
     for (const n of news.data ?? []) {
-      if (n.slug)
+      if (n.slug && isNewsSearchable(n))
         dynamicPages.push(
           url(`/news/${n.slug}`, toDate(n.published_at), "monthly", 0.6)
         )
