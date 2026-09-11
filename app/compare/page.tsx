@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { getComparisonCards } from "@/lib/comparisons/resolve"
+import { orderComparisonCards } from "@/lib/comparisons/editorial-order"
 import { ComparisonsIndex } from "@/components/compare/comparisons-index"
 
 export const dynamic = "force-dynamic"
@@ -37,7 +38,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 export default async function CompareIndexPage({ searchParams }: Props) {
   const page = readPage((await searchParams).page)
   const supabase = createPublicServerClient()
-  const cards = await getComparisonCards(supabase)
+  const cards = orderComparisonCards(await getComparisonCards(supabase))
   if (page > Math.max(1, Math.ceil(cards.length / 12))) notFound()
 
   return (
