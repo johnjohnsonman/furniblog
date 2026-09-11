@@ -171,12 +171,19 @@ export default async function BlogPostPage({
               <h2 id="blog-buying-heading" className="text-xl font-semibold">{buying.heading}</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">{buying.description}</p>
               <p className="text-xs text-muted-foreground">As an Amazon Associate, Furniblog earns from qualifying purchases.</p>
-              <SmartBuyLink
-                name={buying.name}
-                productId={buying.productId}
-                amazonUrl={resolveAmazonAffiliateLink(buying.productId, buying.name).url}
-                variant="block"
-              />
+              <div className={buying.additionalProducts?.length ? "grid gap-6 sm:grid-cols-2" : undefined}>
+                {[buying, ...(buying.additionalProducts ?? [])].map(product => (
+                  <div key={product.productId} data-buying-product={product.productId} className="min-w-0 space-y-3">
+                    {!!buying.additionalProducts?.length && <h3 className="text-base font-semibold">{product.name}</h3>}
+                    <SmartBuyLink
+                      name={product.name}
+                      productId={product.productId}
+                      amazonUrl={resolveAmazonAffiliateLink(product.productId, product.name).url}
+                      variant="block"
+                    />
+                  </div>
+                ))}
+              </div>
               <ul className="space-y-2 text-sm">
                 {buying.related.map(link => (
                   <li key={link.href}><Link href={link.href} className="underline underline-offset-4">{link.label}</Link></li>
