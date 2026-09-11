@@ -75,7 +75,7 @@ const notes: Record<string, BlogBuyingNotes> = {
     productId: 'libernovo-omni',
     name: 'LiberNovo Omni',
     heading: 'Looking for the original LiberNovo Omni?',
-    description: 'This search is for the original Omni, not a confirmed offer for every model in the lineup. Check the exact model, regional specifications, delivery and return terms. Availability and current prices are not verified; results may include accessories or other chairs.',
+    description: 'The button links the base Omni listing we verified (chair only, black). Omni SE, Pro and Maxis are separate listings under near-identical names — confirm the exact model, seat size, delivery and return terms on the destination before ordering.',
     related: [
       { href: '/products/libernovo-omni', label: 'Explore the original LiberNovo Omni' },
       { href: '/blog/libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared', label: 'Check model, fit and seller before ordering' },
@@ -84,8 +84,8 @@ const notes: Record<string, BlogBuyingNotes> = {
   'libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared': {
     productId: 'libernovo-omni',
     name: 'LiberNovo Omni',
-    heading: 'Search for the original LiberNovo Omni',
-    description: 'Confirm the exact generation, seat configuration, seller and return terms on the destination listing. This search does not verify availability for Omni Gen, SE, Pro or Maxis and may include other chairs or accessories.',
+    heading: 'Check the original LiberNovo Omni',
+    description: 'The button links the base Omni listing we verified (chair only, black). Confirm the exact generation and seat configuration on the destination — Omni Gen, SE, Pro and Maxis are separate listings, and availability for those variants is not verified here.',
     related: [{ href: '/blog/libernovo-lineup-explained-omni-omni-se-omni-pro-maxis-compared', label: 'Compare LiberNovo model differences' }],
   },
 }

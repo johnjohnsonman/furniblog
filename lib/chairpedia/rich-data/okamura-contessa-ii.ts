@@ -39,7 +39,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   ],
 
   dims: [
-    { k: "Seat height", v: "≈ 570–620 mm (22.4–24.4 in)", tier: "B" },
+    { k: "Seat height", v: "≈ 435–545 mm (17.1–21.5 in)", tier: "B" },
     { k: "Overall height", v: "≈ 994–1104 mm", tier: "B" },
     { k: "Weight capacity", v: "≈ 300 lb (136 kg)", tier: "B" },
     { k: "Back", v: "Kyoto Nishijin-weave mesh (leather back optional)", tier: "B" },
@@ -138,6 +138,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   sourcesFooter:
     "Specifications are Okamura's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Warranty and US availability vary by seller — confirm the exact options, seller and coverage before buying.",
   related: [
+    { label: "Contessa vs Contessa Seconda: how to tell them apart (used-buying guide)", href: "/blog/okamura-contessa-vs-contessa-seconda-identification-and-used-buying-guide" },
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
     { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },

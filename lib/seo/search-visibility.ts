@@ -67,6 +67,13 @@ const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([
   "three-luxury-ergonomic-chairs-worth-the-investment-aeron-leap-and-contessa-compa",
   "kokuyo-ing-cloud-review-the-3-000-chair-that-moves-with-you",
   "mesh-vs-fabric-office-chairs-how-to-choose-based-on-how-you-actually-sit",
+  // Money-cluster posts re-opened 2026-09-12 after a provenance + verified
+  // enrichment pass (backups in the session scratchpad).
+  "herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c",
+  "how-to-use-the-herman-miller-aeron-a-complete-control-guide",
+  "herman-miller-aeron-tilt-lock-why-your-chair-still-moves-and-why-that-s-normal",
+  "how-to-buy-a-used-herman-miller-aeron-without-getting-burned",
+  "why-your-legs-go-numb-at-your-desk-and-how-seat-depth-can-fix-it",
 ])
 
 export function isBlogPostGoogleSearchable(post: {

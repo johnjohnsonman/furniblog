@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import { collectNewsForBrand, loadKnownBrands } from "@/lib/news/collect"
 import { collectVideosForChair } from "@/lib/videos/collect"
 import { executeServerPipeline } from "@/lib/pipeline/server-run"
+import { pingIndexNowForRecentChanges } from "@/lib/seo/indexnow"
 
 /** Server-collectable review sources. Reddit now runs server-side via OAuth. */
 const REVIEW_SERVER_SOURCES = [
@@ -235,6 +236,14 @@ export async function runCronCollection(params: {
     }
   } catch (e) {
     console.warn("[cron] review phase failed:", (e as Error).message)
+  }
+
+  // Ping IndexNow for anything published/updated since the last daily cycle
+  // (best-effort; never fails the run).
+  try {
+    await pingIndexNowForRecentChanges(26)
+  } catch (e) {
+    console.warn("[cron] indexnow ping failed:", (e as Error).message)
   }
 
   result.elapsedMs = Date.now() - startedAt

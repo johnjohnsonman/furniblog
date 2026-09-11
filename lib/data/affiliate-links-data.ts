@@ -338,6 +338,9 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
   ],
   "humanscale-freedom": [
+    // Amazon direct verified 2026-09-12 (listing title match): Freedom with
+    // headrest, graphite frame, black Corde 4, height-adjustable Duron arms.
+    { retailer: "Amazon", url: "https://www.amazon.com/dp/B086H3FGFG", isOfficial: false },
     {
       retailer: "Humanscale Official",
       url: "https://www.humanscale.com/products/seating/freedom-chair",
