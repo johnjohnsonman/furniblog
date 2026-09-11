@@ -9,6 +9,7 @@ type BlogBuyingNotes = {
 
 const size = 'herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c'
 const controls = 'how-to-use-the-herman-miller-aeron-a-complete-control-guide'
+const tilt = 'herman-miller-aeron-tilt-lock-why-your-chair-still-moves-and-why-that-s-normal'
 const leap = 'steelcase-leap-v2-review-the-chair-that-hugs-your-body'
 const leapGesture = 'steelcase-leap-vs-gesture-which-high-end-ergonomic-chair-is-right-for-you'
 const notes: Record<string, BlogBuyingNotes> = {
@@ -17,14 +18,30 @@ const notes: Record<string, BlogBuyingNotes> = {
     name: 'Herman Miller Aeron',
     heading: 'Compare Aeron buying options',
     description: 'Check the listed size, Classic or Remastered version, condition and return terms before choosing an offer. Search results may include other models and accessories.',
-    related: [{ href: `/blog/${controls}`, label: 'Check Aeron adjustment options' }],
+    related: [
+      { href: `/blog/${controls}`, label: 'Check Aeron adjustment options' },
+      { href: `/blog/${tilt}`, label: 'Understand the Aeron tilt limiter' },
+    ],
   },
   [controls]: {
     productId: 'herman-miller-aeron',
     name: 'Herman Miller Aeron',
     heading: 'Considering a replacement Aeron?',
     description: 'If you are comparing a replacement, check its size and installed adjustments against your current chair. Search results may include other models and accessories.',
-    related: [{ href: `/blog/${size}`, label: 'Compare Aeron sizes before buying' }],
+    related: [
+      { href: `/blog/${size}`, label: 'Compare Aeron sizes before buying' },
+      { href: `/blog/${tilt}`, label: 'Check tilt resistance versus recline range' },
+    ],
+  },
+  [tilt]: {
+    productId: 'herman-miller-aeron',
+    name: 'Herman Miller Aeron',
+    heading: 'Comparing a replacement Aeron?',
+    description: 'Check the adjustments on your current chair before deciding to replace it. For another Aeron, confirm size, Classic or Remastered version, installed controls, condition and return terms. Amazon search results may include accessories and other models; availability is not verified.',
+    related: [
+      { href: `/blog/${controls}`, label: 'Review Aeron adjustment controls' },
+      { href: `/blog/${size}`, label: 'Compare Aeron sizes' },
+    ],
   },
   [leap]: {
     productId: 'steelcase-leap-v2',
