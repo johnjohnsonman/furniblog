@@ -2,7 +2,6 @@ import Link from "next/link"
 import { ExternalLink } from "lucide-react"
 import { VideoEmbedFacade } from "@/components/videos/video-embed-facade"
 import { ReviewsTabLink } from "@/components/videos/reviews-tab-link"
-import { buildAffiliateUrl } from "@/lib/affiliate/links"
 import { RegionalAmazonLink } from "@/components/affiliate/RegionalAmazonLink"
 import type { ProductVideo } from "@/lib/videos/product-videos"
 
@@ -109,11 +108,10 @@ export function ProductVideosSection({
           {hasAmazon && (
             <RegionalAmazonLink
               name={chairName}
-              href={buildAffiliateUrl(amazonUrl as string, "amazon", "US")}
+              productId={chairId}
+              href={amazonUrl as string}
               className="font-medium text-foreground underline underline-offset-4 hover:text-foreground/80"
-            >
-              Check the current price on Amazon →
-            </RegionalAmazonLink>
+            />
           )}
           {hasAmazon && hasReviews ? " or " : null}
           {hasReviews && (

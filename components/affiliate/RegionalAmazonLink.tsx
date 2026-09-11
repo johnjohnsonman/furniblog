@@ -1,19 +1,24 @@
 "use client"
 
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useState } from "react"
+import { ExternalLink } from "lucide-react"
 import { readAmazonCountry, singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
+import { buildAffiliateUrl, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 
-export function RegionalAmazonLink({ href, name, className, children }: {
+export function RegionalAmazonLink({ href, name, productId, className }: {
   href: string
   name: string
+  productId: string
   className?: string
-  children: ReactNode
 }) {
   const [country, setCountry] = useState("US")
   useEffect(() => setCountry(readAmazonCountry()), [])
-  const destination = singaporeAmazonUrl(href, name, country)
-  const localized = country === "SG" && destination !== href
-  return <a href={destination} target="_blank" rel="sponsored nofollow noopener noreferrer" className={className}>
-    {localized ? (new URL(destination).pathname === "/s" ? "Search on Amazon.sg" : "View on Amazon.sg") : children}
+  const destination = singaporeAmazonUrl(buildAffiliateUrl(href, "amazon", "US"), name, country)
+  const search = /[?&]k=/.test(destination) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(destination)
+  const retailer = /^https:\/\/(www\.)?amazon\.sg\//.test(destination) ? "Amazon.sg" : "Amazon"
+  const trackingCountry: AffiliateCountry = country === "SG" || country === "JP" || country === "KR" ? country : "US"
+  return <a href={destination} target="_blank" rel="sponsored nofollow noopener noreferrer" className={className}
+    onClick={() => { void trackAffiliateClick(productId, "amazon", trackingCountry) }}>
+    {search ? `Search on ${retailer}` : `View on ${retailer}`} <ExternalLink className="inline-block h-3 w-3 shrink-0" />
   </a>
 }
