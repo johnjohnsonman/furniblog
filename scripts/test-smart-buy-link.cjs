@@ -17,6 +17,10 @@ function load(file, imports = {}) {
   return mod.exports;
 }
 const sea = load('lib/affiliate/sea.ts');
+const affiliate = load('lib/affiliate/links.ts', {
+  '@/lib/supabase/admin': { createAdminClient: () => { throw new Error('Unexpected database access'); } },
+  '@/lib/pipeline/queue-mapper': { isUuid: () => false },
+});
 const keys = ['NEXT_PUBLIC_INVOLVE_SHOPEE_DEEPLINK', 'NEXT_PUBLIC_INVOLVE_LAZADA_DEEPLINK'];
 const saved = keys.map(key => process.env[key]);
 let country = 'US';
@@ -26,7 +30,7 @@ const { SmartBuyLink } = load('components/affiliate/SmartBuyLink.tsx', {
   react: { useState: () => [country, () => {}], useEffect: () => {} },
   'lucide-react': { ExternalLink: () => null },
   '@/lib/utils': { cn: (...values) => values.filter(Boolean).join(' ') },
-  '@/lib/affiliate/links': { trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
+  '@/lib/affiliate/links': { buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
   '@/lib/affiliate/sea': sea,
 });
 function anchors(node) {
@@ -35,6 +39,12 @@ function anchors(node) {
   return [...(node.type === 'a' ? [node] : []), ...anchors(node.props?.children)];
 }
 try {
+  for (const destination of ['/dp/B0C3T865C2', '/s?k=SIHOO%20Doro%20C300']) {
+    const link = anchors(SmartBuyLink({ name: 'SIHOO Doro C300', amazonUrl: `https://www.amazon.com${destination}` }))[0];
+    const parsed = new URL(link.props.href);
+    assert.equal(parsed.searchParams.get('tag'), process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || 'furniblog0e-20');
+    assert.equal(parsed.pathname, new URL(`https://www.amazon.com${destination}`).pathname);
+  }
   for (const configured of [false, true]) {
     keys.forEach(key => configured ? process.env[key] = 'https://affiliate.example/?url={url}' : delete process.env[key]);
     for (country of ['US', 'KR', 'JP', ...sea.SEA_COUNTRIES]) {
