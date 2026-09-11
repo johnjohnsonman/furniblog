@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import Anthropic from "@anthropic-ai/sdk"
 import { requireAdmin } from "@/lib/admin/api-auth"
 import { createAdminClient } from "@/lib/supabase/admin"
-import { matchProductInList } from "@/lib/chairpedia/match-product"
+import { matchScreenshotProduct } from "@/lib/reviews/screenshot-match"
+import { collectedAnalysisFailure } from "@/lib/reviews/collection-quality"
 
 export const runtime = "nodejs"
 export const maxDuration = 300
@@ -31,6 +32,7 @@ function extractJsonArray(text: string): string {
 }
 
 type Extracted = {
+  confidence?: number
   chairName?: string
   summary?: string
   pros?: string[]
@@ -79,21 +81,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Couldn't read the uploaded images." }, { status: 400 })
   }
 
-  const prompt = `These screenshot(s) show an online forum / Reddit thread discussing office chairs. The thread is mainly about the "${product.name}", but commenters often mention OTHER chairs too.
+  const prompt = `These screenshot(s) may show an online forum / Reddit thread discussing office chairs. The selected catalog product is "${product.name}" (${product.slug}); do not assume every comment is about it.
 
 Extract EVERY substantive opinion about ANY specific office chair — the original post and each comment that shares a real experience or opinion. Each (commenter, chair) opinion becomes its own review object.
 
 For each one, output an object:
-{"chairName":"the exact chair this opinion is about, brand + model (e.g. 'Herman Miller Cosm', 'Steelcase Leap V2'). Leave EMPTY (\\"\\") when it's about the thread's main chair (the ${product.name}) or just says 'this chair' / 'it' with no other name.","summary":"a DETAILED review in English","pros":["..."],"cons":["..."],"overall":<1-5>,"mentions_back_pain":<true|false>,"mentions_lumbar":<true|false>,"back_issue_sentiment":"positive"|"negative"|"neutral"|null}
+{"chairName":"explicit brand and model identified in visible context","confidence":0.9,"summary":"an evidence-based English summary about that chair only","pros":["..."],"cons":["..."],"overall":4,"mentions_back_pain":false,"mentions_lumbar":false,"back_issue_sentiment":null}
 
-The "summary" field is the actual review body shown on the site — make it RICH and DETAILED, not a short summary:
-- Capture EVERYTHING this person said: their full experience, specifics, what they liked and disliked, how long they've owned it, their use case / body type / setup, comparisons to other chairs, and any nuance or caveat.
-- Write a substantial paragraph — roughly 4-8 sentences, and longer if the person wrote a lot. Do NOT compress or trim away detail; longer, specific reviews are more valuable.
-- Paraphrase in your own words (never copy their exact wording verbatim), but keep their real stance, tone, and all the concrete details.
+The summary is publicly displayed. Paraphrase concisely in your own words, retaining
+only supported feedback about this specific model. Preserve the opinion's caveats.
 
 Rules:
+- chairName must explicitly identify the model from visible context. Never leave it empty or infer it merely from the selected product. Skip ambiguous "it" / "this chair" references.
+- Include confidence from 0 to 1 for attribution to that exact model. Skip opinions below 0.4.
+- Each summary, pro, con and rating must describe ONLY the named chair. Never copy another chair's assessment into a comparison object.
+- Use only visible evidence. Do not expand brief comments to meet a sentence count or invent missing details.
 - Include negative and critical opinions honestly — do NOT soften or omit them. overall must reflect real sentiment (low if they disliked the chair).
-- chairName: use the FULL brand + model when a chair is named; use "" for the main chair / unnamed references ("this chair", "it").
+- chairName: use the FULL brand + model when clearly identified.
 - One object per (commenter, chair) opinion. Up to ${MAX_REVIEWS} total.
 - SKIP: ads / "Promoted" posts, navigation, sidebars, vote counts.
 - SKIP pure name-drops and one-liners with no real substance ("Cosm is great", "same here", "lol", "such as?") — only include opinions with actual detail.
@@ -140,12 +144,13 @@ Return ONLY a JSON array — no prose, no markdown. If nothing relevant, return 
   }
 
   // Load the catalog once for in-memory chair-name matching.
-  const { data: allProducts } = await supabase
+  const { data: allProducts, error: catalogError } = await supabase
     .from("products")
     .select("id, slug, name")
     .eq("track", "chair")
     .limit(2000)
   const catalog = (allProducts ?? []) as { id: string; slug: string; name: string }[]
+  if (catalogError) return NextResponse.json({ error: "Could not verify chair catalog." }, { status: 502 })
 
   const MIN_LEN = 40 // skip name-drops / one-liners
   const unmatched = new Set<string>()
@@ -164,19 +169,16 @@ Return ONLY a JSON array — no prose, no markdown. If nothing relevant, return 
   const rows: Row[] = []
 
   for (const r of parsed.slice(0, MAX_REVIEWS)) {
+    if (collectedAnalysisFailure(r, "")) continue
     const summary = String(r.summary ?? "").trim()
     if (summary.length < MIN_LEN) continue
 
-    // Route to the named chair; default to the selected chair for unnamed
-    // ("this chair"/"it") references. Conservative: skip names we can't match.
+    // Exact, unambiguous catalog identity only; no selected-chair fallback.
     const chairName = String(r.chairName ?? "").trim()
     let targetId: string
     let targetName: string
-    if (!chairName) {
-      targetId = product.id
-      targetName = product.name
-    } else {
-      const matched = matchProductInList(chairName, catalog)
+    {
+      const matched = matchScreenshotProduct(chairName, catalog)
       if (!matched) {
         unmatched.add(chairName)
         continue
@@ -185,7 +187,7 @@ Return ONLY a JSON array — no prose, no markdown. If nothing relevant, return 
       targetName = matched.name
     }
 
-    const overall = Math.min(5, Math.max(1, Math.round(Number(r.overall) || 3)))
+    const overall = r.overall!
     const scores: Record<string, unknown> = { overall }
     if (r.mentions_back_pain === true) scores.mentionsBackPain = true
     if (r.mentions_lumbar === true) scores.mentionsLumbar = true

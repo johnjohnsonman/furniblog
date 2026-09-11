@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
-import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
+import { loadReviewSitemapPages } from "@/lib/reviews/sitemap-pages"
 import { bestLists } from "@/lib/data"
 
 const SITE_URL =
@@ -76,10 +76,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         .select("slug, updated_at")
         .eq("published", true)
         .eq("track", "chair"),
-      runPublicReviewQuery((f) => {
-        let q = supabase.from("reviews").select("id, created_at").limit(5000)
-        if (f) q = q.eq("excluded", false)
+      loadReviewSitemapPages((after, size) => {
+        let q = supabase.from("reviews").select("id, created_at")
+          .eq("excluded", false).order("id").limit(size)
+        if (after) q = q.gt("id", after)
         return q
+      }).catch((error) => {
+        console.error("Review sitemap query failed:", error instanceof Error ? error.message : "Unknown error")
+        return []
       }),
       supabase
         .from("news")
@@ -97,7 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const p of products.data ?? []) {
       if (p.slug) dynamicPages.push(url(`/products/${p.slug}`, toDate(p.updated_at), "weekly", 0.8))
     }
-    for (const r of reviews.data ?? []) {
+    for (const r of reviews) {
       if (r.id)
         dynamicPages.push(
           url(`/reviews/${r.id}`, toDate(r.created_at), "monthly", 0.6)
