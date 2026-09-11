@@ -72,6 +72,8 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 
 ## 작업 규칙
 
+- **모든 보고의 끝에 "다음 작업" 섹션을 반드시 포함**(대표님 지시 2026-09-12). 대표님에게 요청할 일은 링크·파일·클릭 단계까지 구체적으로.
+
 - 코드 스타일은 주변 코드를 따릅니다.
 - `next.config.mjs`에 레거시 리다이렉트가 있음(Aeron variant 통합 등). 라우트 변경 시 리다이렉트 영향 확인.
 - 커밋 메시지는 conventional commits 형식 (`feat(scope):`, `fix(scope):`, `chore:` 등) 사용.
@@ -344,6 +346,14 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **대표님 재반박("빙·ChatGPT는 블로그 잡고 있다")이 맞았음** — page_views 60일 실측: 외부 유입 DDG 364·Bing/Copilot 171·**ChatGPT 46·Claude 12·Perplexity 9** vs 구글 83. **블로그가 DDG(160)·Bing(76)의 최다 착지 섹션**(상위: LiberNovo 라인업 82, Aeron 사이즈/조작 가이드). 일괄 noindex였으면 최대 활성 채널 파괴였음.
 - **해법: `googlebot` 전용 noindex** — 네이버 출처 238편에 `<meta name="googlebot" content="noindex,follow">` + 일반 robots는 index 유지 → 구글에만 복제 클러스터 제거 신호(구글 노출 0이라 손실 0), 빙·DDG·AI 검색은 그대로. 리라이트 후 개별 복귀용 allowlist(`BLOG_GOOGLE_REENABLED_SLUGS`). 사이트맵 블로그 유지(빙 소비).
 - **본문 아마존 링크 리라이터**(`lib/affiliate/content-links.ts`): blog+chairpedia content_html 렌더 시 tag+ascsubtag 자동 주입 — 8월 실주문이 이 무계측 본문 링크로 발생했던 구멍 봉합. 라이브 검증 3종 통과.
+
+### 다음 작업 큐 (2026-09-12 확정, 우선순위순)
+1. **활성 채널 전환 감사**: DDG·Bing·AI 상위 착지 ~20페이지(LiberNovo 라인업 82착지, Aeron 사이즈/조작 등)의 구매 경로 전수 점검·보강 — 트래픽이 실존하는 페이지의 전환이라 ROI 최고.
+2. **IndexNow 자동화**: 크론/발행 훅에 통합해 신규·변경 URL 자동 핑(현재 수동 스크립트).
+3. **리라이트→구글 복귀 1차**: googlebot-noindex 233편 중 머니 클러스터 ~5편(Aeron size/control/tilt-lock, used-aeron, seat-depth)을 출처 명시+검증 리라이트 후 allowlist 복귀.
+4. **Contessa 모멘텀 확장**: 구글 1등 페이지(Contessa II 딥다이브, 60일 50방문) 주변 클러스터 1~2편(중고 Contessa 검수 등) + 전환 경로 재점검.
+5. **9/26경 관찰 게이트**: GSC 재평가 반응("발견됨-미색인" 841 추세·색인 수)+신규 문서 색인+SubTag 데이터 종합 → AdSense 신청 여부·통합검토 버킷(945)·웨이브3 결정.
+- 대표님 대기: ★5 ASIN 스팟체크 / 다음 주 SubTag CSV(안 나오면 섹션별 Tracking ID 플랜 B 구현).
 
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
