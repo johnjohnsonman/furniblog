@@ -1,4 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk"
+import { collectedAnalysisFailure } from "@/lib/reviews/collection-quality"
 import type { QueueItem } from "@/types/pipeline"
 import type {
   BackIssueId,
@@ -322,7 +323,9 @@ Rules:
 - summary MUST be in English
 - pros MUST be in English
 - cons MUST be in English
-- overall MUST be 1-5 (use 3 if uncertain)
+- overall MUST be 1-5 only when supported by the review; otherwise return null
+- Never transfer another chair's pros, cons, comfort, or headrest assessment to the target chair
+- A title, search snippet, or bare mention without target-specific feedback is insufficient; set confidence below 0.4
 - Translate all insights to English even if source is Japanese or Korean
 - Only extract feedback that clearly applies to ${chairName}, not sibling models
 `
@@ -350,12 +353,15 @@ Rules:
     const text = stripJsonMarkdown(block.text)
     const parsed = JSON.parse(text) as SimpleChairResponse
 
-    const rawOverall =
-      typeof parsed.overall === "number" ? parsed.overall : 3
-    const overall = Math.min(5, Math.max(1, rawOverall))
+    const failure = collectedAnalysisFailure(parsed, item.title)
+    if (failure) {
+      console.warn("[PROCESSOR] Not published:", failure)
+      return { status: "rejected", confidence: typeof parsed?.confidence === "number" ? parsed.confidence : 0 }
+    }
 
-    const confidence =
-      typeof parsed.confidence === "number" ? parsed.confidence : 0.5
+    const overall = parsed.overall!
+
+    const confidence = parsed.confidence!
 
     if (confidence < CONFIDENCE_MIN) {
       console.log(
@@ -367,11 +373,7 @@ Rules:
       return { status: "rejected", confidence }
     }
 
-    const summary =
-      parsed.summary?.trim() ||
-      item.title?.trim() ||
-      item.body.slice(0, 200).trim() ||
-      "Review collected from source"
+    const summary = parsed.summary!.trim()
 
     const sentiment = parsed.back_issue_sentiment
     const backIssueSentiment =
