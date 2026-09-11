@@ -347,12 +347,12 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **해법: `googlebot` 전용 noindex** — 네이버 출처 238편에 `<meta name="googlebot" content="noindex,follow">` + 일반 robots는 index 유지 → 구글에만 복제 클러스터 제거 신호(구글 노출 0이라 손실 0), 빙·DDG·AI 검색은 그대로. 리라이트 후 개별 복귀용 allowlist(`BLOG_GOOGLE_REENABLED_SLUGS`). 사이트맵 블로그 유지(빙 소비).
 - **본문 아마존 링크 리라이터**(`lib/affiliate/content-links.ts`): blog+chairpedia content_html 렌더 시 tag+ascsubtag 자동 주입 — 8월 실주문이 이 무계측 본문 링크로 발생했던 구멍 봉합. 라이브 검증 3종 통과.
 
-### 다음 작업 큐 (2026-09-12 확정, 우선순위순)
-1. **활성 채널 전환 감사**: DDG·Bing·AI 상위 착지 ~20페이지(LiberNovo 라인업 82착지, Aeron 사이즈/조작 등)의 구매 경로 전수 점검·보강 — 트래픽이 실존하는 페이지의 전환이라 ROI 최고.
-2. **IndexNow 자동화**: 크론/발행 훅에 통합해 신규·변경 URL 자동 핑(현재 수동 스크립트).
-3. **리라이트→구글 복귀 1차**: googlebot-noindex 233편 중 머니 클러스터 ~5편(Aeron size/control/tilt-lock, used-aeron, seat-depth)을 출처 명시+검증 리라이트 후 allowlist 복귀.
-4. **Contessa 모멘텀 확장**: 구글 1등 페이지(Contessa II 딥다이브, 60일 50방문) 주변 클러스터 1~2편(중고 Contessa 검수 등) + 전환 경로 재점검.
-5. **9/26경 관찰 게이트**: GSC 재평가 반응("발견됨-미색인" 841 추세·색인 수)+신규 문서 색인+SubTag 데이터 종합 → AdSense 신청 여부·통합검토 버킷(945)·웨이브3 결정.
+### 다음 작업 큐 — 1~4 실행 완료(2026-09-12, 커밋 64be9a3), 5만 잔여
+1. ✅ **활성 채널 전환 감사**: 상위 25착지 전수 점검 — chairpedia 착지는 P1 직링크가 자동 커버(Contessa/Aeron/Leap/Generation 라이브 확인), LiberNovo 글 2편(82착지)은 buying-note 박스가 직링크로 자동 연결됨을 확인·문구만 직링크에 맞게 수정, **Freedom(16착지)만 직링크 부재 → B086H3FGFG 검증 추가**. beyond-pinterest(24착지)는 의자 구매의도 아님이라 정직하게 스킵.
+2. ✅ **IndexNow 자동화**: `lib/seo/indexnow.ts` — 매 크론 말미에 26시간 내 발행·수정 URL 자동 핑(blog/chairpedia/news/compare/products/best). 실패해도 크론 안 죽음.
+3. ✅ **리라이트→구글 복귀 1차(5편)**: Aeron size/control/tilt-lock/used/seat-depth — ChairPark 원문 번안 사실 공개("sister showroom" 표기)+검증 가이드 링크 보강 후 allowlist 복귀(백업: scratchpad/rewrite-backup-*). 구글 재개 allowlist 총 10편.
+4. ✅ **Contessa 모멘텀**: ①시트고 데이터 오류 수정(570–620→공식 435–545mm, Okamura 확인) ②신규 가이드 `/blog/okamura-contessa-vs-contessa-seconda-identification-and-used-buying-guide`(548단어; CC8x 라벨코드·프레임 실루엣·화이트프레임=Seconda·스마트 레버, 출처 명시) ③딥다이브 레일 최상단 연결. 신규·수정 6 URL IndexNow 200.
+5. **9/26경 관찰 게이트(잔여)**: GSC 재평가 반응("발견됨-미색인" 841 추세·색인 수)+신규 문서 색인+SubTag 데이터 종합 → AdSense 신청 여부·통합검토 버킷(945)·웨이브3 결정.
 - 대표님 대기: ★5 ASIN 스팟체크 / 다음 주 SubTag CSV(안 나오면 섹션별 Tracking ID 플랜 B 구현).
 
 ### 남은 과제 (TODO)
