@@ -312,6 +312,12 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **⚠️ 데이터 오류 발견**: `rich-data/okamura-contessa-ii.ts` 시트고 "570–620mm" — 통상 420–520mm라 오류 의심, 적합성 표에서 제외함. **수정 TODO**.
 - 문서 지도 결산: 20개 중 신규 6 발행+보강 3+유지 11. 남은 건 #1·#7 폴리시 수준. 다음 관찰: 2주 후 GSC(색인·"발견됨-미색인" 841 추세)+신규 6문서 색인.
 
+### 2026-09-12 (3) 웨이브2 기획 + OneLink/AdSense 사실 정정 + 첫 실수익 확인
+- **웨이브2 기획안**(`content/reports/growth-wave2-plan-2026-09-12.md`, 승인 대기): A.IndexNow(Bing·Yandex 즉시 색인) B.Amazon SubTag(ascsubtag, 주문→페이지 귀속)+GA4 이벤트+best 허브 보강+related 레일 28종 전면화 C.라운드업 3편(under $300/스탠딩데스크/Aeron 대안) D.홈 Buying Guides 고정 레일.
+- **🔴 정정: Amazon OneLink 스크립트(adInstanceId/OneTag) 방식 폐지 확인**(대표님 스크린샷 Tools 메뉴에 OneLink 없음 + 공식 help). 현재는 **계정 설정 토글**로 자동 리디렉션(켜면 close match). 06-16 메모의 "NEXT_PUBLIC_AMAZON_ONELINK_ID 필요"는 **무효** — `AmazonOneLink.tsx`는 env 없으면 no-op라 무해한 죽은 코드(추후 제거 가능). 실측 국제 클릭 33건 중 1건(NL)이라 급하지 않음.
+- **AdSense는 보류 결정**: 현 트래픽 기대수익 월 $1~5 vs 품질 강등 상태 신청 시 거절 리스크 + 재평가 구간 페이지 경험 마이너스 → 2주 후 색인 개선 신호 확인 후 신청.
+- **📈 첫 실수익 확인**(Associates 대시보드): 지난 30일 커미션 **$19.00**, 클릭 20(자체 로그 30일 18건과 일관), 8/18 부근 스파이크. 9월 현재 주문 0·클릭 9. SubTag 붙이면 다음부터 페이지별 귀속 가능.
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
