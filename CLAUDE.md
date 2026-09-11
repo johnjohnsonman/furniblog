@@ -300,8 +300,13 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 ### 2026-09-12 2단계 실행: 발행↔검색 노출 분리 (커밋 ea496df, ⚠️ 배포 대기)
 - **대표님 승인 후 구현**: `lib/seo/search-visibility.ts` — 출처 없는 리뷰(1,619)·얇은 뉴스(157)는 `noindex, follow` + 사이트맵 제외. 데이터·사이트 노출은 그대로(삭제/숨김 없음), revert로 즉시 롤백 가능. GSC 실적 있는 뉴스 9건은 면제 명단으로 보호(제외분은 90일 클릭 0).
 - 사이트맵 4,487→**2,711**(리뷰 1,928=출처 보유 수와 일치, 뉴스 9). 로컬 프로덕션 빌드+실서버 렌더로 4개 케이스 전부 검증 완료.
-- **⚠️ `vercel --prod`가 세션 권한에서 차단돼 미배포** — 배포 후 GSC sitemap 재제출 필요. 상세: `content/reports/search-exposure-separation-2026-09-12.md`.
-- 다음: 배포→2주 후 색인/크롤링 반응 관찰→통합검토 버킷(비특정 출처 리뷰 945) 결정→핵심 구매 문서 20개(3단계).
+- **✅ 배포 완료(대표님 권한 허용 후)**: 프로덕션 검증 — noindex/index 4케이스 정상, sitemap 2,711. **GSC sitemap 재제출도 API로 완료(204)**. 상세: `content/reports/search-exposure-separation-2026-09-12.md`.
+- 다음: 2주 후 색인/크롤링 반응 관찰(관찰 포인트: "발견됨-미색인" 841 추세)→통합검토 버킷(비특정 출처 리뷰 945) 결정.
+
+### 2026-09-12 (2) 3단계 착수: 미국 구매 문서 지도 + 1호 문서 발행
+- **문서 지도 20개 확정**(`content/reports/us-purchase-doc-map-2026-09-12.md`): 3주제(실용 US 구매/중고·리퍼/적합성), 기존 URL 재사용 15 + 신규 5. 커버리지 최대 공백 = 보증·반품(0편)이었음.
+- **1호 발행**: `/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon` (Guides, 1,023단어). 전 사실 공식 페이지 원문 검증(2026-09-12): HM 12년 보증·반품 $99 수수료, Steelcase Lifetime·30일 완전무료 반품(본토), Amazon 30일·리스팅별. 저가 브랜드 보증 수치는 불안정해 인용 보류(정직 원칙). 라이브 확인 완료.
+- 다음 실행: ①Aeron classic vs remastered 구별법 ②Amazon 리스팅 읽는 법 ③중고 Leap V2 검수 ④chair_specs 데이터 표. 대량 생산 금지 원칙 유지.
 
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
