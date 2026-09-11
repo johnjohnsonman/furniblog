@@ -7,6 +7,9 @@ import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { generateArticleSchema, generateBreadcrumbSchema } from "@/lib/seo/schemas"
 import { wrapTables } from "@/lib/blog/postprocess"
+import { getBlogBuyingNotes } from "@/lib/blog/buying-notes"
+import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 
 export const dynamic = "force-dynamic"
 
@@ -93,6 +96,7 @@ export default async function BlogPostPage({
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) notFound()
+  const buying = getBlogBuyingNotes(post.slug)
 
   const articleSchema = generateArticleSchema({
     headline: post.title,
@@ -161,6 +165,25 @@ export default async function BlogPostPage({
             className="chairpedia-body"
             dangerouslySetInnerHTML={{ __html: wrapTables(post.content_html) }}
           />
+
+          {buying && (
+            <section aria-labelledby="blog-buying-heading" data-testid="blog-buying" className="mt-10 space-y-4 border-t border-border pt-6">
+              <h2 id="blog-buying-heading" className="text-xl font-semibold">{buying.heading}</h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">{buying.description}</p>
+              <p className="text-xs text-muted-foreground">As an Amazon Associate, Furniblog earns from qualifying purchases.</p>
+              <SmartBuyLink
+                name={buying.name}
+                productId={buying.productId}
+                amazonUrl={resolveAmazonAffiliateLink(buying.productId, buying.name).url}
+                variant="block"
+              />
+              <ul className="space-y-2 text-sm">
+                {buying.related.map(link => (
+                  <li key={link.href}><Link href={link.href} className="underline underline-offset-4">{link.label}</Link></li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <p className="mt-12 border-t border-border pt-5 text-xs text-muted-foreground">
             Furniblog may earn a commission from links in this post, at no extra
