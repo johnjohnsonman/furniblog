@@ -198,9 +198,8 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
     {
       retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+leap+v2",
+      url: "https://www.amazon.com/dp/B073G1K465",
       isOfficial: false,
-      priceUsd: 1299,
     },
     {
       retailer: "Coupang",
