@@ -340,6 +340,11 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **⚠️ 계측 공백 발견**: 아마존 8월 중순 클릭 ~9건 vs 자체 로그 동기간 1건 → **본문(content_html) 안에 하드코딩된 아마존 링크는 SmartBuyLink를 안 거쳐 로깅·SubTag 모두 누락**. 후속: 렌더 시 본문 아마존 href에 tag+ascsubtag 주입하는 리라이터(블로그 noindex 배치와 묶어 처리 후보).
 - ASIN 스팟체크: 13개 중 11개는 원격 제목 검증 완료, 대표님 확인 대기 ★5개(Generation·Variable balans·Amia·ReGeneration·3Dee 재고/가격).
 
+### 2026-09-12 (7) 블로그는 구글만 noindex(빙·AI 유지) + 본문 아마존 링크 계측 (커밋 8849c6f)
+- **대표님 재반박("빙·ChatGPT는 블로그 잡고 있다")이 맞았음** — page_views 60일 실측: 외부 유입 DDG 364·Bing/Copilot 171·**ChatGPT 46·Claude 12·Perplexity 9** vs 구글 83. **블로그가 DDG(160)·Bing(76)의 최다 착지 섹션**(상위: LiberNovo 라인업 82, Aeron 사이즈/조작 가이드). 일괄 noindex였으면 최대 활성 채널 파괴였음.
+- **해법: `googlebot` 전용 noindex** — 네이버 출처 238편에 `<meta name="googlebot" content="noindex,follow">` + 일반 robots는 index 유지 → 구글에만 복제 클러스터 제거 신호(구글 노출 0이라 손실 0), 빙·DDG·AI 검색은 그대로. 리라이트 후 개별 복귀용 allowlist(`BLOG_GOOGLE_REENABLED_SLUGS`). 사이트맵 블로그 유지(빙 소비).
+- **본문 아마존 링크 리라이터**(`lib/affiliate/content-links.ts`): blog+chairpedia content_html 렌더 시 tag+ascsubtag 자동 주입 — 8월 실주문이 이 무계측 본문 링크로 발생했던 구멍 봉합. 라이브 검증 3종 통과.
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
