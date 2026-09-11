@@ -12,6 +12,24 @@ type ReviewBuyingNotes = {
 }
 
 const NOTES: Record<string, ReviewBuyingNotes> = {
+  "2409644e-ce86-4b4e-9e28-d31f09d9e691": {
+    productSlug: "herman-miller-sayl",
+    sourceUrl: "https://reddit.com/r/UninfluencedReviews/comments/1sq1nub/comparing_herman_miller_aeron_embody_cosm_and/",
+    title: "Herman Miller Sayl: Reddit Summary & Buying Checks",
+    description: "Sayl in a Reddit comparison of four Herman Miller chairs. Read the source context and check seat depth, arm options and used-chair condition before buying.",
+    sourceNote: "This summarizes a Reddit post comparing four models and linking to external reviews, not a hands-on Furniblog test or a consensus of Sayl owners. Its shorter-user recommendation is the poster's opinion, not a verified fit range.",
+    heading: "What to check before buying a Sayl",
+    answer: "The linked Reddit post places Sayl alongside Aeron, Embody and Cosm. Use it as one perspective, not proof that Sayl will fit you. Herman Miller lists fixed and adjustable seat-depth configurations and different arm options, so compare the actual offer rather than the model name alone.",
+    checks: [
+      "Confirm whether the offered chair has fixed or adjustable seat depth and which arm configuration is included. Test clearance at your desk and behind your knees when possible.",
+      "For a used Sayl, request current photographs and check the back, seat, lift and adjustment controls. Ask the seller to identify damage or replaced parts.",
+      "Compare the delivered cost and written return and warranty terms. Amazon search results may include other chairs or accessories, not just the Sayl shown in the source.",
+    ],
+    references: [
+      { label: "Herman Miller Sayl configurations", url: "https://store.hermanmiller.com/office-chairs-ergonomic-chairs/sayl-chair/100209202.html?lang=en_US&sku=100209202" },
+    ],
+    amazonQuery: "Herman Miller Sayl chair",
+  },
   "2bbad15d-6f56-4d90-8b8b-c2ae857bd4c1": {
     productSlug: "vitra-panton-chair",
     sourceUrl: "https://www.youtube.com/watch?v=yjiRZmpuN7w",
