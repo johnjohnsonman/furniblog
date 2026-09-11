@@ -133,4 +133,10 @@ export const STEELCASE_GESTURE: RichReview = {
   ],
   sourcesFooter:
     "Specifications are Steelcase's figures plus the linked listing and published reviews as of the date shown and are not independently verified by Furniblog. Gesture is sold in many configurations — confirm the arms, back, upholstery and casters on the listing you buy from.",
+
+  related: [
+    { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+    { label: "Used Leap buying guide: V1 vs V2 (cross-shopping Steelcase used)", href: "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection" },
+  ],
 }

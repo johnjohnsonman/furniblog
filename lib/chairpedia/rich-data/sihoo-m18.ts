@@ -126,4 +126,9 @@ export const SIHOO_M18: RichReview = {
     { k: "SIHOO M18 manufacturer page", url: "https://wholesale.sihoo.com/products/m18/", v: "Checked 2026-09-10: documents lumbar height/depth adjustment and a cushioned seat. Its recline figures differ from earlier retailer figures; it is a wholesale specification, not confirmation of every Amazon variant." },
     { k: "SIHOO US M18", url: "https://www.sihoo.com/products/m18-ergonomic-chair", v: "Reviewed September 10, 2026. Height-adjustable arms, retail recline and support terms. Manufacturer statements are not a Furniblog comfort test." },
   ],
+
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

@@ -457,6 +457,21 @@ export function RichReview({
               "Specifications are recorded as published on the dates shown and are not independently verified by Furniblog. Where the manufacturer page and the Amazon listing disagree, this page follows the listing you buy from. Manufacturers sometimes revise hardware without renaming a model; always check the listing before buying."}
           </p>
         </section>
+
+        {(data.related?.length ?? 0) > 0 && (
+          <section className="flex flex-col gap-4">
+            <h2 className="font-serif text-xl font-medium text-foreground">Keep reading</h2>
+            <ul className="list-disc space-y-2 pl-5 text-[14.5px]">
+              {data.related!.map((r) => (
+                <li key={r.href}>
+                  <a href={r.href} className="underline underline-offset-4">
+                    {r.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </div>
   )

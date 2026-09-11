@@ -140,4 +140,11 @@ export const HERMAN_MILLER_AERON: RichReview = {
 
   sourcesFooter:
     "Specifications are Herman Miller's published figures as of the date shown and are not independently verified by Furniblog. The Aeron is sold in multiple sizes and configurations; always confirm the exact version, size, options and condition on the listing you buy from.",
+
+  related: [
+    { label: "Aeron Classic vs Remastered: how to tell which one you're buying", href: "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide" },
+    { label: "How to buy a used Aeron without getting burned", href: "/blog/how-to-buy-a-used-herman-miller-aeron-without-getting-burned" },
+    { label: "Aeron size guide: choosing between A, B and C", href: "/blog/herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

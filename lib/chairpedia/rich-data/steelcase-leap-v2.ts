@@ -138,4 +138,10 @@ export const STEELCASE_LEAP_V2: RichReview = {
 
   sourcesFooter:
     "Specifications are Steelcase's published figures for the new Leap V2 as of the date shown and are not independently verified by Furniblog. Refurbished units differ; always confirm version, condition, fabric and warranty on the listing you buy from.",
+
+  related: [
+    { label: "Used Leap buying guide: V1 vs V2 identification and inspection", href: "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection" },
+    { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

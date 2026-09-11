@@ -307,7 +307,10 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **문서 지도 20개 확정**(`content/reports/us-purchase-doc-map-2026-09-12.md`): 3주제(실용 US 구매/중고·리퍼/적합성), 기존 URL 재사용 15 + 신규 5. 커버리지 최대 공백 = 보증·반품(0편)이었음.
 - **1호 발행**: `/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon` (Guides, 1,023단어). 전 사실 공식 페이지 원문 검증(2026-09-12): HM 12년 보증·반품 $99 수수료, Steelcase Lifetime·30일 완전무료 반품(본토), Amazon 30일·리스팅별. 저가 브랜드 보증 수치는 불안정해 인용 보류(정직 원칙). 라이브 확인 완료.
 - **2호 발행(같은 날)**: `/blog/herman-miller-aeron-classic-vs-remastered-identification-guide` (893단어). HM 공식 비교페이지·Crandall(사이즈 점 1/2/3=A/B/C)·BTOD·Reperch 검증. 60초 식별표(스윙암 2→1, PostureFit SL 2패드, AE1/AER1 라벨, 로고, 8Z). 내부 수집 리뷰는 **실제 source_url만 링크**(유튜브 auBLHJ4yUrM, 레딧 $325 구매담), 무출처 커뮤니티 증언은 '방향성 참고' 명시. 기존 중고 Aeron 가이드에 역링크 1단락 추가(백업: scratchpad/used-aeron-backup.json).
-- 다음 실행: ①Amazon 리스팅 읽는 법 ②중고 Leap V2 검수(V1/V2) ③chair_specs 기반 의자×책상 데이터 표 ④Aeron 허브(#13) 레일. 대량 생산 금지 원칙 유지.
+- **배치 실행 완료(같은 날, 대표님 "크게 다 해버려" 지시)**: 신규 4편 추가 발행 — ①`how-to-read-an-amazon-office-chair-listing-before-you-trust-it`(BIFMA X5.1 실체+자체 C300 감사 사례) ②`used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection`(BTOD·Crandall 검증; V1도 LiveBack·시트슬라이더 보유 — 통설 오류 배제) ③`refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs`(Amazon Renewed 90일 공식+크랜달 재제조 12년) ④`office-chair-desk-fit-guide-seat-height-and-armrest-clearance`(rich 가이드 검증 수치 13종만 재사용; **시드 chair_specs 불사용**). 크로스링크: #10 포스트에 안내 단락(백업 有).
+- **rich 템플릿 `related` 레일 신설**(rich-types+rich-review.tsx): Aeron·Leap V2·Gesture·C300·M18 5개 가이드에 "Keep reading" 관련문서 레일. 빌드·배포·8개 URL 라이브 검증 완료.
+- **⚠️ 데이터 오류 발견**: `rich-data/okamura-contessa-ii.ts` 시트고 "570–620mm" — 통상 420–520mm라 오류 의심, 적합성 표에서 제외함. **수정 TODO**.
+- 문서 지도 결산: 20개 중 신규 6 발행+보강 3+유지 11. 남은 건 #1·#7 폴리시 수준. 다음 관찰: 2주 후 GSC(색인·"발견됨-미색인" 841 추세)+신규 6문서 색인.
 
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).

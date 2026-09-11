@@ -143,4 +143,9 @@ export const SIHOO_DORO_C300: RichReview = {
   forWhoTitle: "The C300 shines for",
   sourcesFooter:
     "Manufacturer and seller statements are not independent testing. Available page representations can lag seller changes. Where sources disagree, confirm the selected configuration rather than assuming either description guarantees the delivered hardware.",
+
+  related: [
+    { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
+    { label: "What returning a chair actually costs, by store", href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" },
+  ],
 }

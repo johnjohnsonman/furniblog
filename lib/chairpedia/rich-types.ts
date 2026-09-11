@@ -97,6 +97,9 @@ export type RichReview = {
   /** Labelled source lines (what each tier of claim is based on). */
   sources: (SpecRow & { url?: string })[]
 
+  /** Optional "Keep reading" rail: internal guides related to this chair. */
+  related?: { label: string; href: string }[]
+
   /** Optional per-product copy overrides (generic defaults are used otherwise). */
   /** Provenance line under "Quick facts". Defaults to the Amazon-listing wording. */
   quickFactsNote?: string
