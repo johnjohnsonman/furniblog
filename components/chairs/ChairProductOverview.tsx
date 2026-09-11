@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Check, X, ExternalLink } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import { buildAffiliateUrl } from "@/lib/affiliate/links"
+import { RegionalAmazonLink } from "@/components/affiliate/RegionalAmazonLink"
 
 interface ChairProductOverviewProps {
   product: ProductView
@@ -143,14 +144,13 @@ export function ChairProductOverview({
                       <td className="py-3 px-3 text-center font-medium text-sm">{p.price}</td>
                       <td className="py-3 px-3 text-right">
                         {p.amazonUrl && (
-                          <a
+                          <RegionalAmazonLink
+                            name={p.name}
                             href={buildAffiliateUrl(p.amazonUrl, "amazon", "US")}
-                            target="_blank"
-                            rel="sponsored nofollow noopener noreferrer"
                             className="text-xs px-3 py-1.5 bg-foreground text-background rounded hover:bg-foreground/90 transition-colors inline-flex items-center gap-1"
                           >
                             Buy <ExternalLink className="h-3 w-3" />
-                          </a>
+                          </RegionalAmazonLink>
                         )}
                       </td>
                     </tr>

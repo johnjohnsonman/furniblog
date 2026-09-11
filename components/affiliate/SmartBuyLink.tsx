@@ -5,6 +5,7 @@ import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { buildAffiliateUrl, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
+import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
 
 const FALLBACK_AMAZON_TAG =
   process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
@@ -70,11 +71,13 @@ export function SmartBuyLink({
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
 
   // Local searches supplement the supplied Amazon product link.
-  const href = buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US")
+  const href = singaporeAmazonUrl(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US"), query, country)
   // A search URL is NOT a verified product/price — label it honestly so it isn't
   // presented as a confirmed listing.
   const isSearch = /[?&]k=/.test(href) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(href)
-  const label = isSearch ? "Search on Amazon" : amazonLabel
+  const label = country === "SG" && /^https:\/\/(www\.)?amazon\.sg\//.test(href)
+    ? (isSearch ? "Search on Amazon.sg" : "View on Amazon.sg")
+    : isSearch ? "Search on Amazon" : amazonLabel
   return (
     <div className={cn(variant === "block" ? "space-y-2" : "inline-block", className)}>
       <a

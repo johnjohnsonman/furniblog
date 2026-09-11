@@ -8,6 +8,7 @@ export type { PriceRow } from "@/lib/affiliate/price-rows"
 interface PriceCompareTableProps {
   rows: PriceRow[]
   productId: string
+  productName?: string
   defaultPrice?: string
 }
 
@@ -23,6 +24,7 @@ function buyVariantForChannel(
 export function PriceCompareTable({
   rows,
   productId,
+  productName,
   defaultPrice,
 }: PriceCompareTableProps) {
   if (rows.length === 0) {
@@ -70,6 +72,7 @@ export function PriceCompareTable({
                     {variant ? (
                       <BuyButton
                         productId={productId}
+                        productName={productName}
                         baseUrl={row.url}
                         retailer={variant}
                         className="!py-1.5 !px-3 text-xs"
