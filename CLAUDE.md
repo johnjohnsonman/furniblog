@@ -326,6 +326,13 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 - **Wave D**: 홈에 "Buying guides" 고정 섹션(9카드) — StatBand 아래. 전 항목 프로덕션 라이브 검증 완료.
 - 관찰 항목 추가: Bing 색인 반응(수일), SubTag 리포트 주문 귀속(1~2주), 기존 2주 GSC 체크.
 
+### 2026-09-12 (5) 내부 전환 대량 업그레이드(P1~P4) 실행 완료
+- **P1 직링크 13종 추가**(`affiliate-links-data.ts`, 리스팅 제목 검증): Aeron B01N0ZUN15(최다 클릭 제품!)·Mirra 2·Karman(공식 스토어)·Amia·Diffrient World·Liberty·Generation/ReGeneration·Swopper·3Dee(US=빨강 주의)·LiberNovo Omni·Variable balans·Contessa Seconda(US 화이트). **정직 제외**: Zody II(리스팅이 구세대 "Zody"), Ergohuman Plus/Pro/LX(변형 모호), Embody Gaming(ASIN 미확인), Secretlab(D2C), 유럽 컨트랙트 전부. 직링크 커버리지 61→74/235. 비교 120·best·모바일바에 자동 파급.
+- **P2 제품 페이지 235 일괄**: 카테고리·가격($800 기준)별 "Buying guides" 레일(standing→톨데스크/프리미엄→Aeron대안·리퍼/예산→리스팅·under300) + Where-to-Buy에 반품 한 줄+비교 링크.
+- **P3 Best 4종 신규**(DB): big-and-tall(검증 용량 330lb+만 4종)/mesh(8)/under-500(9)/headrest(7). 사이트맵에 DB best_lists 쿼리 추가(기존엔 코드 목록만 열거돼 누락). IndexNow 핑 완료.
+- **P4 `scripts/revenue-scoreboard.cjs`**: 클릭(출발페이지 referrer)×GSC×subtag 표. **첫 인사이트: 클릭의 대부분이 chairpedia·비교 페이지 발생, 1위 제품 Aeron(4/18)** — 직링크 확보로 즉시 수익화 경로 연결됨.
+- 전 항목 프로덕션 라이브 검증(Aeron dp 링크·레일·반품 노트·리스트 4종 200)·커밋·푸시 완료. 스팟체크 권장: 신규 ASIN 직접 클릭 확인(특히 Contessa 화이트·3Dee 빨강 config).
+
 ### 남은 과제 (TODO)
 - [x] ~~신규 카탈로그 48종 썸네일 채우기~~ — **완료**(2026-07-20 실측 235/235).
 - [ ] **🎨 브랜드 페이지 리뉴얼**(2026-06-29 기획, 하이브리드) — **일부 완료**: Brand Images 어드민(`b7d465d`)·다중이미지 캐러셀(`37ecf57`)·랜덤 featured(`028882c`) 배포됨, 사진 83/83 채움. **남은 것**: ①`logo_url` 0/83 채우기 ②브랜드당 사진 1장→최대 4장(캐러셀이 놀고 있음) ③리스팅 A–Z 인덱스+"Online" 점 ④상세 Chairpark화(철학 인용·허브 레일·리뷰/Amazon 배지).
