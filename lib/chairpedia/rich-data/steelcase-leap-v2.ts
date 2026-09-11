@@ -4,9 +4,9 @@ import type { RichReview } from "@/lib/chairpedia/rich-types"
  * Steelcase Leap V2 — research-based buying guide data.
  * Specs from Steelcase's official documentation (LiveBack, 400 lb capacity,
  * 4D arms, seat-depth and lumbar adjustment, 12-year warranty), checked
- * 2026-09-09. No single Amazon ASIN is verified (listings mix new and a large
- * amount of refurbished/used stock), so the Amazon link is a search and the
- * official store is the reliable new path. No fixed prices anywhere.
+ * 2026-09-09. US Amazon links to the black-fabric V2 listing B073G1K465;
+ * seller, condition, stock and warranty must be checked on Amazon.
+ * Regional routing may use local search results. No fixed prices anywhere.
  */
 export const STEELCASE_LEAP_V2: RichReview = {
   asin: null,
@@ -101,10 +101,10 @@ export const STEELCASE_LEAP_V2: RichReview = {
   buy: {
     productTitle: "Steelcase Leap V2",
     retailerNote: "Confirm V2 (not V1) and new vs refurbished before ordering",
-    ctaLabel: "Search on Amazon",
+    ctaLabel: "View on Amazon",
     rows: [
       { k: "Best path (new)", v: "Steelcase sells the new Leap with the full 12-year warranty. Prices vary by fabric and options." },
-      { k: "Amazon / resale", v: "The Amazon link is a search, not one listing — stock mixes new and a large amount of refurbished/used chairs. Confirm it is a V2 and whether it is new or refurbished, and what warranty applies." },
+      { k: "Amazon / resale", v: "The US Amazon link opens the Leap V2 in Black Fabric listing. Regional links may open local search results. Check the selected seller, new or used condition, return terms and warranty before ordering." },
       { k: "What to check", v: 'Says "Leap V2", the condition (new / refurbished / used), the fabric, and who the seller and warranty are.' },
     ],
     officialStore: {
@@ -113,7 +113,7 @@ export const STEELCASE_LEAP_V2: RichReview = {
       url: "https://www.steelcase.com/products/office-chairs/leap/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, version and condition vary by listing and change without notice — confirm them before buying. The Amazon link is an affiliate search link; the Steelcase link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Amazon links are affiliate links; the Steelcase link is non-affiliate. Prices, sellers, availability and purchase conditions can change. Check the selected offer on Amazon; this guide does not guarantee manufacturer warranty coverage for third-party offers. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
