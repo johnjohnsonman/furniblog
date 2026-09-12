@@ -178,7 +178,14 @@ export default function AboutPage() {
             <p>
               Our judgments draw on hands-on experience, verified manufacturer
               specs, and reviews gathered from real owners around the world —
-              not marketing copy.
+              not marketing copy. Not every article involves a chair we have
+              personally sat in: how each piece was produced — hands-on notes,
+              research-based analysis, or summarized owner reviews — is
+              labeled on the article itself, as described in our{" "}
+              <a href="/editorial-policy" className="underline underline-offset-2">
+                editorial policy
+              </a>
+              .
             </p>
           </div>
 

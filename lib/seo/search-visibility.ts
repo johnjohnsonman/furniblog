@@ -76,10 +76,26 @@ const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([
   "why-your-legs-go-numb-at-your-desk-and-how-seat-depth-can-fix-it",
 ])
 
+/**
+ * Near-duplicate posts where a sibling was chosen as the representative
+ * (2026-09-12 hygiene sweep). These stay published for existing channels but
+ * are never re-opened to Google — the winner carries the topic there.
+ * Winners: 3-minute-desk-chair-stretching…boost / aeron-vs-kokuyo…two-philosophies-of-mesh-seating /
+ * okamura-contessa-ii-vs-…which-2-000-chair-should-you-buy / is-your-chair-furniture-or-a-healthcare-device….
+ */
+export const BLOG_DUPLICATE_LOSERS = new Set<string>([
+  "3-minute-chair-stretching-routine-to-recharge-your-workday",
+  "herman-miller-aeron-vs-kokuyo-ing-cloud-two-design-philosophies-two-seating-expe",
+  "herman-miller-aeron-vs-okamura-contessa-ii-is-the-japanese-challenger-worth-it",
+  "herman-miller-aeron-vs-okamura-contessa-ii-key-differences-explained",
+  "is-your-office-chair-healthcare-or-just-furniture-2026-wellness-trends",
+])
+
 export function isBlogPostGoogleSearchable(post: {
   slug: string | null
   source_url: string | null
 }): boolean {
+  if (post.slug && BLOG_DUPLICATE_LOSERS.has(post.slug)) return false
   if (post.slug && BLOG_GOOGLE_REENABLED_SLUGS.has(post.slug)) return true
   return !/blog\.naver\.com|naver\.me/i.test(post.source_url ?? "")
 }

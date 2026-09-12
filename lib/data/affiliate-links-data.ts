@@ -90,6 +90,8 @@ export const AFFILIATE_LINKS_DATA: Record<
   "noblechairs-epic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B01EMA3TX8", isOfficial: false }],
   "sidiz-t80": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07K6BBZZK", isOfficial: false }],
   // uplift-vert: not sold on Amazon US (DTC / Amazon.ca only) → auto search-link fallback.
+  // NOTE: the three keys below don't match live product slugs (kept as
+  // reference for size/official links; live slug entries exist above).
   "herman-miller-aeron-b": [
     {
       retailer: "Herman Miller Official",
@@ -273,14 +275,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       priceUsd: 649,
     },
   ],
-  "steelcase-respawn-gaming": [
-    {
-      retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=steelcase+gaming+chair",
-      isOfficial: false,
-      priceUsd: 499,
-    },
-  ],
   "okamura-contessa-2": [
     {
       retailer: "Okamura Official",
@@ -321,20 +315,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.okamura.co.jp/product/seating/portone/",
       isOfficial: true,
       priceUsd: 2800,
-    },
-  ],
-  "okamura-cronos": [
-    {
-      retailer: "Okamura Official",
-      url: "https://www.okamura.co.jp",
-      isOfficial: true,
-      priceUsd: 1500,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=okamura+cronos",
-      isOfficial: false,
-      priceUsd: 1400,
     },
   ],
   "humanscale-freedom": [
@@ -500,20 +480,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       priceKrw: 680000,
     },
   ],
-  "kokuyo-crg": [
-    {
-      retailer: "Kokuyo Official",
-      url: "https://www.kokuyo-furniture.co.jp",
-      isOfficial: true,
-      priceUsd: 450,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=kokuyo+crg",
-      isOfficial: false,
-      priceUsd: 420,
-    },
-  ],
   "itoki-act2": [
     {
       retailer: "Itoki Official",
@@ -532,28 +498,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://link.coupang.com/a/AF1321768",
       isOfficial: false,
       priceKrw: 980000,
-    },
-  ],
-  "itoki-leala": [
-    {
-      retailer: "Itoki Official",
-      url: "https://www.itoki.jp",
-      isOfficial: true,
-      priceUsd: 650,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=itoki+leala",
-      isOfficial: false,
-      priceUsd: 600,
-    },
-  ],
-  "itoki-karuga": [
-    {
-      retailer: "Itoki Official",
-      url: "https://www.itoki.jp",
-      isOfficial: true,
-      priceUsd: 1200,
     },
   ],
   "vitra-id-chair-concept": [
@@ -638,14 +582,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       priceUsd: 1200,
     },
   ],
-  "girsberger-enjoy": [
-    {
-      retailer: "Girsberger Official",
-      url: "https://www.girsberger.com",
-      isOfficial: true,
-      priceUsd: 1400,
-    },
-  ],
   "girsberger-diagon": [
     {
       retailer: "Girsberger Official",
@@ -702,14 +638,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.com/s?k=bambach+saddle+seat",
       isOfficial: false,
       priceUsd: 845,
-    },
-  ],
-  "konig-neurath-teo": [
-    {
-      retailer: "König+Neurath Official",
-      url: "https://www.koenig-neurath.com",
-      isOfficial: true,
-      priceUsd: 1100,
     },
   ],
 }

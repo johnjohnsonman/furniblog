@@ -5,7 +5,6 @@ import { Analytics } from '@vercel/analytics/next'
 import { PageviewTracker } from '@/components/analytics/PageviewTracker'
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
 import { MicrosoftClarity } from '@/components/analytics/MicrosoftClarity'
-import { AmazonOneLink } from '@/components/affiliate/AmazonOneLink'
 import './globals.css'
 
 const playfair = Playfair_Display({ 
@@ -89,7 +88,6 @@ export default function RootLayout({
         )}
         {children}
         <PageviewTracker />
-        <AmazonOneLink />
         <GoogleAnalytics />
         <MicrosoftClarity />
         {process.env.NODE_ENV === 'production' && <Analytics />}

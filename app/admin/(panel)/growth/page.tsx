@@ -1,5 +1,5 @@
 import { createAdminClient } from "@/lib/supabase/admin"
-import { isBlogPostGoogleSearchable } from "@/lib/seo/search-visibility"
+import { isBlogPostGoogleSearchable, BLOG_DUPLICATE_LOSERS } from "@/lib/seo/search-visibility"
 
 export const dynamic = "force-dynamic"
 
@@ -91,6 +91,8 @@ async function loadData() {
       if (!post) return null
       const naver = /naver/.test(post.source_url ?? "")
       if (!naver) return null
+      // Duplicate losers are permanently closed to Google; don't list them.
+      if (BLOG_DUPLICATE_LOSERS.has(slug)) return null
       return {
         slug,
         landings: entry.total,
