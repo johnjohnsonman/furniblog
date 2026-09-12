@@ -31,7 +31,7 @@ function trackHomeAction(action: string, product?: FinderProduct) {
 export function ChairFinder({ products }: { products: FinderProduct[] }) {
   const [category, setCategory] = useState("all")
   const [brand, setBrand] = useState("all")
-  const [budget, setBudget] = useState("all")
+  const [priceBand, setPriceBand] = useState("all")
   const [activeId, setActiveId] = useState(products[0]?.id ?? "")
   const [compare, setCompare] = useState<string[]>([])
   const [dockOpen, setDockOpen] = useState(false)
@@ -44,13 +44,23 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand))].sort(), [products])
   const categories = useMemo(() => [...new Map(products.map((p) => [p.category, p.categoryLabel])).entries()], [products])
   const matches = useMemo(() => products.filter((p) => {
-    const max = budget === "all" ? Infinity : Number(budget)
+    const priceMatches = (() => {
+      if (priceBand === "all") return true
+      if (priceBand === "unavailable") return p.priceUsd == null
+      if (p.priceUsd == null) return false
+      if (priceBand === "under-300") return p.priceUsd < 300
+      if (priceBand === "300-500") return p.priceUsd >= 300 && p.priceUsd < 500
+      if (priceBand === "500-1000") return p.priceUsd >= 500 && p.priceUsd < 1000
+      if (priceBand === "1000-1500") return p.priceUsd >= 1000 && p.priceUsd < 1500
+      if (priceBand === "1500-plus") return p.priceUsd >= 1500
+      return false
+    })()
     return (category === "all" || p.category === category) &&
       (brand === "all" || p.brand === brand) &&
-      (p.priceUsd == null || p.priceUsd <= max)
-  }).sort((a, b) => (b.rating || 0) - (a.rating || 0)), [products, category, brand, budget])
+      priceMatches
+  }).sort((a, b) => (b.rating || 0) - (a.rating || 0)), [products, category, brand, priceBand])
 
-  const active = matches.find((p) => p.id === activeId) ?? matches[0] ?? products[0]
+  const active = matches.find((p) => p.id === activeId) ?? matches[0]
   const activeIndex = Math.max(0, matches.findIndex((p) => p.id === active?.id))
   const move = (step: number) => {
     if (!matches.length) return
@@ -78,9 +88,15 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
               <select aria-label="Chair category" value={category} onChange={(e) => setCategory(e.target.value)} className="min-w-36 border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
                 <option value="all">any chair</option>{categories.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
               </select>
-              <span>under</span>
-              <select aria-label="Maximum budget" value={budget} onChange={(e) => setBudget(e.target.value)} className="border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
-                <option value="all">any price</option><option value="300">$300</option><option value="500">$500</option><option value="1000">$1,000</option><option value="1500">$1,500</option>
+              <span>priced</span>
+              <select aria-label="Price range" value={priceBand} onChange={(e) => setPriceBand(e.target.value)} className="border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
+                <option value="all">at any price</option>
+                <option value="under-300">under $300</option>
+                <option value="300-500">$300–$499</option>
+                <option value="500-1000">$500–$999</option>
+                <option value="1000-1500">$1,000–$1,499</option>
+                <option value="1500-plus">$1,500+</option>
+                <option value="unavailable">price unavailable</option>
               </select>
               <span>from</span>
               <select aria-label="Chair brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="min-w-36 border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
@@ -100,6 +116,7 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
                 <span className="text-right text-xs font-semibold">{p.price}</span>
               </button>
             ))}
+            {matches.length === 0 && <p className="py-8 text-sm text-[#666]">No chairs match all three conditions. Adjust a filter to widen the shortlist.</p>}
           </div>
         </div>
 
@@ -116,6 +133,7 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
             <div className="mt-3 grid grid-cols-2 gap-2"><Link href={`/products/${active.id}`} className="flex items-center justify-center bg-[#171717] px-3 py-3 text-sm font-bold text-white">View chair details</Link><button onClick={() => toggleCompare(active.id)} className="flex items-center justify-center gap-2 border border-[#3157e8] px-3 py-3 text-sm font-bold text-[#3157e8]">{compare.includes(active.id) ? <Check size={16} /> : <GitCompareArrows size={16} />} {compare.includes(active.id) ? "Added" : "Add to compare"}</button></div>
           </div>
         </div>}
+        {!active && <div className="flex min-h-[420px] flex-col items-center justify-center bg-[#fff0c7] p-8 text-center"><p className="font-serif text-3xl">No exact matches</p><p className="mt-2 max-w-sm text-sm text-[#666]">Try a broader category, price range, or brand.</p><button onClick={() => { setCategory("all"); setPriceBand("all"); setBrand("all") }} className="mt-5 border border-[#171717] bg-white px-4 py-2 text-sm font-bold">Reset filters</button></div>}
       </div>
 
       {compared.length > 0 && <div className="sticky bottom-0 z-40 border-y border-[#171717] bg-white shadow-[0_-8px_30px_rgba(0,0,0,.1)]">
