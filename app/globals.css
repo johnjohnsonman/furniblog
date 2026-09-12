@@ -145,6 +145,15 @@
   }
 }
 
+@keyframes finder-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="finder-in"] { animation: none !important; }
+}
+
 /* ─────────────────────────────────────────────────────────────
    Chairpedia article body — shared by the admin editor and the
    public page so editing is WYSIWYG. Editorial-magazine rhythm:

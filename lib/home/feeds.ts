@@ -24,7 +24,7 @@ export type HomeChairpedia = {
   title: string
   subtitle: string | null
   excerpt: string | null
-  heroImage: string | null
+  heroImage: string
 }
 
 export type HomeVideo = {
@@ -143,7 +143,7 @@ export async function getHomeChairpedia(limit = 9): Promise<HomeChairpedia[]> {
       title: r.title as string,
       subtitle: (r.subtitle as string | null) ?? null,
       excerpt: (r.excerpt as string | null) ?? null,
-      heroImage: (r.hero_image_url as string | null) ?? null,
+      heroImage: (r.hero_image_url as string | null) ?? "",
     }))
   } catch {
     return []

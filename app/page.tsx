@@ -1,411 +1,53 @@
+import NextImage, { type ImageProps } from "next/image"
 import Link from "next/link"
-import {
-  Briefcase,
-  Crown,
-  Gamepad2,
-  BookOpen,
-  UtensilsCrossed,
-  Users,
-  Armchair,
-  ArrowUpFromLine,
-  Gem,
-  Play,
-} from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+import { ArrowRight, Play } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { NewsCard } from "@/components/news/news-card"
-import { ChairBand } from "@/components/home/chair-band"
-import { ChairpediaHero } from "@/components/home/chairpedia-hero"
-import { StatBand } from "@/components/home/stat-band"
-import { Reveal } from "@/components/home/reveal"
-import { bestLists } from "@/lib/data"
-import {
-  CHAIR_CATEGORIES,
-  countByChairCategory,
-} from "@/lib/chair-categories"
-import {
-  getSiteStats,
-  getFeaturedProducts,
-  getProducts,
-} from "@/lib/supabase/queries"
-import {
-  getLatestReviews,
-  getLatestVideos,
-  getLatestNews,
-  getHomeChairpedia,
-} from "@/lib/home/feeds"
-import {
-  generateOrganizationSchema,
-  generateWebsiteSchema,
-} from "@/lib/seo/schemas"
+import { ChairFinder } from "@/components/home/chair-finder"
+import { bestLists, brands } from "@/lib/data"
+import { CHAIR_CATEGORIES, countByChairCategory } from "@/lib/chair-categories"
+import { getProducts } from "@/lib/supabase/queries"
+import { getHomeChairpedia, getLatestNews, getLatestReviews, getLatestVideos } from "@/lib/home/feeds"
+import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
-
 export const metadata = { alternates: { canonical: "/" } }
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  office: Briefcase,
-  executive: Crown,
-  gaming: Gamepad2,
-  study: BookOpen,
-  dining: UtensilsCrossed,
-  conference: Users,
-  lounge: Armchair,
-  standing: ArrowUpFromLine,
-  design: Gem,
-}
-
-const HOME_BEST_LIST_IDS = [
-  "best-office-chairs",
-  "best-for-back-pain",
-  "best-for-tall-people",
-  "best-under-1000",
-  "best-japanese-chairs",
-  "best-for-long-hours",
+const guides = [
+  ["What a return actually costs", "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"],
+  ["How to read an Amazon listing", "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it"],
+  ["Best chairs under $300", "/blog/best-office-chairs-under-300-verified-picks"],
+  ["Aeron Classic vs Remastered", "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide"],
+  ["Used Leap: V1 vs V2", "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection"],
+  ["Will it fit my desk?", "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance"],
 ] as const
 
-function SectionHead({ title, href, cta }: { title: string; href: string; cta: string }) {
-  return (
-    <div className="mb-6 flex items-end justify-between">
-      <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">{title}</h2>
-      <Link href={href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-        {cta} →
-      </Link>
-    </div>
-  )
+const Image = (props: ImageProps) => <NextImage {...props} unoptimized />
+
+function Head({ children, href }: { children: React.ReactNode; href: string }) {
+  return <div className="mb-6 flex items-end justify-between"><h2 className="font-serif text-3xl sm:text-4xl">{children}</h2><Link href={href} className="flex items-center gap-1 text-xs font-bold text-[#3157e8]">View all <ArrowRight size={14} /></Link></div>
 }
 
 export default async function HomePage() {
-  const [
-    stats,
-    featuredProducts,
-    allProducts,
-    chairpedia,
-    latestReviews,
-    latestVideos,
-    latestNews,
-  ] = await Promise.all([
-    getSiteStats(),
-    getFeaturedProducts(6),
-    getProducts(),
-    getHomeChairpedia(9),
-    getLatestReviews(6),
-    getLatestVideos(8),
-    getLatestNews(4),
-  ])
-  const categoryCounts = countByChairCategory(allProducts)
-  const homeBestLists = bestLists.filter((list) =>
-    HOME_BEST_LIST_IDS.includes(list.id as (typeof HOME_BEST_LIST_IDS)[number])
-  )
-  const { brands } = await import("@/lib/data")
-  const topBrands = brands.slice(0, 6)
+  const [products, chairpedia, reviews, videos, news] = await Promise.all([getProducts(), getHomeChairpedia(4), getLatestReviews(3), getLatestVideos(5), getLatestNews(4)])
+  const finderProducts = products.filter((p) => p.image).slice(0, 16).map((p) => ({ id: p.id, name: p.name, brand: p.brand, brandId: p.brandId, category: p.category, categoryLabel: p.categoryLabel, priceUsd: p.priceUsd, price: p.price, image: p.image, rating: p.rating, bestFor: p.bestFor }))
+  const counts = countByChairCategory(products)
+  return <div className="min-h-screen bg-white text-[#171717]">
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]) }} />
+    <Header /><main><ChairFinder products={finderProducts} />
 
-  return (
-    <div className="flex min-h-screen flex-col bg-premium-bg">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]),
-        }}
-      />
-      <Header />
+      {chairpedia[0] && <section className="border-b border-[#171717] bg-[#cdeff0]"><Link href={`/chairpedia/${chairpedia[0].slug}`} className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]"><div className="relative aspect-[16/10] overflow-hidden border-[#171717] lg:border-r"><Image src={chairpedia[0].heroImage} alt={chairpedia[0].title} fill sizes="(min-width:1024px) 55vw,100vw" className="object-cover transition-transform duration-700 hover:scale-[1.025]" /></div><div className="flex flex-col justify-center p-7 lg:p-12"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#17676b]">From Chairpedia</p><h2 className="mt-3 font-serif text-3xl sm:text-5xl">{chairpedia[0].title}</h2><p className="mt-4 max-w-xl text-sm leading-6">{chairpedia[0].excerpt}</p><span className="mt-6 flex items-center gap-2 text-sm font-bold">Read the deep dive <ArrowRight size={16} /></span></div></Link></section>}
 
-      <main className="flex-1">
-        {/* Hero — Chairpedia-led, image-forward */}
-        <section className="border-b border-premium-border">
-          <div className="mx-auto max-w-6xl px-4 py-12 lg:py-16">
-            <Reveal>
-              <p className="text-xs font-medium uppercase tracking-[0.18em] text-premium-text-tertiary">
-                Furniblog — premium chair database
-              </p>
-              <h1 className="mt-3 max-w-3xl font-serif text-4xl font-medium leading-[1.1] tracking-tight text-premium-text sm:text-5xl lg:text-[56px] text-balance">
-                Real reviews &amp; real data for premium chairs
-              </h1>
-              <p className="mt-4 max-w-xl text-lg leading-relaxed text-premium-text-secondary">
-                Honest reviews, in-depth deep dives, videos and verified specs for
-                the world&apos;s best office, ergonomic and design chairs.
-              </p>
-            </Reveal>
+      {chairpedia.length > 1 && <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/chairpedia">Comparisons people decide with</Head><div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-3">{chairpedia.slice(1,4).map((item) => <Link key={item.slug} href={`/chairpedia/${item.slug}`} className="group bg-white p-4"><div className="relative aspect-[16/9] overflow-hidden bg-[#eef2ff]"><Image src={item.heroImage} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" /></div><p className="mt-4 text-[10px] font-bold uppercase text-[#3157e8]">Chairpedia</p><h3 className="mt-1 font-serif text-xl">{item.title}</h3><p className="mt-2 line-clamp-2 text-xs leading-5 text-[#666]">{item.excerpt}</p></Link>)}</div></div></section>}
 
-            {chairpedia.length > 0 && (
-              <Reveal>
-                <ChairpediaHero entries={chairpedia} />
-              </Reveal>
-            )}
-          </div>
-        </section>
+      <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/reviews">Latest reviews</Head><div className="grid gap-px border border-[#171717] bg-[#171717] md:grid-cols-3">{reviews.map((r, i) => <Link key={r.id} href={`/reviews/${r.id}`} className={`group p-5 ${i === 2 ? "bg-[#fff0c7]" : "bg-white"}`}><div className="relative aspect-[16/10] bg-[#eef2ff]">{r.productImage && <Image src={r.productImage} alt={r.productName} fill className="object-contain p-5 transition-transform duration-500 group-hover:scale-105" />}</div><p className="mt-4 text-[10px] font-bold uppercase text-[#3157e8]">{r.brandName || "Review"}</p><h3 className="mt-1 font-serif text-xl">{r.productName}</h3><p className="mt-2 line-clamp-3 text-sm leading-6">{r.summary}</p></Link>)}</div></div></section>
 
-        {/* chA.I.r band */}
-        <ChairBand />
+      <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/blog">Buying guides</Head><div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2 lg:grid-cols-3">{guides.map(([title, href]) => <Link key={href} href={href} className="flex min-h-24 items-center justify-between bg-white p-5 font-semibold transition-colors hover:bg-[#fff0c7]">{title}<ArrowRight size={16} /></Link>)}</div></div></section>
 
-        {/* Trust band — animated data */}
-        <StatBand
-          stats={[
-            { value: stats.products, label: "Products" },
-            { value: stats.brands, label: "Brands" },
-            { value: stats.reviews, label: "Reviews" },
-            { value: stats.comparisons, label: "Comparisons" },
-          ]}
-        />
+      <section className="border-b border-[#171717] bg-[#171717] py-12 text-white"><div className="mx-auto max-w-7xl px-5"><Head href="/videos">New videos</Head><div className="flex snap-x gap-3 overflow-x-auto pb-2">{videos.map((v) => <a key={v.id} href={`https://www.youtube.com/watch?v=${v.youtubeId}`} target="_blank" rel="noopener noreferrer" className="group w-[260px] shrink-0 snap-start"><div className="relative aspect-video overflow-hidden bg-[#292929]">{v.thumbnailUrl && <Image src={v.thumbnailUrl} alt={v.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />}<span className="absolute bottom-3 left-3 bg-[#f0bf3a] p-2 text-black"><Play size={15} fill="currentColor" /></span></div><p className="mt-2 line-clamp-2 text-sm font-semibold">{v.title}</p></a>)}</div></div></section>
 
-        {/* Buying guides — fixed entry points to the purchase cluster */}
-        <section className="border-t border-border py-14 lg:py-20">
-          <div className="mx-auto max-w-6xl px-4">
-            <Reveal>
-              <SectionHead title="Buying guides" href="/blog" cta="All guides" />
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {[
-                  { href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon", t: "What a return actually costs", d: "Herman Miller vs Steelcase vs Amazon — fees, windows, warranties" },
-                  { href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it", t: "How to read an Amazon listing", d: "Seller types, capacity claims, BIFMA badges, warranty text" },
-                  { href: "/blog/best-office-chairs-under-300-verified-picks", t: "Best chairs under $300", d: "Budget picks backed by documented specs, not hype" },
-                  { href: "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide", t: "Aeron Classic vs Remastered", d: "The 60-second generation check for used listings" },
-                  { href: "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection", t: "Used Steelcase Leap: V1 vs V2", d: "Identification table and pre-purchase inspection" },
-                  { href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs", t: "Refurbished vs used, decoded", d: "What each second-hand tier really promises" },
-                  { href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance", t: "Will it fit your desk?", d: "Documented seat-height ranges for 13 chairs" },
-                  { href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks", t: "Chairs for tall desks", d: "The few chairs with documented tall ranges" },
-                  { href: "/blog/herman-miller-aeron-alternatives-by-budget", t: "Aeron alternatives by budget", d: "Documented trade-offs at every price tier" },
-                ].map((g) => (
-                  <Link
-                    key={g.href}
-                    href={g.href}
-                    className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-                  >
-                    <div className="text-sm font-semibold text-foreground group-hover:underline">{g.t}</div>
-                    <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{g.d}</p>
-                  </Link>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
+      <section className="border-b border-[#171717] bg-[#f5f1e8] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/products">Browse the chair database</Head><div className="grid gap-8 md:grid-cols-3"><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Categories</h3>{CHAIR_CATEGORIES.filter((c) => counts[c.id]).slice(0,7).map((c) => <Link key={c.id} href={`/products?category=${c.id}`} className="flex justify-between border-b border-[#c8c1b5] py-2 text-sm"><span>{c.label}</span><span>{counts[c.id]}</span></Link>)}</div><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Best lists</h3>{bestLists.slice(0,6).map((l) => <Link key={l.id} href={`/best/${l.id}`} className="block border-b border-[#c8c1b5] py-2 text-sm">{l.title}</Link>)}</div><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Brands</h3>{brands.slice(0,7).map((b) => <Link key={b.id} href={`/brands/${b.id}`} className="block border-b border-[#c8c1b5] py-2 text-sm">{b.name}</Link>)}</div></div></div></section>
 
-        {/* Latest reviews — now image-forward */}
-        {latestReviews.length > 0 && (
-          <section className="border-t border-border py-14 lg:py-20">
-            <div className="mx-auto max-w-6xl px-4">
-              <Reveal>
-                <SectionHead title="Latest reviews" href="/reviews" cta="View all" />
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {latestReviews.map((r) => (
-                    <Link
-                      key={r.id}
-                      href={`/reviews/${r.id}`}
-                      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
-                    >
-                      <div className="aspect-[16/10] overflow-hidden bg-premium-cream">
-                        {r.productImage ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={r.productImage}
-                            alt={r.productName}
-                            loading="lazy"
-                            className="h-full w-full object-contain p-5 transition-transform duration-300 group-hover:scale-[1.04]"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                            {r.productName}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex flex-1 flex-col p-5">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          {r.brandName && (
-                            <span className="rounded-full border border-border px-2 py-0.5 font-medium text-foreground">
-                              {r.brandName}
-                            </span>
-                          )}
-                          <span className="truncate">{r.productName}</span>
-                        </div>
-                        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-foreground">
-                          {r.summary}
-                        </p>
-                        <span className="mt-auto pt-3 text-xs font-medium text-foreground group-hover:underline">
-                          Read full review →
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
-          </section>
-        )}
-
-        {/* Top rated */}
-        <section className="border-t border-border bg-muted/20 py-14 lg:py-20">
-          <div className="mx-auto max-w-6xl px-4">
-            <Reveal>
-              <SectionHead title="Top rated" href="/products" cta="View all" />
-              <div className="divide-y divide-border overflow-hidden rounded-xl border border-border bg-card">
-                {featuredProducts.map((product, index) => (
-                  <Link
-                    key={product.id}
-                    href={`/products/${product.id}`}
-                    className="flex items-center gap-4 p-4 transition-colors hover:bg-muted/40"
-                  >
-                    <span className="w-5 shrink-0 font-serif text-lg text-muted-foreground">
-                      {index + 1}
-                    </span>
-                    <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-premium-cream">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={product.image} alt={product.name} className="h-full w-full object-contain p-1.5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-foreground">{product.name}</h3>
-                        <span className="hidden text-sm text-muted-foreground sm:inline">by {product.brand}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>{product.categoryLabel ?? product.category}</span>
-                        {product.bestFor && (
-                          <>
-                            <span>·</span>
-                            <span className="text-foreground/70">{product.bestFor}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <p className="shrink-0 text-right font-medium text-foreground">{product.price}</p>
-                  </Link>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* New videos — rail */}
-        {latestVideos.length > 0 && (
-          <section className="border-t border-border py-14 lg:py-20">
-            <div className="mx-auto max-w-6xl px-4">
-              <Reveal>
-                <SectionHead title="New videos" href="/videos" cta="View all" />
-              </Reveal>
-              <Reveal>
-                <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2">
-                  {latestVideos.map((v) => (
-                    <a
-                      key={v.id}
-                      href={`https://www.youtube.com/watch?v=${v.youtubeId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group block w-[260px] shrink-0 snap-start sm:w-[320px]"
-                    >
-                      <div className="relative aspect-video overflow-hidden rounded-xl border border-border bg-muted">
-                        {v.thumbnailUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={v.thumbnailUrl}
-                            alt={v.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                          />
-                        ) : null}
-                        <span className="absolute inset-0 flex items-center justify-center">
-                          <span className="rounded-full bg-black/55 p-3 backdrop-blur-sm transition-colors group-hover:bg-black/70">
-                            <Play className="h-5 w-5 fill-white text-white" />
-                          </span>
-                        </span>
-                      </div>
-                      <p className="mt-2 line-clamp-2 text-sm font-medium text-foreground">{v.title}</p>
-                      {v.brand && <p className="text-xs text-muted-foreground">{v.brand}</p>}
-                    </a>
-                  ))}
-                </div>
-              </Reveal>
-            </div>
-          </section>
-        )}
-
-        {/* Browse by category */}
-        <section className="border-t border-border py-14 lg:py-20">
-          <div className="mx-auto max-w-6xl px-4">
-            <Reveal>
-              <h2 className="font-serif text-2xl font-medium text-foreground sm:text-3xl">
-                Browse by category
-              </h2>
-              <p className="mb-8 mt-1 text-sm text-muted-foreground">Explore chairs by how you use them</p>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {CHAIR_CATEGORIES.map((cat) => {
-                  const Icon = CATEGORY_ICONS[cat.id] ?? Briefcase
-                  const count = categoryCounts[cat.id]
-                  return (
-                    <Link
-                      key={cat.id}
-                      href={`/products?category=${cat.id}`}
-                      className="group rounded-xl border border-border bg-card p-5 transition-all hover:border-foreground/25 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
-                    >
-                      <Icon className="mb-3 h-6 w-6 text-foreground transition-transform group-hover:scale-110" />
-                      <h3 className="text-sm font-medium leading-snug text-foreground">{cat.label}</h3>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {count} {count === 1 ? "chair" : "chairs"}
-                      </p>
-                    </Link>
-                  )
-                })}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* Latest news */}
-        {latestNews.length > 0 && (
-          <section className="border-t border-border py-14 lg:py-20">
-            <div className="mx-auto max-w-6xl px-4">
-              <Reveal>
-                <SectionHead title="Latest news" href="/news" cta="View all" />
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                  {latestNews.map((n) => (
-                    <NewsCard key={n.id} item={n} />
-                  ))}
-                </div>
-              </Reveal>
-            </div>
-          </section>
-        )}
-
-        {/* Best lists + Brands */}
-        <section className="border-t border-border py-14 lg:py-20">
-          <div className="mx-auto max-w-6xl space-y-14 px-4">
-            <Reveal>
-              <SectionHead title="Best lists" href="/best" cta="View all" />
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {homeBestLists.map((list) => (
-                  <Link
-                    key={list.id}
-                    href={`/best/${list.id}`}
-                    className="rounded-xl border border-border bg-card p-4 transition-all hover:border-foreground/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
-                  >
-                    <h3 className="text-sm font-medium text-foreground">{list.title}</h3>
-                    <p className="mt-1 text-xs text-muted-foreground">{list.count} chairs</p>
-                  </Link>
-                ))}
-              </div>
-            </Reveal>
-
-            <Reveal>
-              <SectionHead title="Brands" href="/brands" cta="All brands" />
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-                {topBrands.map((brand) => (
-                  <Link
-                    key={brand.id}
-                    href={`/brands/${brand.id}`}
-                    className="rounded-xl border border-border bg-card p-4 text-center transition-all hover:border-foreground/20 hover:shadow-[0_8px_24px_rgba(0,0,0,0.05)]"
-                  >
-                    <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-muted text-xs font-semibold text-foreground">
-                      {brand.logo}
-                    </div>
-                    <p className="mt-2 text-sm font-medium text-foreground">{brand.name}</p>
-                    <p className="text-xs text-muted-foreground">{brand.country}</p>
-                  </Link>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
-  )
+      {news.length > 0 && <section className="py-10"><div className="mx-auto max-w-7xl px-5"><h2 className="mb-3 text-xs font-bold uppercase tracking-wider">Latest news</h2>{news.map((n) => <Link key={n.id} href={`/news/${n.slug}`} className="flex items-center justify-between border-t border-[#ccc] py-3 text-sm hover:text-[#3157e8]"><span>{n.title}</span><ArrowRight size={14} /></Link>)}</div></section>}
+    </main><Footer /></div>
 }
