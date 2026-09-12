@@ -353,6 +353,7 @@ npm run backfill:reviews   # 리뷰 얇은 제품 보강 (dry-run) / -- --apply 
 3. ✅ **리라이트→구글 복귀 1차(5편)**: Aeron size/control/tilt-lock/used/seat-depth — ChairPark 원문 번안 사실 공개("sister showroom" 표기)+검증 가이드 링크 보강 후 allowlist 복귀(백업: scratchpad/rewrite-backup-*). 구글 재개 allowlist 총 10편.
 4. ✅ **Contessa 모멘텀**: ①시트고 데이터 오류 수정(570–620→공식 435–545mm, Okamura 확인) ②신규 가이드 `/blog/okamura-contessa-vs-contessa-seconda-identification-and-used-buying-guide`(548단어; CC8x 라벨코드·프레임 실루엣·화이트프레임=Seconda·스마트 레버, 출처 명시) ③딥다이브 레일 최상단 연결. 신규·수정 6 URL IndexNow 200.
 5. **9/26경 관찰 게이트(잔여)**: GSC 재평가 반응("발견됨-미색인" 841 추세·색인 수)+신규 문서 색인+SubTag 데이터 종합 → AdSense 신청 여부·통합검토 버킷(945)·웨이브3 결정.
+6. ✅ **`/admin/growth` 어드민 스코어보드 신설**(커밋 4dc4a5e): 30일 페이지별 제휴 클릭·제품별 클릭·검색/AI 채널 착지·**구글 재개 후보**(외부 유입 생긴 네이버 글, open/candidate 상태 표시). 재개는 후보 확인→보강→`BLOG_GOOGLE_REENABLED_SLUGS` 추가(코드) 순서. **단계별 구글 오픈 로드맵 합의**: A(10편 완료)→B(주간, 외부 유입 생긴 글)→C(9/26 게이트 후 20~30편)→회복 확인 후 전면.
 - 대표님 대기: ★5 ASIN 스팟체크 / 다음 주 SubTag CSV(안 나오면 섹션별 Tracking ID 플랜 B 구현).
 
 ### 남은 과제 (TODO)
