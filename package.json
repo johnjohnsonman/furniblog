@@ -33,6 +33,9 @@
     "expand:revenue-network": "node scripts/expand-revenue-content-network.cjs",
     "audit:missing-sources": "node scripts/audit-missing-chairpedia-sources.cjs",
     "repair:missing-sources": "node scripts/repair-missing-chairpedia-sources.cjs",
+    "audit:chairpedia-claims": "node scripts/audit-chairpedia-claims.cjs",
+    "repair:chairpedia-growth": "node scripts/repair-chairpedia-growth-batch.cjs",
+    "test:chairpedia-growth-live": "node scripts/test-chairpedia-growth-live.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },
