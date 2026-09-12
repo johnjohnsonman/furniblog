@@ -9,6 +9,12 @@ const required = {
   "app/products/[id]/page.tsx": ["BuyingGuideRail", "ContentStandardsNote", "ProductComparisonRail", "product-mobile-sticky"],
 }
 
+required["app/chairpedia/[slug]/page.tsx"].push(
+  "Research-based Chair Guide",
+  "In short",
+  "Confirm the seller, condition, delivery and return terms on Amazon."
+)
+
 const errors = []
 for (const [file, needles] of Object.entries(required)) {
   const source = fs.readFileSync(path.join(root, file), "utf8")

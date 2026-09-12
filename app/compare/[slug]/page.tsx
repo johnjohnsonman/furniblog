@@ -29,7 +29,7 @@ export async function generateMetadata({
   const supabase = createPublicServerClient()
   const c = await getPublicComparison(supabase, slug)
   if (!c) return { title: "Comparison" }
-  const title = c.seo_title?.trim() || c.title
+  const title = (c.seo_title?.trim() || c.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
   const description = c.seo_description?.trim() || c.excerpt?.trim() || c.subtitle?.trim() || undefined
   return {
     title,

@@ -86,7 +86,7 @@ export async function generateMetadata({
   const { slug } = await params
   const entry = await getEntry(slug)
   if (!entry) return { title: "Chairpedia" }
-  const title = entry.seo_title?.trim() || entry.title
+  const title = (entry.seo_title?.trim() || entry.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
   const description =
     entry.seo_description?.trim() || entry.excerpt?.trim() || entry.subtitle?.trim() || undefined
   return {
@@ -210,13 +210,24 @@ export default async function ChairpediaEntryPage({
           </nav>
 
           <header className="mb-8">
+            <p className="mb-3 text-xs font-semibold uppercase text-muted-foreground">
+              Research-based Chair Guide
+            </p>
             <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
               {entry.title}
             </h1>
             {entry.subtitle && (
               <p className="mt-3 text-lg text-muted-foreground">{entry.subtitle}</p>
             )}
-            <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+            {entry.excerpt && (
+              <div className="mt-5 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-4 border border-border bg-card p-4">
+                <span className="pt-1 text-[11px] font-semibold uppercase text-muted-foreground">
+                  In short
+                </span>
+                <p className="font-serif text-lg leading-snug text-foreground">{entry.excerpt}</p>
+              </div>
+            )}
+            <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
               <span>By the{" "}
                 <Link href="/about" className="font-medium text-foreground hover:underline">
                   Furniblog Editorial Team
@@ -227,27 +238,33 @@ export default async function ChairpediaEntryPage({
             </div>
           </header>
 
-          {legacyHero && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={legacyHero.url}
-              alt={legacyHero.alt}
-              className="w-full rounded-xl mb-8"
-            />
-          )}
-
-          {buy && (
-            <div className="mb-8 rounded-xl border border-border bg-muted/40 p-4 flex items-center justify-between gap-4">
-              <span className="text-sm font-medium">Where to buy the {product?.name}</span>
-              <SmartBuyLink
-                variant="inline"
-                productId={product?.slug}
-                name={product?.name ?? ""}
-                amazonUrl={buy.url}
-                amazonLabel="View on Amazon"
-                placement="chairpedia-top"
-                className="shrink-0"
-              />
+          {(legacyHero || buy) && (
+            <div className="mb-8 grid gap-4 border-y border-border py-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+              {legacyHero ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={legacyHero.url} alt={legacyHero.alt} className="max-h-80 w-full bg-card object-contain" />
+              ) : (
+                <div>
+                  <p className="font-medium text-foreground">{product?.name}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Check the exact model and configuration before buying.</p>
+                </div>
+              )}
+              {buy && (
+                <div className="space-y-2 sm:max-w-56">
+                  <p className="text-sm font-medium">Where to buy the {product?.name}</p>
+                  <SmartBuyLink
+                    variant="inline"
+                    productId={product?.slug}
+                    name={product?.name ?? ""}
+                    amazonUrl={buy.url}
+                    amazonLabel="View on Amazon"
+                    placement="chairpedia-top"
+                  />
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    Confirm the seller, condition, delivery and return terms on Amazon.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
