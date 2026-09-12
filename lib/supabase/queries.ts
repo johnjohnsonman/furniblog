@@ -239,7 +239,7 @@ function mapDbProduct(row: DbProduct, affiliateLinks: AffiliateLink[] = []): Pro
     priceLabel: formatProductPrice(row.price_usd),
     imageUrl: resolveProductImageUrl(primaryImage, category),
     galleryImages: gallery,
-    summary: row.description_ko,
+    summary: row.description_en ?? row.description_ko,
     pros: Array.isArray(row.pros) ? row.pros : [],
     cons: Array.isArray(row.cons) ? row.cons : [],
     bestFor: row.best_for ?? "",

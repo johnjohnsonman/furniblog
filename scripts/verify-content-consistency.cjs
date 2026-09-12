@@ -30,6 +30,10 @@ const richRegistry = fs.readFileSync(path.join(root, "lib/chairpedia/rich-data/i
 if (!richRegistry.includes('"herman-miller-embody-gaming-chair"')) {
   errors.push("rich-data registry: missing reviewed Embody Gaming guide")
 }
+const productQueries = fs.readFileSync(path.join(root, "lib/supabase/queries.ts"), "utf8")
+if (!productQueries.includes("summary: row.description_en ?? row.description_ko")) {
+  errors.push("product mapper: English description is not preferred")
+}
 
 if (errors.length) {
   console.error(errors.join("\n"))

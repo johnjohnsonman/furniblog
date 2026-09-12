@@ -87,7 +87,7 @@ async function main() {
     const row = bySlug.get(slug)
     if (!row) throw new Error(`Missing priority product: ${slug}`)
     return { row, next: standardDescription(row) }
-  }).filter(({ row, next }) => next !== row.description_en)
+  }).filter(({ row, next }) => next !== row.description_en || next !== row.description_ko)
 
   console.log(JSON.stringify({
     mode: apply ? "apply" : "audit",
@@ -105,7 +105,7 @@ async function main() {
   for (const { row, next } of changes) {
     const { error: updateError } = await client
       .from("products")
-      .update({ description_en: next, updated_at: new Date().toISOString() })
+      .update({ description_en: next, description_ko: next, updated_at: new Date().toISOString() })
       .eq("id", row.id)
     if (updateError) throw new Error(`${row.slug}: ${updateError.message}`)
   }
