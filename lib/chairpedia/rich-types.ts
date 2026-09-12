@@ -55,6 +55,9 @@ export type RichReview = {
   verdictOneLiner: string
   verdictNote: string
 
+  /** Hide a superseded legacy body while preserving it in storage for rollback. */
+  includeDeepDive?: boolean
+
   heroShotBrief: string
   galleryBriefs: string[]
 

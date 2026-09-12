@@ -267,11 +267,13 @@ export function RichReview({
         </section>
 
         {/* ── In-depth (reuse full research body) ── */}
-        <section id="review" className="flex flex-col gap-5">
-          <Eyebrow>In depth</Eyebrow>
-          <SectionH2>Design, ergonomics &amp; build — in depth</SectionH2>
-          <div className="chairpedia-body min-w-0" dangerouslySetInnerHTML={{ __html: wrapTables(contentHtml) }} />
-        </section>
+        {data.includeDeepDive !== false && (
+          <section id="review" className="flex flex-col gap-5">
+            <Eyebrow>In depth</Eyebrow>
+            <SectionH2>Design, ergonomics &amp; build — in depth</SectionH2>
+            <div className="chairpedia-body min-w-0" dangerouslySetInnerHTML={{ __html: wrapTables(contentHtml) }} />
+          </section>
+        )}
 
         {/* ── Strengths / cautions ── */}
         <section id="assessment" className="flex flex-col gap-5">

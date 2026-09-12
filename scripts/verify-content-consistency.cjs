@@ -22,6 +22,15 @@ for (const [file, needles] of Object.entries(required)) {
   if (/\uFFFD/.test(source)) errors.push(`${file}: contains replacement characters`)
 }
 
+const richReview = fs.readFileSync(path.join(root, "components/chairpedia/rich-review.tsx"), "utf8")
+if (!richReview.includes("data.includeDeepDive !== false")) {
+  errors.push("rich-review.tsx: missing legacy-body suppression")
+}
+const richRegistry = fs.readFileSync(path.join(root, "lib/chairpedia/rich-data/index.ts"), "utf8")
+if (!richRegistry.includes('"herman-miller-embody-gaming-chair"')) {
+  errors.push("rich-data registry: missing reviewed Embody Gaming guide")
+}
+
 if (errors.length) {
   console.error(errors.join("\n"))
   process.exit(1)

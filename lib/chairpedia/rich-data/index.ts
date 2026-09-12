@@ -23,6 +23,7 @@ import { OKAMURA_CONTESSA_II } from "./okamura-contessa-ii"
 import { HUMANSCALE_FREEDOM } from "./humanscale-freedom"
 import { HAWORTH_ZODY } from "./haworth-zody"
 import { HERMAN_MILLER_EMBODY } from "./herman-miller-embody"
+import { HERMAN_MILLER_EMBODY_GAMING } from "./herman-miller-embody-gaming"
 import { HERMAN_MILLER_MIRRA_2 } from "./herman-miller-mirra-2"
 import { STEELCASE_SERIES_1 } from "./steelcase-series-1"
 import { VITRA_ID_TRIM } from "./vitra-id-trim"
@@ -61,6 +62,7 @@ export const RICH_REVIEWS: Record<string, RichReview> = {
   "humanscale-freedom-task-chair": HUMANSCALE_FREEDOM,
   "haworth-zody-ii": HAWORTH_ZODY,
   "herman-miller-embody-chair": HERMAN_MILLER_EMBODY,
+  "herman-miller-embody-gaming-chair": HERMAN_MILLER_EMBODY_GAMING,
   "herman-miller-mirra-2-chair": HERMAN_MILLER_MIRRA_2,
   "steelcase-series-1-chair": STEELCASE_SERIES_1,
   "vitra-id-trim-chair": VITRA_ID_TRIM,
