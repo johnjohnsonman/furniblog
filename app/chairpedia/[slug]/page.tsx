@@ -16,6 +16,8 @@ import { getProductImages } from "@/lib/amazon/paapi"
 import { extractAsin } from "@/lib/amazon/asin"
 import { getProductImageBundle, getUseProductImage } from "@/lib/supabase/queries"
 import { hasImageRegistry } from "@/lib/data/product-images"
+import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
+import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 
 export const dynamic = "force-dynamic"
 
@@ -112,6 +114,9 @@ export default async function ChairpediaEntryPage({
   const buy = product
     ? resolveAmazonAffiliateLink(product.slug, product.name)
     : null
+  const productComparisons = product
+    ? await getPublishedProductComparisons(product.slug)
+    : []
 
   // Reuse the linked product's own images (registered once via the admin product
   // form) across this article — no separate per-article image entry needed.
@@ -185,6 +190,12 @@ export default async function ChairpediaEntryPage({
               updatedStr={updatedStr}
               sourceUrls={sources}
             />
+            {product && (
+              <ProductComparisonRail
+                productName={product.name}
+                comparisons={productComparisons}
+              />
+            )}
           </article>
         ) : (
         <article className="mx-auto max-w-3xl px-4 py-10">
@@ -230,6 +241,7 @@ export default async function ChairpediaEntryPage({
                 name={product?.name ?? ""}
                 amazonUrl={buy.url}
                 amazonLabel="View on Amazon"
+                placement="chairpedia-top"
                 className="shrink-0"
               />
             </div>
@@ -275,9 +287,16 @@ export default async function ChairpediaEntryPage({
                   name={product?.name ?? ""}
                   amazonUrl={buy.url}
                   amazonLabel="Check the price on Amazon"
+                  placement="chairpedia-bottom"
                 />
               </div>
             </div>
+          )}
+          {product && (
+            <ProductComparisonRail
+              productName={product.name}
+              comparisons={productComparisons}
+            />
           )}
         </article>
         )}

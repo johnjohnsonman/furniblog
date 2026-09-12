@@ -1,7 +1,7 @@
 ﻿import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { MapPin, Star, ChevronRight, BookOpen, ArrowUpRight } from "lucide-react"
+import { ChevronRight, BookOpen, ArrowUpRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
@@ -21,6 +21,9 @@ import { ProductImageGallery } from "@/components/chairs/ProductImageGallery"
 import { ProductVideosSection } from "@/components/videos/product-videos-section"
 import { fetchProductVideos } from "@/lib/videos/product-videos"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
+import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
+import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
+import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 import {
   generateBreadcrumbSchema,
   generateChairSchema,
@@ -66,42 +69,6 @@ async function getChairpediaSlug(productSlug: string): Promise<string | null> {
   }
 }
 
-/** Cluster-matched buying guides shown on every product page. */
-function buyingGuideRail(
-  category: string | null | undefined,
-  priceUsd: number | null | undefined
-): { label: string; href: string }[] {
-  const returns = {
-    label: "What returning a chair actually costs, by store",
-    href: "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon",
-  }
-  const fit = {
-    label: "Will this chair fit your desk? Seat height and armrest clearance",
-    href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance",
-  }
-  if (category === "standing") {
-    return [
-      { label: "Office chairs for standing and tall desks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
-      fit,
-      returns,
-    ]
-  }
-  if (typeof priceUsd === "number" && priceUsd >= 800) {
-    return [
-      { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
-      { label: "Refurbished vs remanufactured vs open-box vs used", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },
-      returns,
-      fit,
-    ]
-  }
-  return [
-    { label: "How to read an Amazon office chair listing", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
-    { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },
-    returns,
-    fit,
-  ]
-}
-
 type RecentPost = { slug: string; title: string; hero_image_url: string | null }
 
 /** A few recent blog posts — internal links from product pages into the blog. */
@@ -115,25 +82,6 @@ async function getRecentBlogPosts(limit = 3): Promise<RecentPost[]> {
       .order("published_at", { ascending: false, nullsFirst: false })
       .limit(limit)
     return (data as RecentPost[] | null) ?? []
-  } catch {
-    return []
-  }
-}
-
-/** Published comparisons that feature this product (internal links + crawl). */
-async function getProductComparisons(productSlug: string): Promise<{ slug: string; title: string }[]> {
-  try {
-    const supabase = createPublicServerClient()
-    const { data: prod } = await supabase.from("products").select("id").eq("slug", productSlug).maybeSingle()
-    const pid = (prod as { id: string } | null)?.id
-    if (!pid) return []
-    const { data } = await supabase
-      .from("comparisons")
-      .select("slug,title")
-      .eq("status", "published")
-      .or(`product_a_id.eq.${pid},product_b_id.eq.${pid}`)
-      .limit(6)
-    return (data as { slug: string; title: string }[] | null) ?? []
   } catch {
     return []
   }
@@ -159,12 +107,16 @@ export async function generateMetadata({
   }
 
   return {
-    title: product.name,
-    description:
-      product.description ??
-      product.overview ??
-      `Specs, reviews, and where to buy the ${product.name}.`,
+    title: `${product.name}: Specs, Reviews & Where to Buy`,
+    description: `Compare ${product.name} specifications, fit, reviews, alternatives and current buying options. Check the exact model, seller, warranty and returns before ordering.`,
     alternates: { canonical: `/products/${product.slug ?? product.id}` },
+    openGraph: {
+      type: "website",
+      title: `${product.name}: Specs, Reviews & Where to Buy`,
+      description: `Research ${product.name} specifications, fit, alternatives and current buying options.`,
+      url: `/products/${product.slug ?? product.id}`,
+      images: product.image ? [product.image] : undefined,
+    },
   }
 }
 
@@ -194,7 +146,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const slug = product.slug ?? product.id
   const chairpediaSlug = await getChairpediaSlug(slug)
   const recentBlog = isSupabaseConfigured() ? await getRecentBlogPosts(3) : []
-  const productComparisons = isSupabaseConfigured() ? await getProductComparisons(slug) : []
+  const productComparisons = isSupabaseConfigured() ? await getPublishedProductComparisons(slug) : []
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
 
@@ -376,9 +328,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <h3 className="font-medium text-foreground mb-4">Where to Buy</h3>
                   <SmartBuyLink
                     variant="block"
-                    productId={product.id}
+                    productId={slug}
                     name={product.name}
                     amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                    placement="product-sidebar"
                     showDisclaimer
                   />
                   <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
@@ -400,44 +353,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
             <SmartBuyLink
               variant="block"
-              productId={product.id}
+              productId={slug}
               name={product.name}
               amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+              placement="product-mobile-sticky"
             />
           </div>
 
-          {productComparisons.length > 0 && (
-            <div className="mt-10 border-t border-border pt-6">
-              <h2 className="font-serif text-lg font-medium text-foreground">
-                Compare {product.name}
-              </h2>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {productComparisons.map((c) => (
-                  <Link
-                    key={c.slug}
-                    href={`/compare/${c.slug}`}
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
-                  >
-                    {c.title}
-                    <ArrowUpRight className="h-4 w-4 opacity-60" />
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+          <ProductComparisonRail productName={product.name} comparisons={productComparisons} />
 
-          <div className="mt-10 border-t border-border pt-6">
-            <h2 className="font-serif text-lg font-medium text-foreground">Buying guides</h2>
-            <ul className="mt-3 space-y-2 text-sm">
-              {buyingGuideRail(product.category, product.priceUsd).map((g) => (
-                <li key={g.href}>
-                  <Link href={g.href} className="underline underline-offset-4">
-                    {g.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <BuyingGuideRail category={product.category} priceUsd={product.priceUsd} />
 
           <div className="h-20 lg:hidden" />
         </div>

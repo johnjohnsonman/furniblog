@@ -5,6 +5,7 @@ import { brands } from "./brands"
 import { designers as rawDesigners } from "./designers"
 import { toDesignerView } from "./mappers"
 import { products } from "./views"
+import { revenuePriorityRank } from "@/lib/growth/revenue-priorities"
 
 export function getProductById(id: string): ProductView | undefined {
   return products.find((p) => p.id === id || p.slug === id)
@@ -41,6 +42,12 @@ export function getSimilarProducts(
         p.id !== product.id &&
         (p.category === product.category || p.brandId === product.brandId)
     )
+    .sort((a, b) => {
+      const aSameCategory = a.category === product.category ? 0 : 1
+      const bSameCategory = b.category === product.category ? 0 : 1
+      if (aSameCategory !== bSameCategory) return aSameCategory - bSameCategory
+      return revenuePriorityRank(a.slug ?? a.id) - revenuePriorityRank(b.slug ?? b.id)
+    })
     .slice(0, limit)
 }
 

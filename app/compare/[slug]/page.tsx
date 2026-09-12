@@ -8,6 +8,7 @@ import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { getPublicComparison } from "@/lib/comparisons/resolve"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
+import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { wrapTables } from "@/lib/blog/postprocess"
 import {
   generateArticleSchema,
@@ -43,7 +44,13 @@ export async function generateMetadata({
   }
 }
 
-function BuyRow({ product }: { product: { slug: string; name: string; image?: string | null } }) {
+function BuyRow({
+  product,
+  placement,
+}: {
+  product: { slug: string; name: string; image?: string | null }
+  placement: string
+}) {
   const buy = resolveAmazonAffiliateLink(product.slug, product.name)
   return (
     <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4 sm:flex-row sm:items-center">
@@ -70,6 +77,7 @@ function BuyRow({ product }: { product: { slug: string; name: string; image?: st
         name={product.name}
         amazonUrl={buy.url}
         amazonLabel="View on Amazon"
+        placement={placement}
         className="shrink-0"
       />
     </div>
@@ -146,8 +154,8 @@ export default async function ComparePage({
               <p className="text-sm text-muted-foreground" data-testid="comparison-affiliate-disclosure">
                 As an Amazon Associate I earn from qualifying purchases. Search links may include other models or accessories; confirm the exact item, seller and condition before buying.
               </p>
-              {c.productA && <BuyRow product={c.productA} />}
-              {c.productB && <BuyRow product={c.productB} />}
+              {c.productA && <BuyRow product={c.productA} placement="compare-top-a" />}
+              {c.productB && <BuyRow product={c.productB} placement="compare-top-b" />}
             </div>
           )}
 
@@ -177,10 +185,12 @@ export default async function ComparePage({
               <p className="text-sm text-muted-foreground">
                 Affiliate links: we may earn a commission from qualifying purchases. Check current delivery, return and warranty terms on Amazon.
               </p>
-              {c.productA && <BuyRow product={c.productA} />}
-              {c.productB && <BuyRow product={c.productB} />}
+              {c.productA && <BuyRow product={c.productA} placement="compare-bottom-a" />}
+              {c.productB && <BuyRow product={c.productB} placement="compare-bottom-b" />}
             </div>
           )}
+
+          <BuyingGuideRail title="Choose and buy with confidence" />
         </article>
       </main>
       <Footer />

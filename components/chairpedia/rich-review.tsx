@@ -70,13 +70,14 @@ export function RichReview({
   const gallery: { url: string; alt: string }[] =
     paapiGallery.length > 0 ? paapiGallery : productImages?.gallery ?? []
 
-  const cta = amazonUrl ? (
+  const cta = (placement: string) => amazonUrl ? (
     <SmartBuyLink
       variant="inline"
       productId={productSlug}
       name={productName ?? data.buy.productTitle}
       amazonUrl={amazonUrl}
       amazonLabel={data.buy.ctaLabel ?? "Check price on Amazon"}
+      placement={placement}
     />
   ) : null
 
@@ -114,7 +115,7 @@ export function RichReview({
 
       <div className="flex flex-col gap-3 max-w-xl">
         <div className="flex flex-wrap gap-3">
-          {cta}
+          {cta("chairpedia-rich-hero")}
           <a
             href="#dimensions"
             className="inline-flex items-center gap-2 border border-foreground px-5 py-3 text-sm font-medium hover:bg-muted transition-colors"
@@ -372,7 +373,7 @@ export function RichReview({
                 <div className="font-serif text-xl leading-snug">{data.buy.productTitle}</div>
                 <div className="text-[13px] text-muted-foreground">{data.buy.retailerNote}</div>
               </div>
-              {cta && <div className="shrink-0">{cta}</div>}
+              {amazonUrl && <div className="shrink-0">{cta("chairpedia-rich-buy")}</div>}
             </div>
             <div className="border-t border-border">
               {data.buy.rows.map((b) => (

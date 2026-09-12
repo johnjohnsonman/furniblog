@@ -37,6 +37,8 @@ export interface SmartBuyLinkProps {
   amazonLabel?: string
   /** Show the "affiliate link" disclaimer (block variant). */
   showDisclaimer?: boolean
+  /** Stable CTA location appended to Amazon ascsubtag for placement reporting. */
+  placement?: string
   className?: string
 }
 
@@ -51,11 +53,12 @@ export function SmartBuyLink({
   variant = "block",
   amazonLabel = "View on Amazon",
   showDisclaimer = false,
+  placement,
   className,
 }: SmartBuyLinkProps) {
   const [country, setCountry] = useState("US")
   useEffect(() => setCountry(readCountryCookie()), [])
-  const subtag = pageSubtag(usePathname())
+  const subtag = pageSubtag(usePathname(), placement)
 
   const query = name.trim()
   const sea = isSeaCountry(country) ? resolveSeaLinks(query, country as SeaCountry) : null

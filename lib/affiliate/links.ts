@@ -83,13 +83,24 @@ export function buildCoupangAffiliateUrl(baseUrl?: string): string {
  * attribute orders back to the page the click came from. Amazon accepts
  * letters, digits, hyphen and underscore; anything else is folded to "-".
  */
-export function pageSubtag(pathname: string | null | undefined): string | undefined {
+export function pageSubtag(
+  pathname: string | null | undefined,
+  placement?: string
+): string | undefined {
   if (!pathname) return undefined
   const cleaned = pathname
     .replace(/^\/+|\/+$/g, "")
     .replace(/\//g, "_")
     .replace(/[^A-Za-z0-9_-]+/g, "-")
-  return (cleaned || "home").slice(0, 90)
+  const slot = placement
+    ?.replace(/[^A-Za-z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase()
+  if (!slot) return (cleaned || "home").slice(0, 90)
+
+  const suffix = `__${slot.slice(0, 30)}`
+  const base = (cleaned || "home").slice(0, Math.max(1, 90 - suffix.length))
+  return `${base}${suffix}`
 }
 
 /**

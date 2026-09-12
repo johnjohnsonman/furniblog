@@ -8,6 +8,7 @@ import { AFFILIATE_LINKS_DATA } from "@/lib/data/affiliate-links-data"
 import { amazonListingSlugs } from "@/lib/best/amazon-listings"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
+import { isRevenuePriority, revenuePriorityRank } from "@/lib/growth/revenue-priorities"
 
 export const dynamic = "force-dynamic"
 
@@ -61,6 +62,8 @@ export default async function BestChairsToBuyPage() {
   }
 
   rows.sort((a, b) => {
+    const priority = revenuePriorityRank(a.slug) - revenuePriorityRank(b.slug)
+    if (priority !== 0) return priority
     const ca = CATEGORY_ORDER.indexOf(a.category ?? "")
     const cb = CATEGORY_ORDER.indexOf(b.category ?? "")
     if (ca !== cb) return (ca === -1 ? 99 : ca) - (cb === -1 ? 99 : cb)
@@ -113,7 +116,9 @@ export default async function BestChairsToBuyPage() {
             warranty and return terms on Amazon. Chairs are grouped by category, then name, not test score.
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
-            {rows.length} chairs. As an Amazon Associate, Furniblog earns from qualifying purchases.
+            {rows.length} chairs. The first 30 are prioritized for model-specific purchase paths and
+            editorial coverage, not ranked by commission. As an Amazon Associate, Furniblog earns
+            from qualifying purchases.
           </p>
 
           <div className="mt-6 rounded-xl border border-border bg-muted/20 p-5">
@@ -151,6 +156,7 @@ export default async function BestChairsToBuyPage() {
                 <li
                   key={row.slug}
                   data-buying-product={row.slug}
+                  data-revenue-priority={isRevenuePriority(row.slug) ? "true" : undefined}
                   className="rounded-lg border border-border bg-card p-5"
                 >
                   <div className="flex flex-col gap-4 sm:flex-row">
@@ -160,6 +166,11 @@ export default async function BestChairsToBuyPage() {
                     </div>}
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
+                        {isRevenuePriority(row.slug) && (
+                          <span className="rounded-full bg-foreground px-2 py-0.5 text-xs font-medium text-background">
+                            Priority buying path
+                          </span>
+                        )}
                         <span className="rounded-full border border-border bg-background px-2 py-0.5 text-xs font-medium text-foreground">
                           {brandName(row)}
                         </span>
