@@ -55,13 +55,13 @@ export function ProductChairTabs({
 
   return (
     <div ref={ref} className="scroll-mt-20">
-      <Tabs value={tab} onValueChange={setTab} className="mt-10 w-full">
-      <TabsList className="w-full flex-wrap h-auto justify-start gap-1">
-        <TabsTrigger value="overview">Overview</TabsTrigger>
-        <TabsTrigger value="specs">Specs</TabsTrigger>
-        {hasVideos && <TabsTrigger value="videos">Videos ({videoCount})</TabsTrigger>}
-        <TabsTrigger value="reviews" data-product-tab="reviews">Reviews ({reviewCount})</TabsTrigger>
-        <TabsTrigger value="purchase">Where to buy</TabsTrigger>
+      <Tabs value={tab} onValueChange={setTab} className="mt-5 w-full">
+      <TabsList className="grid h-auto w-full grid-cols-2 gap-px rounded-none border border-[#171717] bg-[#171717] p-0 sm:grid-cols-5">
+        <TabsTrigger className="rounded-none bg-white py-3 data-[state=active]:bg-[#3157e8] data-[state=active]:text-white" value="overview">Overview</TabsTrigger>
+        <TabsTrigger className="rounded-none bg-white py-3 data-[state=active]:bg-[#3157e8] data-[state=active]:text-white" value="specs">Specs</TabsTrigger>
+        {hasVideos && <TabsTrigger className="rounded-none bg-white py-3 data-[state=active]:bg-[#3157e8] data-[state=active]:text-white" value="videos">Videos ({videoCount})</TabsTrigger>}
+        <TabsTrigger className="rounded-none bg-white py-3 data-[state=active]:bg-[#3157e8] data-[state=active]:text-white" value="reviews" data-product-tab="reviews">Reviews ({reviewCount})</TabsTrigger>
+        <TabsTrigger className="rounded-none bg-white py-3 data-[state=active]:bg-[#3157e8] data-[state=active]:text-white" value="purchase">Where to buy</TabsTrigger>
       </TabsList>
 
       <TabsContent value="overview" className="mt-8 space-y-0">

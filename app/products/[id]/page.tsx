@@ -174,7 +174,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const chairSchema = generateChairSchema(productWithLinks, chairReviews, [])
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white text-[#171717]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -191,9 +191,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Header />
 
       <main className="flex-1">
-        <div className="border-b border-border">
-          <div className="mx-auto max-w-6xl px-4 py-3">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="border-b border-[#171717] bg-[#f5f1e8]">
+          <div className="mx-auto max-w-7xl px-5 py-3">
+            <div className="flex items-center gap-2 text-xs text-[#66707a]">
               <Link href="/products" className="hover:text-foreground transition-colors">Products</Link>
               <ChevronRight className="h-3 w-3" />
               <Link href={`/brands/${product.brandId}`} className="hover:text-foreground transition-colors">{product.brand}</Link>
@@ -203,25 +203,25 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
 
-        <div className="mx-auto max-w-6xl px-4 py-8">
-          <div className="lg:grid lg:grid-cols-3 lg:gap-10">
-            <div className="lg:col-span-2">
-              <div className="flex flex-col gap-8 md:flex-row md:gap-10">
+        <div className="mx-auto max-w-7xl px-5 py-8 lg:py-12">
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_330px] lg:gap-8">
+            <div>
+              <div className="grid overflow-hidden border border-[#171717] bg-white md:grid-cols-[1.08fr_.92fr]">
                 <ProductImageGallery
                   images={galleryImages}
                   alt={product.name}
                   category={product.category}
-                  className="w-full md:w-80 shrink-0"
+                  className="min-h-[420px] w-full bg-[#eaf3ff] p-5 md:min-h-[560px]"
                 />
 
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="flex flex-col justify-center border-t border-[#171717] p-6 md:border-l md:border-t-0 lg:p-9">
+                  <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[.12em] text-[#52606d]">
                     <Link href={`/brands/${product.brandId}`} className="hover:text-foreground transition-colors">{product.brand}</Link>
                     <span>·</span>
                     <span>{product.categoryLabel ?? product.category}</span>
                   </div>
 
-                  <h1 className="font-serif text-2xl sm:text-3xl font-medium text-foreground mt-2">{product.name}</h1>
+                  <h1 className="mt-3 font-serif text-4xl font-medium leading-[1.02] text-foreground sm:text-5xl">{product.name}</h1>
 
                   <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
                     <span>
@@ -246,9 +246,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </Link>
                   </div>
 
-                  <p className="text-2xl font-semibold text-foreground mt-4">{product.price}</p>
+                  <p className="mt-6 text-3xl font-semibold text-foreground">{product.price}</p>
 
-                  <p className="mt-3 text-muted-foreground leading-relaxed text-sm">{product.description}</p>
+                  <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
 
                   {product.bestFor && (
                     <p className="mt-3 text-sm">
@@ -260,7 +260,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {chairpediaSlug && (
                     <Link
                       href={`/chairpedia/${chairpediaSlug}`}
-                      className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                      className="mt-6 inline-flex items-center gap-1.5 border border-[#17676b] bg-[#cdeff0] px-4 py-3 text-sm font-bold text-[#174d50] transition-colors hover:bg-[#b8e5e7]"
                     >
                       <BookOpen className="h-4 w-4 text-[#9a7b4f]" />
                       Read the Chairpedia deep-dive
@@ -270,7 +270,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              <ProductChairTabs
+              <div className="mt-8 border-t border-[#171717] pt-2"><ProductChairTabs
                 productId={product.id}
                 productName={product.name}
                 catalogLinks={catalogLinks}
@@ -297,12 +297,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     />
                   ) : null
                 }
-              />
+              /></div>
             </div>
 
             <div className="hidden lg:block">
-              <div className="sticky top-6 space-y-6">
-                <div className="p-5 bg-card rounded-xl border border-border">
+              <div className="sticky top-20 space-y-4">
+                <div className="border border-[#171717] bg-[#f5f1e8] p-5">
+                  <p className="mb-4 text-[10px] font-bold uppercase tracking-[.14em] text-[#52606d]">At a glance</p>
                   <div className="space-y-3 text-sm">
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Price Range</span>
@@ -325,8 +326,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   </div>
                 </div>
 
-                <div className="p-5 bg-card rounded-xl border border-border">
-                  <h3 className="font-medium text-foreground mb-4">Where to Buy</h3>
+                <div className="border border-[#171717] bg-[#fff0c7] p-5 shadow-[6px_6px_0_#171717]">
+                  <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#7a5a00]">Buying options</p>
+                  <h3 className="mb-4 mt-1 font-serif text-2xl text-foreground">Where to buy</h3>
                   <SmartBuyLink
                     variant="block"
                     productId={slug}
@@ -351,7 +353,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 p-3 bg-background border-t border-border lg:hidden z-50">
+          <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#171717] bg-white p-3 shadow-[0_-8px_24px_rgba(0,0,0,.12)] lg:hidden">
             <SmartBuyLink
               variant="block"
               productId={slug}
@@ -370,8 +372,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         {recentBlog.length > 0 && (
-          <section className="border-t border-border bg-card">
-            <div className="mx-auto max-w-6xl px-4 py-10">
+          <section className="border-t border-[#171717] bg-[#f5f1e8]">
+            <div className="mx-auto max-w-7xl px-5 py-14">
               <div className="mb-5 flex items-baseline justify-between">
                 <h2 className="font-serif text-xl font-medium text-foreground">
                   From the Furniblog blog
@@ -388,7 +390,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <Link
                     key={b.slug}
                     href={`/blog/${b.slug}`}
-                    className="group flex flex-col overflow-hidden rounded-xl border border-border bg-background transition-all hover:border-foreground/20"
+                    className="group flex flex-col overflow-hidden border border-[#171717] bg-white transition-transform hover:-translate-y-1"
                   >
                     <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
                       {b.hero_image_url ? (

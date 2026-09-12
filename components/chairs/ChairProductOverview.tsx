@@ -17,8 +17,9 @@ export function ChairProductOverview({
     <>
       {product.overview && (
         <section>
-          <h2 className="font-serif text-xl font-medium text-foreground mb-4">Overview</h2>
-          <p className="text-muted-foreground leading-relaxed">{product.overview}</p>
+          <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Product overview</p>
+          <h2 className="mb-4 mt-1 font-serif text-3xl font-medium text-foreground">What to know</h2>
+          <p className="max-w-3xl text-lg leading-8 text-muted-foreground">{product.overview}</p>
           {product.designer && (
             <p className="mt-4 text-sm">
               <span className="text-muted-foreground">Designed by </span>
@@ -38,11 +39,11 @@ export function ChairProductOverview({
       )}
 
       {(product.pros?.length || product.cons?.length) ? (
-        <section className="mt-10 pt-8 border-t border-border">
-          <h2 className="font-serif text-xl font-medium text-foreground mb-6">Pros & Cons</h2>
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        <section className="mt-10 border-t border-[#171717] pt-8">
+          <h2 className="mb-6 font-serif text-3xl font-medium text-foreground">Pros &amp; cons</h2>
+          <div className="grid grid-cols-1 gap-px border border-[#171717] bg-[#171717] md:grid-cols-2">
             {product.pros && product.pros.length > 0 && (
-              <div>
+              <div className="bg-[#e7f4e9] p-5">
                 <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Pros
                 </h3>
@@ -57,7 +58,7 @@ export function ChairProductOverview({
               </div>
             )}
             {product.cons && product.cons.length > 0 && (
-              <div>
+              <div className="bg-[#fff0e8] p-5">
                 <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Cons
                 </h3>

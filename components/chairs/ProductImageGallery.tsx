@@ -25,12 +25,12 @@ export function ProductImageGallery({
   const mainImage = gallery[activeIndex] ?? placeholder
 
   return (
-    <div className={cn("space-y-3", className)}>
-      <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-xl bg-muted">
+    <div className={cn("flex flex-col gap-3", className)}>
+      <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden bg-[#eaf3ff]">
         <img
           src={mainImage}
           alt={alt}
-          className="h-full w-full object-cover"
+          className="h-full max-h-[520px] w-full object-contain p-6 transition-transform duration-500 hover:scale-[1.025]"
         />
         {badge}
       </div>
@@ -43,7 +43,7 @@ export function ProductImageGallery({
               type="button"
               onClick={() => setActiveIndex(index)}
               className={cn(
-                "relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition-colors",
+                "relative h-16 w-16 shrink-0 overflow-hidden border-2 bg-white transition-colors",
                 index === activeIndex
                   ? "border-foreground"
                   : "border-transparent opacity-70 hover:opacity-100"
@@ -54,7 +54,7 @@ export function ProductImageGallery({
               <img
                 src={url}
                 alt=""
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain p-1"
               />
             </button>
           ))}
