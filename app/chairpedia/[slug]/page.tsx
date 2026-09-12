@@ -18,6 +18,8 @@ import { getProductImageBundle, getUseProductImage } from "@/lib/supabase/querie
 import { hasImageRegistry } from "@/lib/data/product-images"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
+import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
+import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 
 export const dynamic = "force-dynamic"
 
@@ -196,6 +198,8 @@ export default async function ChairpediaEntryPage({
                 comparisons={productComparisons}
               />
             )}
+            <BuyingGuideRail />
+            <ContentStandardsNote kind="guide" />
           </article>
         ) : (
         <article className="mx-auto max-w-3xl px-4 py-10">
@@ -298,6 +302,8 @@ export default async function ChairpediaEntryPage({
               comparisons={productComparisons}
             />
           )}
+          <BuyingGuideRail />
+          <ContentStandardsNote kind="guide" />
         </article>
         )}
       </main>

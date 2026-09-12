@@ -13,6 +13,10 @@ import { rewriteAmazonHrefs } from "@/lib/affiliate/content-links"
 import { pageSubtag } from "@/lib/affiliate/links"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
+import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
+import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
+import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
+import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 
 export const dynamic = "force-dynamic"
 
@@ -102,6 +106,9 @@ export default async function BlogPostPage({
   const post = await getPost(slug)
   if (!post) notFound()
   const buying = getBlogBuyingNotes(post.slug)
+  const productComparisons = buying
+    ? await getPublishedProductComparisons(buying.productId)
+    : []
 
   const articleSchema = generateArticleSchema({
     headline: post.title,
@@ -185,6 +192,7 @@ export default async function BlogPostPage({
                       productId={product.productId}
                       amazonUrl={resolveAmazonAffiliateLink(product.productId, product.name).url}
                       variant="block"
+                      placement="blog-buying"
                     />
                   </div>
                 ))}
@@ -197,14 +205,11 @@ export default async function BlogPostPage({
             </section>
           )}
 
-          <p className="mt-12 border-t border-border pt-5 text-xs text-muted-foreground">
-            Furniblog may earn a commission from links in this post, at no extra
-            cost to you. See our{" "}
-            <Link href="/affiliate-disclosure" className="underline underline-offset-2">
-              affiliate disclosure
-            </Link>
-            .
-          </p>
+          {buying && (
+            <ProductComparisonRail productName={buying.name} comparisons={productComparisons} />
+          )}
+          <BuyingGuideRail category={post.category} />
+          <ContentStandardsNote kind="guide" />
         </article>
       </main>
       <Footer />

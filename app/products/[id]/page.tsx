@@ -23,6 +23,7 @@ import { fetchProductVideos } from "@/lib/videos/product-videos"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
+import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 import {
   generateBreadcrumbSchema,
@@ -363,6 +364,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <ProductComparisonRail productName={product.name} comparisons={productComparisons} />
 
           <BuyingGuideRail category={product.category} priceUsd={product.priceUsd} />
+          <ContentStandardsNote kind="catalog" />
 
           <div className="h-20 lg:hidden" />
         </div>

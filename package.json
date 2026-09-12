@@ -22,6 +22,7 @@
     "backfill:reviews": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/backfill-thin-reviews.ts",
     "verify:catalog": "ts-node --project scripts/tsconfig.json scripts/verify-catalog.ts",
     "verify:revenue-priorities": "node scripts/verify-revenue-priorities.cjs",
+    "verify:content-consistency": "node scripts/verify-content-consistency.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },

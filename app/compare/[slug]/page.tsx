@@ -9,6 +9,7 @@ import { getPublicComparison } from "@/lib/comparisons/resolve"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
+import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { wrapTables } from "@/lib/blog/postprocess"
 import {
   generateArticleSchema,
@@ -191,6 +192,7 @@ export default async function ComparePage({
           )}
 
           <BuyingGuideRail title="Choose and buy with confidence" />
+          <ContentStandardsNote kind="comparison" />
         </article>
       </main>
       <Footer />
