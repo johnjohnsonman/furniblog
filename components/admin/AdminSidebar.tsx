@@ -25,6 +25,7 @@ import {
   GalleryHorizontal,
   GitCompareArrows,
   Instagram,
+  TrendingUp,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -50,6 +51,7 @@ const NAV = [
   { href: "/admin/brands", label: "Brands", icon: Building2 },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/seo", label: "SEO", icon: Search },
+  { href: "/admin/growth", label: "Growth", icon: TrendingUp },
 ]
 
 export function AdminSidebar() {
