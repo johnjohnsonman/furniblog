@@ -29,6 +29,8 @@
     "select:revenue-expansion": "node scripts/select-revenue-expansion-products.cjs",
     "audit:revenue-expansion": "node scripts/audit-revenue-expansion-products.cjs",
     "standardize:revenue-expansion": "node scripts/standardize-revenue-expansion-products.cjs",
+    "audit:revenue-network": "node scripts/audit-revenue-content-network.cjs",
+    "expand:revenue-network": "node scripts/expand-revenue-content-network.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },
