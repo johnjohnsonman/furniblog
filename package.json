@@ -24,6 +24,8 @@
     "verify:revenue-priorities": "node scripts/verify-revenue-priorities.cjs",
     "verify:content-consistency": "node scripts/verify-content-consistency.cjs",
     "audit:chairpedia-content": "node scripts/standardize-chairpedia-content.cjs",
+    "audit:priority-products": "node scripts/audit-priority-product-content.cjs",
+    "standardize:priority-products": "node scripts/standardize-priority-product-descriptions.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },
