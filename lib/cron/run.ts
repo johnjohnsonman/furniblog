@@ -46,13 +46,18 @@ export type CronCollectionOptions = {
 // FUNCTION_INVOCATION_TIMEOUT (the prior 265s sum did exactly that — observed
 // ~173s wall time for a 150s budget, so each phase overruns its deadline by one
 // in-flight item). Target ~210s budget → ~235s wall, leaving ~65s margin.
+// 2026-09-12 rebalance (measured over the prior 7 days): news saved 1/week
+// into an unreviewed hidden queue and videos saved 0 (targets saturated), so
+// their budgets mostly bought nothing. Reviews are the only phase producing
+// value (+167/week) — news is off, video minimal, review budget raised.
+// Total ≈ 205s against Vercel's 300s function limit.
 export const DEFAULT_CRON_OPTIONS: CronCollectionOptions = {
-  newsBudgetMs: 50_000,
-  videoBudgetMs: 55_000,
-  reviewBudgetMs: 105_000,
-  maxNewsBrands: 12,
-  maxVideoChairs: 10,
-  maxReviewChairs: 12,
+  newsBudgetMs: 0,
+  videoBudgetMs: 25_000,
+  reviewBudgetMs: 180_000,
+  maxNewsBrands: 0,
+  maxVideoChairs: 4,
+  maxReviewChairs: 18,
 }
 
 /** Build brand|key -> latest created_at (ISO) from a collected table. */
