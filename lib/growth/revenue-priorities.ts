@@ -38,6 +38,54 @@ export const REVENUE_PRIORITY_SLUGS = [
   "varier-variable-balans",
 ] as const
 
+/**
+ * Second commercial cohort: products with a model-specific Amazon.com ASIN.
+ * Order is generated from editorial coverage, review coverage and content gaps
+ * by scripts/select-revenue-expansion-products.cjs.
+ */
+export const REVENUE_EXPANSION_SLUGS = [
+  "x-chair-x1",
+  "andaseat-kaiser-3",
+  "hbada-p5",
+  "office-star-progrid",
+  "sihoo-doro-s300",
+  "allsteel-acuity",
+  "sidiz-t80",
+  "x-chair-x3",
+  "duorest-alpha",
+  "furmax-gaming",
+  "modway-articulate",
+  "ergohuman-classic",
+  "x-chair-x2",
+  "hon-wave",
+  "la-z-boy-bellamy",
+  "aeris-3dee",
+  "allsteel-mimeo",
+  "bestoffice-mesh-task",
+  "boss-office-b991",
+  "corsair-tc100-relaxed",
+  "dowinx-gaming",
+  "duorest-gold-plus",
+  "flash-furniture-mid-back-mesh",
+  "flexispot-oc3",
+  "gtracing-gaming",
+  "homall-racing",
+  "hon-convergence",
+  "hon-nucleus",
+  "la-z-boy-delano",
+  "la-z-boy-trafford",
+  "noblechairs-epic",
+  "noblechairs-hero",
+  "office-star-ventilated-managers",
+  "razer-enki",
+  "razer-iskur-v2",
+  "razer-iskur-v2-x",
+  "serta-fairbanks",
+  "sweetcrispy-high-back-mesh",
+  "uplift-envoke",
+  "uplift-pursuit",
+] as const
+
 const REVENUE_PRIORITY = new Map<string, number>(
   REVENUE_PRIORITY_SLUGS.map((slug, index) => [slug, index])
 )

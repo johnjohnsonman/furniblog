@@ -26,6 +26,9 @@
     "audit:chairpedia-content": "node scripts/standardize-chairpedia-content.cjs",
     "audit:priority-products": "node scripts/audit-priority-product-content.cjs",
     "standardize:priority-products": "node scripts/standardize-priority-product-descriptions.cjs",
+    "select:revenue-expansion": "node scripts/select-revenue-expansion-products.cjs",
+    "audit:revenue-expansion": "node scripts/audit-revenue-expansion-products.cjs",
+    "standardize:revenue-expansion": "node scripts/standardize-revenue-expansion-products.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },

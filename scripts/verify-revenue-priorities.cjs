@@ -5,7 +5,16 @@ const root = resolve(__dirname, "..")
 const prioritySource = readFileSync(resolve(root, "lib/growth/revenue-priorities.ts"), "utf8")
 const catalogSource = readFileSync(resolve(root, "lib/data/affiliate-links-data.ts"), "utf8")
 
-const priorities = [...prioritySource.matchAll(/^\s+"([^"]+)",/gm)].map((match) => match[1])
+function parseList(name) {
+  const block = prioritySource.match(new RegExp(`${name}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s*as const`))
+  if (!block) throw new Error(`Missing ${name}`)
+  return [...block[1].matchAll(/"([^"]+)"/g)].map((match) => match[1])
+}
+
+const priorities = [
+  ...parseList("REVENUE_PRIORITY_SLUGS"),
+  ...parseList("REVENUE_EXPANSION_SLUGS"),
+]
 const directSlugs = new Set()
 let currentSlug = null
 
@@ -31,6 +40,6 @@ const result = {
 
 console.log(JSON.stringify(result, null, 2))
 
-if (priorities.length !== 30 || duplicates.length > 0 || missingDirectLinks.length > 0) {
+if (priorities.length !== 70 || duplicates.length > 0 || missingDirectLinks.length > 0) {
   process.exitCode = 1
 }
