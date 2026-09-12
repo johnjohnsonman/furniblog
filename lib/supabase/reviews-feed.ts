@@ -49,6 +49,7 @@ type DbFeedReviewRow = {
   reviewer_weight_kg: number | null
   usage_hours_per_day: number | null
   source_url: string | null
+  country: string | null
   created_at: string
   products: {
     id: string
@@ -108,6 +109,7 @@ function mapFeedRow(row: DbFeedReviewRow): ReviewFeedItem {
     reviewerWeightKg: row.reviewer_weight_kg ?? undefined,
     usageHoursPerDay: row.usage_hours_per_day ?? undefined,
     sourceUrl: row.source_url ?? undefined,
+    country: row.country ?? undefined,
     createdAt: row.created_at,
   }
 }

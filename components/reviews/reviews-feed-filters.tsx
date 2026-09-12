@@ -17,6 +17,7 @@ import {
   BACK_ISSUE_LABELS,
   OCCUPATION_LABELS,
   SOURCE_FILTER_OPTIONS,
+  COUNTRY_FILTER_OPTIONS,
   USAGE_PURPOSE_FILTER_LABELS,
 } from "@/lib/reviews/review-labels"
 import type { BackIssueId, ReviewOccupation, ReviewSource } from "@/types/review"
@@ -176,6 +177,13 @@ export function ReviewsFeedFilters({
       ? filters.sources.filter((s) => s !== source)
       : [...filters.sources, source]
     patch({ sources: next })
+  }
+
+  function toggleCountry(country: string) {
+    const next = filters.countries.includes(country)
+      ? filters.countries.filter((c) => c !== country)
+      : [...filters.countries, country]
+    patch({ countries: next })
   }
 
   function toggleBackIssue(issue: BackIssueId) {
@@ -462,6 +470,36 @@ export function ReviewsFeedFilters({
                         patch({ sources: [] })
                       } else {
                         toggleSource(opt.id as ReviewSource)
+                      }
+                    }}
+                  >
+                    {opt.label}
+                  </PillButton>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Collection market (reviews.country; older rows may be untagged and
+              only show under "All") */}
+          <div className="space-y-3">
+            <SectionLabel>Country</SectionLabel>
+            <p className="text-sm text-muted-foreground">Collection market</p>
+            <div className="flex flex-wrap gap-2">
+              {COUNTRY_FILTER_OPTIONS.map((opt) => {
+                const isAll = opt.id === "all"
+                const active = isAll
+                  ? filters.countries.length === 0
+                  : filters.countries.includes(opt.id)
+                return (
+                  <PillButton
+                    key={opt.id}
+                    active={active}
+                    onClick={() => {
+                      if (isAll) {
+                        patch({ countries: [] })
+                      } else {
+                        toggleCountry(opt.id)
                       }
                     }}
                   >

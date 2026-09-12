@@ -35,6 +35,8 @@ export type ReviewFeedItem = {
   reviewerWeightKg?: number
   usageHoursPerDay?: number
   sourceUrl?: string
+  /** ISO2 market the review was collected from (null/undefined when unknown). */
+  country?: string
   createdAt: string
 }
 

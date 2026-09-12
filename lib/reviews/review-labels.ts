@@ -77,6 +77,17 @@ export const SOURCE_FILTER_OPTIONS: {
   { id: "twitter", label: "Twitter" },
 ]
 
+/** Collection markets that reviews.country can carry today (unknown rows only
+ *  appear under "All"). Extend as new markets start tagging. */
+export const COUNTRY_FILTER_OPTIONS: { id: string | "all"; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "US", label: "🇺🇸 US" },
+  { id: "KR", label: "🇰🇷 Korea" },
+  { id: "JP", label: "🇯🇵 Japan" },
+  { id: "DE", label: "🇩🇪 Germany" },
+  { id: "FR", label: "🇫🇷 France" },
+]
+
 export const ALL_OCCUPATIONS: ReviewOccupation[] = [
   "office_worker",
   "developer",

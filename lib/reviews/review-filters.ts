@@ -44,6 +44,7 @@ export const DEFAULT_REVIEW_FILTERS: ReviewFilters = {
   usagePurpose: "any",
   backIssues: [],
   sources: [],
+  countries: [],
 }
 
 export type ReviewFilters = {
@@ -58,6 +59,8 @@ export type ReviewFilters = {
   usagePurpose: UsagePurposeFilter
   backIssues: BackIssueId[]
   sources: ReviewSource[]
+  /** ISO2 collection markets; empty = all (unknown-country reviews only match "all"). */
+  countries: string[]
 }
 
 export type ProfileHighlight = {
@@ -174,6 +177,14 @@ function matchesSources(
   return filters.sources.includes(review.source)
 }
 
+function matchesCountries(
+  review: ProfileReview & { country?: string },
+  filters: ReviewFilters
+): boolean {
+  if (filters.countries.length === 0) return true
+  return Boolean(review.country && filters.countries.includes(review.country))
+}
+
 function filterByProfile<
   T extends ProfileReview & {
     source: ReviewSource
@@ -211,6 +222,7 @@ function filterByProfile<
     if (!matchesUsagePurpose(review, filters)) return false
     if (!matchesBackIssues(review, filters)) return false
     if (!matchesSources(review, filters)) return false
+    if (!matchesCountries(review, filters)) return false
     return true
   })
 }
@@ -376,5 +388,6 @@ export function countActiveFilters(filters: ReviewFilters): number {
   if (filters.usagePurpose !== "any") n++
   if (filters.backIssues.length > 0) n++
   if (filters.sources.length > 0) n++
+  if (filters.countries.length > 0) n++
   return n
 }
