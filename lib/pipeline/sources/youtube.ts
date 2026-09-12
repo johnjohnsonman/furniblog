@@ -129,6 +129,12 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
     const idLists = await Promise.all(
       locales.map((l) => searchVideoIds(l, chairName, apiKey))
     )
+    // Remember which market surfaced each video (first finder wins) so the
+    // saved review can carry a country tag.
+    const idCountry = new Map<string, string>()
+    idLists.forEach((ids, i) => {
+      for (const id of ids) if (!idCountry.has(id)) idCountry.set(id, locales[i].country)
+    })
     const videoIds = [...new Set(idLists.flat())].slice(0, 9)
 
     if (videoIds.length === 0) return []
@@ -174,6 +180,7 @@ export async function collectFromYoutube(chairName: string): Promise<RawContent[
         body,
         source: "youtube",
         viewCount,
+        country: idCountry.get(id),
         collectedAt: new Date().toISOString(),
       })
     }

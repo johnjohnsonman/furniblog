@@ -74,6 +74,11 @@ const BLOG_GOOGLE_REENABLED_SLUGS = new Set<string>([
   "herman-miller-aeron-tilt-lock-why-your-chair-still-moves-and-why-that-s-normal",
   "how-to-buy-a-used-herman-miller-aeron-without-getting-burned",
   "why-your-legs-go-numb-at-your-desk-and-how-seat-depth-can-fix-it",
+  // Wave-B re-opens 2026-09-12: posts with proven external-search traffic
+  // (top Bing/DDG landings), provenance-noted.
+  "libernovo-lineup-explained-omni-omni-se-omni-pro-maxis-compared",
+  "bought-a-herman-miller-aeron-and-your-back-hurts-understanding-chair-adjustment-",
+  "beyond-pinterest-6-high-caliber-interior-design-reference-sites-you-need-to-book",
 ])
 
 /**

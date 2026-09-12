@@ -412,6 +412,16 @@ export async function executeServerPipeline(params: {
     return "en"
   }
 
+  /** ISO2 country for reviews.country: the item's own market tag when the
+   *  source knows it (multi-market YouTube), else a deterministic source
+   *  mapping. Unknown stays null — never guessed. */
+  function countryFor(item: RawContent): string | null {
+    if (item.country) return item.country
+    if (item.source === "naver" || item.source === "dcinside") return "KR"
+    if (item.source === "japan_community" || item.source === "kakaku") return "JP"
+    return null
+  }
+
   async function insertReview(row: {
     summary: string
     pros: string[]
@@ -441,6 +451,7 @@ export async function executeServerPipeline(params: {
       scores,
       source_url: row.item.url,
       original_language: originalLanguageFor(row.item.source),
+      country: countryFor(row.item),
       verified: false,
     })
 

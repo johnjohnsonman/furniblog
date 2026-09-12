@@ -18,6 +18,8 @@ export interface RawContent {
   >
   score?: number
   viewCount?: number
+  /** ISO2 country of the market the item was collected from, when the source knows it. */
+  country?: string
   collectedAt: string
 }
 

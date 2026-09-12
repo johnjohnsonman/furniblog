@@ -46,6 +46,8 @@ export type CronCollectionOptions = {
 // FUNCTION_INVOCATION_TIMEOUT (the prior 265s sum did exactly that — observed
 // ~173s wall time for a 150s budget, so each phase overruns its deadline by one
 // in-flight item). Target ~210s budget → ~235s wall, leaving ~65s margin.
+// (Country tagging note: reviews.country is stamped at insert — see
+// countryFor() in lib/pipeline/server-run.ts.)
 // 2026-09-12 rebalance (measured over the prior 7 days): news saved 1/week
 // into an unreviewed hidden queue and videos saved 0 (targets saturated), so
 // their budgets mostly bought nothing. Reviews are the only phase producing
