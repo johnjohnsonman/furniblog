@@ -116,7 +116,7 @@ export default async function BestChairsToBuyPage() {
             warranty and return terms on Amazon. Chairs are grouped by category, then name, not test score.
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
-            {rows.length} chairs. The first 30 are prioritized for model-specific purchase paths and
+            {rows.length} chairs. Products with model-specific purchase paths are shown first and
             editorial coverage, not ranked by commission. As an Amazon Associate, Furniblog earns
             from qualifying purchases.
           </p>
@@ -130,19 +130,19 @@ export default async function BestChairsToBuyPage() {
                 <a href="/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" className="underline underline-offset-4">
                   How to read an Amazon chair listing
                 </a>{" "}
-                — seller types, capacity claims and what a BIFMA badge does (and doesn&apos;t) mean.
+                : seller types, capacity claims and what a BIFMA badge does (and doesn&apos;t) mean.
               </li>
               <li>
                 <a href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" className="underline underline-offset-4">
                   What returning a chair actually costs
                 </a>{" "}
-                — Amazon vs the Herman Miller and Steelcase stores, from the official policy pages.
+                : Amazon vs the Herman Miller and Steelcase stores, from the official policy pages.
               </li>
               <li>
                 <a href="/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" className="underline underline-offset-4">
                   Will it fit your desk?
                 </a>{" "}
-                — documented seat-height ranges and the three measurements that decide fit.
+                : documented seat-height ranges and the three measurements that decide fit.
               </li>
             </ul>
           </div>
@@ -224,7 +224,7 @@ export default async function BestChairsToBuyPage() {
 
           {rows.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Our picks are being updated — check back shortly.
+              Our picks are being updated. Check back shortly.
             </p>
           )}
         </div>

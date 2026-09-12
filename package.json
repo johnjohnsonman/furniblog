@@ -36,6 +36,8 @@
     "audit:chairpedia-claims": "node scripts/audit-chairpedia-claims.cjs",
     "repair:chairpedia-growth": "node scripts/repair-chairpedia-growth-batch.cjs",
     "test:chairpedia-growth-live": "node scripts/test-chairpedia-growth-live.cjs",
+    "expand:revenue-comparisons-wave2": "node scripts/expand-revenue-comparisons-wave2.cjs",
+    "test:revenue-expansion-wave2-live": "node scripts/test-revenue-expansion-wave2-live.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
     "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
   },

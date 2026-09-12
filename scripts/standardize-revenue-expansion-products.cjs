@@ -27,10 +27,15 @@ const replacements = [
   [/built for all-day comfort/gi, "designed for extended desk or gaming sessions"],
   [/UPLIFT's premium fully-adjustable ergonomic chair/gi, "UPLIFT ergonomic chair with multiple adjustment controls"],
   [/strong value ergonomic/gi, "with basic ergonomic adjustments"],
+  [/is billed as the world's first dynamic ergonomic chair/gi, "is marketed as a dynamic ergonomic chair"],
+  [/plus a spinal-stretch mode/gi, "plus an additional recline mode"],
 ]
 const tailStart = /This page brings together|Use the specifications/
 const bestForOverrides = {
   "gtracing-gaming": "Budget-oriented racing-style gaming chair",
+  "gtplayer-gaming-footrest": "Budget gaming setup requiring a pull-out footrest",
+  "bestoffice-breathable-mid-back": "Basic mesh task seating for a compact budget workspace",
+  "homall-executive": "Budget high-back seating with padded executive styling",
 }
 
 function neutralLead(row) {

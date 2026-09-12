@@ -14,6 +14,7 @@ async function main() {
   const root = path.resolve(__dirname, "..")
   const prioritySource = fs.readFileSync(path.join(root, "lib/growth/revenue-priorities.ts"), "utf8")
   const existing = new Set(quotedValues(prioritySource, /REVENUE_PRIORITY_SLUGS\s*=\s*\[([\s\S]*?)\]\s*as const/))
+  for (const slug of quotedValues(prioritySource, /REVENUE_EXPANSION_SLUGS\s*=\s*\[([\s\S]*?)\]\s*as const/)) existing.add(slug)
   const affiliateSource = fs.readFileSync(path.join(root, "lib/data/affiliate-links-data.ts"), "utf8")
   const directAmazon = new Set()
   let currentSlug = null

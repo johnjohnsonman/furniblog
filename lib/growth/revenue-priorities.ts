@@ -84,10 +84,15 @@ export const REVENUE_EXPANSION_SLUGS = [
   "sweetcrispy-high-back-mesh",
   "uplift-envoke",
   "uplift-pursuit",
+  "x-chair-x4",
+  "bestoffice-breathable-mid-back",
+  "gtplayer-gaming-footrest",
+  "homall-executive",
+  "libernovo-omni",
 ] as const
 
 const REVENUE_PRIORITY = new Map<string, number>(
-  REVENUE_PRIORITY_SLUGS.map((slug, index) => [slug, index])
+  [...REVENUE_PRIORITY_SLUGS, ...REVENUE_EXPANSION_SLUGS].map((slug, index) => [slug, index])
 )
 
 export function revenuePriorityRank(slug: string): number {
