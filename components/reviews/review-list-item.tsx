@@ -11,7 +11,7 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
   const topCons = review.cons.slice(0, 1)
 
   const metaParts: string[] = []
-  const dateStr = review.createdAt
+  const dateStr = review.source !== "chairpark" && review.createdAt
     ? new Date(review.createdAt).toLocaleDateString("en-US", {
         year: "numeric",
         month: "short",

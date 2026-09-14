@@ -55,7 +55,7 @@ export function ReviewCard({
   return (
     <article className="p-5 bg-card rounded-lg border border-border">
       <header className="flex flex-wrap items-center gap-2 mb-3">
-        {review.createdAt && !Number.isNaN(new Date(review.createdAt).getTime()) && (
+        {review.source !== "chairpark" && review.createdAt && !Number.isNaN(new Date(review.createdAt).getTime()) && (
           <span className="text-xs text-muted-foreground">
             {new Date(review.createdAt).toLocaleDateString("en-US", {
               year: "numeric",

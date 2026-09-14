@@ -59,7 +59,7 @@ export default function EditorialPolicyPage() {
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Updates</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We retain publication dates and only describe an article as updated when its content has been revised. Customer experience records may describe earlier chair versions. Their recorded date is the entry date in our records, not a verified showroom visit date or a product retest. Changing our brand or domain does not make an older review new.
+              We retain publication dates and only describe an article as updated when its content has been revised. Customer experience records may describe earlier chair versions. We do not display dates on offline customer experience records because their entry dates do not establish when the customer visited or tested the chair. Changing our brand or domain does not make an older review new.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Corrections</h2>

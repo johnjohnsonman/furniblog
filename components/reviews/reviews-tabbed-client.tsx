@@ -63,7 +63,7 @@ export function ReviewsTabbedClient({
 
         <TabsContent value="experience">
           <p className="mb-5 text-sm leading-6 text-muted-foreground">
-            Customer experience records include earlier showroom feedback. Recorded dates indicate when entries were added to our records, not verified visit dates or recent product retests. These individual impressions may concern earlier chair versions; check current model specifications before buying.
+            Customer experience records include earlier showroom feedback. These individual impressions may concern earlier chair versions; check current model specifications before buying.
           </p>
           <ExperienceReviewsBrowser items={experienceItems} />
         </TabsContent>

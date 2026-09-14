@@ -121,7 +121,7 @@ export default async function ReviewDetailPage(props: {
   const brand = brandName(product.brands)
   const pros = (review.pros ?? []).filter(Boolean)
   const cons = (review.cons ?? []).filter(Boolean)
-  const date = formatDate(review.created_at)
+  const date = review.source === "chairpark" ? null : formatDate(review.created_at)
   const profile: string[] = []
   if (review.reviewer_height_cm) profile.push(`${review.reviewer_height_cm} cm`)
   if (review.reviewer_weight_kg) profile.push(`${review.reviewer_weight_kg} kg`)
@@ -134,7 +134,7 @@ export default async function ReviewDetailPage(props: {
       headline: notes?.title ?? `${product.name} review (${sourceLabel(review.source)})`,
       description: notes?.description ?? review.summary_ko,
       path: `/reviews/${review.id}`,
-      datePublished: review.created_at,
+      datePublished: review.source === "chairpark" ? null : review.created_at,
       image: product.thumbnail_url,
       authorName: notes ? "Chairpedia Editorial Team" : sourceLabel(review.source),
     }),

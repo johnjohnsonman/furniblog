@@ -131,7 +131,7 @@ export default async function ChairpediaEntryPage({
   const decisionCard = product && buy && getPurchaseDecision(product.slug) ? (
     <PurchaseDecisionCard productId={product.slug} name={product.name}
       image={productGallery.hero} amazonUrl={buy.url} placement="chairpedia-decision"
-      comparison={productComparisons[0]} horizontal />
+      comparison={productComparisons[0]} currentPath={`/chairpedia/${entry.slug}`} horizontal />
   ) : null
   // Per-article opt-in: DB flag (admin toggle, no code edit) when migration 044
   // is applied; otherwise fall back to the legacy code registry for the pilots.
@@ -277,6 +277,8 @@ export default async function ChairpediaEntryPage({
             </div>
           )}
 
+          {decisionCard && <a href="#chairpedia-buying-decision" className="mb-6 inline-block text-sm font-semibold underline underline-offset-4">Check fit, alternatives and buying options</a>}
+
           {/* Authored content (admin/AI). Styles for plain authored HTML below. */}
           <div
             className="chairpedia-body"
@@ -305,7 +307,7 @@ export default async function ChairpediaEntryPage({
             </section>
           )}
 
-          {decisionCard ? <div className="mt-12">{decisionCard}</div> : buy ? (
+          {decisionCard ? <div id="chairpedia-buying-decision" className="mt-12 scroll-mt-24">{decisionCard}</div> : buy ? (
             <div className="mt-12 rounded-xl border border-border bg-muted/40 p-5 text-center">
               <p className="text-sm text-muted-foreground mb-3">
                 Interested in the {product?.name}?

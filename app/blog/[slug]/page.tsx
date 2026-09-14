@@ -214,6 +214,7 @@ export default async function BlogPostPage({
                     image={buyingImages[index].hero}
                     amazonUrl={resolveAmazonAffiliateLink(product.productId, product.name).url}
                     placement="blog-buying"
+                    currentPath={`/blog/${post.slug}`}
                     comparison={productComparisons.find(item => item.slug.includes(product.productId))}
                   />
                 ))}

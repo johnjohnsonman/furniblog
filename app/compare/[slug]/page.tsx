@@ -1,3 +1,4 @@
+import { getPurchaseDecision, getPurchaseGuideLinks } from "@/lib/growth/purchase-decisions"
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import type { Metadata } from "next"
 import Link from "next/link"
@@ -54,6 +55,8 @@ function BuyRow({
   placement: string
 }) {
   const buy = resolveAmazonAffiliateLink(product.slug, product.name)
+  const decision = getPurchaseDecision(product.slug)
+  const guide = getPurchaseGuideLinks(product.slug)[0]
   return (
     <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border bg-muted/40 p-4 sm:flex-row sm:items-center">
       <div className="flex min-w-0 items-center gap-3">
@@ -71,6 +74,8 @@ function BuyRow({
             {product.name}
           </Link>
           <p className="text-xs text-muted-foreground">Specs, reviews & details</p>
+          {placement.startsWith("compare-top") && decision && <p className="mt-2 max-w-xl text-sm leading-relaxed">{decision.focus}</p>}
+          {placement.startsWith("compare-top") && guide && <Link href={guide.href} className="mt-2 inline-block text-xs underline underline-offset-4">{guide.label}</Link>}
         </div>
       </div>
       <SmartBuyLink

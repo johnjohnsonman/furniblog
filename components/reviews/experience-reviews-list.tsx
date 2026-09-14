@@ -104,11 +104,6 @@ export function ExperienceReviewsList({
             key={item.id}
             className="rounded-xl border border-[#EFEFEF] bg-white p-5"
           >
-            <div className="mb-3 flex flex-wrap items-center gap-2">
-              <span className="text-xs text-muted-foreground">
-                Recorded {new Date(item.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })}
-              </span>
-            </div>
 
             <div className="mb-3 flex flex-wrap gap-2">
               {buildProfileChips(item).map((chip, idx) => (
