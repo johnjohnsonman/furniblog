@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Affiliate Disclosure",
+  alternates: { canonical: "/affiliate-disclosure" },
+  openGraph: { title: "Affiliate Disclosure | Chairpedia", url: "/affiliate-disclosure" },
+}
 
 export default function AffiliateDisclosurePage() {
   return (
@@ -24,7 +31,7 @@ export default function AffiliateDisclosurePage() {
           
           <div className="mt-8 space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              Furniblog is a participant in various affiliate programs, including the Amazon Associates Program. This means we may earn a commission when you purchase products through links on our site, at no additional cost to you.
+              Chairpedia is a participant in various affiliate programs, including the Amazon Associates Program. This means we may earn a commission when you purchase products through links on our site, at no additional cost to you.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">How We Earn</h2>

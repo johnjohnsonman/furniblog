@@ -101,7 +101,7 @@ export async function generateBlogPost(params: {
     .map((c) => `${c.slug} — ${c.name}`)
     .join("\n")
 
-  const prompt = `You are an editor for Furniblog, an English-language site about office, ergonomic and design chairs. Convert the SOURCE article below into a polished, original English blog post.
+  const prompt = `You are an editor for Chairpedia, an English-language site about office, ergonomic and design chairs. Convert the SOURCE article below into a polished, original English blog post.
 
 RULES
 - If the source is Korean (or any non-English language), translate it to natural, fluent English — do NOT produce a literal machine translation. Rewrite for clarity, flow and a Western reader.
@@ -111,7 +111,7 @@ RULES
 
 AFFILIATE & LINKS
 - Where you recommend or discuss a chair people could buy, add an Amazon affiliate link using an Amazon SEARCH url: <a href="https://www.amazon.com/s?k=BRAND+MODEL+chair">…</a>. NEVER guess an Amazon product id (no /dp/ links) — only search urls.
-- If a chair you mention exists in the CATALOG below, link its name to its Furniblog product page instead: <a href="/products/SLUG">…</a> (internal link). Use the exact slug from the catalog.
+- If a chair you mention exists in the CATALOG below, link its name to its Chairpedia product page instead: <a href="/products/SLUG">…</a> (internal link). Use the exact slug from the catalog.
 - Don't over-link: link the first meaningful mention only.
 
 IMAGES

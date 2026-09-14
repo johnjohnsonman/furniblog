@@ -104,7 +104,7 @@ export const HBADA_P5: RichReview = {
       { k: "What to check", v: 'Title says "P5", "with Footrest", the colour you want, and who it is sold and shipped by.' },
     ],
     disclaimer:
-      'Not verified by Furniblog: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
+      'Not verified by Chairpedia: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
   },
 
   verdict: [
@@ -119,7 +119,7 @@ export const HBADA_P5: RichReview = {
     { q: "What is the weight capacity?", a: "Documented specs put it at 300 lb. Confirm on the listing you order from." },
     { q: "Is the seat mesh?", a: "The back is mesh; the seat is a cushioned (innerspring/foam) seat, not mesh." },
     { q: "Is the P5 still current?", a: "It remains on Amazon, but Hbada's US site now leads with a newer P2. Check current stock, price and support on the listing." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Hbada's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Hbada's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [

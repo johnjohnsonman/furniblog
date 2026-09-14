@@ -28,10 +28,11 @@ let country = 'US';
 const clicks = [];
 const { SmartBuyLink } = load('components/affiliate/SmartBuyLink.tsx', {
   'react/jsx-runtime': require('react/jsx-runtime'),
+  'next/navigation': { usePathname: () => '/products/test-chair' },
   react: { useState: () => [country, () => {}], useEffect: () => {} },
   'lucide-react': { ExternalLink: () => null },
   '@/lib/utils': { cn: (...values) => values.filter(Boolean).join(' ') },
-  '@/lib/affiliate/links': { buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
+  '@/lib/affiliate/links': { pageSubtag: affiliate.pageSubtag, buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
   '@/lib/affiliate/sea': sea,
   '@/lib/affiliate/amazon-region': region,
 });
@@ -63,7 +64,11 @@ try {
             assert.equal(amazon.searchParams.get('tag'), 'furniblog-22');
             assert.equal(amazon.pathname, '/s');
             assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
-          } else if (direct) assert.equal(links[0].props.href, url);
+          } else if (direct) {
+            assert.equal(amazon.searchParams.get('ascsubtag'), 'products_test-chair');
+            amazon.searchParams.delete('ascsubtag');
+            assert.equal(amazon.href, url);
+          }
           else assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
           const html = renderToStaticMarkup(tree);
           assert.match(html, country === 'SG' ? /Search on Amazon.sg/ : direct ? /View on Amazon/ : /Search on Amazon/);

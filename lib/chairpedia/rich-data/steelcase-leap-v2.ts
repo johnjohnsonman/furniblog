@@ -128,7 +128,7 @@ export const STEELCASE_LEAP_V2: RichReview = {
     { q: "Should I buy new or refurbished?", a: "New comes with Steelcase's full 12-year warranty; refurbished/remanufactured units are cheaper but vary in condition, parts and warranty by seller. Decide which you want and read exactly what a refurbished listing includes." },
     { q: "Does the Leap V2 have a mesh back?", a: "No. The Leap uses an upholstered LiveBack; there is no mesh-back version. If you want mesh, look at the Aeron or Fern." },
     { q: "Is there a headrest?", a: "Not from Steelcase. Any Leap headrest is a third-party add-on that clamps to the back." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from Steelcase's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Steelcase's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -137,7 +137,7 @@ export const STEELCASE_LEAP_V2: RichReview = {
   ],
 
   sourcesFooter:
-    "Specifications are Steelcase's published figures for the new Leap V2 as of the date shown and are not independently verified by Furniblog. Refurbished units differ; always confirm version, condition, fabric and warranty on the listing you buy from.",
+    "Specifications are Steelcase's published figures for the new Leap V2 as of the date shown and are not independently verified by Chairpedia. Refurbished units differ; always confirm version, condition, fabric and warranty on the listing you buy from.",
 
   related: [
     { label: "Used Leap buying guide: V1 vs V2 identification and inspection", href: "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection" },

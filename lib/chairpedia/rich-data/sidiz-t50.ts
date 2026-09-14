@@ -111,7 +111,7 @@ export const SIDIZ_T50: RichReview = {
       url: "https://www.sidiz.com/collections/t50",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, colour and whether a version includes a headrest change without notice — confirm on the listing. The Amazon link is an affiliate link; the SIDIZ link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, colour and whether a version includes a headrest change without notice — confirm on the listing. The Amazon link is an affiliate link; the SIDIZ link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -126,7 +126,7 @@ export const SIDIZ_T50: RichReview = {
     { q: "Are the arms 3D or 4D?", a: "3D — height, pivot/angle and forward/back. The T80 is the step-up model." },
     { q: "What's the weight capacity?", a: "275 lb per SIDIZ (some reviews say 300). Use the official 275 and confirm on the listing." },
     { q: "How is it different from the T80?", a: "The T80 adds a synchronous auto-tilt mechanism, wider lumbar, thicker padding and a depth-adjustable headrest." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from SIDIZ's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from SIDIZ's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -135,7 +135,7 @@ export const SIDIZ_T50: RichReview = {
     { k: "Published reviews", v: "Third-party reviews (e.g. ChairsFX, Ergonomic Trends) summarised for value and the build-quality cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are SIDIZ's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Seat height/depth ranges and the headrest are version/source-dependent — confirm on the listing you buy from.",
+    "Specifications are SIDIZ's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Seat height/depth ranges and the headrest are version/source-dependent — confirm on the listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

@@ -108,7 +108,7 @@ export const HAWORTH_ZODY: RichReview = {
       url: "https://www.haworth.com/na/en/products/seating/task/zody-ii.html",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and — importantly — the generation vary by listing. The Amazon search link is an affiliate link; the Haworth link is a direct, non-affiliate link. Confirm the exact generation, build and seller before buying.",
+      "Not verified by Chairpedia: price, seller, stock and — importantly — the generation vary by listing. The Amazon search link is an affiliate link; the Haworth link is a direct, non-affiliate link. Confirm the exact generation, build and seller before buying.",
   },
 
   verdict: [
@@ -123,7 +123,7 @@ export const HAWORTH_ZODY: RichReview = {
     { q: "Zody or Zody II — which is current?", a: "Zody II is the current flagship (firmer seat, flatter starting tilt, ~400 lb). The original Zody is still sold and rated ~350 lb (325 with forward tilt). Confirm which a listing is." },
     { q: "Does it have a forward tilt?", a: "Yes — about 5°, useful for keyboard or drafting postures. On the original Zody the forward-tilt option lowers the weight rating." },
     { q: "Can I buy it on Amazon?", a: "There's no single authoritative Amazon listing. Genuine Zody is mostly sold through Haworth's store (with a trial window) or authorized dealers." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Haworth's specs and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Haworth's specs and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -132,7 +132,7 @@ export const HAWORTH_ZODY: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the seat/recline feel and the generation caution; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are Haworth's figures plus dealer sheets and published reviews as of the date shown and are not independently verified by Furniblog. Two Zody generations are sold with different capacities — confirm the generation, build and seller on the listing you buy from.",
+    "Specifications are Haworth's figures plus dealer sheets and published reviews as of the date shown and are not independently verified by Chairpedia. Two Zody generations are sold with different capacities — confirm the generation, build and seller on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

@@ -109,7 +109,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
       url: "https://www.hermanmiller.com/products/seating/office-chairs/sayl-chairs/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and configuration vary by listing — confirm before buying. We link an Amazon search rather than a single product because Sayl is sold in many configurations with no one authoritative listing. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
+      "Not verified by Chairpedia: price, seller, stock and configuration vary by listing — confirm before buying. We link an Amazon search rather than a single product because Sayl is sold in many configurations with no one authoritative listing. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
   },
 
   verdict: [
@@ -124,7 +124,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
     { q: "Which arms should I get?", a: "Sayl comes armless, with fixed arms, or with fully adjustable arms. If you want to set arm height and width, confirm the listing says fully adjustable — cheaper listings often aren't." },
     { q: "Does Sayl have a headrest?", a: "No. There's no headrest option on Sayl." },
     { q: "Is there an adjustable lumbar?", a: "It's available on some builds but not standard on all. If lower-back support matters, buy the version that lists an adjustable lumbar." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Herman Miller's information and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Herman Miller's information and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for comfort and the seat/arm cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications combine Herman Miller documentation with retailer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Sayl is sold in many configurations — confirm the back, arms, lumbar and colour on the listing you buy from.",
+    "Specifications combine Herman Miller documentation with retailer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Sayl is sold in many configurations — confirm the back, arms, lumbar and colour on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

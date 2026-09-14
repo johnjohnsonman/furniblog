@@ -1,3 +1,4 @@
+import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -29,7 +30,7 @@ export async function generateMetadata({
   const supabase = createPublicServerClient()
   const c = await getPublicComparison(supabase, slug)
   if (!c) return { title: "Comparison" }
-  const title = (c.seo_title?.trim() || c.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
+  const title = (c.seo_title?.trim() || c.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
   const description = c.seo_description?.trim() || c.excerpt?.trim() || c.subtitle?.trim() || undefined
   return {
     title,
@@ -138,7 +139,7 @@ export default async function ComparePage({
             <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
               <span>By the{" "}
                 <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Furniblog Editorial Team
+                  Chairpedia Editorial Team
                 </Link>
               </span>
               {updatedStr && <span>· Updated {updatedStr}</span>}
@@ -162,7 +163,7 @@ export default async function ComparePage({
 
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(c.content_html) }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(c.content_html)) }}
           />
 
           {c.faq.length > 0 && (

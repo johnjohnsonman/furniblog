@@ -102,7 +102,7 @@ export function RichReview({
         <span>
           By the{" "}
           <Link href="/about" className="font-medium text-foreground hover:underline">
-            Furniblog Editorial Team
+            Chairpedia Editorial Team
           </Link>
         </span>
         {updatedStr && <span>· Updated {updatedStr}</span>}
@@ -126,9 +126,9 @@ export function RichReview({
           </a>
         </div>
         <p className="text-xs leading-relaxed text-muted-foreground">
-          Furniblog participates in the Amazon Associates program. We may earn a commission on
+          Chairpedia participates in the Amazon Associates program. We may earn a commission on
           qualifying purchases at no extra cost to you. Price, seller and stock are shown live on
-          Amazon and are not verified by Furniblog.
+          Amazon and are not verified by Chairpedia.
         </p>
       </div>
     </div>
@@ -322,7 +322,7 @@ export function RichReview({
           <Eyebrow>Alternatives</Eyebrow>
           <SectionH2>Comparisons with key rivals</SectionH2>
           <p className="text-base leading-relaxed">
-            Rival figures are from published sources and are not verified by Furniblog. Prices move
+            Rival figures are from published sources and are not verified by Chairpedia. Prices move
             constantly, so we link out instead of printing a number.
           </p>
           <p className="text-xs text-muted-foreground md:hidden">Scroll the table sideways to compare →</p>
@@ -462,7 +462,7 @@ export function RichReview({
           </div>
           <p className="border-t border-border pt-4 text-xs leading-relaxed text-muted-foreground">
             {data.sourcesFooter ??
-              "Specifications are recorded as published on the dates shown and are not independently verified by Furniblog. Where the manufacturer page and the Amazon listing disagree, this page follows the listing you buy from. Manufacturers sometimes revise hardware without renaming a model; always check the listing before buying."}
+              "Specifications are recorded as published on the dates shown and are not independently verified by Chairpedia. Where the manufacturer page and the Amazon listing disagree, this page follows the listing you buy from. Manufacturers sometimes revise hardware without renaming a model; always check the listing before buying."}
           </p>
         </section>
 

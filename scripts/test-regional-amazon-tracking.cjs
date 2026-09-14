@@ -25,14 +25,15 @@ let country = 'US';
 const clicks = [];
 const { RegionalAmazonLink } = load('components/affiliate/RegionalAmazonLink.tsx', {
   'react/jsx-runtime': require('react/jsx-runtime'),
+  'next/navigation': { usePathname: () => '/products/test-chair' },
   react: { useState: () => [country, () => {}], useEffect: () => {} },
   'lucide-react': { ExternalLink: () => null },
   '@/lib/affiliate/amazon-region': region,
-  '@/lib/affiliate/links': { buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
+  '@/lib/affiliate/links': { pageSubtag: affiliate.pageSubtag, buildAffiliateUrl: affiliate.buildAffiliateUrl, trackAffiliateClick: (...args) => { clicks.push(args); return Promise.resolve(); } },
 });
 const products = [
   ['steelcase-leap-v2', 'Steelcase Leap V2', '/dp/B073G1K465'],
-  ['herman-miller-aeron', 'Herman Miller Aeron', '/s'],
+  ['herman-miller-aeron', 'Herman Miller Aeron', '/dp/B01N0ZUN15'],
   ['sihoo-m18', 'SIHOO M18', '/dp/B07GNDDNMW'],
   ['sihoo-doro-c300', 'SIHOO Doro C300', '/dp/B0C3T865C2'],
 ];

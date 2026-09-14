@@ -5,9 +5,9 @@ import { Footer } from "@/components/footer"
 import { ChairAI } from "@/components/chair-ai/chair-ai"
 
 export const metadata: Metadata = {
-  title: "chA.I.r — AI Chair Finder | Furniblog",
+  title: "chA.I.r — AI Chair Finder",
   description:
-    "Describe how you sit, your budget, your body and the look you want — chA.I.r, Furniblog's AI chair advisor, matches you to the right office, ergonomic or design chair from a catalog of 180+ models.",
+    "Describe how you sit, your budget, your body and the look you want — chA.I.r, Chairpedia's AI chair advisor, matches you to the right office, ergonomic or design chair from a catalog of 180+ models.",
   alternates: { canonical: "/chair" },
   openGraph: {
     title: "chA.I.r — AI Chair Finder",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "How does chA.I.r work?",
-    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chA.I.r reads Furniblog's catalog of 180+ chairs and recommends the best matches, with a short reason for each pick.",
+    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chA.I.r reads Chairpedia's catalog of 180+ chairs and recommends the best matches, with a short reason for each pick.",
   },
   {
     q: "Is chA.I.r free?",
@@ -29,7 +29,7 @@ const FAQ = [
   },
   {
     q: "Does chA.I.r only recommend chairs you sell?",
-    a: "chA.I.r recommends from Furniblog's reviewed catalog of office, ergonomic, gaming, executive and design chairs. It won't invent models — every suggestion links to a real chair you can research further.",
+    a: "chA.I.r recommends from Chairpedia's reviewed catalog of office, ergonomic, gaming, executive and design chairs. It won't invent models — every suggestion links to a real chair you can research further.",
   },
 ]
 

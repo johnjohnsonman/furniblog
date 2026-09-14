@@ -109,7 +109,7 @@ export const HON_IGNITION_2: RichReview = {
       url: "https://www.hon.com/chairs/ignition",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and the exact configuration change by listing — confirm before buying. The Amazon link is an affiliate link; the HON link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and the exact configuration change by listing — confirm before buying. The Amazon link is an affiliate link; the HON link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -124,7 +124,7 @@ export const HON_IGNITION_2: RichReview = {
     { q: "What's the weight capacity?", a: "300 lb for the standard chair; there's a separate Big & Tall model rated 450 lb." },
     { q: "Is there a headrest?", a: "No headrest is standard; it's an option on some builds." },
     { q: "Mesh or upholstered?", a: "Both are offered. The mesh back is the breathable option; upholstered/fabric and vinyl seats are also available." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from HON's listing text, dealer specs and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from HON's listing text, dealer specs and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const HON_IGNITION_2: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the mesh, build and lumbar cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are configuration-dependent and combine HON/dealer figures with published reviews as of the date shown; they are not independently verified by Furniblog. Confirm the exact build (back, arms, lumbar, capacity) on the listing you buy from.",
+    "Specifications are configuration-dependent and combine HON/dealer figures with published reviews as of the date shown; they are not independently verified by Chairpedia. Confirm the exact build (back, arms, lumbar, capacity) on the listing you buy from.",
   related: [
     { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
     { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },

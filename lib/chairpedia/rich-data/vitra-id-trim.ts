@@ -105,7 +105,7 @@ export const VITRA_ID_TRIM: RichReview = {
       url: "https://www.vitra.com/en-us/product/details/id-trim",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, options and — because Vitra doesn't publish them here — several fit numbers vary. In the US this is a Vitra-shop or dealer purchase. The Amazon search link is an affiliate link and will mostly surface unrelated items; the Vitra link is a direct, non-affiliate link. Confirm the exact model and specs with your seller.",
+      "Not verified by Chairpedia: price, seller, stock, options and — because Vitra doesn't publish them here — several fit numbers vary. In the US this is a Vitra-shop or dealer purchase. The Amazon search link is an affiliate link and will mostly surface unrelated items; the Vitra link is a direct, non-affiliate link. Confirm the exact model and specs with your seller.",
   },
 
   verdict: [
@@ -120,7 +120,7 @@ export const VITRA_ID_TRIM: RichReview = {
     { q: "FlowMotion or AutoMotion?", a: "FlowMotion is Vitra's patented synchronised recline you can adjust while seated; AutoMotion self-adjusts its resistance to your weight. Choose whether you want to dial it in or let the chair do it." },
     { q: "Can I buy it on US Amazon?", a: "Not as a genuine product page. In the US the ID Trim is bought through Vitra's online shop or authorized dealers." },
     { q: "What's the weight capacity and seat-height range?", a: "Vitra doesn't publish those on the ID Trim product pages. Request the spec sheet from your seller before buying." },
-    { q: "Has Furniblog tested this chair?", a: "Not with our own instruments. This is a research-based guide from Vitra's pages and published reviews; the deep-dive below adds context." },
+    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments. This is a research-based guide from Vitra's pages and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
@@ -129,7 +129,7 @@ export const VITRA_ID_TRIM: RichReview = {
     { k: "Not published", v: "Seat-height range, weight capacity and warranty are not stated on Vitra's product pages — request the spec sheet from your seller." },
   ],
   sourcesFooter:
-    "Specifications are Vitra's published information plus reviews as of the date shown and are not independently verified by Furniblog. Vitra does not publish some fit numbers on these pages, and US purchase is via the Vitra shop or dealers — confirm the exact model, specs, warranty and seller before buying.",
+    "Specifications are Vitra's published information plus reviews as of the date shown and are not independently verified by Chairpedia. Vitra does not publish some fit numbers on these pages, and US purchase is via the Vitra shop or dealers — confirm the exact model, specs, warranty and seller before buying.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

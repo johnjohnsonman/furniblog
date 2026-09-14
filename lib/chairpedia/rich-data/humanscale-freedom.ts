@@ -108,7 +108,7 @@ export const HUMANSCALE_FREEDOM: RichReview = {
       url: "https://www.humanscale.com/products/seating/freedom-chair",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and configuration vary — Freedom is largely a dealer purchase and Amazon listings are third-party. The Amazon search link is an affiliate link; the Humanscale link is a direct, non-affiliate link. Confirm the exact version and seller before buying.",
+      "Not verified by Chairpedia: price, seller, stock and configuration vary — Freedom is largely a dealer purchase and Amazon listings are third-party. The Amazon search link is an affiliate link; the Humanscale link is a direct, non-affiliate link. Confirm the exact version and seller before buying.",
   },
 
   verdict: [
@@ -123,7 +123,7 @@ export const HUMANSCALE_FREEDOM: RichReview = {
     { q: "Do I need the headrest version?", a: "If you recline often and want neck support, yes — the articulating headrest pivots with you. It's a separate SKU that changes the chair's height and price, so decide up front." },
     { q: "Is there a mesh version?", a: "No. Freedom is upholstered foam only, with a standard or upgraded Gel seat. If you want mesh, look at the Aeron or Cosm." },
     { q: "What's the weight capacity?", a: "Humanscale documents about 300 lb. Some third-party listings claim 400 lb; treat 300 lb as the reliable figure and confirm with your seller." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Humanscale's specs and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Humanscale's specs and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -132,7 +132,7 @@ export const HUMANSCALE_FREEDOM: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the no-lock/upholstered cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications combine Humanscale documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Freedom is configured to order and mostly sold via dealers — confirm the version, capacity and seller before buying.",
+    "Specifications combine Humanscale documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Freedom is configured to order and mostly sold via dealers — confirm the version, capacity and seller before buying.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

@@ -105,7 +105,7 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
       { k: "What to check", v: "It's the OC-5188H high-back with headrest (not the 5188MM), and the colour you want." },
     ],
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, colour and which MIMOGLAD a listing is change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, colour and which MIMOGLAD a listing is change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -120,7 +120,7 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
     { q: "Do the armrests adjust?", a: "Only by flipping up to tuck under a desk. There's no height or width adjustment on this model." },
     { q: "What's the weight capacity?", a: "300 lb for this model. Confirm on the listing." },
     { q: "How far does it recline?", a: "90–135° with two tilt-lock positions (not free-float tension)." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from the OC-5188H manual, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from the OC-5188H manual, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -128,7 +128,7 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the mesh/foam comfort and the arm/recline cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are for the MIMOGLAD OC-5188H (ASIN B09N93L2RQ) as of the date shown and are not independently verified by Furniblog. MIMOGLAD's look-alike listings share spec language — confirm the model, capacity and colour on the exact listing you buy from.",
+    "Specifications are for the MIMOGLAD OC-5188H (ASIN B09N93L2RQ) as of the date shown and are not independently verified by Chairpedia. MIMOGLAD's look-alike listings share spec language — confirm the model, capacity and colour on the exact listing you buy from.",
   related: [
     { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
     { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },

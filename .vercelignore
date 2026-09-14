@@ -4,3 +4,8 @@ furniblog.zip
 design-handoff/
 scripts/backups/
 *.local-backup.html
+
+# Credentials and local audit artifacts
+.env*
+data/
+.git/

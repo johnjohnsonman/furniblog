@@ -4,7 +4,7 @@
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 
 const KEY = "4f43f721b9b58ffddf6bba77f7fb176c"
-const HOST = "www.furniblog.com"
+const HOST = "www.chairpedia.com"
 
 /** Collect public URLs changed in the last `hours`, then ping IndexNow. */
 export async function pingIndexNowForRecentChanges(hours = 26): Promise<{ urls: number; status: number | null }> {

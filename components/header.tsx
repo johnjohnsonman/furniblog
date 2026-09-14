@@ -9,7 +9,7 @@ import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 
 const mainNav = [
   { name: "chA.I.r", href: "/chair" },
-  { name: "Chairpedia", href: "/chairpedia" },
+  { name: "Guides", href: "/chairpedia" },
   { name: "Blog", href: "/blog" },
   { name: "Brands", href: "/brands" },
   { name: "Reviews", href: "/reviews" },
@@ -57,7 +57,7 @@ export function Header() {
           href="/"
           className="font-serif text-lg font-medium tracking-tight text-foreground"
         >
-          Furniblog
+          Chairpedia
         </Link>
 
         <div className="flex lg:hidden">
@@ -156,7 +156,7 @@ export function Header() {
             <div className="flex items-center justify-between">
               <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                 <span className="font-serif text-lg font-medium tracking-tight">
-                  Furniblog
+                  Chairpedia
                 </span>
               </Link>
               <button

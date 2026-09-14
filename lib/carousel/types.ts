@@ -45,5 +45,5 @@ export const CAROUSEL_COLORS = {
   gold: "#B79B6E",
 }
 
-export const BRAND_WORDMARK = "FURNIBLOG"
-export const CTA_URL = "furniblog.com"
+export const BRAND_WORDMARK = "CHAIRPEDIA"
+export const CTA_URL = "chairpedia.com"

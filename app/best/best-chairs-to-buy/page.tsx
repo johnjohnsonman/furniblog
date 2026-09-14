@@ -77,7 +77,7 @@ export default async function BestChairsToBuyPage() {
     itemListElement: rows.map((r, i) => ({
       "@type": "ListItem",
       position: i + 1,
-      url: `https://www.furniblog.com/products/${r.slug}`,
+      url: `https://www.chairpedia.com/products/${r.slug}`,
       name: r.name,
     })),
   }
@@ -117,7 +117,7 @@ export default async function BestChairsToBuyPage() {
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
             {rows.length} chairs. Products with model-specific purchase paths are shown first and
-            editorial coverage, not ranked by commission. As an Amazon Associate, Furniblog earns
+            editorial coverage, not ranked by commission. As an Amazon Associate, Chairpedia earns
             from qualifying purchases.
           </p>
 

@@ -4,8 +4,7 @@ import { loadReviewSitemapPages } from "@/lib/reviews/sitemap-pages"
 import { isNewsSearchable } from "@/lib/seo/search-visibility"
 import { bestLists } from "@/lib/data"
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.furniblog.com"
+import { SITE_URL } from "@/lib/site-config"
 
 function isConfigured(): boolean {
   return Boolean(

@@ -108,7 +108,7 @@ export const STEELCASE_GESTURE: RichReview = {
       url: "https://www.steelcase.com/products/office-chairs/gesture/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and the exact configuration vary by listing — confirm before buying. The Amazon link is an affiliate link; the Steelcase link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and the exact configuration vary by listing — confirm before buying. The Amazon link is an affiliate link; the Steelcase link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -123,7 +123,7 @@ export const STEELCASE_GESTURE: RichReview = {
     { q: "Does Gesture have a headrest?", a: "No. Gesture is offered without a headrest. If you want neck support, look at the Steelcase Leap or Series 2." },
     { q: "Shell back or Wrapped back?", a: "The Shell back leaves the back's shell exposed (contract look, a little cheaper); the Wrapped back is fully upholstered. They support you the same way — it's aesthetics and price." },
     { q: "What's the weight capacity?", a: "400 lb, per Steelcase. Confirm on the listing you buy from." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Steelcase's specs and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Steelcase's specs and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -132,7 +132,7 @@ export const STEELCASE_GESTURE: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for comfort and the arm behaviour; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are Steelcase's figures plus the linked listing and published reviews as of the date shown and are not independently verified by Furniblog. Gesture is sold in many configurations — confirm the arms, back, upholstery and casters on the listing you buy from.",
+    "Specifications are Steelcase's figures plus the linked listing and published reviews as of the date shown and are not independently verified by Chairpedia. Gesture is sold in many configurations — confirm the arms, back, upholstery and casters on the listing you buy from.",
 
   related: [
     { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },

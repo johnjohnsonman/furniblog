@@ -80,7 +80,7 @@ export function AdminSidebar() {
     <aside className="w-56 shrink-0 bg-[#111111] text-white min-h-screen flex flex-col">
       <div className="p-5 border-b border-white/10">
         <Link href="/admin" className="font-serif text-lg font-medium">
-          Furniblog Admin
+          Chairpedia Admin
         </Link>
       </div>
       <nav className="flex-1 overflow-y-auto p-3 space-y-1">

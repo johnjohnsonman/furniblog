@@ -45,7 +45,7 @@ export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
       url: "https://www.hermanmiller.com/products/seating/office-chairs/embody-chairs/",
     },
     disclaimer:
-      "Furniblog does not verify live price, inventory, seller authorization or warranty eligibility. The Amazon destination may include other Embody versions or accessories; confirm the exact item before buying.",
+      "Chairpedia does not verify live price, inventory, seller authorization or warranty eligibility. The Amazon destination may include other Embody versions or accessories; confirm the exact item before buying.",
   },
   verdict: [
     "The gaming edition is best understood as an Embody configuration, not a separate racing-style chair. Its documented differences are the cooling-foam treatment, additional upper-back foam and Logitech G presentation; the core support concept and adjustments come from Embody.",
@@ -62,5 +62,5 @@ export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
     { k: "Logitech G (official)", url: "https://www.logitechg.com/en-us/products/gaming-furniture/embody-gaming-chair.html", v: "Gaming-edition product documentation for the collaboration and foam treatment, reviewed September 2026." },
   ],
   sourcesFooter:
-    "This page uses manufacturer documentation and does not report a Furniblog hands-on test. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
+    "This page uses manufacturer documentation and does not report a Chairpedia hands-on test. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
 }

@@ -15,7 +15,9 @@ function loadTs(file, imports = {}) {
 }
 
 async function main() {
-  const { collectionFailureReason: reason } = loadTs('lib/reviews/collection-quality.ts');
+  const quality = loadTs('lib/reviews/collection-quality.ts');
+  const { collectionFailureReason: reason } = quality;
+  const site = loadTs('lib/site-config.ts');
   const article = 'https://gall.dcinside.com/mgallery/board/view/?id=chair&no=123';
   assert.ok(reason('\ub514\uc2dc\uc778\uc0ac\uc774\ub4dc', article));
   assert.ok(reason(' DC Inside ', article));
@@ -38,7 +40,7 @@ async function main() {
       insert() { inserts++; return this; },
       async single() {
         return { error: null, data: table === 'content_queue'
-          ? { id: 'queue', status: 'processed', item_id: 'product', source_type: 'dcinside', source_url: article, ai_output: { summary: queuedSummary, scores: {} } }
+          ? { id: 'queue', status: 'processed', item_id: 'product', source_type: 'dcinside', source_url: article, ai_output: { summary: queuedSummary, confidence: 0.9, overall: 4, pros: [], cons: [], scores: { overall: 4 } } }
           : { id: 'new-review' } };
       },
     };
@@ -48,7 +50,7 @@ async function main() {
     'next/server': { NextResponse: { json: (body, options) => ({ body, status: options?.status ?? 200 }) } },
     '@/lib/pipeline/auth': { verifyAdminSecret: () => true },
     '@/lib/supabase/admin': { createAdminClient: () => approvalClient },
-    '@/lib/reviews/collection-quality': { collectionFailureReason: reason },
+    '@/lib/reviews/collection-quality': quality,
   });
   const request = { json: async () => ({ queueId: 'queue' }) };
   assert.equal((await POST(request)).status, 422);
@@ -57,7 +59,7 @@ async function main() {
   assert.equal((await POST(request)).status, 200);
   assert.equal(inserts, 1, 'Valid collected reviews must still be publishable');
 
-  const { generateChairSchema } = loadTs('lib/seo/schemas.ts');
+  const { generateChairSchema } = loadTs('lib/seo/schemas.ts', { '@/lib/site-config': site });
   const product = { name: 'Example Chair', slug: 'example', brand: 'Example', image: 'https://example.com/chair.jpg', priceUsd: 100, priceLabel: '$100', officialUrl: 'https://example.com/chair' };
   for (const links of [[], [{ url: 'https://amazon.com/s?k=chair', channel: 'amazon', label: 'Amazon' }], [{ url: 'https://amazon.com/dp/B012345678', channel: 'amazon', label: 'Amazon' }]]) {
     const schema = generateChairSchema(product, [{ scores: { overall: 5 } }], links);
@@ -77,14 +79,16 @@ async function main() {
   const client = { from(table) {
     const query = {
       select(fields) { selected[table] = fields; return this; },
-      eq() { return this; }, limit() { return this; },
+      eq() { return this; }, limit() { return this; }, not() { return this; }, order() { return this; }, gt() { return this; },
       then(done) { return Promise.resolve({ data: db[table], error: null }).then(done); },
     };
     return query;
   } };
   const sitemap = loadTs('app/sitemap.ts', {
     '@/lib/supabase/public-server': { createPublicServerClient: () => client },
-    '@/lib/reviews/exclusion': { runPublicReviewQuery: run => run(true) },
+    '@/lib/site-config': site,
+    '@/lib/reviews/sitemap-pages': { loadReviewSitemapPages: async run => (await run(null, 1000)).data },
+    '@/lib/seo/search-visibility': loadTs('lib/seo/search-visibility.ts'),
     '@/lib/data': { bestLists: [{ id: 'test' }] },
   }).default;
   const saved = [process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY];

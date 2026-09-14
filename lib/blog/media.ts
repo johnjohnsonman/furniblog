@@ -1,4 +1,5 @@
 import { load } from "cheerio"
+import { CONTENT_HOSTS, SITE_URL, publicSiteUrl } from "../site-config"
 
 export type MediaPost = { content_html: string; hero_image_url: string | null }
 export type BlogProductMedia = { slug: string; name: string; images: { url: string; alt?: string | null }[]; chairpediaSlugs?: string[] }
@@ -10,14 +11,14 @@ export function usableImageUrl(value: string | null | undefined): string | null 
   try {
     const parsed = new URL(url)
     if (parsed.protocol !== "https:" || parsed.hostname === "images.unsplash.com") return null
-    return url
+    return publicSiteUrl(url)
   } catch { return null }
 }
 
 function referenceSlug(href: string, section = "products"): string | null {
   try {
-    const url = new URL(href, "https://furniblog.com")
-    if (!["furniblog.com", "www.furniblog.com"].includes(url.hostname)) return null
+    const url = new URL(href, SITE_URL)
+    if (!CONTENT_HOSTS.has(url.hostname) || !["http:", "https:"].includes(url.protocol) || url.username || url.password || url.port) return null
     return url.pathname.match(new RegExp(`^/${section}/([a-z0-9-]+)/?$`))?.[1] ?? null
   } catch { return null }
 }
@@ -36,7 +37,7 @@ export function bodyContainsImage(html: string, url: string | null): boolean {
   if (!url) return false
   const $ = load(html || "", null, false)
   const normalize = (src: string) => {
-    try { return new URL(src, "https://www.furniblog.com").href } catch { return src }
+    try { return publicSiteUrl(new URL(src, SITE_URL).href) } catch { return src }
   }
   return $("img").toArray().some(node => normalize($(node).attr("src") || "") === normalize(url))
 }

@@ -109,7 +109,7 @@ export const STEELCASE_SERIES_1: RichReview = {
       url: "https://www.steelcase.com/products/office-chairs/steelcase-series-1/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and the exact configuration vary by listing — confirm before buying. The Amazon link is an affiliate link; the Steelcase link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and the exact configuration vary by listing — confirm before buying. The Amazon link is an affiliate link; the Steelcase link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -124,7 +124,7 @@ export const STEELCASE_SERIES_1: RichReview = {
     { q: "Which arms should I choose?", a: "The 4D arms adjust height, width, depth and pivot. There's also a height-only arm and an armless build — the cheapest listings are often armless, so confirm 4D if you want full control." },
     { q: "Does Series 1 have a headrest?", a: "No. If you want a headrest, step up to the Steelcase Series 2 or Leap." },
     { q: "Is it really sold on Amazon?", a: "Yes — Series 1 is one of the few premium-brand chairs routinely sold on Amazon. The linked ASIN is one colour/build; confirm the exact one you want." },
-    { q: "Has Furniblog tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const STEELCASE_SERIES_1: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for value and the no-headrest/materials cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications combine Steelcase documentation with retail-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Furniblog. Series 1 is sold in several back, arm and colour configurations — confirm the exact build on the listing you buy from.",
+    "Specifications combine Steelcase documentation with retail-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Series 1 is sold in several back, arm and colour configurations — confirm the exact build on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

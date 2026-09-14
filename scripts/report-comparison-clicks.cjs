@@ -20,7 +20,7 @@ async function main() {
       total++;
       let url;
       try { url = new URL(row.referrer); } catch { unattributed++; continue; }
-      if (!['www.furniblog.com', 'furniblog.com'].includes(url.hostname)) continue;
+      if (!['www.furniblog.com', 'furniblog.com', 'www.chairpedia.com', 'chairpedia.com'].includes(url.hostname)) continue;
       if (url.pathname.startsWith('/compare/')) counts.set(url.pathname, (counts.get(url.pathname) || 0) + 1);
     }
     if (data.length < 1000) break;

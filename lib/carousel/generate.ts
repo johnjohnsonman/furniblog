@@ -114,7 +114,7 @@ export async function generateCarouselDraft(
   if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY")
   const client = new Anthropic({ apiKey })
 
-  const prompt = `You are Furniblog's social editor. Turn the ARTICLE below into a scroll-stopping Instagram carousel of 7–9 slides. This drives furniture/chair enthusiasts from Instagram to the full article.
+  const prompt = `You are Chairpedia's social editor. Turn the ARTICLE below into a scroll-stopping Instagram carousel of 7–9 slides. This drives furniture/chair enthusiasts from Instagram to the full article.
 
 STRICT RULES
 - Use ONLY facts, numbers and claims found in the ARTICLE. NEVER invent specs, stats, prices or awards. If the article has no strong number, don't fabricate a "stat" slide.
@@ -137,7 +137,7 @@ Return ONE JSON object, nothing else:
     {"layout":"stat","eyebrow":"…","title":"…","stat":{"before":"…","after":"…","label":"…"}},
     {"layout":"cta","eyebrow":"MORE","title":"Read the full story"}
   ],
-  "caption": "First line = the hook. 2–3 short sentences of value. End with: 'Full guide → link in bio 🔗 (furniblog.com)'. Plain text, a few tasteful emojis ok.",
+  "caption": "First line = the hook. 2–3 short sentences of value. End with: 'Full guide → link in bio 🔗 (chairpedia.com)'. Plain text, a few tasteful emojis ok.",
   "hashtags": ["officechair","ergonomicchair","homeoffice", "…up to 15 relevant niche tags, no # symbol"]
 }
 

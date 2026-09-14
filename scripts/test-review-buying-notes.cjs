@@ -19,7 +19,7 @@ for (const [id, slug, source] of cases) {
   assert.ok(notes.title.length <= 65);
   assert.ok(notes.description.length <= 160);
   assert.match(notes.description, /\.$/);
-  assert.match(notes.sourceNote, /not a hands-on Furniblog test/);
+  assert.match(notes.sourceNote, /not a hands-on Chairpedia test/);
   assert.equal(notes.checks.length, 3);
   for (const ref of notes.references) assert.equal(new URL(ref.url).protocol, 'https:');
   assert.equal(getReviewBuyingNotes(id, 'other-product', source), null);

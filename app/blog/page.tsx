@@ -8,9 +8,9 @@ import { BlogIndex, type BlogCard } from "@/components/blog/blog-index"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Blog — Chair Guides, Tips & Stories | Furniblog",
+  title: "Blog — Chair Guides, Tips & Stories",
   description:
-    "Guides, comparisons and stories about office, ergonomic and design chairs — from the Furniblog team.",
+    "Guides, comparisons and stories about office, ergonomic and design chairs — from the Chairpedia team.",
   alternates: { canonical: "/blog" },
 }
 

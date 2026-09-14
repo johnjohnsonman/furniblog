@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Editorial Policy",
+  alternates: { canonical: "/editorial-policy" },
+  openGraph: { title: "Editorial Policy | Chairpedia", url: "/editorial-policy" },
+}
 
 export default function EditorialPolicyPage() {
   return (
@@ -24,7 +31,7 @@ export default function EditorialPolicyPage() {
           
           <div className="mt-8 space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              At Furniblog, we are committed to providing honest, unbiased, and helpful content to help you make informed furniture purchasing decisions.
+              At Chairpedia, we are committed to providing honest, unbiased, and helpful content to help you make informed furniture purchasing decisions.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Independence</h2>
@@ -47,7 +54,7 @@ export default function EditorialPolicyPage() {
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Summaries &amp; Sources</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Many review summaries on Furniblog condense real, publicly available reviews and videos so you can scan them quickly. These summaries are produced with AI assistance and reviewed by our team, and every one links back to its original source so you can read it in full. The opinions in a summary belong to the original author, not to Furniblog.
+              Many review summaries on Chairpedia condense real, publicly available reviews and videos so you can scan them quickly. These summaries are produced with AI assistance and reviewed by our team, and every one links back to its original source so you can read it in full. The opinions in a summary belong to the original author, not to Chairpedia.
             </p>
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Updates</h2>

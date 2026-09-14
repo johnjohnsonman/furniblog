@@ -16,7 +16,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
   heroShotBrief: "Front, black Ticova mesh chair.",
   galleryBriefs: [],
 
-  quickFactsNote: "Published descriptions reviewed September 10, 2026. These are not Furniblog measurements or a personal-fit recommendation.",
+  quickFactsNote: "Published descriptions reviewed September 10, 2026. These are not Chairpedia measurements or a personal-fit recommendation.",
   quickFacts: [
     { label: "Weight capacity", value: "280 lb", note: "Referenced Amazon safety information; confirm selected item" },
     { label: "Armrests", value: "3D", note: "Height, angle, forward/back documented" },
@@ -100,12 +100,12 @@ export const TICOVA_ERGONOMIC: RichReview = {
       { k: "What to check", v: "Match ASIN B08LBJXVSP, the advertised 130° recline, colour and headrest to the selected listing." },
     ],
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and the exact recline batch change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and the exact recline batch change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
     "Shortlist Ticova if the documented arm movements address a limitation in your current setup. Compare it with the M18 using the movements you need, usable seat measurements and the final delivered price. Neither an adjustment count nor a foam description establishes personal comfort.",
-    "Furniblog has not hands-on tested this chair or established a typical service life. We do not recommend it for a universal height range. Resolve critical fit questions and seller support terms before ordering rather than treating a longer feature list as a guarantee.",
+    "Chairpedia has not hands-on tested this chair or established a typical service life. We do not recommend it for a universal height range. Resolve critical fit questions and seller support terms before ordering rather than treating a longer feature list as a guarantee.",
   ],
   verdictPullQuote:
     "Pay for adjustments you can use, after establishing fit and support terms.",
@@ -115,7 +115,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
     { q: "What's the weight capacity and fit range?", a: "The referenced Amazon safety information states 280 lb. That is not a comfort or fit range. We have not established a universal user-height recommendation; obtain usable dimensions for your selected item." },
     { q: "Are the armrests really 3D?", a: "The referenced listing describes height, angle and forward/back movement. Confirm the range and arm spacing for the selected configuration." },
     { q: "How long is the warranty?", a: "Ticova.net's support page states one year. This is not proof of eligibility for every seller or region. Confirm the warranty provider, covered parts and any shipping charges for your order." },
-    { q: "Has Furniblog tested this chair?", a: "No. This guide compares published product descriptions, not our own sitting or durability measurements. No universal comfort or user-height recommendation has been established." },
+    { q: "Has Chairpedia tested this chair?", a: "No. This guide compares published product descriptions, not our own sitting or durability measurements. No universal comfort or user-height recommendation has been established." },
   ],
 
   sources: [

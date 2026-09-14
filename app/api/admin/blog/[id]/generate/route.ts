@@ -19,7 +19,7 @@ async function extractArticle(url: string): Promise<{ title: string; text: strin
     {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; FurniblogBot/1.0; +https://www.furniblog.com)",
+          "Mozilla/5.0 (compatible; ChairpediaBot/1.0; +https://www.chairpedia.com)",
       },
     },
     15_000

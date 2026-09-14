@@ -9,7 +9,7 @@ const COPY: Record<ContentKind, { label: string; text: string }> = {
   },
   guide: {
     label: "Research basis",
-    text: "This guide synthesizes documented specifications, retailer information and published sources. It is not a hands-on Furniblog test unless the article explicitly says otherwise.",
+    text: "This guide synthesizes documented specifications, retailer information and published sources. It is not a hands-on Chairpedia test unless the article explicitly says otherwise.",
   },
   comparison: {
     label: "Comparison basis",
@@ -23,7 +23,7 @@ export function ContentStandardsNote({ kind }: { kind: ContentKind }) {
     <aside className="mt-10 border-y border-border py-5 text-sm leading-relaxed text-muted-foreground">
       <p><strong className="font-medium text-foreground">{copy.label}:</strong>{" "}{copy.text}</p>
       <p className="mt-2 text-xs">
-        Furniblog may earn from qualifying purchases at no extra cost to you. Our research and
+        Chairpedia may earn from qualifying purchases at no extra cost to you. Our research and
         recommendations are not ranked by commission. Read our{" "}
         <Link href="/editorial-policy" className="underline underline-offset-2 hover:text-foreground">editorial policy</Link>{" "}
         and{" "}

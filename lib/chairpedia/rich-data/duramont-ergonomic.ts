@@ -114,7 +114,7 @@ export const DURAMONT_ERGONOMIC: RichReview = {
       url: "https://duramontchairs.com/products/duramont-ergonomic-office-chair-black",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and colour change without notice — confirm on the listing. The Amazon link is an affiliate link; the Duramont link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and colour change without notice — confirm on the listing. The Amazon link is an affiliate link; the Duramont link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -129,7 +129,7 @@ export const DURAMONT_ERGONOMIC: RichReview = {
     { q: "What is the weight capacity?", a: "Duramont's figure is 330 lb (one review cites 350; use the manufacturer's 330 and confirm on the listing)." },
     { q: "Is the seat mesh?", a: "No. The back is breathable mesh; the seat is a cushioned foam pan, and it is deep with no depth adjustment." },
     { q: "Is there more than one Duramont chair?", a: "Yes — this mesh Ergonomic model and a separate Reclining Leather Executive chair. This guide covers the mesh model (ASIN B0797HZ8W1)." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Duramont's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Duramont's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -138,7 +138,7 @@ export const DURAMONT_ERGONOMIC: RichReview = {
     { k: "Published hands-on reviews", v: "Third-party tests (e.g. TechGearLab) summarised for the adjustability cautions and recline notes; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications combine Duramont's published figures with independent hands-on reviews as of the date shown and are not independently verified by Furniblog. Where marketing and testing disagree (armrests, headrest), the item is marked not confirmed — check the listing you buy from.",
+    "Specifications combine Duramont's published figures with independent hands-on reviews as of the date shown and are not independently verified by Chairpedia. Where marketing and testing disagree (armrests, headrest), the item is marked not confirmed — check the listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

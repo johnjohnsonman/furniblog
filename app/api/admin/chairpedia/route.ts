@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin"
 
 export const runtime = "nodejs"
 
-export function slugify(s: string): string {
+function slugify(s: string): string {
   return s
     .toLowerCase()
     .trim()

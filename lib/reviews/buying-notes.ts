@@ -17,7 +17,7 @@ const NOTES: Record<string, ReviewBuyingNotes> = {
     sourceUrl: "https://reddit.com/r/UninfluencedReviews/comments/1sq1nub/comparing_herman_miller_aeron_embody_cosm_and/",
     title: "Herman Miller Sayl: Reddit Summary & Buying Checks",
     description: "Sayl in a Reddit comparison of four Herman Miller chairs. Read the source context and check seat depth, arm options and used-chair condition before buying.",
-    sourceNote: "This summarizes a Reddit post comparing four models and linking to external reviews, not a hands-on Furniblog test or a consensus of Sayl owners. Its shorter-user recommendation is the poster's opinion, not a verified fit range.",
+    sourceNote: "This summarizes a Reddit post comparing four models and linking to external reviews, not a hands-on Chairpedia test or a consensus of Sayl owners. Its shorter-user recommendation is the poster's opinion, not a verified fit range.",
     heading: "What to check before buying a Sayl",
     answer: "The linked Reddit post places Sayl alongside Aeron, Embody and Cosm. Use it as one perspective, not proof that Sayl will fit you. Herman Miller lists fixed and adjustable seat-depth configurations and different arm options, so compare the actual offer rather than the model name alone.",
     checks: [
@@ -35,7 +35,7 @@ const NOTES: Record<string, ReviewBuyingNotes> = {
     sourceUrl: "https://www.youtube.com/watch?v=yjiRZmpuN7w",
     title: "Vitra Panton Chair: Video Summary & US Buying Checks",
     description: "Vitra Panton Chair video summary and US buying checks: manufacturer, seller, condition and return terms. Includes the original video and product links.",
-    sourceNote: "This is a curated summary of a promotional video and its discussion, not a hands-on Furniblog test. Reported experiences do not establish typical lifespan or authenticate a chair.",
+    sourceNote: "This is a curated summary of a promotional video and its discussion, not a hands-on Chairpedia test. Reported experiences do not establish typical lifespan or authenticate a chair.",
     heading: "Buying a genuine Vitra Panton Chair in the US",
     answer: "Start with Vitra's US product information and dealer finder when checking a new Vitra Panton Chair. An Amazon search can help locate offers, but its results are not a list of authenticated Vitra products.",
     checks: [
@@ -54,7 +54,7 @@ const NOTES: Record<string, ReviewBuyingNotes> = {
     sourceUrl: "https://www.youtube.com/watch?v=32lAGmUwcXU",
     title: "HAY Soft Edge P10: Review Summary & Buying Checks",
     description: "HAY Soft Edge P10 review summary with model, finish and seller checks. Separate the reviewer's experience from current delivery and purchase conditions.",
-    sourceNote: "The summary describes a reviewer's P10 chair and comments on that video, not a hands-on Furniblog test. The reported delivery time and damage are individual accounts, not current shipping estimates or a verified failure rate.",
+    sourceNote: "The summary describes a reviewer's P10 chair and comments on that video, not a hands-on Chairpedia test. The reported delivery time and damage are individual accounts, not current shipping estimates or a verified failure rate.",
     heading: "Check the Soft Edge model before buying",
     answer: "HAY's Soft Edge family includes several models and configurations. Use the full model name when comparing offers, then confirm the seat, base, finish and dimensions with the seller rather than assuming every Soft Edge chair matches the P10 in this review.",
     checks: [

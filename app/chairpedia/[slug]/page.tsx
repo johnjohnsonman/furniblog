@@ -1,3 +1,4 @@
+import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
 import { getPurchaseDecision } from "@/lib/growth/purchase-decisions"
 import type { Metadata } from "next"
@@ -88,7 +89,7 @@ export async function generateMetadata({
   const { slug } = await params
   const entry = await getEntry(slug)
   if (!entry) return { title: "Chairpedia" }
-  const title = (entry.seo_title?.trim() || entry.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
+  const title = (entry.seo_title?.trim() || entry.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
   const description =
     entry.seo_description?.trim() || entry.excerpt?.trim() || entry.subtitle?.trim() || undefined
   return {
@@ -189,7 +190,7 @@ export default async function ChairpediaEntryPage({
             <RichReview
               data={rich}
               title={entry.title}
-              contentHtml={rewriteAmazonHrefs(entry.content_html, pageSubtag(`/chairpedia/${entry.slug}`))}
+              contentHtml={rewriteAmazonHrefs(rewriteOwnedSiteLinks(entry.content_html), pageSubtag(`/chairpedia/${entry.slug}`))}
               images={richImages}
               productImages={productGallery}
               heroImageUrl={entry.hero_image_url}
@@ -238,7 +239,7 @@ export default async function ChairpediaEntryPage({
             <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
               <span>By the{" "}
                 <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Furniblog Editorial Team
+                  Chairpedia Editorial Team
                 </Link>
               </span>
               {sources.length > 0 && <span>· Researched against {sources.length} sources</span>}
@@ -279,7 +280,7 @@ export default async function ChairpediaEntryPage({
           {/* Authored content (admin/AI). Styles for plain authored HTML below. */}
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(entry.content_html, pageSubtag(`/chairpedia/${entry.slug}`))) }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(entry.content_html), pageSubtag(`/chairpedia/${entry.slug}`))) }}
           />
 
           {sources.length > 0 && (

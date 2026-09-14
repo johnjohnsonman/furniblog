@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Contact",
+  alternates: { canonical: "/contact" },
+  openGraph: { title: "Contact | Chairpedia", url: "/contact" },
+}
 
 export default function ContactPage() {
   return (

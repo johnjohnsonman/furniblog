@@ -2,7 +2,7 @@ import type { ProductView } from "@/lib/data/mappers"
 import type { Review } from "@/types/review"
 import type { AffiliateLink } from "@/types/affiliate-link"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.furniblog.com"
+import { SITE_URL, publicSiteUrl } from "@/lib/site-config"
 
 export function generateBreadcrumbSchema(
   items: { name: string; url: string }[]
@@ -14,7 +14,7 @@ export function generateBreadcrumbSchema(
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+      item: publicSiteUrl(item.url),
     })),
   }
 }
@@ -37,15 +37,15 @@ export function generateArticleSchema(params: {
     mainEntityOfPage: `${SITE_URL}${params.path}`,
     ...(params.datePublished ? { datePublished: params.datePublished } : {}),
     ...(params.dateModified ? { dateModified: params.dateModified } : {}),
-    ...(params.image ? { image: params.image } : {}),
+    ...(params.image ? { image: publicSiteUrl(params.image) } : {}),
     author: {
       "@type": "Organization",
-      name: params.authorName ?? "Furniblog",
+      name: params.authorName ?? "Chairpedia",
     },
     publisher: {
       "@type": "Organization",
-      name: "Furniblog",
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` },
+      name: "Chairpedia",
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/chairpedia-icon.svg` },
     },
   }
 }
@@ -59,7 +59,7 @@ export function generateItemListSchema(items: { name: string; url: string }[]) {
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      url: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
+      url: publicSiteUrl(item.url),
     })),
   }
 }
@@ -81,9 +81,9 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Furniblog",
+    name: "Chairpedia",
     url: SITE_URL,
-    logo: `${SITE_URL}/icon.svg`,
+    logo: `${SITE_URL}/chairpedia-icon.svg`,
   }
 }
 
@@ -91,7 +91,7 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Furniblog",
+    name: "Chairpedia",
     url: SITE_URL,
     potentialAction: {
       "@type": "SearchAction",

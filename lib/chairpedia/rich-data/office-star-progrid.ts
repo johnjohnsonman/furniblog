@@ -111,7 +111,7 @@ export const OFFICE_STAR_PROGRID: RichReview = {
       url: "https://www.officestar.net",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and — importantly — the exact ProGrid SKU vary by listing. Confirm the model and its specs before buying. The Amazon link is an affiliate link; the Office Star link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and — importantly — the exact ProGrid SKU vary by listing. Confirm the model and its specs before buying. The Amazon link is an affiliate link; the Office Star link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -126,7 +126,7 @@ export const OFFICE_STAR_PROGRID: RichReview = {
     { q: "Is the seat mesh?", a: "No. The back is breathable ProGrid mesh; the seat is padded fabric. There's no all-mesh seat on this SKU and no headrest." },
     { q: "What's the weight capacity?", a: "The official 92553 sheet omits it; dealers commonly list ~250 lb (some variants ~275). Confirm on the exact listing." },
     { q: "Does the lumbar adjust?", a: "It's built into the ProGrid back as a contour, not a separate adjustable lumbar device; some SKUs add ratchet back-height." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from Office Star's spec sheet, dealers and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from Office Star's spec sheet, dealers and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -135,7 +135,7 @@ export const OFFICE_STAR_PROGRID: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and the arm/seat cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications reflect the common Office Star ProGrid manager's figures (official 92553 sheet plus dealers) as of the date shown and are not independently verified by Furniblog. The ProGrid line spans several SKUs and the linked ASIN is an older variant — confirm the exact model, capacity and features on the listing you buy from.",
+    "Specifications reflect the common Office Star ProGrid manager's figures (official 92553 sheet plus dealers) as of the date shown and are not independently verified by Chairpedia. The ProGrid line spans several SKUs and the linked ASIN is an older variant — confirm the exact model, capacity and features on the listing you buy from.",
   related: [
     { label: "Office chairs for standing and tall desks: documented picks", href: "/blog/office-chairs-for-standing-desks-and-tall-desks-documented-picks" },
     { label: "Will that chair fit your desk? Seat height and armrest clearance", href: "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance" },

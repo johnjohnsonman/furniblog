@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og"
 // Default social-share card for the whole site (pages without their own OG
 // image inherit this). Twitter falls back to og:image when no twitter-image.
 export const runtime = "edge"
-export const alt = "Furniblog — Premium Chair Reviews, Specs & Comparisons"
+export const alt = "Chairpedia — Premium Chair Reviews, Specs & Comparisons"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
@@ -23,7 +23,7 @@ export default function OpengraphImage() {
         }}
       >
         <div style={{ fontSize: 34, letterSpacing: 8, color: "#B79B6E", textTransform: "uppercase" }}>
-          Furniblog
+          Chairpedia
         </div>
         <div style={{ fontSize: 78, fontWeight: 700, lineHeight: 1.05, marginTop: 28 }}>
           Premium Chair Reviews,

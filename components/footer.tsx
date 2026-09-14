@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-5">
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="font-serif text-xl font-medium text-foreground">
-              Furniblog
+              Chairpedia
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
               The world&apos;s most complete database for premium seating—real specs,
@@ -100,10 +100,10 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-border flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Furniblog. All rights reserved.
+            © {new Date().getFullYear()} Chairpedia. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
-            Furniblog participates in the Amazon Associates and Coupang Partners
+            Chairpedia participates in the Amazon Associates and Coupang Partners
             affiliate programs. We may earn a commission on qualifying purchases at
             no extra cost to you.
           </p>

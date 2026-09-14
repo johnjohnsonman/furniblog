@@ -1,3 +1,4 @@
+import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
 import { getProductImageBundle } from "@/lib/supabase/queries"
 import { enrichBlogPosts } from "@/lib/blog/media-server"
@@ -82,9 +83,9 @@ export async function generateMetadata({
   const { slug } = await params
   const post = await getPost(slug)
   if (!post) return { title: "Blog" }
-  // Strip a baked-in "| Furniblog" suffix: the layout template already appends
-  // it, so seo_titles that include it rendered as "… | Furniblog | Furniblog".
-  const title = (post.seo_title?.trim() || post.title).replace(/\s*\|\s*Furniblog\s*$/i, "")
+  // Strip a baked-in "| Chairpedia" suffix: the layout template already appends
+  // it, so seo_titles that include it rendered as "… | Chairpedia | Chairpedia".
+  const title = (post.seo_title?.trim() || post.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
   const description =
     post.seo_description?.trim() || post.excerpt?.trim() || post.subtitle?.trim() || undefined
   return {
@@ -111,7 +112,7 @@ export default async function BlogPostPage({
   const post = await getPost(slug)
   if (!post) notFound()
   const buying = getBlogBuyingNotes(post.slug)
-  const reading = prepareArticleReading(wrapTables(rewriteAmazonHrefs(post.content_html, pageSubtag(`/blog/${post.slug}`))))
+  const reading = prepareArticleReading(wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(post.content_html), pageSubtag(`/blog/${post.slug}`))))
   const productComparisons = buying
     ? await getPublishedProductComparisons(buying.productId)
     : []
@@ -159,7 +160,7 @@ export default async function BlogPostPage({
             <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
               <span>By the{" "}
                 <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Furniblog Editorial Team
+                  Chairpedia Editorial Team
                 </Link>
               </span>
               <span>·</span>
@@ -203,7 +204,7 @@ export default async function BlogPostPage({
             <section aria-labelledby="blog-buying-heading" data-testid="blog-buying" className="mt-10 space-y-4 border-t border-border pt-6">
               <h2 id="blog-buying-heading" className="scroll-mt-24 text-xl font-semibold">{buying.heading}</h2>
               <p className="text-sm leading-relaxed text-muted-foreground">{buying.description}</p>
-              <p className="text-xs text-muted-foreground">As an Amazon Associate, Furniblog earns from qualifying purchases.</p>
+              <p className="text-xs text-muted-foreground">As an Amazon Associate, Chairpedia earns from qualifying purchases.</p>
               <div className={buying.additionalProducts?.length ? "grid gap-6 sm:grid-cols-2" : undefined}>
                 {buyingProducts.map((product, index) => (
                   <PurchaseDecisionCard

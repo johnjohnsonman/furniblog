@@ -115,7 +115,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
       url: "https://store.hermanmiller.com/office-chairs-aeron?lang=en_US",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, version, size and options vary by listing and change without notice — confirm them before buying. The Amazon link is an affiliate search link; the Herman Miller link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, version, size and options vary by listing and change without notice — confirm them before buying. The Amazon link is an affiliate search link; the Herman Miller link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -130,7 +130,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
     { q: "Which size should I choose?", a: "Size A is smallest, B is standard, C is largest, and the frame size cannot be changed later. Weight capacity is 300 lb for A and 350 lb for B and C. Use Herman Miller's size/fit chart against your height and weight before ordering." },
     { q: "Does the Aeron come with a headrest?", a: "No. Herman Miller does not make an Aeron headrest; any headrest you see is a third-party accessory." },
     { q: "Why are Amazon prices so different?", a: "Amazon listings mix Classic and Remastered, different sizes and options, and new, open-box, used and refurbished stock. The link here is a search — confirm exactly what a listing is before buying." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from Herman Miller's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Herman Miller's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -139,7 +139,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
   ],
 
   sourcesFooter:
-    "Specifications are Herman Miller's published figures as of the date shown and are not independently verified by Furniblog. The Aeron is sold in multiple sizes and configurations; always confirm the exact version, size, options and condition on the listing you buy from.",
+    "Specifications are Herman Miller's published figures as of the date shown and are not independently verified by Chairpedia. The Aeron is sold in multiple sizes and configurations; always confirm the exact version, size, options and condition on the listing you buy from.",
 
   related: [
     { label: "Aeron Classic vs Remastered: how to tell which one you're buying", href: "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide" },

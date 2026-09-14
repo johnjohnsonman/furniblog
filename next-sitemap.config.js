@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://furniblog.vercel.app",
+  siteUrl: "https://www.chairpedia.com",
   generateRobotsTxt: true,
   exclude: ["/admin/*", "/api/*"],
   changefreq: "weekly",

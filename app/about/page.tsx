@@ -5,9 +5,9 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
-  title: "About Furniblog — Two Generations of Chairs",
+  title: "About Chairpedia — Two Generations of Chairs",
   description:
-    "Furniblog is built on a lifetime in chairs — a family furniture business since 2001 and more than two decades sitting in, selling and studying the world's seating. Independent reviews, real specs, honest comparisons.",
+    "Chairpedia is built on a lifetime in chairs — a family furniture business since 2001 and more than two decades sitting in, selling and studying the world's seating. Independent reviews, real specs, honest comparisons.",
   alternates: { canonical: "/about" },
 }
 
@@ -34,8 +34,8 @@ export default function AboutPage() {
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Furniblog",
-    url: "https://www.furniblog.com",
+    name: "Chairpedia",
+    url: "https://www.chairpedia.com",
     description:
       "An independent database of premium office, ergonomic and design chairs — real specs, global reviews and honest comparisons, built on a family furniture business and more than two decades of hands-on chair experience.",
     founder: {
@@ -72,7 +72,7 @@ export default function AboutPage() {
         <section className="border-b border-border bg-card">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              About Furniblog
+              About Chairpedia
             </p>
             <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-foreground sm:text-[42px] sm:leading-[1.15]">
               Perhaps the person who has sat in
@@ -83,7 +83,7 @@ export default function AboutPage() {
               long as I can remember, our family has studied a single object,
               obsessively — the chair. Over 26 years in the trade that has meant
               tens of thousands of chairs, in showrooms and factories across
-              Korea, Japan, Europe and the US. Furniblog is where that experience
+              Korea, Japan, Europe and the US. Chairpedia is where that experience
               becomes something you can use.
             </p>
           </div>
@@ -140,11 +140,11 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <SectionHeading>Why Furniblog exists</SectionHeading>
+          <SectionHeading>Why Chairpedia exists</SectionHeading>
           <div className="mt-4 space-y-4 text-[17px] leading-relaxed text-muted-foreground">
             <p>
               Most chair &ldquo;reviews&rdquo; online are written by people who
-              have never sat in the chair. I built Furniblog to be the opposite:
+              have never sat in the chair. I built Furniblog, now Chairpedia, to be the opposite:
               an independent, global database grounded in real seating, verified
               specs and honest, like-for-like comparison — so you can choose the
               right chair with confidence, whether you have a hundred dollars or
@@ -196,7 +196,7 @@ export default function AboutPage() {
               to guess. Find the one that fits you.&rdquo;
             </p>
             <p className="mt-3 text-sm font-medium text-muted-foreground">
-              — Founder, Furniblog
+              — Founder, Chairpedia
             </p>
           </div>
 

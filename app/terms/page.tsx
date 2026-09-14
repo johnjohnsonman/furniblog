@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  alternates: { canonical: "/terms" },
+  openGraph: { title: "Terms of Service | Chairpedia", url: "/terms" },
+}
 
 export default function TermsPage() {
   return (
@@ -25,17 +32,17 @@ export default function TermsPage() {
           
           <div className="mt-8 space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              By accessing and using Furniblog, you agree to be bound by these Terms of Service.
+              By accessing and using Chairpedia, you agree to be bound by these Terms of Service.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Use of Service</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Furniblog provides furniture information, reviews, and comparisons for informational purposes only. We strive for accuracy but cannot guarantee that all information is complete or current.
+              Chairpedia provides furniture information, reviews, and comparisons for informational purposes only. We strive for accuracy but cannot guarantee that all information is complete or current.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed">
-              All content on Furniblog, including text, images, and design, is owned by Furniblog or its licensors. You may not reproduce, distribute, or create derivative works without permission.
+              All content on Chairpedia, including text, images, and design, is owned by the site operator or the respective licensors. You may not reproduce, distribute, or create derivative works without permission.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Affiliate Links</h2>
@@ -45,7 +52,7 @@ export default function TermsPage() {
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Disclaimer</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Furniblog is provided &quot;as is&quot; without warranties of any kind. We are not responsible for any decisions you make based on our content.
+              Chairpedia is provided &quot;as is&quot; without warranties of any kind. We are not responsible for any decisions you make based on our content.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Contact</h2>

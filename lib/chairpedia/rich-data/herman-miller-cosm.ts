@@ -107,7 +107,7 @@ export const HERMAN_MILLER_COSM: RichReview = {
       url: "https://www.hermanmiller.com/products/seating/office-chairs/cosm-chairs/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and the exact build (back height, arms, colour) vary by listing — confirm before buying. We link an Amazon search because Cosm is sold in many builds. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
+      "Not verified by Chairpedia: price, seller, stock and the exact build (back height, arms, colour) vary by listing — confirm before buying. We link an Amazon search because Cosm is sold in many builds. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
   },
 
   verdict: [
@@ -122,7 +122,7 @@ export const HERMAN_MILLER_COSM: RichReview = {
     { q: "Which back height should I choose?", a: "Low is compact and lounge-like, Mid is the office default, and High adds upper-back and shoulder support for taller sitters or those who recline a lot." },
     { q: "What are the Leaf arms?", a: "A soft, one-piece cradling armrest option, above the Fixed and Height-Adjustable tiers. Many buyers choose them for comfort; they raise the price." },
     { q: "Does Cosm have an adjustable lumbar?", a: "No separate adjustable lumbar — support is built into the Intercept suspension shell. Buyers who want dial-in lumbar often prefer the Aeron." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Herman Miller's specs and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Herman Miller's specs and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -131,7 +131,7 @@ export const HERMAN_MILLER_COSM: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the fixed-lumbar caution; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Cosm is sold in three back heights and three arm tiers — confirm the exact build and colour on the listing you buy from.",
+    "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Cosm is sold in three back heights and three arm tiers — confirm the exact build and colour on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

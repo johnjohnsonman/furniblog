@@ -137,14 +137,14 @@ export async function generateComparisonDraft(
   if (!apiKey) throw new Error("Missing ANTHROPIC_API_KEY")
   const client = new Anthropic({ apiKey })
 
-  const prompt = `You are a senior office-chair editor for Furniblog. Write a head-to-head comparison of TWO chairs using ONLY the data provided below. This is buying-decision content: shoppers deciding between these two.
+  const prompt = `You are a senior office-chair editor for Chairpedia. Write a head-to-head comparison of TWO chairs using ONLY the data provided below. This is buying-decision content: shoppers deciding between these two.
 
 STRICT RULES
 - This is a private research draft requiring human source verification, not a publish-ready review. Catalog fields and snippets have no verified provenance.
 - Do not state catalog numbers, dimensions, capacity, weight, warranty duration, fit ranges or option availability as established facts. Turn unverified differences into specific checks for an editor or buyer. Never invent a source or claim to have consulted one.
 - Prices and aggregate scores are deliberately withheld. Never infer prices, savings, ratings, review counts, value winners or universal comfort winners from names, descriptions or snippets.
 - Review snippets and pros/cons are unverified research leads, not representative evidence. Do not quote them, repeat medical claims or present them as tested strengths, weaknesses or durability findings.
-- Distinguish model generations and optional configurations. Do not assume regional availability, shipping or returns. Say that Furniblog has not hands-on tested the pair.
+- Distinguish model generations and optional configurations. Do not assume regional availability, shipping or returns. Say that Chairpedia has not hands-on tested the pair.
 - Make recommendations conditional on independently verified features and a trial. No decisive winner without evidence. Apply these rules to metadata, tables and FAQ as well as prose.
 - Clear editorial English. Short paragraphs, scannable.
 

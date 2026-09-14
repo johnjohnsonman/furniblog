@@ -104,7 +104,7 @@ export const NOUHAUS_ERGO3D: RichReview = {
       { k: "What to check", v: 'Title says "Ergo3D", the colour you want, "4D", and who it is sold and shipped by. Confirm the weight capacity there too.' },
     ],
     disclaimer:
-      'Not verified by Furniblog: price, seller ("sold by"), stock, capacity and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
+      'Not verified by Chairpedia: price, seller ("sold by"), stock, capacity and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
   },
 
   verdict: [
@@ -119,7 +119,7 @@ export const NOUHAUS_ERGO3D: RichReview = {
     { q: "Are the armrests really 4D?", a: "The Amazon listing describes 4D armrests — adjustable for height, width, depth and pivot." },
     { q: "Is it full mesh?", a: "Yes — both the high back and the seat are breathable mesh." },
     { q: "Will it fit a taller person?", a: "Seat depth is about 16.3 in, which is on the shallow side. Overall height runs roughly 44–49 in. Taller users should confirm the seat depth and height on the listing." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Nouhaus's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Nouhaus's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [

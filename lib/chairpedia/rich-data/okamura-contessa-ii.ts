@@ -112,7 +112,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
       url: "https://www.okamura.com/products/contessa-ii/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, options and warranty vary widely — and in the US this is a dealer/import purchase. The Amazon search link is an affiliate link and will mostly surface parts or Japan-market listings; the Okamura link is a direct, non-affiliate link. Confirm the exact chair and seller before buying.",
+      "Not verified by Chairpedia: price, seller, stock, options and warranty vary widely — and in the US this is a dealer/import purchase. The Amazon search link is an affiliate link and will mostly surface parts or Japan-market listings; the Okamura link is a direct, non-affiliate link. Confirm the exact chair and seller before buying.",
   },
 
   verdict: [
@@ -127,7 +127,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
     { q: "Can I buy it on US Amazon?", a: "Not as a genuine, straightforward product page. In the US it's an authorized-dealer or import purchase; the Amazon.co.jp listing is Japan-only." },
     { q: "What's \"Smart Operation\"?", a: "Okamura's control layout that places the recline and height levers at the ends of the armrests, so you adjust the chair at your fingertips instead of reaching underneath." },
     { q: "Mesh or cushion seat?", a: "Both are offered. The mesh seat runs cool; the cushion seat uses a three-density \"Multiple Density Cushion.\" A leather back is also available. Confirm the combination on your order." },
-    { q: "Has Furniblog tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Okamura's specs and published reviews. We have not run our own instrumented lab test." },
+    { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Okamura's specs and published reviews. We have not run our own instrumented lab test." },
   ],
 
   sources: [
@@ -136,7 +136,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for design, comfort and value; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are Okamura's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Warranty and US availability vary by seller — confirm the exact options, seller and coverage before buying.",
+    "Specifications are Okamura's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Warranty and US availability vary by seller — confirm the exact options, seller and coverage before buying.",
   related: [
     { label: "Contessa vs Contessa Seconda: how to tell them apart (used-buying guide)", href: "/blog/okamura-contessa-vs-contessa-seconda-identification-and-used-buying-guide" },
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },

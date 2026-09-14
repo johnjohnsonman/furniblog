@@ -26,7 +26,8 @@ for (const [slug, product] of cases) {
 assert.match(get(cases[1][0]).heading, /replacement/);
 assert.deepEqual(get(cases[3][0]).additionalProducts, [{ productId: 'steelcase-gesture', name: 'Steelcase Gesture' }]);
 assert.match(get(cases[4][0]).name, /Logitech G/);
-assert.match(get(cases[5][0]).description, /not a confirmed offer for every model/);
-assert.equal(get('libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared'), null);
+assert.match(get(cases[5][0]).description, /Omni SE, Pro and Maxis are separate listings/);
+assert.equal(get('libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared').productId, 'libernovo-omni');
+assert.match(get('libernovo-complete-lineup-guide-omni-omni-se-omni-pro-maxis-compared').description, /availability for those variants is not verified/);
 for (const slug of ['other-post', '', '__proto__', 'constructor']) assert.equal(get(slug), null);
 console.log('PASS: six scoped blog buying sections, comparison offers, exact editions and safe fallback.');

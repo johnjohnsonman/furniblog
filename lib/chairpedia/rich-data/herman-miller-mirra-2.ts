@@ -109,7 +109,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
       url: "https://www.hermanmiller.com/products/seating/office-chairs/mirra-2-chairs/",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and configuration vary by listing — confirm before buying. We link an Amazon search because Mirra 2 is sold in several back and arm configurations. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
+      "Not verified by Chairpedia: price, seller, stock and configuration vary by listing — confirm before buying. We link an Amazon search because Mirra 2 is sold in several back and arm configurations. The Amazon link is an affiliate link; the Herman Miller link is a direct, non-affiliate link.",
   },
 
   verdict: [
@@ -124,7 +124,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { q: "Does Mirra 2 have a headrest?", a: "No — there's no headrest option. If you need neck support, look at a Steelcase Leap or an aftermarket solution." },
     { q: "What is FlexFront?", a: "An option that makes the seat depth adjustable (about 16.25–18 in). The base seat is a fixed depth; taller sitters usually want FlexFront." },
     { q: "What's the weight capacity?", a: "350 lb, per Herman Miller. Confirm on the listing you buy from." },
-    { q: "Has Furniblog tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for the responsive feel and the firm-seat/no-headrest cautions; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Furniblog. Mirra 2 is sold in several back and arm configurations — confirm the back type, tilt, seat depth, arms and colour on the listing you buy from.",
+    "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Mirra 2 is sold in several back and arm configurations — confirm the back type, tilt, seat depth, arms and colour on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

@@ -110,7 +110,7 @@ export const FLEXISPOT_C7: RichReview = {
       url: "https://www.flexispot.com/flexispot-best-ergonomic-office-chair-c7",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, trim and seat/footrest option change without notice — confirm on the listing. The Amazon link is an affiliate link; the FlexiSpot link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, trim and seat/footrest option change without notice — confirm on the listing. The Amazon link is an affiliate link; the FlexiSpot link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -125,7 +125,7 @@ export const FLEXISPOT_C7: RichReview = {
     { q: "Mesh or foam seat?", a: "Both are offered as separate SKUs (base C7 specification table lists 300 lb; confirm your SKU), with or without a retractable footrest. Choose before ordering." },
     { q: "What's the recline and seat height?", a: "FlexiSpot's page lists ≈ 93–110° recline and ≈ 18.3–21.7 in seat height; some reviews cite wider ranges. Treat the official page as the reference and confirm your SKU." },
     { q: "Is the lumbar adjustable?", a: "It's a self-adaptive dynamic lumbar that responds to your posture, and it can also be locked." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from FlexiSpot's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from FlexiSpot's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const FLEXISPOT_C7: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for comfort, arm-clearance and the conflicting fit figures; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are for the base FlexiSpot C7 as of the date shown and are not independently verified by Furniblog. Seat-height/recline figures differ between the official table and reviews, and trims/seat types vary — confirm the configuration on the listing you buy from.",
+    "Specifications are for the base FlexiSpot C7 as of the date shown and are not independently verified by Chairpedia. Seat-height/recline figures differ between the official table and reviews, and trims/seat types vary — confirm the configuration on the listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

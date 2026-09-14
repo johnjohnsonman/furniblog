@@ -49,7 +49,7 @@ async function extractArticle(url: string): Promise<{
     {
       headers: {
         "User-Agent":
-          "Mozilla/5.0 (compatible; FurniblogNewsBot/1.0; +https://www.furniblog.com)",
+          "Mozilla/5.0 (compatible; ChairpediaNewsBot/1.0; +https://www.chairpedia.com)",
       },
     },
     12_000

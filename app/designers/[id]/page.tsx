@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Header } from "@/components/header"
@@ -11,6 +12,17 @@ interface DesignerPageProps {
 
 export function generateStaticParams() {
   return designers.map((designer) => ({ id: designer.id }))
+}
+
+export async function generateMetadata({ params }: DesignerPageProps): Promise<Metadata> {
+  const { id } = await params
+  const designer = designers.find((d) => d.id === id)
+  if (!designer) return { title: "Designer not found", robots: { index: false } }
+  return {
+    title: designer.name,
+    alternates: { canonical: `/designers/${designer.id}` },
+    openGraph: { title: designer.name, url: `/designers/${designer.id}` },
+  }
 }
 
 export default async function DesignerPage({ params }: DesignerPageProps) {

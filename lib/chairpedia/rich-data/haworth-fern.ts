@@ -113,7 +113,7 @@ export const HAWORTH_FERN: RichReview = {
       url: "https://www.haworth.com/na/en/products/seating/task/fern.html",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, material and options vary by listing and change without notice — confirm them before buying. The Amazon link is an affiliate search link; the Haworth link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, material and options vary by listing and change without notice — confirm them before buying. The Amazon link is an affiliate search link; the Haworth link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -128,7 +128,7 @@ export const HAWORTH_FERN: RichReview = {
     { q: "Does the Fern have a headrest?", a: "A headrest is optional on the Fern — except on the Fern Digital Knit, which does not offer one. Choose a non-Digital-Knit back if you want a headrest." },
     { q: "Is lumbar support included?", a: "Height-adjustable lumbar is an option, not standard on every configuration. Check whether a listing includes it if you need lumbar support." },
     { q: "What is the weight capacity?", a: "Haworth rates the Fern at 325 lb. Confirm on the listing you buy from." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide built from Haworth's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Haworth's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -137,7 +137,7 @@ export const HAWORTH_FERN: RichReview = {
   ],
 
   sourcesFooter:
-    "Specifications are Haworth's published figures as of the date shown and are not independently verified by Furniblog. The Fern is sold in several materials and configurations; always confirm the material, lumbar/headrest options and condition on the listing you buy from.",
+    "Specifications are Haworth's published figures as of the date shown and are not independently verified by Chairpedia. The Fern is sold in several materials and configurations; always confirm the material, lumbar/headrest options and condition on the listing you buy from.",
   related: [
     { label: "Aeron alternatives by budget: documented trade-offs", href: "/blog/herman-miller-aeron-alternatives-by-budget" },
     { label: "Refurbished vs remanufactured vs open-box vs used, explained", href: "/blog/refurbished-vs-remanufactured-vs-open-box-vs-used-office-chairs" },

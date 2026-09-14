@@ -136,7 +136,7 @@ export default async function ReviewDetailPage(props: {
       path: `/reviews/${review.id}`,
       datePublished: review.created_at,
       image: product.thumbnail_url,
-      authorName: notes ? "Furniblog Editorial Team" : sourceLabel(review.source),
+      authorName: notes ? "Chairpedia Editorial Team" : sourceLabel(review.source),
     }),
     generateBreadcrumbSchema([
       { name: "Reviews", url: "/reviews" },
@@ -245,7 +245,7 @@ export default async function ReviewDetailPage(props: {
               <ExternalLink className="h-4 w-4" />
             </a>
             <p className="mt-2 text-xs text-muted-foreground">
-              Summary curated by Furniblog. The full review belongs to the
+              Summary curated by Chairpedia. The full review belongs to the
               original author.
             </p>
           </div>

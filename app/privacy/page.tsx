@@ -1,7 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  alternates: { canonical: "/privacy" },
+  openGraph: { title: "Privacy Policy | Chairpedia", url: "/privacy" },
+}
 
 export default function PrivacyPage() {
   return (
@@ -25,7 +32,7 @@ export default function PrivacyPage() {
           
           <div className="mt-8 space-y-6">
             <p className="text-muted-foreground leading-relaxed">
-              This Privacy Policy describes how Furniblog collects, uses, and shares information about you when you use our website.
+              This Privacy Policy describes how Chairpedia collects, uses, and shares information about you when you use our website.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Information We Collect</h2>

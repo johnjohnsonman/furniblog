@@ -110,7 +110,7 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
       url: "https://www.branchfurniture.com/products/ergonomic-chair",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock, colour and configuration change without notice — confirm on the listing. The Amazon link is an affiliate link; the Branch link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock, colour and configuration change without notice — confirm on the listing. The Amazon link is an affiliate link; the Branch link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -125,7 +125,7 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
     { q: "Does it include a headrest?", a: "No — Branch sells a headrest separately as an accessory." },
     { q: "What's the seat height and depth?", a: "Roughly 17–21 in seat height (higher with the optional tall cylinder) and an 18–22 in seat-depth slider; sources vary, so confirm the configuration on the live page." },
     { q: "What's the weight capacity?", a: "275 lb. Confirm on the listing you order from." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from Branch's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from Branch's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -133,7 +133,7 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
     { k: "Published reviews", v: "Third-party reviews (e.g. TechGearLab, Reviewed) summarised for the casters, comfort and armrest cautions and the measured recline; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are for the base Branch Ergonomic Chair as of the date shown and are not independently verified by Furniblog. Seat height/depth vary by cylinder option and the headrest is a separate add-on — confirm the configuration on the listing you buy from.",
+    "Specifications are for the base Branch Ergonomic Chair as of the date shown and are not independently verified by Chairpedia. Seat height/depth vary by cylinder option and the headrest is a separate add-on — confirm the configuration on the listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

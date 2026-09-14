@@ -111,7 +111,7 @@ export const SIHOO_DORO_S300: RichReview = {
       url: "https://www.sihoo.com/products/sihoo-doro-s300-gravity-defying-ergonomic-chair",
     },
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and colour change without notice — confirm on the listing. The Amazon link is an affiliate link; the SIHOO link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and colour change without notice — confirm on the listing. The Amazon link is an affiliate link; the SIHOO link is a direct, non-affiliate link. Commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -126,7 +126,7 @@ export const SIHOO_DORO_S300: RichReview = {
     { q: "Does it have an adjustable headrest?", a: "The headrest is integrated into the backrest, not a separate height-adjustable piece — its support depends on your height." },
     { q: "What's the weight capacity?", a: "330 lb per SIHOO (some retail copy says 300). Use the official 330 and confirm on the listing." },
     { q: "How far does it recline?", a: "SIHOO doesn't state a firm angle; third parties cite roughly 135–138°. Treat it as approximate." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from SIHOO's specs and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from SIHOO's specs and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -134,7 +134,7 @@ export const SIHOO_DORO_S300: RichReview = {
     { k: "Published reviews", v: "Third-party reviews (e.g. TechRadar, Forbes) summarised for the recline feel and the headrest caution; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are SIHOO's published figures as of the date shown and are not independently verified by Furniblog. The recline angle isn't officially stated and a German Design Award is a manufacturer claim — confirm details on the listing you buy from.",
+    "Specifications are SIHOO's published figures as of the date shown and are not independently verified by Chairpedia. The recline angle isn't officially stated and a German Design Award is a manufacturer claim — confirm details on the listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

@@ -103,7 +103,7 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
       { k: "What to check", v: "The ASIN matches the 280 lb classic (not the 350/400 lb or footrest variants), and the colour." },
     ],
     disclaimer:
-      "Not verified by Furniblog: price, seller, stock and which variant a listing is change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
+      "Not verified by Chairpedia: price, seller, stock and which variant a listing is change without notice — confirm on the listing. Affiliate link; commission does not change the price you pay or what this guide says.",
   },
 
   verdict: [
@@ -118,7 +118,7 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
     { q: "Do the armrests adjust for height?", a: "They flip up to tuck under a desk. Reports conflict on height adjustment for the classic, so treat them as flip-up only and confirm on the listing." },
     { q: "What's the weight capacity and fit?", a: "280 lb, with a comfortable fit around 5'5\"–6'2\". The seat is deep and doesn't adjust." },
     { q: "How long does it last?", a: "Reviewers report the mesh and lumbar can soften over roughly 12–18 months, especially for heavier users. It carries a 2-year warranty." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This is a research-based guide from the official specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from the official specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
   ],
 
   sources: [
@@ -126,7 +126,7 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
     { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and durability notes; not first-hand." },
   ],
   sourcesFooter:
-    "Specifications are for the classic Gabrylly (ASIN B07Y8BXBX8) as of the date shown and are not independently verified by Furniblog. Gabrylly's variants share spec language — confirm capacity, arms and dimensions on the exact listing you buy from.",
+    "Specifications are for the classic Gabrylly (ASIN B07Y8BXBX8) as of the date shown and are not independently verified by Chairpedia. Gabrylly's variants share spec language — confirm capacity, arms and dimensions on the exact listing you buy from.",
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },
     { label: "Best office chairs under $300: verified picks", href: "/blog/best-office-chairs-under-300-verified-picks" },

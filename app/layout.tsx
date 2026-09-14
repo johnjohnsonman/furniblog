@@ -17,18 +17,17 @@ const inter = Inter({
   variable: "--font-sans"
 })
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.furniblog.com'
+import { SITE_URL } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Furniblog — Premium Chair Reviews, Videos & News',
-    template: '%s | Furniblog',
+    default: 'Chairpedia — Premium Chair Reviews, Videos & News',
+    template: '%s | Chairpedia',
   },
   description:
     "The world's most comprehensive database for premium office, gaming and ergonomic chairs. Real specs, global reviews, videos and news — updated daily.",
-  applicationName: 'Furniblog',
+  applicationName: 'Chairpedia',
   keywords: [
     'office chair reviews',
     'ergonomic chair',
@@ -50,21 +49,21 @@ export const metadata: Metadata = {
     : {}),
   openGraph: {
     type: 'website',
-    siteName: 'Furniblog',
-    title: 'Furniblog — Premium Chair Reviews, Videos & News',
+    siteName: 'Chairpedia',
+    title: 'Chairpedia — Premium Chair Reviews, Videos & News',
     description:
       'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
     url: SITE_URL,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Furniblog — Premium Chair Reviews, Videos & News',
+    title: 'Chairpedia — Premium Chair Reviews, Videos & News',
     description:
       'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
   },
   icons: {
-    icon: [{ url: '/icon.svg', type: 'image/svg+xml' }],
-    apple: '/icon.svg',
+    icon: [{ url: '/chairpedia-icon.svg', type: 'image/svg+xml' }],
+    apple: '/chairpedia-icon.svg',
   },
 }
 

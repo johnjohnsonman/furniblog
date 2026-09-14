@@ -32,7 +32,7 @@ function Card({ c }: { c: ComparisonCard }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={c.hero_image_url} alt={c.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Furniblog</div>
+          <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Chairpedia</div>
         )}
       </div>
       <div className="flex flex-1 flex-col p-5">

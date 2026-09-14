@@ -28,7 +28,7 @@ function inspect(row) {
 function comparisonSlug(url) {
   try {
     const u = new URL(url);
-    if (!['furniblog.com', 'www.furniblog.com'].includes(u.hostname)) return null;
+    if (!['furniblog.com', 'www.furniblog.com', 'chairpedia.com', 'www.chairpedia.com'].includes(u.hostname)) return null;
     return u.pathname.match(/^\/compare\/([^/]+)\/?$/)?.[1] || null;
   } catch { return null; }
 }

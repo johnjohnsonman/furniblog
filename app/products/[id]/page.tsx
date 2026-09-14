@@ -1,6 +1,6 @@
 import { getProductRelatedBlogPosts } from "@/lib/growth/related-blog-server"
 import { guideIntent } from "@/lib/growth/related-blog"
-﻿import { notFound } from "next/navigation"
+import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronRight, BookOpen, ArrowUpRight } from "lucide-react"
@@ -387,7 +387,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                         />
                       ) : (
                         <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                          Furniblog
+                          Chairpedia
                         </div>
                       )}
                     </div>

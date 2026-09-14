@@ -4,7 +4,7 @@
 // The key file is served from public/<key>.txt; keys are not secrets.
 
 const KEY = '4f43f721b9b58ffddf6bba77f7fb176c';
-const HOST = 'www.furniblog.com';
+const HOST = 'www.chairpedia.com';
 
 async function main() {
   const args = process.argv.slice(2);

@@ -198,7 +198,7 @@ export function ChairAI({ initialQuery }: { initialQuery?: string } = {}) {
           </button>
 
           <p className="mt-4 text-xs text-premium-text-tertiary">
-            chA.I.r suggests from Furniblog&apos;s catalog based on your description. Always
+            chA.I.r suggests from Chairpedia&apos;s catalog based on your description. Always
             double-check fit and specs before buying.
           </p>
         </div>

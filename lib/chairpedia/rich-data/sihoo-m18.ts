@@ -72,7 +72,7 @@ export const SIHOO_M18: RichReview = {
   cons: [
     { t: "Arm movement beyond height adjustment needs confirmation for the selected item.", src: "Source limitation" },
     { t: "Cushioned seat is less breathable than an all-mesh seat.", src: "Product documentation, our reading" },
-    { t: "No Furniblog sitting or durability test is available to establish long-term performance.", src: "Testing disclosure" },
+    { t: "No Chairpedia sitting or durability test is available to establish long-term performance.", src: "Testing disclosure" },
   ],
 
   forWhoTitle: "The M18 suits",
@@ -102,12 +102,12 @@ export const SIHOO_M18: RichReview = {
       { k: "What to check", v: 'Title says "M18", the colour you want, "2D Armrests" and "330lbs", plus who it is sold and shipped by.' },
     ],
     disclaimer:
-      'Not verified by Furniblog: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
+      'Not verified by Chairpedia: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this guide says.',
   },
 
   verdict: [
     "Shortlist the M18 if you want a cushioned seat and manually positioned lumbar support. Establish the exact fit and available arm movements before comparing the delivered price. A published load limit does not tell us how comfortable or durable the chair will be for a particular buyer.",
-    "Furniblog has not hands-on tested the M18, so we do not rank its comfort or durability against premium chairs. Compare the C300 if you prefer a mesh seat, or Ticova if documented arm angle and forward/back movement matter. Resolve fit and seller terms before treating a higher price as an upgrade.",
+    "Chairpedia has not hands-on tested the M18, so we do not rank its comfort or durability against premium chairs. Compare the C300 if you prefer a mesh seat, or Ticova if documented arm angle and forward/back movement matter. Resolve fit and seller terms before treating a higher price as an upgrade.",
   ],
   verdictPullQuote:
     "A lot of ergonomic checkboxes for the money — as long as you want a cushioned seat and can live with 2D arms.",
@@ -118,13 +118,13 @@ export const SIHOO_M18: RichReview = {
     { q: "Are the armrests adjustable?", a: "The listing uses a 2D label and SIHOO's US page documents height adjustment. Width, pivot and forward/back adjustment during use are not verified here. Ask for the selected model's control diagram." },
     { q: "Is the M18 recline 126 or 130 degrees?", a: "SIHOO's US page advertises 126 degrees; its wholesale page lists tilt positions reaching 130 degrees. Do not assume either figure covers every configuration. Confirm the item you order." },
     { q: "What colours are available?", a: "Black, Duck Gray and Blue are commonly listed. The link points to Black; switch the colour on the listing if you prefer another." },
-    { q: "Has Furniblog tested this chair?", a: "No. This guide compares published listing and manufacturer descriptions. It does not report our own comfort, pressure or durability measurements." },
+    { q: "Has Chairpedia tested this chair?", a: "No. This guide compares published listing and manufacturer descriptions. It does not report our own comfort, pressure or durability measurements." },
   ],
 
   sources: [
     { k: "Amazon listing", url: "https://www.amazon.com/dp/B07GNDDNMW", v: "SIHOO M18, Black — ASIN B07GNDDNMW. Title checked 2026-09-09. Basis for capacity (330 lb), 2D armrests, adjustable lumbar and headrest, mesh back and cushioned seat." },
     { k: "SIHOO M18 manufacturer page", url: "https://wholesale.sihoo.com/products/m18/", v: "Checked 2026-09-10: documents lumbar height/depth adjustment and a cushioned seat. Its recline figures differ from earlier retailer figures; it is a wholesale specification, not confirmation of every Amazon variant." },
-    { k: "SIHOO US M18", url: "https://www.sihoo.com/products/m18-ergonomic-chair", v: "Reviewed September 10, 2026. Height-adjustable arms, retail recline and support terms. Manufacturer statements are not a Furniblog comfort test." },
+    { k: "SIHOO US M18", url: "https://www.sihoo.com/products/m18-ergonomic-chair", v: "Reviewed September 10, 2026. Height-adjustable arms, retail recline and support terms. Manufacturer statements are not a Chairpedia comfort test." },
   ],
 
   related: [

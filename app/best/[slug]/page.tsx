@@ -72,7 +72,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
             Catalog prices are reference figures, not live Amazon offers. Confirm the current price,
             model, condition, delivery and return terms with the seller. List order is not a hands-on test score.
           </p>
-          <p className="mt-3 text-xs text-muted-foreground">As an Amazon Associate, Furniblog earns from qualifying purchases.</p>
+          <p className="mt-3 text-xs text-muted-foreground">As an Amazon Associate, Chairpedia earns from qualifying purchases.</p>
         </div>
 
         {/* Hero image */}
@@ -201,7 +201,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
           {list.items.length === 0 && <p className="text-sm text-muted-foreground">No matching chairs are currently listed. <Link href="/best" className="underline">Browse other buying guides</Link>.</p>}
 
           <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
-            Furniblog may earn a commission when you purchase through links on this page, at no extra cost to you.
+            Chairpedia may earn a commission when you purchase through links on this page, at no extra cost to you.
           </p>
         </div>
 

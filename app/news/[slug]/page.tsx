@@ -67,7 +67,7 @@ export async function generateMetadata(props: {
     title: title,
     description:
       news.summary?.trim() ||
-      `${news.brand ?? "Furniture"} news curated by Furniblog.`,
+      `${news.brand ?? "Furniture"} news curated by Chairpedia.`,
     alternates: { canonical: `/news/${news.slug ?? slug}` },
     ...(isNewsSearchable(news) ? {} : NOINDEX_FOLLOW),
   }
@@ -91,7 +91,7 @@ export default async function NewsDetailPage(props: {
       path: `/news/${news.slug}`,
       datePublished: news.published_at,
       image: news.image_url,
-      authorName: news.source_name ?? "Furniblog",
+      authorName: news.source_name ?? "Chairpedia",
     }),
     generateBreadcrumbSchema([
       { name: "News", url: "/news" },
@@ -189,7 +189,7 @@ export default async function NewsDetailPage(props: {
             <ExternalLink className="h-4 w-4" />
           </a>
           <p className="mt-2 text-xs text-muted-foreground">
-            Summary curated by Furniblog. Full story and images belong to the
+            Summary curated by Chairpedia. Full story and images belong to the
             original publisher.
           </p>
         </div>

@@ -46,7 +46,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { k: "Weight capacity", v: "Not confirmed for the linked listing — SIHOO documents 330 lb, some sources say 300 lb; check the Amazon listing", tier: "C" },
     { k: "Recline", v: "Up to 130°", tier: "B" },
     { k: "Recline lock stages", v: "Stop count not confirmed for the base model", tier: "C" },
-    { k: "Recommended user height", v: "No universal fit range established by Furniblog", tier: "C" },
+    { k: "Recommended user height", v: "No universal fit range established by Chairpedia", tier: "C" },
     { k: "Product weight", v: "50.93 lbs", tier: "B" },
     { k: "Armrest padding", v: "PU-coated", tier: "B" },
     { k: "Warranty", v: "3 years", tier: "B" },
@@ -76,7 +76,7 @@ export const SIHOO_DORO_C300: RichReview = {
   cons: [
     { t: "Conflicting listing descriptions require extra configuration checks before buying.", src: "Source comparison" },
     { t: "Seat-height fit and seat-depth adjustment remain unverified for the linked item.", src: "Evidence limit" },
-    { t: "No Furniblog sitting or durability test supports an all-day comfort recommendation.", src: "Testing disclosure" },
+    { t: "No Chairpedia sitting or durability test supports an all-day comfort recommendation.", src: "Testing disclosure" },
   ],
 
   forWho: [
@@ -109,7 +109,7 @@ export const SIHOO_DORO_C300: RichReview = {
       note: "30-day trial applies to orders from SIHOO's own store only. Not an affiliate link.",
     },
     disclaimer:
-      'Not verified by Furniblog: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this review says.',
+      'Not verified by Chairpedia: price, seller ("sold by"), stock and colour availability change without notice — confirm all of them on the Amazon listing. Affiliate link; commission does not change the price you pay or what this review says.',
   },
 
   verdict: [
@@ -126,7 +126,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { q: "Will it fit me?", a: "SIHOO publishes overall height (42–49 in), backrest height (18.11–21.65 in) and seat depth (17.13–18.11 in), but not a seat-to-floor range or a recommended user height for the base model. Take the seat height from the listing and compare it with your desk. Our own measurements will be added after testing." },
     { q: "Can I set the lumbar support myself?", a: "Do not assume a manual height or depth lock from an adaptive-support description. We have not verified those controls on the linked configuration. Ask the seller to demonstrate them if they are essential to you." },
     { q: "Does the 30-day trial apply to Amazon orders?", a: "No. The 30-day trial is offered by SIHOO's official store only. Amazon orders follow Amazon's return window, which depends on the seller — check it on the listing." },
-    { q: "Has Furniblog tested this chair?", a: "Not yet. This review is research-based, built from the Amazon listing, SIHOO's documentation and published reviews. When hands-on testing is complete we will add our own measurements, photography and a note of what changed." },
+    { q: "Has Chairpedia tested this chair?", a: "Not yet. This review is research-based, built from the Amazon listing, SIHOO's documentation and published reviews. When hands-on testing is complete we will add our own measurements, photography and a note of what changed." },
   ],
 
   sources: [
