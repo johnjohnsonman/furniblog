@@ -1,7 +1,7 @@
 /** Public identity. Deliberately independent of request hosts and preview URLs. */
 export const SITE_URL = "https://www.chairpedia.com"
 export const SITE_NAME = "Chairpedia"
-export const SITE_ALTERNATE_NAME = "체어피디아"
+export const SITE_ALTERNATE_NAME = "chairpedia.com"
 export const SITE_DESCRIPTION = "Chairpedia is a chair research and comparison website with product specifications, buying guides, customer experiences and source-linked review summaries."
 
 /** Content relationships and historical attribution only, never an auth allowlist. */

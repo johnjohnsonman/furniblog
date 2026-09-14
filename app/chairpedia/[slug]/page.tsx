@@ -1,3 +1,4 @@
+import { englishImageDescriptions } from "@/lib/public-english"
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
 import { getPurchaseDecision } from "@/lib/growth/purchase-decisions"
@@ -115,7 +116,8 @@ export default async function ChairpediaEntryPage({
   const entry = await getEntry(slug)
   if (!entry) notFound()
 
-  const product = linkedProduct(entry.products)
+  // This guide was incorrectly attached to Lino; Caper has no catalog product yet.
+  const product = entry.slug === "herman-miller-caper-multipurpose-chair" ? null : linkedProduct(entry.products)
   const buy = product
     ? resolveAmazonAffiliateLink(product.slug, product.name)
     : null
@@ -190,7 +192,7 @@ export default async function ChairpediaEntryPage({
             <RichReview
               data={rich}
               title={entry.title}
-              contentHtml={rewriteAmazonHrefs(rewriteOwnedSiteLinks(entry.content_html), pageSubtag(`/chairpedia/${entry.slug}`))}
+              contentHtml={rewriteAmazonHrefs(rewriteOwnedSiteLinks(englishImageDescriptions(entry.content_html)), pageSubtag(`/chairpedia/${entry.slug}`))}
               images={richImages}
               productImages={productGallery}
               heroImageUrl={entry.hero_image_url}
@@ -282,7 +284,7 @@ export default async function ChairpediaEntryPage({
           {/* Authored content (admin/AI). Styles for plain authored HTML below. */}
           <div
             className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(entry.content_html), pageSubtag(`/chairpedia/${entry.slug}`))) }}
+            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(englishImageDescriptions(entry.content_html)), pageSubtag(`/chairpedia/${entry.slug}`))) }}
           />
 
           {sources.length > 0 && (

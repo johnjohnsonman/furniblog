@@ -10,6 +10,7 @@ import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { products, getSimilarProducts } from "@/lib/data"
 import { getChairReviewsForProduct } from "@/lib/data/chair-reviews"
 import {
+  getProducts,
   getProductBySlug,
   getProductReviews,
   isSupabaseConfigured,
@@ -63,6 +64,7 @@ async function getChairpediaSlug(productSlug: string): Promise<string | null> {
       .from("chairpedia")
       .select("slug")
       .eq("product_id", productId)
+      .neq("slug", "herman-miller-caper-multipurpose-chair")
       .eq("status", "published")
       .limit(1)
       .maybeSingle()
@@ -136,7 +138,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const buyUrls = urlsFromCatalog(catalogLinks)
 
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
-  const similarProducts = getSimilarProducts(productWithLinks, 3)
+  const similarProducts = isSupabaseConfigured()
+    ? (await getProducts({ category: product.category })).filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
+    : getSimilarProducts(productWithLinks, 3)
   const reviewCount =
     isSupabaseConfigured() || chairReviews.length > 0
       ? chairReviews.length

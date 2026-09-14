@@ -10,7 +10,7 @@ export function Footer() {
               Chairpedia
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              Chairpedia (<span lang="ko">체어피디아</span>) helps you research chairs with product specifications, buying guides, and source-linked reviews.
+              Chairpedia helps you research chairs with product specifications, buying guides, and source-linked reviews.
             </p>
           </div>
 

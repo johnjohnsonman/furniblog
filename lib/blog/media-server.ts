@@ -10,7 +10,7 @@ export async function enrichBlogPosts<T extends MediaPost>(posts: T[]): Promise<
   if (slugs.length || guides.length) {
     const db = createPublicServerClient()
     const { data: guideRows, error: guideError } = guides.length
-      ? await db.from("chairpedia").select("slug,product_id").eq("status", "published").in("slug", guides)
+      ? await db.from("chairpedia").select("slug,product_id").eq("status", "published").in("slug", guides).neq("slug", "herman-miller-caper-multipurpose-chair")
       : { data: [], error: null }
     if (guideError) console.error("Blog guide media lookup failed:", guideError.message)
     const ids = [...new Set((guideRows ?? []).map(row => row.product_id).filter((id): id is string => !!id))]

@@ -1,3 +1,4 @@
+import { presentVideo } from "@/lib/videos/public-presentation"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { shuffle } from "@/lib/utils/shuffle"
@@ -39,8 +40,8 @@ export type HomeVideo = {
 
 type BrandRel = { name?: string | null } | Array<{ name?: string | null }> | null
 type ProductRel =
-  | { slug?: string | null; name?: string | null; thumbnail_url?: string | null; brands?: BrandRel }
-  | Array<{ slug?: string | null; name?: string | null; thumbnail_url?: string | null; brands?: BrandRel }>
+  | { slug?: string | null; name?: string | null; thumbnail_url?: string | null; product_images?: {url: string; model_status: string; sort_order: number}[]; brands?: BrandRel }
+  | Array<{ slug?: string | null; name?: string | null; thumbnail_url?: string | null; product_images?: {url: string; model_status: string; sort_order: number}[]; brands?: BrandRel }>
   | null
 
 function first<T>(rel: T | T[] | null | undefined): T | null {
@@ -63,7 +64,7 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
     const { data } = await runPublicReviewQuery((applyFilter) => {
       let q = supabase
         .from("reviews")
-        .select("id, summary_ko, source, products!inner(slug, name, thumbnail_url, brands(name))")
+        .select("id, summary_ko, source, products!inner(slug, name, thumbnail_url, product_images(url,model_status,sort_order), brands(name))")
         .order("created_at", { ascending: false })
         .limit(poolSize(limit))
       if (applyFilter) q = q.eq("excluded", false)
@@ -80,12 +81,12 @@ export async function getLatestReviews(limit = 9): Promise<HomeReview[]> {
           source: (row.source as string | null) ?? null,
           productName: product.name,
           productSlug: product.slug,
-          productImage: product.thumbnail_url?.trim() || null,
+          productImage: product.product_images?.filter(i => i.model_status === "verified").sort((a,b) => a.sort_order-b.sort_order)[0]?.url || product.thumbnail_url?.trim() || null,
           brandName: first(product.brands)?.name?.trim() || null,
         }
       })
       .filter((r): r is HomeReview => r !== null)
-    return shuffle(items).slice(0, limit)
+    return shuffle(items).filter((r, i, all) => r.summary.length >= 60 && !/promotional placeholder|no actual user review|no detailed feedback|not a review/i.test(r.summary) && all.findIndex(other => other.productSlug === r.productSlug) === i).slice(0, limit)
   } catch {
     return []
   }
@@ -104,7 +105,8 @@ export async function getLatestVideos(limit = 8): Promise<HomeVideo[]> {
       .limit(poolSize(limit))
 
     const items = (data ?? [])
-      .map((row): HomeVideo | null => {
+      .map((raw): HomeVideo | null => {
+        const row = presentVideo(raw)
         const youtubeId = row.youtube_id as string | null
         if (!youtubeId) return null
         const product = first(row.products as ProductRel)
@@ -112,7 +114,7 @@ export async function getLatestVideos(limit = 8): Promise<HomeVideo[]> {
           id: row.id as string,
           youtubeId,
           title: (row.title as string | null)?.trim() || "Untitled video",
-          thumbnailUrl: (row.thumbnail_url as string | null) ?? null,
+          thumbnailUrl: (row.thumbnail_url as string | null) || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
           brand: (row.brand as string | null) ?? null,
           productSlug: product?.slug ?? null,
           productName: product?.name ?? null,

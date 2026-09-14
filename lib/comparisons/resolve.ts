@@ -1,3 +1,4 @@
+import { comparisonMedia } from "./card-media"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { ComparisonProductInput } from "@/lib/comparisons/generate"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
@@ -166,12 +167,12 @@ export async function getComparisonCards(
 ): Promise<ComparisonCard[]> {
   const { data } = await supabase
     .from("comparisons")
-    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at")
+    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at, product_a_id, product_b_id")
     .eq("status", "published")
     .order("featured", { ascending: false })
     .order("published_at", { ascending: false, nullsFirst: false })
     .limit(200)
-  return (data ?? []).map((c) => ({
+  return (await comparisonMedia(supabase, data ?? [])).map((c) => ({
     slug: c.slug as string,
     title: c.title as string,
     subtitle: (c.subtitle as string | null) ?? null,

@@ -1,3 +1,4 @@
+import { presentVideo } from "@/lib/videos/public-presentation"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { resolveProductUuid } from "@/lib/supabase/queries"
 import { shuffle } from "@/lib/utils/shuffle"
@@ -56,7 +57,7 @@ export async function fetchProductVideos(
 
   if (error) return { videos: [], total: 0, chairId }
 
-  const videos = shuffle((data ?? []) as ProductVideo[]).slice(
+  const videos = shuffle(((data ?? []) as ProductVideo[]).map(presentVideo)).slice(
     0,
     PRODUCT_VIDEO_LIMIT
   )

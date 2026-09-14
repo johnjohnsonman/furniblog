@@ -138,7 +138,7 @@ export function ExperienceReviewsBrowser({
   }, [filtered, sort])
 
   // Pagination over the sorted list.
-  const PAGE_SIZE = 20
+  const PAGE_SIZE = 10
   const [page, setPage] = useState(1)
   const topRef = useRef<HTMLDivElement>(null)
 

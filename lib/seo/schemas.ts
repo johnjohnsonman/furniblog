@@ -97,7 +97,7 @@ export function generateWebsiteSchema() {
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: SITE_NAME,
-    alternateName: [SITE_ALTERNATE_NAME, "chairpedia.com"],
+    alternateName: [SITE_ALTERNATE_NAME],
     description: SITE_DESCRIPTION,
     publisher: { "@id": `${SITE_URL}/#organization` },
     inLanguage: "en",

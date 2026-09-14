@@ -20,7 +20,7 @@ export function formatNewsDate(value: string | null): string {
   const d = new Date(value)
   if (Number.isNaN(d.getTime())) return ""
   return d.toLocaleDateString("en-US", {
-    year: "numeric",
+    timeZone: "UTC", year: "numeric",
     month: "short",
     day: "numeric",
   })

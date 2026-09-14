@@ -1,3 +1,4 @@
+import { comparisonMedia } from "@/lib/comparisons/card-media"
 import { enrichBlogPosts } from "@/lib/blog/media-server"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
@@ -28,7 +29,7 @@ async function getPosts(): Promise<BlogCard[]> {
       .eq("status", "published")
       .order("featured", { ascending: false })
       .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(200)
+      .limit(1000)
     if (error) throw error
     return enrichBlogPosts((data as PostWithBody[] | null) ?? [])
   } catch {
@@ -39,7 +40,7 @@ async function getPosts(): Promise<BlogCard[]> {
         .eq("status", "published")
         .order("featured", { ascending: false })
         .order("published_at", { ascending: false, nullsFirst: false })
-        .limit(200)
+        .limit(1000)
       return enrichBlogPosts(((data as Omit<PostWithBody, "category">[] | null) ?? []).map((p) => ({
         ...p,
         category: null,
@@ -57,12 +58,12 @@ async function getComparisonCardsAsBlog(): Promise<BlogCard[]> {
   try {
     const { data, error } = await supabase
       .from("comparisons")
-      .select("slug,title,subtitle,excerpt,hero_image_url,published_at")
+      .select("slug,title,subtitle,excerpt,hero_image_url,published_at,product_a_id,product_b_id")
       .eq("status", "published")
       .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(100)
+      .limit(1000)
     if (error) throw error
-    return ((data as Array<Omit<BlogCard, "featured" | "category" | "href">> | null) ?? []).map(
+    return ((await comparisonMedia(supabase, data ?? [])) as Array<Omit<BlogCard, "featured" | "category" | "href">>).map(
       (c) => ({
         ...c,
         featured: false, // don't let comparisons dominate the rotating hero

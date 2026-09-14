@@ -4,9 +4,9 @@ import { StoreExperienceWizard } from "@/components/experience/store-experience-
 
 export const metadata = {
   alternates: { canonical: "/experience" },
-  title: "체어파크 체험 후기",
+  title: "Share your chair experience",
   description:
-    "체어파크 매장에서 직접 앉아본 의자, 어떠셨나요? 1분이면 끝나는 간단한 후기를 남겨주세요.",
+    "Tried a chair at a Chairpark store? Share your experience to help other shoppers.",
 }
 
 export const dynamic = "force-dynamic"

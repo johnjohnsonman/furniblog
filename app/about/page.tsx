@@ -74,7 +74,7 @@ export default function AboutPage() {
         <section className="border-b border-border bg-card">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              Chairpedia (<span lang="ko">체어피디아</span>) - Formerly Furniblog
+              Chairpedia - Formerly Furniblog
             </p>
             <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-foreground sm:text-[42px] sm:leading-[1.15]">
               Chairpedia: chair research,

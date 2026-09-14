@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils"
 import { ReviewListItem } from "./review-list-item"
 import { ReviewsFeedSkeleton } from "./reviews-feed-skeleton"
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 const CATEGORY_PILLS = [
   { label: "All", value: "all" },

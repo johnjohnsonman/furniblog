@@ -27,10 +27,10 @@ function Card({ c }: { c: ComparisonCard }) {
       href={`/compare/${c.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_34px_rgba(0,0,0,0.07)]"
     >
-      <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
+      <div className={c.hero_image_url ? "aspect-[16/10] w-full overflow-hidden bg-muted" : "hidden"}>
         {c.hero_image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={c.hero_image_url} alt={c.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+          <img src={c.hero_image_url} alt={c.title} loading="lazy" className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]" />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Chairpedia</div>
         )}

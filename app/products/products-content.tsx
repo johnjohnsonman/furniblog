@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react"
@@ -155,7 +155,7 @@ export function ProductsPageContent({
   ])
 
   // Pagination over the filtered/sorted list.
-  const PAGE_SIZE = 24
+  const PAGE_SIZE = 12
   const [page, setPage] = useState(1)
   const gridTopRef = useRef<HTMLDivElement>(null)
 

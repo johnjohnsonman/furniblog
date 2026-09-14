@@ -78,11 +78,12 @@ export function ChairpediaLanding({
   featuredSlug: string | null
 }) {
   const [q, setQ] = useState("")
+  const [visibleCount, setVisibleCount] = useState(12)
   const [cat, setCat] = useState("all")
   const [brand, setBrand] = useState("all")
   const [origin, setOrigin] = useState("all")
 
-  // All editor-featured entries power the hero carousel (no cap). Start the
+  // All editor-featured entries power the hero carousel (up to five entries). Start the
   // rotation on the server-picked entry (random per visit) for continuity, then
   // cycle through the rest. Falls back to a single entry when none are featured.
   const featuredItems = useMemo(() => {
@@ -93,7 +94,7 @@ export function ChairpediaLanding({
     }
     const start = f.findIndex((e) => e.slug === featuredSlug)
     if (start > 0) f = [...f.slice(start), ...f.slice(0, start)]
-    return f
+    return f.slice(0, 5)
   }, [entries, featuredSlug])
 
   const categories = useMemo(
@@ -127,7 +128,7 @@ export function ChairpediaLanding({
     () =>
       COLLECTIONS.map((c) => ({
         ...c,
-        items: entries.filter((e) => e.collections?.includes(c.slug)),
+        items: entries.filter((e) => e.collections?.includes(c.slug)).slice(0, 3),
       })).filter((r) => r.items.length > 0),
     [entries]
   )
@@ -237,12 +238,14 @@ export function ChairpediaLanding({
               </p>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((e) => (
+                {filtered.slice(0, visibleCount).map((e) => (
                   <Card key={e.slug} e={e} />
                 ))}
               </div>
             )}
           </section>
+
+          {filtered.length > visibleCount && <button type="button" onClick={() => setVisibleCount(n => n + 12)} className="mb-10 rounded-md border px-5 py-3">Show 12 more guides ({filtered.length - visibleCount} remaining)</button>}
 
           {/* Trust band */}
           <section className="rounded-2xl bg-[#faf8f4] border border-border p-8 text-center mb-14">

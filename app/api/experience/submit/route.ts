@@ -56,8 +56,8 @@ function clampRating(value: unknown): number | null {
 
 function mapSex(value: string | null): string | null {
   if (!value) return null
-  if (/남|male/i.test(value)) return "male"
-  if (/여|female/i.test(value)) return "female"
+  if (/^(남성|male)$/i.test(value)) return "male"
+  if (/^(여성|female)$/i.test(value)) return "female"
   return null
 }
 
@@ -77,17 +77,17 @@ export async function POST(request: NextRequest) {
       payload = (await request.json()) as Payload
     }
   } catch {
-    return NextResponse.json({ error: "잘못된 요청 형식입니다." }, { status: 400 })
+    return NextResponse.json({ error: "Invalid request format." }, { status: 400 })
   }
 
   const rank1Name = str(payload.rank1_chair, 200)
   const reviewText = str(payload.review_text, 2000)
 
   if (!rank1Name) {
-    return NextResponse.json({ error: "1위 의자를 선택해 주세요." }, { status: 400 })
+    return NextResponse.json({ error: "Please choose your first-choice chair." }, { status: 400 })
   }
   if (!reviewText) {
-    return NextResponse.json({ error: "한 줄 후기를 입력해 주세요." }, { status: 400 })
+    return NextResponse.json({ error: "Please enter a short review." }, { status: 400 })
   }
 
   // Optional photo upload to the existing public `gallery` bucket.
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       photoUrl = await uploadGalleryImageServer(photo, "experience")
     } catch (err) {
       const message =
-        err instanceof StorageValidationError ? err.message : "사진 업로드에 실패했습니다."
+        err instanceof StorageValidationError ? err.message : "Photo upload failed."
       return NextResponse.json({ error: message }, { status: 400 })
     }
   }
@@ -152,7 +152,7 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error || !inserted) {
-    return NextResponse.json({ error: error?.message ?? "저장에 실패했습니다." }, { status: 500 })
+    return NextResponse.json({ error: "Could not save your review. Please try again." }, { status: 500 })
   }
 
   // Rankings (matched chairs only, deduped by chair_id).

@@ -16,6 +16,7 @@ function fallbackThumb(youtubeId: string): string {
 
 export function VideoEmbedFacade({ youtubeId, title, thumbnailUrl }: Props) {
   const [active, setActive] = useState(false)
+  const [failed, setFailed] = useState(false)
 
   if (active) {
     return (
@@ -42,7 +43,8 @@ export function VideoEmbedFacade({ youtubeId, title, thumbnailUrl }: Props) {
     >
       <div className="relative aspect-video">
         <Image
-          src={thumbnailUrl || fallbackThumb(youtubeId)}
+          src={failed ? fallbackThumb(youtubeId) : thumbnailUrl || fallbackThumb(youtubeId)}
+          onError={() => setFailed(true)}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"

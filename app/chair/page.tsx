@@ -7,7 +7,7 @@ import { ChairAI } from "@/components/chair-ai/chair-ai"
 export const metadata: Metadata = {
   title: "chA.I.r — AI Chair Finder",
   description:
-    "Describe how you sit, your budget, your body and the look you want — chA.I.r, Chairpedia's AI chair advisor, matches you to the right office, ergonomic or design chair from a catalog of 180+ models.",
+    "Describe how you sit, your budget, your body and the look you want — chA.I.r, Chairpedia's AI chair advisor, matches you to the right office, ergonomic or design chair from our chair catalog.",
   alternates: { canonical: "/chair" },
   openGraph: {
     title: "chA.I.r — AI Chair Finder",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const FAQ = [
   {
     q: "How does chA.I.r work?",
-    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chA.I.r reads Chairpedia's catalog of 180+ chairs and recommends the best matches, with a short reason for each pick.",
+    a: "You describe what you need in your own words — budget, how many hours you sit, any back pain, your height, the style you like. chA.I.r reads Chairpedia's chair catalog and recommends the best matches, with a short reason for each pick.",
   },
   {
     q: "Is chA.I.r free?",
@@ -67,7 +67,7 @@ export default async function ChairAIPage({
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-premium-text-secondary">
             Describe your needs in plain words — budget, hours, back pain, height,
             style. <span className="font-medium text-premium-text">chA.I.r</span>{" "}
-            matches you to the right seat from 180+ reviewed chairs, and tells you
+            matches you to the right seat from our chair catalog, and tells you
             why each one fits.
           </p>
         </section>

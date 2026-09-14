@@ -104,7 +104,7 @@ function fmtDate(s: string | null): string {
   if (!s) return ""
   const d = new Date(s)
   if (Number.isNaN(d.getTime())) return ""
-  return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+  return d.toLocaleDateString("en-US", { timeZone: "UTC", year: "numeric", month: "short", day: "numeric" })
 }
 
 function Badge({ category }: { category: string | null }) {
@@ -122,14 +122,14 @@ function Card({ post }: { post: BlogCard }) {
       href={post.href ?? `/blog/${post.slug}`}
       className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-foreground/20 hover:shadow-[0_10px_34px_rgba(0,0,0,0.07)]"
     >
-      <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
+      <div className={post.hero_image_url ? "aspect-[16/10] w-full overflow-hidden bg-muted" : "hidden"}>
         {post.hero_image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={post.hero_image_url}
             alt={post.title}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
@@ -313,7 +313,7 @@ export function BlogIndex({ posts }: { posts: BlogCard[] }) {
                   <img
                     src={featured.hero_image_url}
                     alt={featured.title}
-                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-sm text-muted-foreground">

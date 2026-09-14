@@ -1,3 +1,4 @@
+import { presentVideo } from "@/lib/videos/public-presentation"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -116,11 +117,11 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
   const [{ data: videosData, count }, filterOptions, { data: popularData }] =
     await Promise.all([mainFetch, fetchVideoFilterOptions(supabase), popularQuery])
 
-  let videos = (videosData ?? []) as VideoRow[]
+  let videos = ((videosData ?? []) as VideoRow[]).map(presentVideo)
   if (isRandom) {
     videos = shuffle(videos).slice(from, from + pageSize)
   }
-  const popular = (popularData ?? []) as VideoRow[]
+  const popular = ((popularData ?? []) as VideoRow[]).map(presentVideo)
   const total = count ?? 0
   const totalPages = isRandom
     ? Math.max(1, Math.ceil(Math.min(total, RANDOM_POOL) / pageSize))
@@ -141,7 +142,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
   }
 
   const selectClass =
-    "h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+    "h-10 w-full min-w-0 max-w-full rounded-md border border-input bg-background px-3 text-sm"
 
   function FilterForm() {
     return (
@@ -234,7 +235,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
                 {product ? (
                   <Link
                     href={`/products/${product.slug}`}
-                    className="mt-0.5 inline-block truncate text-xs text-foreground underline underline-offset-2"
+                    className="mt-0.5 block max-w-full truncate text-xs text-foreground underline underline-offset-2"
                   >
                     {product.name} →
                   </Link>
@@ -269,9 +270,9 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
           )}
         </header>
 
-        <div className="grid gap-8 lg:grid-cols-[220px_1fr_300px]">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[220px_minmax(0,1fr)_300px]">
           {/* Left: filters */}
-          <aside className="lg:sticky lg:top-24 lg:self-start">
+          <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
             {/* Mobile collapsible */}
             <details className="lg:hidden rounded-xl border border-border bg-card p-4">
               <summary className="cursor-pointer text-sm font-medium text-foreground">
@@ -291,16 +292,16 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
           </aside>
 
           {/* Center: grid */}
-          <div>
+          <div className="min-w-0">
             {videos.length === 0 ? (
               <div className="rounded-xl border border-border bg-card p-10 text-center">
                 <p className="text-foreground">No published videos found.</p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Try changing the filters or run video collection from the admin panel.
+                  Try another brand or chair, or clear your filters.
                 </p>
               </div>
             ) : (
-              <div className="grid gap-6 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {videos.map((video) => {
                   const title = video.title?.trim() || "Untitled video"
                   const product = getProductRef(video)
@@ -308,7 +309,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
                     <article
                       key={video.id}
                       id={`video-${video.youtube_id}`}
-                      className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm scroll-mt-24"
+                      className="flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 shadow-sm scroll-mt-24"
                     >
                       <VideoEmbedFacade
                         youtubeId={video.youtube_id}
@@ -384,7 +385,7 @@ export default async function VideosPage(props: { searchParams: Promise<SearchPa
 
           {/* Right: popular videos */}
           {popular.length > 0 && (
-            <aside className="lg:sticky lg:top-24 lg:self-start">
+            <aside className="min-w-0 lg:sticky lg:top-24 lg:self-start">
               <h2 className="mb-4 text-sm font-medium uppercase tracking-wide text-muted-foreground">
                 Popular videos
               </h2>

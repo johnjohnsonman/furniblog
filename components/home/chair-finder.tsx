@@ -2,6 +2,7 @@
 
 import NextImage, { type ImageProps } from "next/image"
 import Link from "next/link"
+import type { Product } from "@/types/product"
 import { ArrowLeft, ArrowRight, Check, GitCompareArrows, X } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
@@ -16,6 +17,7 @@ export type FinderProduct = {
   price: string
   image: string
   rating: number
+  chairSpecs?: Product["chairSpecs"]
   bestFor?: string
 }
 
@@ -35,11 +37,13 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
   const [activeId, setActiveId] = useState(products[0]?.id ?? "")
   const [compare, setCompare] = useState<string[]>([])
   const [dockOpen, setDockOpen] = useState(false)
+  const [storageLoaded, setStorageLoaded] = useState(false)
 
   useEffect(() => {
-    try { setCompare(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]")) } catch {}
-  }, [])
-  useEffect(() => { localStorage.setItem(STORAGE_KEY, JSON.stringify(compare)) }, [compare])
+    try { const saved: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); if (Array.isArray(saved)) setCompare([...new Set(saved.filter((id): id is string => typeof id === "string" && products.some(p => p.id === id)))].slice(0, 3)) } catch {}
+    setStorageLoaded(true)
+  }, [products])
+  useEffect(() => { if (storageLoaded) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(compare)) } catch {} } }, [compare, storageLoaded])
 
   const brands = useMemo(() => [...new Set(products.map((p) => p.brand))].sort(), [products])
   const categories = useMemo(() => [...new Map(products.map((p) => [p.category, p.categoryLabel])).entries()], [products])
@@ -67,6 +71,8 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
     setActiveId(matches[(activeIndex + step + matches.length) % matches.length].id)
   }
   const toggleCompare = (id: string) => {
+    if (!compare.includes(id) && compare.length >= 3) { setDockOpen(true); return }
+    setDockOpen(true)
     const product = products.find((p) => p.id === id)
     trackHomeAction(compare.includes(id) ? "compare_remove" : "compare_add", product)
     setCompare((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 3 ? [...current, id] : current)
@@ -122,15 +128,15 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
 
         {active && <div key={active.id} className="animate-[finder-in_.32s_ease-out] bg-[#f5f1e8]">
           <div className="relative flex aspect-[4/3] items-center justify-center border-b border-[#171717] bg-[#eaf3ff] p-10 lg:aspect-auto lg:min-h-[490px]">
-            <span className="absolute left-5 top-5 bg-[#f0bf3a] px-2 py-1 text-[10px] font-bold uppercase">Best match</span>
+            <span className="absolute left-5 top-5 bg-[#f0bf3a] px-2 py-1 text-[10px] font-bold uppercase">Selected chair</span>
             <div className="absolute right-5 top-5 flex gap-2"><button aria-label="Previous chair" onClick={() => move(-1)} className="border border-[#171717] bg-white p-2"><ArrowLeft size={17} /></button><button aria-label="Next chair" onClick={() => move(1)} className="border border-[#171717] bg-white p-2"><ArrowRight size={17} /></button></div>
             <Image src={active.image} alt={active.name} width={620} height={620} priority className="h-full max-h-[390px] w-full object-contain" />
           </div>
           <div className="bg-white p-5">
             <p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#53606a]">{active.brand} · {active.categoryLabel}</p>
             <h2 className="mt-1 font-serif text-3xl">{active.name}</h2>
-            <div className="mt-4 grid grid-cols-2 border border-[#171717] text-xs"><div className="p-3"><span className="block text-[#777]">Price</span><strong>{active.price}</strong></div><div className="border-l border-[#171717] p-3"><span className="block text-[#777]">Best for</span><strong>{active.bestFor || "See full specifications"}</strong></div></div>
-            <div className="mt-3 grid grid-cols-2 gap-2"><Link href={`/products/${active.id}`} className="flex items-center justify-center bg-[#171717] px-3 py-3 text-sm font-bold text-white">View chair details</Link><button onClick={() => toggleCompare(active.id)} className="flex items-center justify-center gap-2 border border-[#3157e8] px-3 py-3 text-sm font-bold text-[#3157e8]">{compare.includes(active.id) ? <Check size={16} /> : <GitCompareArrows size={16} />} {compare.includes(active.id) ? "Added" : "Add to compare"}</button></div>
+            <div className="mt-4 grid grid-cols-2 border border-[#171717] text-xs"><div className="p-3"><span className="block text-[#777]">Reference price (USD)</span><strong>{active.price}</strong></div><div className="border-l border-[#171717] p-3"><span className="block text-[#777]">Best for</span><strong>{active.bestFor || "See full specifications"}</strong></div></div>
+            <div className="mt-3 grid grid-cols-2 gap-2"><Link href={`/products/${active.id}`} className="flex items-center justify-center bg-[#171717] px-3 py-3 text-sm font-bold text-white">View chair details</Link><button onClick={() => toggleCompare(active.id)} className="flex items-center justify-center gap-2 border border-[#3157e8] px-3 py-3 text-sm font-bold text-[#3157e8]">{compare.includes(active.id) ? <Check size={16} /> : <GitCompareArrows size={16} />} {compare.includes(active.id) ? "Added" : compare.length >= 3 ? "Compare full" : "Add to compare"}</button></div>
           </div>
         </div>}
         {!active && <div className="flex min-h-[420px] flex-col items-center justify-center bg-[#fff0c7] p-8 text-center"><p className="font-serif text-3xl">No exact matches</p><p className="mt-2 max-w-sm text-sm text-[#666]">Try a broader category, price range, or brand.</p><button onClick={() => { setCategory("all"); setPriceBand("all"); setBrand("all") }} className="mt-5 border border-[#171717] bg-white px-4 py-2 text-sm font-bold">Reset filters</button></div>}
@@ -138,7 +144,21 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
 
       {compared.length > 0 && <div className="sticky bottom-0 z-40 border-y border-[#171717] bg-white shadow-[0_-8px_30px_rgba(0,0,0,.1)]">
         <div className="mx-auto max-w-7xl px-4 py-3"><button className="flex w-full items-center justify-between text-xs font-bold uppercase tracking-[.12em]" onClick={() => setDockOpen(!dockOpen)}><span>Compare · {compared.length}/3</span><span>{dockOpen ? "Collapse" : "Expand"}</span></button>
-          {dockOpen && <div className="mt-3 grid gap-2 sm:grid-cols-3">{compared.map((p) => <div key={p.id} className="flex items-center gap-3 border border-[#bbb] p-2"><Image src={p.image} alt="" width={44} height={44} className="h-11 w-11 object-contain" /><Link href={`/products/${p.id}`} className="min-w-0 flex-1 truncate text-sm font-semibold">{p.name}</Link><button aria-label={`Remove ${p.name}`} onClick={() => toggleCompare(p.id)}><X size={16} /></button></div>)}</div>}
+          {dockOpen && <div className="mt-3 max-h-[55vh] overflow-auto">
+            <p className="mb-2 text-xs text-[#666]">Choose up to three chairs. Prices are reference USD values; confirm the configuration and current price with the seller.</p>
+            <table className="w-full min-w-[540px] border-collapse text-left text-xs">
+              <caption className="sr-only">Chair specifications comparison</caption>
+              <thead><tr><th className="border p-2">Specification</th>{compared.map(p => <th key={p.id} className="border p-2"><div className="flex items-center gap-2"><Image src={p.image} alt="" width={44} height={44} className="h-11 w-11 object-contain" /><Link href={`/products/${p.id}`} className="underline">{p.name}</Link><button aria-label={`Remove ${p.name}`} onClick={() => toggleCompare(p.id)}><X size={16} /></button></div></th>)}</tr></thead>
+              <tbody>{[
+                ["Reference price (USD)", (p: FinderProduct) => p.price],
+                ["Category", (p: FinderProduct) => p.categoryLabel],
+                ["Seat height (cm)", (p: FinderProduct) => p.chairSpecs?.seatHeightMin != null && p.chairSpecs?.seatHeightMax != null ? `${p.chairSpecs.seatHeightMin}–${p.chairSpecs.seatHeightMax}` : "Not listed"],
+                ["Armrests", (p: FinderProduct) => p.chairSpecs?.armrestType ?? "Not listed"],
+                ["Weight capacity (kg)", (p: FinderProduct) => p.chairSpecs?.weightCapacityKg ?? "Not listed"],
+                ["Warranty (years)", (p: FinderProduct) => p.chairSpecs?.warrantyYears ?? "Not listed"],
+              ].map(([label, value]) => <tr key={String(label)}><th scope="row" className="border p-2">{String(label)}</th>{compared.map(p => <td key={p.id} className="border p-2">{(value as (p: FinderProduct) => string | number)(p)}</td>)}</tr>)}</tbody>
+            </table>
+          </div>}
         </div>
       </div>}
     </section>
