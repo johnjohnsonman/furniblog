@@ -77,8 +77,8 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
     <section className="border-b border-[#171717] bg-white">
       <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
         <div className="border-[#171717] px-5 py-10 lg:border-r lg:px-8 lg:py-14">
-          <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#52606d]">Chair database · live product data</p>
-          <h1 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.02] sm:text-5xl lg:text-6xl">Real reviews &amp; real data for premium chairs</h1>
+          <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#52606d]">Chairpedia - Chair research &amp; comparison</p>
+          <h1 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.02] sm:text-5xl lg:text-6xl">Find your chair with Chairpedia</h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-[#555]">Set your conditions. The shortlist and featured chair update instantly, using fields available in our catalog.</p>
 
           <div className="mt-9 border-l-4 border-[#3157e8] bg-[#eef2ff] p-4">

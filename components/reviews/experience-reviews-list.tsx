@@ -106,7 +106,7 @@ export function ExperienceReviewsList({
           >
             <div className="mb-3 flex flex-wrap items-center gap-2">
               <span className="text-xs text-muted-foreground">
-                {new Date(item.createdAt).toLocaleDateString("en-US")}
+                Recorded {new Date(item.createdAt).toLocaleDateString("en-US", { timeZone: "UTC" })}
               </span>
             </div>
 

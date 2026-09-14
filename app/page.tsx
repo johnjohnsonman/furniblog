@@ -11,7 +11,7 @@ import { getHomeChairpedia, getLatestNews, getLatestReviews, getLatestVideos } f
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
-export const metadata = { alternates: { canonical: "/" } }
+export const metadata = { title: { absolute: "Chairpedia (체어피디아) | Chair Comparisons & Buying Guides" }, alternates: { canonical: "/" } }
 
 const guides = [
   ["What a return actually costs", "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"],
@@ -35,6 +35,15 @@ export default async function HomePage() {
   return <div className="min-h-screen bg-white text-[#171717]">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]) }} />
     <Header /><main><ChairFinder products={finderProducts} />
+      <section aria-label="About Chairpedia and site navigation" className="border-b border-border">
+        <div className="mx-auto max-w-6xl px-4 py-7 lg:px-8">
+          <h2 className="font-serif text-xl">Chairpedia (<span lang="ko">체어피디아</span>): research before you buy</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Compare chair specifications, read buying guides, and explore customer experiences and source-linked review summaries. Formerly Furniblog, Chairpedia helps you understand fit, features, and buying trade-offs.</p>
+          <nav aria-label="Start your chair research" className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm underline underline-offset-4">
+            <Link href="/products">Browse chairs</Link><Link href="/compare">Compare models</Link><Link href="/chairpedia">Read chair guides</Link><Link href="/reviews">Explore reviews</Link><Link href="/editorial-policy">How we research</Link><Link href="/about">About Chairpedia</Link>
+          </nav>
+        </div>
+      </section>
 
       {chairpedia[0] && <section className="border-b border-[#171717] bg-[#cdeff0]"><Link href={`/chairpedia/${chairpedia[0].slug}`} className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]"><div className="relative aspect-[16/10] overflow-hidden border-[#171717] lg:border-r"><Image src={chairpedia[0].heroImage} alt={chairpedia[0].title} fill sizes="(min-width:1024px) 55vw,100vw" className="object-cover transition-transform duration-700 hover:scale-[1.025]" /></div><div className="flex flex-col justify-center p-7 lg:p-12"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#17676b]">From Chairpedia</p><h2 className="mt-3 font-serif text-3xl sm:text-5xl">{chairpedia[0].title}</h2><p className="mt-4 max-w-xl text-sm leading-6">{chairpedia[0].excerpt}</p><span className="mt-6 flex items-center gap-2 text-sm font-bold">Read the deep dive <ArrowRight size={16} /></span></div></Link></section>}
 

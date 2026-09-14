@@ -59,7 +59,7 @@ export default function EditorialPolicyPage() {
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Updates</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We regularly update our content to reflect product changes, new releases, and updated pricing. Articles are marked with their last update date.
+              We retain publication dates and only describe an article as updated when its content has been revised. Customer experience records may describe earlier chair versions. Their recorded date is the entry date in our records, not a verified showroom visit date or a product retest. Changing our brand or domain does not make an older review new.
             </p>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Corrections</h2>

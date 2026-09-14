@@ -2,7 +2,7 @@ import type { ProductView } from "@/lib/data/mappers"
 import type { Review } from "@/types/review"
 import type { AffiliateLink } from "@/types/affiliate-link"
 
-import { SITE_URL, publicSiteUrl } from "@/lib/site-config"
+import { SITE_URL, SITE_NAME, SITE_ALTERNATE_NAME, SITE_DESCRIPTION, publicSiteUrl } from "@/lib/site-config"
 
 export function generateBreadcrumbSchema(
   items: { name: string; url: string }[]
@@ -44,6 +44,7 @@ export function generateArticleSchema(params: {
     },
     publisher: {
       "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
       name: "Chairpedia",
       logo: { "@type": "ImageObject", url: `${SITE_URL}/chairpedia-icon.svg` },
     },
@@ -81,7 +82,10 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Chairpedia",
+    "@id": `${SITE_URL}/#organization`,
+    name: SITE_NAME,
+    alternateName: SITE_ALTERNATE_NAME,
+    description: SITE_DESCRIPTION,
     url: SITE_URL,
     logo: `${SITE_URL}/chairpedia-icon.svg`,
   }
@@ -91,7 +95,12 @@ export function generateWebsiteSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Chairpedia",
+    "@id": `${SITE_URL}/#website`,
+    name: SITE_NAME,
+    alternateName: [SITE_ALTERNATE_NAME, "chairpedia.com"],
+    description: SITE_DESCRIPTION,
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    inLanguage: "en",
     url: SITE_URL,
     potentialAction: {
       "@type": "SearchAction",

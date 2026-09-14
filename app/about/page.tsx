@@ -3,6 +3,7 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { generateOrganizationSchema } from "@/lib/seo/schemas"
 
 export const metadata: Metadata = {
   title: "About Chairpedia — Two Generations of Chairs",
@@ -32,6 +33,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
 
 export default function AboutPage() {
   const orgSchema = {
+    ...generateOrganizationSchema(),
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Chairpedia",
@@ -72,11 +74,11 @@ export default function AboutPage() {
         <section className="border-b border-border bg-card">
           <div className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
             <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              About Chairpedia
+              Chairpedia (<span lang="ko">체어피디아</span>) - Formerly Furniblog
             </p>
             <h1 className="mt-4 font-serif text-3xl font-medium leading-tight text-foreground sm:text-[42px] sm:leading-[1.15]">
-              Perhaps the person who has sat in
-              <br />more chairs than anyone on Earth.
+              Chairpedia: chair research,
+              <br />grounded in showroom experience.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
               I was raised inside a furniture business my father built. For as
@@ -211,7 +213,7 @@ export default function AboutPage() {
               href="/chairpedia"
               className="inline-flex items-center justify-center rounded-lg border border-border px-5 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
             >
-              Read Chairpedia
+              Read chair guides
             </Link>
           </div>
         </div>

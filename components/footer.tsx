@@ -10,8 +10,7 @@ export function Footer() {
               Chairpedia
             </Link>
             <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-              The world&apos;s most complete database for premium seating—real specs,
-              reviews, and comparisons.
+              Chairpedia (<span lang="ko">체어피디아</span>) helps you research chairs with product specifications, buying guides, and source-linked reviews.
             </p>
           </div>
 
@@ -81,6 +80,9 @@ export function Footer() {
               Company
             </h3>
             <ul className="space-y-2 text-sm">
+              <li><Link href="/compare" className="text-foreground hover:text-muted-foreground transition-colors">Compare Chairs</Link></li>
+              <li><Link href="/chairpedia" className="text-foreground hover:text-muted-foreground transition-colors">Chair Guides</Link></li>
+              <li><Link href="/reviews" className="text-foreground hover:text-muted-foreground transition-colors">Customer &amp; Web Reviews</Link></li>
               <li><Link href="/about" className="text-foreground hover:text-muted-foreground transition-colors">About</Link></li>
               <li><Link href="/contact" className="text-foreground hover:text-muted-foreground transition-colors">Contact</Link></li>
               <li><Link href="/editorial-policy" className="text-foreground hover:text-muted-foreground transition-colors">Editorial Policy</Link></li>

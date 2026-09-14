@@ -17,16 +17,16 @@ const inter = Inter({
   variable: "--font-sans"
 })
 
-import { SITE_URL } from "@/lib/site-config"
+import { SITE_URL, SITE_DESCRIPTION } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Chairpedia — Premium Chair Reviews, Videos & News',
+    default: 'Chairpedia - Chair Comparisons, Reviews & Buying Guides',
     template: '%s | Chairpedia',
   },
   description:
-    "The world's most comprehensive database for premium office, gaming and ergonomic chairs. Real specs, global reviews, videos and news — updated daily.",
+    SITE_DESCRIPTION,
   applicationName: 'Chairpedia',
   keywords: [
     'office chair reviews',
@@ -50,16 +50,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Chairpedia',
-    title: 'Chairpedia — Premium Chair Reviews, Videos & News',
+    title: 'Chairpedia - Chair Comparisons, Reviews & Buying Guides',
     description:
-      'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
+      SITE_DESCRIPTION,
     url: SITE_URL,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Chairpedia — Premium Chair Reviews, Videos & News',
+    title: 'Chairpedia - Chair Comparisons, Reviews & Buying Guides',
     description:
-      'Global office & ergonomic chair reviews, videos and news in one place — updated daily.',
+      SITE_DESCRIPTION,
   },
   icons: {
     icon: [{ url: '/chairpedia-icon.svg', type: 'image/svg+xml' }],
