@@ -7,5 +7,5 @@ scripts/backups/
 
 # Credentials and local audit artifacts
 .env*
-data/
+/data/
 .git/
