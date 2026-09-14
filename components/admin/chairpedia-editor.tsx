@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react"
 import { useEditor, EditorContent, type Editor } from "@tiptap/react"
+import { Node, mergeAttributes } from "@tiptap/core"
 import StarterKit from "@tiptap/starter-kit"
 import Image from "@tiptap/extension-image"
 import Link from "@tiptap/extension-link"
@@ -14,6 +15,19 @@ import {
   Quote, Minus, Link2, ImagePlus, Table as TableIcon, Undo, Redo,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+
+// Preserve authored media captions when an existing article is opened and saved.
+const Figure = Node.create({
+  name: "figure", group: "block", content: "image figcaption?", defining: true,
+  addAttributes: () => ({ class: { default: "blog-inline-media" } }),
+  parseHTML: () => [{ tag: "figure" }],
+  renderHTML: ({ HTMLAttributes }) => ["figure", mergeAttributes(HTMLAttributes, { class: "blog-inline-media" }), 0],
+})
+const Figcaption = Node.create({
+  name: "figcaption", content: "inline*",
+  parseHTML: () => [{ tag: "figcaption" }],
+  renderHTML: ({ HTMLAttributes }) => ["figcaption", HTMLAttributes, 0],
+})
 
 function Btn({
   onClick, active, disabled, title, children,
@@ -105,6 +119,8 @@ export function ChairpediaEditor({
     extensions: [
       StarterKit.configure({ link: false }),
       Image.configure({ inline: false }),
+      Figure,
+      Figcaption,
       Link.configure({ openOnClick: false, autolink: true }),
       Table.configure({ resizable: false }),
       TableRow,

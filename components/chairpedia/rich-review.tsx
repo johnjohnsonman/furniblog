@@ -45,6 +45,7 @@ export function RichReview({
   productName,
   updatedStr,
   sourceUrls = [],
+  purchaseDecision,
 }: {
   data: RichReview
   title: string
@@ -60,6 +61,7 @@ export function RichReview({
   productName?: string
   updatedStr: string | null
   sourceUrls?: string[]
+  purchaseDecision?: React.ReactNode
 }) {
   // Image resolution: PA-API (auto) → linked product's own images (reused) →
   // manual hero upload → none (no placeholder). Alt from registry/derived.
@@ -370,6 +372,7 @@ export function RichReview({
         <section id="buy" className="flex flex-col gap-5">
           <SectionH2>Where to buy</SectionH2>
           <div className="border border-border bg-card p-6 flex flex-col gap-4">
+            {purchaseDecision ?? (
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-col gap-1 min-w-0">
                 <div className="font-serif text-xl leading-snug">{data.buy.productTitle}</div>
@@ -377,6 +380,8 @@ export function RichReview({
               </div>
               {amazonUrl && <div className="shrink-0">{cta("chairpedia-rich-buy")}</div>}
             </div>
+            )}
+            {purchaseDecision && <p className="text-sm text-muted-foreground">{data.buy.retailerNote}</p>}
             <div className="border-t border-border">
               {data.buy.rows.map((b) => (
                 <div key={b.k} className="grid gap-2 border-b border-border py-3 text-sm leading-relaxed sm:grid-cols-[150px_minmax(0,1fr)] sm:gap-4">

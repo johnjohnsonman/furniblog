@@ -37,7 +37,7 @@ export interface SmartBuyLinkProps {
   amazonLabel?: string
   /** Show the "affiliate link" disclaimer (block variant). */
   showDisclaimer?: boolean
-  /** Stable CTA location appended to Amazon ascsubtag for placement reporting. */
+  /** Stable CTA location for GA4 and the Amazon URL marker; retailer reporting varies. */
   placement?: string
   className?: string
 }
@@ -67,7 +67,8 @@ export function SmartBuyLink({
     void trackAffiliateClick(
       productId ?? query,
       retailer,
-      (isSeaCountry(country) ? country : "US") as AffiliateCountry
+      (isSeaCountry(country) ? country : "US") as AffiliateCountry,
+      placement
     )
 
   const base =

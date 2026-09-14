@@ -214,6 +214,22 @@
   border-radius: 10px;
   margin: 30px auto;
 }
+.chairpedia-body .blog-inline-media { margin: 32px 0; }
+.chairpedia-body .blog-inline-media img {
+  width: 100%;
+  height: auto;
+  max-height: 440px;
+  object-fit: contain;
+  margin: 0 auto;
+  background: #faf8f4;
+}
+.chairpedia-body .blog-inline-media figcaption {
+  margin-top: 10px;
+  color: #66707a;
+  font-size: 13px;
+  text-align: center;
+}
+.chairpedia-body .blog-editorial-diagram img { max-height: none; }
 .chairpedia-body hr { border: 0; border-top: 1px solid #e7e3dc; margin: 40px 0; }
 .chairpedia-body iframe { max-width: 100%; border-radius: 10px; margin: 30px 0; }
 .chairpedia-body table {
@@ -246,4 +262,10 @@
 .chairpedia-body table p { margin: 0; }
 /* Editor-only: keep an empty paragraph from collapsing, show table grid lines */
 .chairpedia-body .tableWrapper { overflow-x: auto; }
+.article-reading h2[id] { scroll-margin-top: 6rem; }
+.article-reading .article-table-hint { margin: 24px 0 6px; font-size: 13px; color: #666; }
+.article-reading .article-table-hint + .cp-table-scroll { margin-top: 6px; }
+.article-reading .cp-table-scroll:focus-visible { outline: 2px solid #285a61; outline-offset: 4px; }
+.article-reading .cp-table-scroll th,
+.article-reading .cp-table-scroll td { min-width: 10rem; max-width: 28rem; white-space: normal; overflow-wrap: anywhere; }
 .chairpedia-body table .selectedCell { background: #f3eee4; }

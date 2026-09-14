@@ -13,6 +13,25 @@ const tilt = 'herman-miller-aeron-tilt-lock-why-your-chair-still-moves-and-why-t
 const leap = 'steelcase-leap-v2-review-the-chair-that-hugs-your-body'
 const leapGesture = 'steelcase-leap-vs-gesture-which-high-end-ergonomic-chair-is-right-for-you'
 const notes: Record<string, BlogBuyingNotes> = {
+  'herman-miller-aeron-classic-vs-remastered-identification-guide': {
+    productId: 'herman-miller-aeron', name: 'Herman Miller Aeron',
+    heading: 'Compare the exact Aeron offer',
+    description: 'Confirm generation, size and installed options from actual-chair photos before comparing the seller and return terms.',
+    related: [{ href: `/blog/${size}`, label: 'Check Aeron size and fit' }],
+  },
+  'okamura-contessa-ii-vs-herman-miller-aeron-which-2-000-chair-should-you-buy': {
+    productId: 'okamura-contessa-ii', name: 'Okamura Contessa II',
+    heading: 'Compare the configured chairs',
+    description: 'Match the offered seat, arms and headrest to your shortlist. For Aeron, also confirm the size and generation. Verify delivery and seller coverage separately.',
+    additionalProducts: [{ productId: 'herman-miller-aeron', name: 'Herman Miller Aeron' }],
+    related: [{ href: `/blog/${size}`, label: 'Choose an Aeron size' }],
+  },
+  'okamura-contessa-vs-contessa-seconda-identification-and-used-buying-guide': {
+    productId: 'okamura-contessa-ii', name: 'Okamura Contessa II',
+    heading: 'Looking for a Contessa II offer?',
+    description: 'This path is for Contessa II. Confirm the actual model, condition and options; it does not verify an original-generation used Contessa listing.',
+    related: [{ href: '/products/okamura-contessa-ii', label: 'Review Contessa II specifications' }],
+  },
   [size]: {
     productId: 'herman-miller-aeron',
     name: 'Herman Miller Aeron',

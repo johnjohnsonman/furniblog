@@ -79,9 +79,9 @@ export function buildCoupangAffiliateUrl(baseUrl?: string): string {
 }
 
 /**
- * Amazon SubTag (ascsubtag) value for a page path, so Associates reports can
- * attribute orders back to the page the click came from. Amazon accepts
- * letters, digits, hyphen and underscore; anything else is folded to "-".
+ * Page/placement marker attached to outgoing Amazon links. Actual reporting
+ * support depends on the Associates account; this does not establish order
+ * attribution. Keep the marker restricted to letters, digits, hyphen and underscore.
  */
 export function pageSubtag(
   pathname: string | null | undefined,
@@ -171,7 +171,8 @@ async function resolveProductUuid(productId: string): Promise<string | null> {
 export async function trackAffiliateClick(
   productId: string,
   retailer: string,
-  country: AffiliateCountry = "US"
+  country: AffiliateCountry = "US",
+  placement?: string
 ): Promise<void> {
   if (typeof window !== "undefined") {
     // A retailer click is purchase intent, not a completed order or revenue.
@@ -184,6 +185,7 @@ export async function trackAffiliateClick(
         product_id: productId,
         retailer: normalizeRetailer(retailer),
         page_path: window.location.pathname,
+        ...(placement ? { placement: placement.replace(/[^A-Za-z0-9_-]/g, "-").slice(0, 60) } : {}),
       })
     } catch {
       // Analytics failures must not prevent navigation or first-party logging.

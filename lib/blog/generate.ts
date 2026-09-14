@@ -114,6 +114,9 @@ AFFILIATE & LINKS
 - If a chair you mention exists in the CATALOG below, link its name to its Furniblog product page instead: <a href="/products/SLUG">…</a> (internal link). Use the exact slug from the catalog.
 - Don't over-link: link the first meaningful mention only.
 
+IMAGES
+- The application inserts verified catalog product photographs after generation, using the exact /products/SLUG links you include. Link each substantively discussed catalog model in its relevant section. Never invent image URLs or substitute a related model.
+
 ALLOWED HTML TAGS ONLY: <h2>, <h3>, <p>, <ul>, <ol>, <li>, <blockquote>, <strong>, <em>, <a href>, <table>, <thead>, <tbody>, <tr>, <th>, <td>. No <h1>, <img>, <div>, <span>, class/style attributes, scripts.
 
 OUTPUT FORMAT (follow EXACTLY — the KEY lines first, each on one line, then the body):

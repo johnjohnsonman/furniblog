@@ -1,3 +1,4 @@
+import { enrichBlogPosts } from "@/lib/blog/media-server"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -13,7 +14,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
 }
 
-const BASE_COLS = "slug,title,subtitle,excerpt,hero_image_url,published_at,featured"
+type PostWithBody = BlogCard & { content_html: string }
+
+const BASE_COLS = "content_html,slug,title,subtitle,excerpt,hero_image_url,published_at,featured"
 
 async function getPosts(): Promise<BlogCard[]> {
   const supabase = createPublicServerClient()
@@ -27,7 +30,7 @@ async function getPosts(): Promise<BlogCard[]> {
       .order("published_at", { ascending: false, nullsFirst: false })
       .limit(200)
     if (error) throw error
-    return (data as BlogCard[] | null) ?? []
+    return enrichBlogPosts((data as PostWithBody[] | null) ?? [])
   } catch {
     try {
       const { data } = await supabase
@@ -37,10 +40,10 @@ async function getPosts(): Promise<BlogCard[]> {
         .order("featured", { ascending: false })
         .order("published_at", { ascending: false, nullsFirst: false })
         .limit(200)
-      return ((data as Omit<BlogCard, "category">[] | null) ?? []).map((p) => ({
+      return enrichBlogPosts(((data as Omit<PostWithBody, "category">[] | null) ?? []).map((p) => ({
         ...p,
         category: null,
-      }))
+      })))
     } catch {
       return []
     }
@@ -103,7 +106,12 @@ export default async function BlogIndexPage() {
         </div>
 
         <div className="mx-auto max-w-6xl px-4 py-12">
-          <BlogIndex posts={posts} />
+          <BlogIndex posts={posts.map(post => ({
+            slug: post.slug, title: post.title, subtitle: post.subtitle,
+            excerpt: post.excerpt, hero_image_url: post.hero_image_url,
+            published_at: post.published_at, featured: post.featured,
+            category: post.category, href: post.href,
+          }))} />
         </div>
       </main>
       <Footer />

@@ -1,3 +1,4 @@
+import { enrichBlogPosts } from "@/lib/blog/media-server"
 import { NextRequest, NextResponse } from "next/server"
 import { after } from "next/server"
 import { requireAdmin } from "@/lib/admin/api-auth"
@@ -49,6 +50,9 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
         const draft = await generateBlogPost({ sourceText: text, sourceTitle, catalog })
 
+        const { data: current } = await db.from("blog_posts").select("hero_image_url").eq("id", id).single()
+        const [media] = await enrichBlogPosts([{ content_html: draft.content_html, hero_image_url: current?.hero_image_url ?? null }])
+
         await db
           .from("blog_posts")
           .update({
@@ -57,7 +61,8 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
             excerpt: draft.excerpt || null,
             seo_title: draft.seo_title || null,
             seo_description: draft.seo_description || null,
-            content_html: tagAmazonLinks(draft.content_html),
+            content_html: tagAmazonLinks(media.content_html),
+            hero_image_url: media.hero_image_url,
             gen_status: "done",
             gen_error: null,
             gen_sources: [],

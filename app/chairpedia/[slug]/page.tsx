@@ -1,3 +1,5 @@
+import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
+import { getPurchaseDecision } from "@/lib/growth/purchase-decisions"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -125,6 +127,11 @@ export default async function ChairpediaEntryPage({
   const productGallery = product
     ? await getProductImageBundle(product.slug, product.name)
     : { hero: null, gallery: [] }
+  const decisionCard = product && buy && getPurchaseDecision(product.slug) ? (
+    <PurchaseDecisionCard productId={product.slug} name={product.name}
+      image={productGallery.hero} amazonUrl={buy.url} placement="chairpedia-decision"
+      comparison={productComparisons[0]} horizontal />
+  ) : null
   // Per-article opt-in: DB flag (admin toggle, no code edit) when migration 044
   // is applied; otherwise fall back to the legacy code registry for the pilots.
   const dbOptIn = product ? await getUseProductImage(entry.slug) : null
@@ -191,6 +198,7 @@ export default async function ChairpediaEntryPage({
               productName={product?.name}
               updatedStr={updatedStr}
               sourceUrls={sources}
+              purchaseDecision={decisionCard}
             />
             {product && (
               <ProductComparisonRail
@@ -296,7 +304,7 @@ export default async function ChairpediaEntryPage({
             </section>
           )}
 
-          {buy && (
+          {decisionCard ? <div className="mt-12">{decisionCard}</div> : buy ? (
             <div className="mt-12 rounded-xl border border-border bg-muted/40 p-5 text-center">
               <p className="text-sm text-muted-foreground mb-3">
                 Interested in the {product?.name}?
@@ -312,7 +320,7 @@ export default async function ChairpediaEntryPage({
                 />
               </div>
             </div>
-          )}
+          ) : null}
           {product && (
             <ProductComparisonRail
               productName={product.name}

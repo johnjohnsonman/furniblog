@@ -36,6 +36,8 @@ export default function AdminBlogEditor() {
   const [e, setE] = useState<Post | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [addingMedia, setAddingMedia] = useState(false)
+  const [mediaMessage, setMediaMessage] = useState("")
   const [msg, setMsg] = useState("")
   const [sourceUrl, setSourceUrl] = useState("")
   const [converting, setConverting] = useState(false)
@@ -70,6 +72,28 @@ export default function AdminBlogEditor() {
 
   const set = <K extends keyof Post>(k: K, v: Post[K]) =>
     setE((prev) => (prev ? { ...prev, [k]: v } : prev))
+
+  async function addCatalogImages() {
+    if (!e) return
+    const snapshot = e
+    setAddingMedia(true)
+    setMediaMessage("")
+    try {
+      const res = await fetch(`/api/admin/blog/${id}/media`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content_html: e.content_html, hero_image_url: e.hero_image_url }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || "Could not add images")
+      setE(current => current && current.content_html === snapshot.content_html && current.hero_image_url === snapshot.hero_image_url
+        ? { ...current, ...data.post } : current)
+      setMediaMessage(data.post.content_html !== snapshot.content_html || data.post.hero_image_url !== snapshot.hero_image_url
+        ? "Images prepared. Review the article and save. If you edited during loading, run this again."
+        : "No additional photos available. Link the exact product in the article or upload relevant photos.")
+    } catch (error) {
+      setMediaMessage(error instanceof Error ? error.message : "Could not add images")
+    } finally { setAddingMedia(false) }
+  }
 
   function startPolling() {
     if (pollRef.current) clearTimeout(pollRef.current)
@@ -331,6 +355,14 @@ export default function AdminBlogEditor() {
             onChange={(ev) => set("subtitle", ev.target.value)}
             placeholder="Subtitle (one line)"
           />
+          <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
+            <p className="text-sm font-medium">Article images: {e.hero_image_url ? "cover ready" : "cover missing"} ? {(e.content_html.match(/<img\b/gi) ?? []).length} body photos</p>
+            <p className="text-xs text-muted-foreground">Add photos beside the products discussed in your article. Catalog photos use exact product links; existing body images are preserved. Use the editor image button for detail shots and other illustrations.</p>
+            <Button type="button" variant="outline" disabled={addingMedia || converting || saving} onClick={() => void addCatalogImages()}>
+              {addingMedia ? "Preparing images?" : "Add catalog photos"}
+            </Button>
+            {mediaMessage && <p role="status" className="text-xs text-muted-foreground">{mediaMessage}</p>}
+          </div>
           <ChairpediaEditor value={e.content_html} onChange={(html) => set("content_html", html)} />
         </div>
 

@@ -1,3 +1,5 @@
+import { getProductRelatedBlogPosts } from "@/lib/growth/related-blog-server"
+import { guideIntent } from "@/lib/growth/related-blog"
 ﻿import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
@@ -70,24 +72,6 @@ async function getChairpediaSlug(productSlug: string): Promise<string | null> {
   }
 }
 
-type RecentPost = { slug: string; title: string; hero_image_url: string | null }
-
-/** A few recent blog posts — internal links from product pages into the blog. */
-async function getRecentBlogPosts(limit = 3): Promise<RecentPost[]> {
-  try {
-    const supabase = createPublicServerClient()
-    const { data } = await supabase
-      .from("blog_posts")
-      .select("slug,title,hero_image_url")
-      .eq("status", "published")
-      .order("published_at", { ascending: false, nullsFirst: false })
-      .limit(limit)
-    return (data as RecentPost[] | null) ?? []
-  } catch {
-    return []
-  }
-}
-
 export async function generateStaticParams() {
   if (isSupabaseConfigured()) {
     return []
@@ -146,7 +130,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const slug = product.slug ?? product.id
   const chairpediaSlug = await getChairpediaSlug(slug)
-  const recentBlog = isSupabaseConfigured() ? await getRecentBlogPosts(3) : []
+  const relatedBlog = isSupabaseConfigured() ? await getProductRelatedBlogPosts(slug, 3) : []
   const productComparisons = isSupabaseConfigured() ? await getPublishedProductComparisons(slug) : []
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
@@ -371,12 +355,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="h-20 lg:hidden" />
         </div>
 
-        {recentBlog.length > 0 && (
-          <section className="border-t border-[#171717] bg-[#f5f1e8]">
+        {relatedBlog.length > 0 && (
+          <section data-testid="related-blog" className="border-t border-[#171717] bg-[#f5f1e8]">
             <div className="mx-auto max-w-7xl px-5 py-14">
               <div className="mb-5 flex items-baseline justify-between">
                 <h2 className="font-serif text-xl font-medium text-foreground">
-                  From the Furniblog blog
+                  Guides for {product.name}
                 </h2>
                 <Link
                   href="/blog"
@@ -386,7 +370,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </Link>
               </div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                {recentBlog.map((b) => (
+                {relatedBlog.map((b) => (
                   <Link
                     key={b.slug}
                     href={`/blog/${b.slug}`}
@@ -408,6 +392,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       )}
                     </div>
                     <div className="p-4">
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{guideIntent(b.slug)}</p>
                       <h3 className="font-serif text-base font-medium leading-snug text-foreground transition-colors group-hover:text-foreground/80">
                         {b.title}
                       </h3>
