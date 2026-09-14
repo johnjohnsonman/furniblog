@@ -1,4 +1,4 @@
-﻿const assert=require('node:assert/strict'),fs=require('fs'),ts=require('typescript');
+const assert=require('node:assert/strict'),fs=require('fs'),ts=require('typescript');
 function load(file,imports={}){const m={exports:{}};new Function('require','module','exports',ts.transpileModule(fs.readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText)(id=>imports[id],m,m.exports);return m.exports}
 (async()=>{
 const {presentVideo}=load('lib/videos/public-presentation.ts');const raw={youtube_id:'b0q7pYPO1_c',title:'한글 제목',channel_title:'체어파크',thumbnail_url:null};const shown=presentVideo(raw);assert.match(shown.title,/operating guide/);assert.doesNotMatch(shown.title+shown.channel_title,/[가-힣]/);assert.ok(shown.thumbnail_url);assert.equal(raw.title,'한글 제목');assert.equal(presentVideo({youtube_id:'x',title:'English review'}).title,'English review');
@@ -8,4 +8,3 @@ const src=fs.readFileSync('app/api/experience/submit/route.ts','utf8');const fn=
 console.log('PASS: English source display preserves records; exact product media fallback; image alt cleanup; Female classification.');
 })().catch(e=>{console.error(e);process.exit(1)});
 function loadText(code){const m={exports:{}};new Function('exports',ts.transpileModule(code,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2020}}).outputText)(m.exports);return m.exports}
-
