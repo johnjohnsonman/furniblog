@@ -7,9 +7,9 @@ import { ChairpediaLanding, type ChairpediaCard } from "@/components/chairpedia/
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Chairpedia — The in-depth chair encyclopedia",
+  title: "Chair Guides: Features, Dimensions & Buying Advice",
   description:
-    "Deep, sourced editorial guides to the chairs worth knowing — design, technology, history and honest verdicts on premium office, ergonomic and gaming chairs.",
+    "Explore source-linked chair guides covering features, dimensions, design history and buying considerations. Compare models before choosing your chair.",
   alternates: { canonical: "/chairpedia" },
 }
 
