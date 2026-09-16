@@ -3,11 +3,11 @@ import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductsPageContent } from "./products-content"
-import { isChairCategory } from "@/lib/chair-categories"
+import { Suspense } from "react"
 
 // Query-string filtering keeps this route dynamic; catalog reads use a short
 // shared cache so navigation does not wait on repeated database round trips.
-export const dynamic = "force-dynamic"
+export const revalidate = 60
 
 export const metadata: Metadata = {
   title: "Office & Ergonomic Chairs Database",
@@ -16,20 +16,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/products" },
 }
 
-type ProductsPageProps = {
-  searchParams: Promise<{ category?: string; search?: string }>
-}
-
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams
-  const rawCategory = params.category ?? "All"
-  const initialCategory =
-    rawCategory === "All" || rawCategory === "all"
-      ? "All"
-      : isChairCategory(rawCategory.toLowerCase())
-        ? rawCategory.toLowerCase()
-        : "All"
-
+export default async function ProductsPage() {
   const [products, reviewCounts] = await Promise.all([
     getCatalogCards(),
     getCatalogReviewCounts(),
@@ -47,15 +34,15 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
+      <Suspense fallback={<main className="min-h-[60vh]" aria-label="Loading chair catalog" />}>
       <ProductsPageContent
         products={products}
         brands={brands}
         reviewCounts={reviewCounts}
         stats={stats}
         categoryCounts={categoryCounts}
-        initialCategory={initialCategory}
-        initialSearch={params.search ?? ""}
       />
+      </Suspense>
       <Footer />
     </div>
   )

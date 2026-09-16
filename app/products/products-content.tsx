@@ -12,6 +12,7 @@ import type {
 import { PRODUCT_LIST_CATEGORIES } from "@/lib/chair-categories"
 import { ChairCard } from "@/components/chairs/ChairCard"
 import { cn } from "@/lib/utils"
+import { useSearchParams } from "next/navigation"
 
 const SORT_OPTIONS = [
   { label: "Best Rated", value: "rating" },
@@ -47,10 +48,15 @@ export function ProductsPageContent({
   initialCategory = "All",
   initialSearch = "",
 }: ProductsPageContentProps) {
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory)
+  const params = useSearchParams()
+  const requestedCategory = params.get("category") ?? initialCategory
+  const resolvedCategory = PRODUCT_LIST_CATEGORIES.some((item) => item.value.toLowerCase() === requestedCategory.toLowerCase())
+    ? (PRODUCT_LIST_CATEGORIES.find((item) => item.value.toLowerCase() === requestedCategory.toLowerCase())?.value ?? "All")
+    : "All"
+  const [selectedCategory, setSelectedCategory] = useState(resolvedCategory)
   const [selectedBrand, setSelectedBrand] = useState("All")
   const [sortBy, setSortBy] = useState<string>("rating")
-  const [searchQuery, setSearchQuery] = useState(initialSearch)
+  const [searchQuery, setSearchQuery] = useState(params.get("search") ?? initialSearch)
 
   const totalChairs = stats.products
 

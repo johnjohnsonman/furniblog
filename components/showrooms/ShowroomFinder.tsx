@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
@@ -25,12 +26,17 @@ export function ShowroomFinder({
   unavailable?: boolean;
   correctionsEnabled?: boolean;
 }) {
+  const query = useSearchParams();
+  const queryModel = query.get("model") ?? initialModel;
+  const resolvedModel = catalog.models.find((m) => m.id === queryModel || m.slug === queryModel)?.id ?? "";
+  const resolvedCountry = query.get("country") ?? initialCountry;
+  const resolvedCity = query.get("city") ?? initialCity;
   const [f, setF] = useState<Filters>({
       q: "",
-      country: initialCountry,
-      city: initialCity,
+      country: resolvedCountry,
+      city: resolvedCity,
       brand: "",
-      model: initialModel,
+      model: resolvedModel,
       confirmed: false,
       appointment: "",
       type: "",
@@ -43,7 +49,7 @@ export function ShowroomFinder({
     [dragging, setDragging] = useState(false);
   const [detailStore, setDetailStore] = useState<Store | null>(null),
     [detailState, setDetailState] = useState<"idle" | "loading" | "error">("idle");
-  const [command, setCommand] = useState<MapCommand>({ id: initialCountry ? 1 : 0, kind: initialCountry ? "fit" : "world" }),
+  const [command, setCommand] = useState<MapCommand>({ id: resolvedCountry ? 1 : 0, kind: resolvedCountry ? "fit" : "world" }),
     stage = useRef<HTMLDivElement>(null),
     handle = useRef<HTMLButtonElement>(null),
     drag = useRef<{ y: number; height: number } | null>(null),
