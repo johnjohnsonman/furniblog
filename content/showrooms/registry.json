@@ -9321,9 +9321,9 @@
       "models": [
         {
           "product_id": "08babd80-2f22-4201-abbf-12d93a16d9d4",
-          "trial": "unknown",
-          "source_url": "https://www.haworth.com/ap/ja/spaces/showrooms/tokyo.html",
-          "checked_on": "2026-09-16"
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/tokyo.html",
+          "checked_on": "2026-09-17"
         },
         {
           "product_id": "a0a992db-8697-4382-8ec2-88836e11674d",
@@ -9331,7 +9331,8 @@
           "source_url": "https://www.haworth.com/ap/ja/spaces/showrooms/tokyo.html",
           "checked_on": "2026-09-16"
         }
-      ]
+      ],
+      "updated_at": "2026-09-17T07:30:00.000Z"
     },
     {
       "id": "40000000-0000-4000-8000-000000000107",
@@ -23770,7 +23771,14 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
+      "models": [
+        {
+          "product_id": "701eb361-094e-4978-976c-e12d510ad87e",
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/atlanta.html",
+          "checked_on": "2026-09-17"
+        }
+      ],
       "slug": "haworth-atlanta",
       "name": "Haworth Atlanta",
       "country_code": "US",
@@ -23781,7 +23789,8 @@
       "longitude": -84.3993871,
       "timezone": "America/New_York",
       "website_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/atlanta.html",
-      "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/atlanta.html"
+      "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/atlanta.html",
+      "updated_at": "2026-09-17T07:30:00.000Z"
     },
     {
       "id": "40000000-0000-4000-8000-000000000267",
@@ -24146,7 +24155,14 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
+      "models": [
+        {
+          "product_id": "a0a992db-8697-4382-8ec2-88836e11674d",
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/washington-dc.html",
+          "checked_on": "2026-09-17"
+        }
+      ],
       "slug": "haworth-washington-dc",
       "name": "Haworth Washington",
       "country_code": "US",
@@ -24157,7 +24173,8 @@
       "longitude": -77.0204261,
       "timezone": "America/New_York",
       "website_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/washington-dc.html",
-      "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/washington-dc.html"
+      "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/washington-dc.html",
+      "updated_at": "2026-09-17T07:30:00.000Z"
     },
     {
       "id": "40000000-0000-4000-8000-000000000275",
@@ -36647,8 +36664,27 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
-      "updated_at": "2026-09-16T16:00:00.000Z"
+      "models": [
+        {
+          "product_id": "a0a992db-8697-4382-8ec2-88836e11674d",
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/hyderabad.html",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "08babd80-2f22-4201-abbf-12d93a16d9d4",
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/hyderabad.html",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "701eb361-094e-4978-976c-e12d510ad87e",
+          "trial": "confirmed",
+          "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/hyderabad.html",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "updated_at": "2026-09-17T07:30:00.000Z"
     },
     {
       "id": "f72ec2d4-afbb-4074-b853-91477d1debb4",
