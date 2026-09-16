@@ -1,0 +1,1346 @@
+{
+  "checked_on": "2026-09-16",
+  "added": [
+    "flokk-copenhagen",
+    "flokk-prague",
+    "flokk-brussels",
+    "flokk-paris",
+    "flokk-dusseldorf",
+    "flokk-berlin",
+    "flokk-stuttgart",
+    "flokk-rotterdam",
+    "flokk-leipzig",
+    "flokk-oslo",
+    "flokk-warsaw",
+    "flokk-turek",
+    "flokk-stavanger",
+    "flokk-trondheim",
+    "flokk-gothenburg",
+    "flokk-stockholm",
+    "flokk-roros",
+    "flokk-glattpark",
+    "flokk-malmo",
+    "flokk-london",
+    "flokk-manchester",
+    "flokk-mirfield",
+    "skovby-galten",
+    "designcabinet-berlin",
+    "chairgo-hersbruck",
+    "daarbak-bop-recycle-fjerritslev",
+    "botium-valby",
+    "daarbak-design-esbjerg",
+    "daugbjerg-nakskov",
+    "daarbak-design-fredericia",
+    "ergo-design-aarslev",
+    "sedus-geseke",
+    "sedus-berlin",
+    "sedus-dogern",
+    "sedus-dusseldorf",
+    "sedus-hamburg",
+    "sedus-munich",
+    "sedus-eschborn",
+    "sedus-aalst",
+    "sedus-paris",
+    "sedus-madrid",
+    "sedus-cadorago",
+    "sedus-vienna",
+    "sedus-zoetermeer",
+    "sedus-london",
+    "interstuhl-hamburg"
+  ],
+  "held": [
+    {
+      "name": "Flokk Bergen",
+      "reason": "No resolved map coordinates."
+    },
+    {
+      "name": "Flokk Nassjo",
+      "reason": "Postal code differs between official page and map."
+    },
+    {
+      "name": "BOSS Company Herlev",
+      "reason": "Map points to Mileparken 22a in Skovlunde, not the official Herlev address."
+    },
+    {
+      "name": "Daarbak Design Herning",
+      "reason": "Map resolves to another business at Birk Centerpark 84A."
+    },
+    {
+      "name": "Daarbak Design Horsens",
+      "reason": "Map identifies Scan Office rather than Daarbak; ownership/identity needs verification."
+    },
+    {
+      "name": "Daarbak Design Aalborg",
+      "reason": "Map resolves to Gugvej 120 rather than Hobrovej 76."
+    },
+    {
+      "name": "DC Kontormobler Morkov",
+      "reason": "Official number 5A differs from map number 5; confirm entrance."
+    }
+  ],
+  "excluded": [
+    {
+      "name": "Sedus Rickenbach",
+      "reason": "Official page explicitly says this is not a customer showroom; directs visitors to Dogern."
+    }
+  ],
+  "coordinateEvidence": [
+    {
+      "name": "Flokk Copenhagen",
+      "city": "Kongens Lyngby",
+      "country": "DK",
+      "address": "Sorgenfrivej 18, 2800 Kongens Lyngby",
+      "source": "https://www.flokk.com/showrooms/denmark/copenhagen",
+      "brand": "Flokk",
+      "timezone": "Europe/Copenhagen",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          55.77203,
+          12.4971185
+        ]
+      ],
+      "heading": [
+        "Flokk A/S"
+      ],
+      "displayed_address": [
+        "Sorgenfrivej 18, 2800 Kongens Lyngby, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+A%2FS/@55.77203,12.4971185,17z/data=!3m1!4b1!4m6!3m5!1s0x4653ab7d3cbd7ec5:0xb2bdf63d0e1efe12!8m2!3d55.77203!4d12.4971185!16s%2Fg%2F11bztf7s6f?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Prague",
+      "city": "Prague",
+      "country": "CZ",
+      "address": "Antala Staska 510/38, 14000 Prague",
+      "source": "https://www.flokk.com/showrooms/czechia/prague",
+      "brand": "Flokk",
+      "timezone": "Europe/Prague",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          50.0407406,
+          14.4415525
+        ]
+      ],
+      "heading": [
+        "Flokk Praha"
+      ],
+      "displayed_address": [
+        "A. Staška 510/38, 140 00 Praha 4-Krč, 체코"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Praha/@50.0407406,14.4415525,17z/data=!3m1!4b1!4m6!3m5!1s0x470b9317ecdd0d45:0x87822c841e5f19ce!8m2!3d50.0407406!4d14.4415525!16s%2Fg%2F11x61tp2wh?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Brussels",
+      "city": "Woluwe-Saint-Lambert",
+      "country": "BE",
+      "address": "Rue Neerveld 109, 1200 Woluwe-Saint-Lambert",
+      "source": "https://www.flokk.com/showrooms/belgium/brussels",
+      "brand": "Flokk",
+      "timezone": "Europe/Brussels",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          50.8536281,
+          4.4422981
+        ]
+      ],
+      "heading": [
+        "Rue Neerveld 109"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/Rue+Neerveld+109,+1200+Woluwe-Saint-Lambert,+%EB%B2%A8%EA%B8%B0%EC%97%90/@50.8536281,4.4422981,17z/data=!3m1!4b1!4m6!3m5!1s0x47c3dc9a3fcdfecf:0x6330824c81a23d92!8m2!3d50.8536281!4d4.4422981!16s%2Fg%2F11b8v6hwp3?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    },
+    {
+      "name": "Flokk Paris",
+      "city": "Aubervilliers",
+      "country": "FR",
+      "address": "10 Rue Waldeck Rochet, Batiment 521, 93300 Aubervilliers",
+      "source": "https://www.flokk.com/showrooms/france/paris",
+      "brand": "Flokk",
+      "timezone": "Europe/Paris",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          48.9092863,
+          2.367482
+        ]
+      ],
+      "heading": [
+        "Flokk Paris"
+      ],
+      "displayed_address": [
+        "10 Rue Waldeck Rochet Bâtiment 521, 93300 Aubervilliers, 프랑스"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Paris/@48.9092863,2.367482,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66fe3a19e6c05:0x1c96bdfeaef4e2c!8m2!3d48.9092863!4d2.367482!16s%2Fg%2F11t3hpplhv?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Dusseldorf",
+      "city": "Dusseldorf",
+      "country": "DE",
+      "address": "Kaistrasse 6, 40221 Dusseldorf",
+      "source": "https://www.flokk.com/showrooms/germany/dusseldorf",
+      "brand": "Flokk",
+      "timezone": "Europe/Berlin",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          51.2141926,
+          6.7516363
+        ]
+      ],
+      "heading": [
+        "Flokk Düsseldorf"
+      ],
+      "displayed_address": [
+        "Kaistraße 6, 40221 Düsseldorf-Stadtbezirk 3, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+D%C3%BCsseldorf/@51.2141926,6.7516363,17z/data=!3m1!4b1!4m6!3m5!1s0x47b8ca74c302297b:0xce15efb278f0066f!8m2!3d51.2141926!4d6.7516363!16s%2Fg%2F1tmxvp9g?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Berlin",
+      "city": "Berlin",
+      "country": "DE",
+      "address": "Martin-Luther-Strasse 48, 10779 Berlin",
+      "source": "https://www.flokk.com/showrooms/germany/berlin",
+      "brand": "Flokk",
+      "timezone": "Europe/Berlin",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          52.4925157,
+          13.3448212
+        ]
+      ],
+      "heading": [
+        "Flokk Berlin"
+      ],
+      "displayed_address": [
+        "Martin-Luther-Str. 48, 10779 Berlin, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Berlin/@52.4925157,13.3448212,17z/data=!3m1!4b1!4m6!3m5!1s0x47a847f1c3c122cf:0xebdb9dc032ded6bd!8m2!3d52.4925157!4d13.3448212!16s%2Fg%2F11x5jkrp8l?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Stuttgart",
+      "city": "Filderstadt",
+      "country": "DE",
+      "address": "Gottlieb-Manz-Strasse 1, 70794 Filderstadt",
+      "source": "https://www.flokk.com/showrooms/germany/stuttgart",
+      "brand": "Flokk",
+      "timezone": "Europe/Berlin",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          48.6844289,
+          9.2137697
+        ]
+      ],
+      "heading": [
+        "Flokk Stuttgart"
+      ],
+      "displayed_address": [
+        "Gottlieb-Manz-Straße 1, 70794 Filderstadt-Bernhausen, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Stuttgart/@48.6844289,9.2137697,17z/data=!3m1!4b1!4m6!3m5!1s0x4799c3d985f553db:0x78fcc4fe1215c3b0!8m2!3d48.6844289!4d9.2137697!16s%2Fg%2F11x611hpmc?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Rotterdam",
+      "city": "Rotterdam",
+      "country": "NL",
+      "address": "Blaak 28, 3011 TA Rotterdam",
+      "source": "https://www.flokk.com/showrooms/netherlands/rotterdam",
+      "brand": "Flokk",
+      "timezone": "Europe/Amsterdam",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          51.9183042,
+          4.4861949
+        ]
+      ],
+      "heading": [
+        "Flokk Rotterdam"
+      ],
+      "displayed_address": [
+        "Blaak 28, 3011 TA Rotterdam, 네덜란드"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Rotterdam/@51.9183042,4.4861949,17z/data=!3m1!4b1!4m6!3m5!1s0x47c7d8e64b4571e5:0xd7df68dd5a210be4!8m2!3d51.9183042!4d4.4861949!16s%2Fg%2F11f0l1tgg5?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Leipzig",
+      "city": "Leipzig",
+      "country": "DE",
+      "address": "Walter-Kohn-Strasse 4c, 04356 Leipzig",
+      "source": "https://www.flokk.com/showrooms/germany/leipzig",
+      "brand": "Flokk",
+      "timezone": "Europe/Berlin",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          51.4014823,
+          12.404157
+        ]
+      ],
+      "heading": [
+        "Flokk Leipzig"
+      ],
+      "displayed_address": [
+        "Walter-Köhn-Straße 4c, 04356 Leipzig, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Leipzig/@51.4014823,12.404157,17z/data=!3m1!4b1!4m6!3m5!1s0x47a657e5a551fe2d:0x29e0fe3e39172b79!8m2!3d51.4014823!4d12.404157!16s%2Fg%2F11x5jjzj24?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Oslo",
+      "city": "Oslo",
+      "country": "NO",
+      "address": "Drammensveien 145, 0277 Oslo",
+      "source": "https://www.flokk.com/showrooms/norway/oslo",
+      "brand": "Flokk",
+      "timezone": "Europe/Oslo",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          59.922372,
+          10.6852144
+        ]
+      ],
+      "heading": [
+        "Flokk AS"
+      ],
+      "displayed_address": [
+        "Drammensveien 145, 0277 Oslo, 노르웨이"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+AS/@59.922372,10.6852144,17z/data=!3m1!4b1!4m6!3m5!1s0x46416dc51f686c5f:0x40e1a324956cda96!8m2!3d59.922372!4d10.6852144!16s%2Fg%2F11f01ctq8n?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Warsaw",
+      "city": "Warsaw",
+      "country": "PL",
+      "address": "Konstruktorska 12a, 02-673 Warsaw",
+      "source": "https://www.flokk.com/showrooms/poland/warsaw",
+      "brand": "Flokk",
+      "timezone": "Europe/Warsaw",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          52.1867698,
+          20.9881535
+        ]
+      ],
+      "heading": [
+        "Flokk"
+      ],
+      "displayed_address": [
+        "Konstruktorska 12a, 02-673 Warszawa, 폴란드"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk/@52.1867698,20.9881535,17z/data=!3m1!4b1!4m6!3m5!1s0x4719339bd7adba2f:0x8b32a26805021425!8m2!3d52.1867698!4d20.9881535!16s%2Fg%2F11j1pqk8vp?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Turek",
+      "city": "Turek",
+      "country": "PL",
+      "address": "Gornicza 8, 62-700 Turek",
+      "source": "https://www.flokk.com/showrooms/poland/turek",
+      "brand": "Flokk",
+      "timezone": "Europe/Warsaw",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          52.0152501,
+          18.5430299
+        ]
+      ],
+      "heading": [
+        "Górnicza 8"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/G%C3%B3rnicza+8,+62-700+Turek,+%ED%8F%B4%EB%9E%80%EB%93%9C/@52.0152501,18.5430299,17z/data=!3m1!4b1!4m6!3m5!1s0x471b18cf73f35943:0xe2bac9d89cfe808b!8m2!3d52.0152501!4d18.5430299!16s%2Fg%2F11c1czvrx5?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    },
+    {
+      "name": "Flokk Stavanger",
+      "city": "Stavanger",
+      "country": "NO",
+      "address": "Skansegata 19, 4006 Stavanger",
+      "source": "https://www.flokk.com/showrooms/norway/stavanger",
+      "brand": "Flokk",
+      "timezone": "Europe/Oslo",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          58.9741249,
+          5.7305379
+        ]
+      ],
+      "heading": [
+        "Flokk Stavanger"
+      ],
+      "displayed_address": [
+        "Skansegata 19, 4006 Stavanger, 노르웨이"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Stavanger/@58.9741249,5.7305379,17z/data=!3m1!4b1!4m6!3m5!1s0x463a356331d3bc11:0xa7d3681a17c4867a!8m2!3d58.9741249!4d5.7305379!16s%2Fg%2F11ss7nnfz1?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Trondheim",
+      "city": "Trondheim",
+      "country": "NO",
+      "address": "Osloveien 19, 7017 Trondheim",
+      "source": "https://www.flokk.com/showrooms/norway/trondheim",
+      "brand": "Flokk",
+      "timezone": "Europe/Oslo",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          63.4266602,
+          10.3701414
+        ]
+      ],
+      "heading": [
+        "Flokk Trondheim"
+      ],
+      "displayed_address": [
+        "Osloveien 19, 7017 Trondheim, 노르웨이"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Trondheim/@63.4266602,10.3701414,17z/data=!3m1!4b1!4m6!3m5!1s0x466d316f34c21bd9:0x15add71309ca52e8!8m2!3d63.4266602!4d10.3701414!16s%2Fg%2F11x7xjjf4h?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Bergen",
+      "city": "Bergen",
+      "country": "NO",
+      "address": "Sandviksbodene 3, 5035 Bergen",
+      "source": "https://www.flokk.com/showrooms/norway/bergen",
+      "brand": "Flokk",
+      "timezone": "Europe/Oslo",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [],
+      "heading": [],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/search/Flokk+Bergen+Sandviksbodene+3,+5035+Bergen?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Gothenburg",
+      "city": "Gothenburg",
+      "country": "SE",
+      "address": "Packhusplatsen 3, 41113 Gothenburg",
+      "source": "https://www.flokk.com/showrooms/sweden/gothenburg",
+      "brand": "Flokk",
+      "timezone": "Europe/Stockholm",
+      "appointment": "required",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          57.7075136,
+          11.9612098
+        ]
+      ],
+      "heading": [
+        "Flokk Göteborg"
+      ],
+      "displayed_address": [
+        "Packhusplatsen 3, 411 13 Göteborg, 스웨덴"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+G%C3%B6teborg/@57.7075136,11.9612098,17z/data=!3m1!4b1!4m6!3m5!1s0x464ff3cb74f7cc3f:0x74027605f42296f!8m2!3d57.7075136!4d11.9612098!16s%2Fg%2F11m6m0vkfr?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Stockholm",
+      "city": "Stockholm",
+      "country": "SE",
+      "address": "Rosenlundsgatan 40, 11853 Stockholm",
+      "source": "https://www.flokk.com/showrooms/sweden/stockholm",
+      "brand": "Flokk",
+      "timezone": "Europe/Stockholm",
+      "appointment": "required",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          59.3142716,
+          18.0567635
+        ]
+      ],
+      "heading": [
+        "Flokk Stockholm"
+      ],
+      "displayed_address": [
+        "Rosenlundsgatan 40, 118 53 Stockholm, 스웨덴"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Stockholm/@59.3142716,18.0567635,17z/data=!3m1!4b1!4m6!3m5!1s0x465f77eee56f057b:0x20bbb5e2dac5563e!8m2!3d59.3142716!4d18.0567635!16s%2Fg%2F1hc49vzhx?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Roros",
+      "city": "Roros",
+      "country": "NO",
+      "address": "Sundveien 201, 7374 Roros",
+      "source": "https://www.flokk.com/showrooms/norway/roros",
+      "brand": "Flokk",
+      "timezone": "Europe/Oslo",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          62.5840307,
+          11.3498339
+        ]
+      ],
+      "heading": [
+        "Flokk As Fabrikk Røros"
+      ],
+      "displayed_address": [
+        "Sundveien 201, 7374 Røros, 노르웨이"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+As+Fabrikk+R%C3%B8ros/@62.5840307,11.3498339,17z/data=!3m1!4b1!4m6!3m5!1s0x466c6496cbc85833:0x4d909d9f44df01e0!8m2!3d62.5840307!4d11.3498339!16s%2Fg%2F11fsn3ccn8?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Glattpark",
+      "city": "Opfikon",
+      "country": "CH",
+      "address": "Alpenstrasse 3, 8152 Opfikon",
+      "source": "https://www.flokk.com/showrooms/switzerland/glattpark",
+      "brand": "Flokk",
+      "timezone": "Europe/Zurich",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          47.422687,
+          8.556778
+        ]
+      ],
+      "heading": [
+        "Stoll Giroflex AG"
+      ],
+      "displayed_address": [
+        "Alpenstrasse 3, 8152 Glattpark (Opfikon), 스위스"
+      ],
+      "final_url": "https://www.google.com/maps/place/Stoll+Giroflex+AG/@47.422687,8.556778,17z/data=!3m1!4b1!4m6!3m5!1s0x47906826a84d61f7:0xc2e3faf31c8101eb!8m2!3d47.422687!4d8.556778!16s%2Fg%2F1tf1mrc0?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Nassjo",
+      "city": "Nassjo",
+      "country": "SE",
+      "address": "Vallgatan 1, 57141 Nassjo",
+      "source": "https://www.flokk.com/showrooms/sweden/nassjo",
+      "brand": "Flokk",
+      "timezone": "Europe/Stockholm",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          57.6378995,
+          14.6900071
+        ]
+      ],
+      "heading": [
+        "Flokk Nässjö"
+      ],
+      "displayed_address": [
+        "Vallgatan 1, 571 23 Nässjö, 스웨덴"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+N%C3%A4ssj%C3%B6/@57.6378995,14.6900071,17z/data=!3m1!4b1!4m6!3m5!1s0x465a03bbf141ddbf:0x6e3c81224850db2b!8m2!3d57.6378995!4d14.6900071!16s%2Fg%2F1tk61qvj?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Malmo",
+      "city": "Malmo",
+      "country": "SE",
+      "address": "Angbatsbron 1, 21120 Malmo",
+      "source": "https://www.flokk.com/showrooms/sweden/malmo",
+      "brand": "Flokk",
+      "timezone": "Europe/Stockholm",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          55.6140997,
+          12.9964264
+        ]
+      ],
+      "heading": [
+        "Ångbåtsbron 1"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/%C3%85ngb%C3%A5tsbron+1,+211+20+Malm%C3%B6,+%EC%8A%A4%EC%9B%A8%EB%8D%B4/@55.6140997,12.9964264,17z/data=!3m1!4b1!4m6!3m5!1s0x4653a3f818b5d4f5:0x5b9214fceec6f97f!8m2!3d55.6140997!4d12.9964264!16s%2Fg%2F11rgdjkjd6?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    },
+    {
+      "name": "Flokk London",
+      "city": "London",
+      "country": "GB",
+      "address": "31 Great Sutton Street, London EC1V 0NA",
+      "source": "https://www.flokk.com/showrooms/uk/london",
+      "brand": "Flokk",
+      "timezone": "Europe/London",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          51.523204,
+          -0.101819
+        ]
+      ],
+      "heading": [
+        "Flokk London"
+      ],
+      "displayed_address": [
+        "31 Great Sutton St, London EC1V 0NA 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+London/@51.523204,-0.101819,17z/data=!3m1!4b1!4m6!3m5!1s0x48761b582e1ba459:0x69aafef8e4a344e6!8m2!3d51.523204!4d-0.101819!16s%2Fg%2F1ptwv3ph2?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Manchester",
+      "city": "Manchester",
+      "country": "GB",
+      "address": "3-7 Booth Street, Chancery Place, Manchester M2 4DU",
+      "source": "https://www.flokk.com/showrooms/uk/manchester",
+      "brand": "Flokk",
+      "timezone": "Europe/London",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          53.4802695,
+          -2.2431834
+        ]
+      ],
+      "heading": [
+        "Flokk Manchester"
+      ],
+      "displayed_address": [
+        "3-7 Booth St, Chancery Pl, Manchester M2 4DU 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Manchester/@53.4802695,-2.2431834,17z/data=!3m1!4b1!4m6!3m5!1s0x487bb1f185e8ac3b:0xe52f649b8a8e0b3a!8m2!3d53.4802695!4d-2.2431834!16s%2Fg%2F11ll7cwkrn?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Flokk Mirfield",
+      "city": "Mirfield",
+      "country": "GB",
+      "address": "Unit 4, AAA Park, Leeds Road, Mirfield WF14 0DE",
+      "source": "https://www.flokk.com/showrooms/uk/mirfield",
+      "brand": "Flokk",
+      "timezone": "Europe/London",
+      "appointment": "unknown",
+      "notes": "Contact the showroom to book a visit and confirm which chairs are available to try.",
+      "coords": [
+        [
+          53.6907154,
+          -1.7074926
+        ]
+      ],
+      "heading": [
+        "Flokk Mirfield / Connection"
+      ],
+      "displayed_address": [
+        "Unit 4, AAA Park, Leeds Rd, Mirfield WF14 0DE 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Flokk+Mirfield+%2F+Connection/@53.6907154,-1.7074926,17z/data=!3m1!4b1!4m6!3m5!1s0x487bdfa608fb7185:0x51bd1ba325c14e15!8m2!3d53.6907154!4d-1.7074926!16s%2Fg%2F11vxpw_pps?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Skovby Galten",
+      "city": "Galten",
+      "country": "DK",
+      "address": "Frichsvej 43, 8464 Galten",
+      "source": "https://www.skovby.com/en-gb/contact",
+      "brand": "Skovby",
+      "appointment": "required",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          56.1573092,
+          9.9151336
+        ]
+      ],
+      "heading": [
+        "Frichsvej 43"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/Frichsvej+43,+8464+Galten,+%EB%8D%B4%EB%A7%88%ED%81%AC/@56.1575486,9.9155621,17z/data=!3m1!4b1!4m6!3m5!1s0x464c6d51779656ab:0x9af96016e66f7b12!8m2!3d56.1573092!4d9.9151336!16s%2Fg%2F11rk4kzc74?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "DesignCabinet Berlin",
+      "city": "Berlin",
+      "country": "DE",
+      "address": "Saarbrucker Strasse 18, 10405 Berlin",
+      "source": "https://www.designcabinet.de/corporate/imprint",
+      "brand": "Herman Miller",
+      "appointment": "unknown",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          52.5298456,
+          13.4120305
+        ]
+      ],
+      "heading": [
+        "DesignCabinet - Showroom"
+      ],
+      "displayed_address": [
+        "Saarbrücker Str. 18, 10405 Berlin, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/DesignCabinet+-+Showroom/@52.5298456,13.4120305,17z/data=!3m1!4b1!4m6!3m5!1s0x47a84f42532f9449:0xb8b35827d22fe957!8m2!3d52.5298456!4d13.4120305!16s%2Fg%2F11yf71zjhz?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Chairgo Hersbruck",
+      "city": "Hersbruck",
+      "country": "DE",
+      "address": "Amberger Strasse 72, 91217 Hersbruck",
+      "source": "https://www.chairgo.de/das-moebelhaus-anfahrt/",
+      "brand": "Herman Miller",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          49.512051,
+          11.442066
+        ]
+      ],
+      "heading": [
+        "Chairgo"
+      ],
+      "displayed_address": [
+        "Termine nur nach Vereinbarung, Amberger Str. 72, 91217 Hersbruck, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Chairgo/@49.512051,11.442066,17z/data=!3m1!4b1!4m6!3m5!1s0x47a1deee1c8981c5:0x175444abe5ba468b!8m2!3d49.512051!4d11.442066!16s%2Fg%2F1tdd4866?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "BOSS Company Herlev",
+      "city": "Herlev",
+      "country": "DK",
+      "address": "Horkaer 26, Herlev",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.7157815,
+          12.4247683
+        ]
+      ],
+      "heading": [
+        "Boss Company ApS"
+      ],
+      "displayed_address": [
+        "Mileparken 22a, 2740 Skovlunde, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Boss+Company+ApS/@55.7157815,12.4247683,17z/data=!3m1!4b1!4m6!3m5!1s0x4652518fd0dd86bd:0xf51c6820e208d9b5!8m2!3d55.7157815!4d12.4247683!16s%2Fg%2F11g4lpkv60?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Bop Recycle Fjerritslev",
+      "city": "Fjerritslev",
+      "country": "DK",
+      "address": "Fabriksvej 16, Fjerritslev",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          57.087087,
+          9.250302
+        ]
+      ],
+      "heading": [
+        "Daarbak Bop Recycle ApS"
+      ],
+      "displayed_address": [
+        "Fabriksvej 16, 9690 Fjerritslev, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Daarbak+Bop+Recycle+ApS/@57.087087,9.250302,17z/data=!3m1!4b1!4m6!3m5!1s0x46491057f30629f7:0xba0b5c3017cd8f18!8m2!3d57.087087!4d9.250302!16s%2Fg%2F11b6gc62fv?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Botium Valby",
+      "city": "Valby",
+      "country": "DK",
+      "address": "Carl Jacobsens Vej 16C, Valby",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.6540818,
+          12.5179464
+        ]
+      ],
+      "heading": [
+        "BOTIUM A/S"
+      ],
+      "displayed_address": [
+        "Carl Jacobsens Vej 16C, 2, 2500 København, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/BOTIUM+A%2FS/@55.6540818,12.5179464,17z/data=!3m1!4b1!4m6!3m5!1s0x465254761fdb901d:0xea72e4165811b1b4!8m2!3d55.6540818!4d12.5179464!16s%2Fg%2F1pzwkx78v?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Design Herning",
+      "city": "Herning",
+      "country": "DK",
+      "address": "Industrivej Syd 11, Herning",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          56.13327,
+          9.0365772
+        ]
+      ],
+      "heading": [
+        "Redoffice OneCompany A / S"
+      ],
+      "displayed_address": [
+        "Birk Centerpark 84A, 7400 Herning, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Redoffice+OneCompany+A+%2F+S/@56.13327,9.0365772,17z/data=!3m1!4b1!4m6!3m5!1s0x464bbc2387850f03:0xb7e00f93c70ca003!8m2!3d56.13327!4d9.0365772!16s%2Fg%2F1q64drjp5?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Design Esbjerg",
+      "city": "Esbjerg",
+      "country": "DK",
+      "address": "Glentevej 14, Esbjerg",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.4918174,
+          8.4708102
+        ]
+      ],
+      "heading": [
+        "Daarbak Design - Esbjerg"
+      ],
+      "displayed_address": [
+        "Glentevej 14, 6705 Esbjerg, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Daarbak+Design+-+Esbjerg/@55.4918174,8.4708102,17z/data=!3m1!4b1!4m6!3m5!1s0x464b2124f4cd5be9:0x650e6491d1f76219!8m2!3d55.4918174!4d8.4708102!16s%2Fg%2F11s1ttc3cd?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Design Horsens",
+      "city": "Horsens",
+      "country": "DK",
+      "address": "Vejlevej 104, Horsens",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.8325996,
+          9.8049478
+        ]
+      ],
+      "heading": [
+        "Scan Office ApS"
+      ],
+      "displayed_address": [
+        "Vejlevej 104, 8700 Horsens, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Scan+Office+ApS/@55.8325996,9.8049478,17z/data=!3m1!4b1!4m6!3m5!1s0x464c62b929d5ae4d:0xfbb5be2ade7ba27e!8m2!3d55.8325996!4d9.8049478!16s%2Fg%2F11y0pjfyh?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daugbjerg Nakskov",
+      "city": "Nakskov",
+      "country": "DK",
+      "address": "Axeltorv 5, Nakskov",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          54.8301867,
+          11.1355764
+        ]
+      ],
+      "heading": [
+        "Daugbjerg 1997 A / S"
+      ],
+      "displayed_address": [
+        "Axeltorv 5, 4900 Nakskov, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Daugbjerg+1997+A+%2F+S/@54.8301867,11.1355764,17z/data=!3m1!4b1!4m6!3m5!1s0x47b2a85c633a708d:0x73cf75eb71a58ffe!8m2!3d54.8301867!4d11.1355764!16s%2Fg%2F1tj51npv?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Design Aalborg",
+      "city": "Aalborg",
+      "country": "DK",
+      "address": "Hobrovej 76, Aalborg",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          57.0222,
+          9.925743
+        ]
+      ],
+      "heading": [
+        "Mogens Daarbak A / S, Aalborg"
+      ],
+      "displayed_address": [
+        "Gugvej 120, 9210 Aalborg, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Mogens+Daarbak+A+%2F+S,+Aalborg/@57.0222,9.925743,17z/data=!3m1!4b1!4m6!3m5!1s0x4649331e68c4c599:0x39043f74d8e0b51e!8m2!3d57.0222!4d9.925743!16s%2Fg%2F1hc30nl5z?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Daarbak Design Fredericia",
+      "city": "Fredericia",
+      "country": "DK",
+      "address": "Strevelinsvej 16, Fredericia",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.5318803,
+          9.7208625
+        ]
+      ],
+      "heading": [
+        "Strevelinsvej 16"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/Strevelinsvej+16,+7000+Fredericia,+%EB%8D%B4%EB%A7%88%ED%81%AC/@55.5318803,9.7208625,17z/data=!3m1!4b1!4m6!3m5!1s0x464c97233e6179a3:0x1a482a1e77972fdd!8m2!3d55.5318803!4d9.7208625!16s%2Fg%2F11cnd8lxmp?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    },
+    {
+      "name": "DC Kontormobler Morkov",
+      "city": "Morkov",
+      "country": "DK",
+      "address": "Kongsdalvej 5A, Morkov",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.6166517,
+          11.5509143
+        ]
+      ],
+      "heading": [
+        "DC Office Furniture A / S"
+      ],
+      "displayed_address": [
+        "Kongsdalvej 5, 4440 Mørkøv, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/DC+Office+Furniture+A+%2F+S/@55.6166517,11.5509143,17z/data=!3m1!4b1!4m6!3m5!1s0x46525829fda5561d:0x2cbb5e42ffae8384!8m2!3d55.6166517!4d11.5509143!16s%2Fg%2F1th5ydhw?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Ergo-Design Aarslev",
+      "city": "Aarslev",
+      "country": "DK",
+      "address": "Kirstinebjergvej 10, Aarslev",
+      "source": "https://store.flokk.com/global/nl-nl/store-locator?brands=Profim",
+      "brand": "",
+      "appointment": "unknown",
+      "timezone": "Europe/Copenhagen",
+      "notes": "Contact the store before travelling to arrange your visit and confirm the chairs available to try.",
+      "coords": [
+        [
+          55.3075225,
+          10.4430651
+        ]
+      ],
+      "heading": [
+        "Ergo-design A/S"
+      ],
+      "displayed_address": [
+        "6940, Kirstinebjergvej 10, 5792 Årslev, 덴마크"
+      ],
+      "final_url": "https://www.google.com/maps/place/Ergo-design+A%2FS/@55.3075225,10.4430651,17z/data=!3m1!4b1!4m6!3m5!1s0x464d203fa59d7ca1:0xc34e9d04176fcde7!8m2!3d55.3075225!4d10.4430651!16s%2Fg%2F1v9gt1f9?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Geseke",
+      "city": "Geseke",
+      "country": "DE",
+      "address": "Salzkottener Strasse 65, 59590 Geseke",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          51.6492139,
+          8.5460877
+        ]
+      ],
+      "heading": [
+        "Sedus Systems GmbH"
+      ],
+      "displayed_address": [
+        "Salzkottener Str. 65, 59590 Geseke, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Systems+GmbH/@51.6492139,8.5460877,17z/data=!3m1!4b1!4m6!3m5!1s0x47bbcbb549e8a995:0x2e2e7ede1412456f!8m2!3d51.6492139!4d8.5460877!16s%2Fg%2F1tg6ttln?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Berlin",
+      "city": "Berlin",
+      "country": "DE",
+      "address": "Reinhardtstrasse 29A, 10117 Berlin",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          52.5227591,
+          13.3814067
+        ]
+      ],
+      "heading": [
+        "Sedus Hub Berlin"
+      ],
+      "displayed_address": [
+        "Reinhardtstraße 29A, 10117 Berlin, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Hub+Berlin/@52.5227591,13.3814067,17z/data=!3m1!4b1!4m6!3m5!1s0x47a851c1c6333b7f:0xe599b0f93b220150!8m2!3d52.5227591!4d13.3814067!16s%2Fg%2F1tf19sm4?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Dogern",
+      "city": "Dogern",
+      "country": "DE",
+      "address": "Christof-Stoll-Strasse 1, 79804 Dogern",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          47.6047268,
+          8.1609682
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll AG"
+      ],
+      "displayed_address": [
+        "Christof-Stoll-Straße 1, 79804 Dogern, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+AG/@47.6047268,8.1609682,17z/data=!3m1!4b1!4m6!3m5!1s0x479043105db7c9fb:0x7e9658f7333d666d!8m2!3d47.6047268!4d8.1609682!16s%2Fg%2F1tc_py75?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    },
+    {
+      "name": "Sedus Dusseldorf",
+      "city": "Dusseldorf",
+      "country": "DE",
+      "address": "Rolandstrasse 44, 40476 Dusseldorf",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          51.2460697,
+          6.7777623
+        ]
+      ],
+      "heading": [
+        "Sedus Hub West"
+      ],
+      "displayed_address": [
+        "Rolandstraße 44, 40476 Düsseldorf, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Hub+West/@51.2460697,6.7777623,17z/data=!3m1!4b1!4m6!3m5!1s0x47b8c99c6c0af6e7:0xcdd7aa5c91fca46a!8m2!3d51.2460697!4d6.7777623!16s%2Fg%2F11xmv2frcp?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Hamburg",
+      "city": "Hamburg",
+      "country": "DE",
+      "address": "Rosenstrasse 4, 20095 Hamburg",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          53.5534456,
+          10.0013194
+        ]
+      ],
+      "heading": [
+        "Sedus Hub Hamburg"
+      ],
+      "displayed_address": [
+        "Rosenstraße 4, 20095 Hamburg, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Hub+Hamburg/@53.5534456,10.0013194,17z/data=!3m1!4b1!4m6!3m5!1s0x47b18f5e10c1ac39:0x53373a2b19702844!8m2!3d53.5534456!4d10.0013194!16s%2Fg%2F11h4nktt8_?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Munich",
+      "city": "Munich",
+      "country": "DE",
+      "address": "Konrad-Zuse-Platz 10, 81829 Munich",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          48.1375345,
+          11.6892234
+        ]
+      ],
+      "heading": [
+        "Sedus Showroom"
+      ],
+      "displayed_address": [
+        "Konrad-Zuse-Platz 10, 81829 München, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Showroom/@48.1375345,11.6892234,17z/data=!3m1!4b1!4m6!3m5!1s0x555555541114455:0xc499e845c4af0284!8m2!3d48.1375345!4d11.6892234!16s%2Fg%2F1tdw70lx?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Eschborn",
+      "city": "Eschborn",
+      "country": "DE",
+      "address": "Helfmann-Park 7, 65760 Eschborn",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/deutschland",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Berlin",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          50.1385787,
+          8.5841811
+        ]
+      ],
+      "heading": [
+        "Sedus Hub Rhein-Main"
+      ],
+      "displayed_address": [
+        "Helfmann-Park 7, 65760 Eschborn, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Hub+Rhein-Main/@50.1385787,8.5841811,17z/data=!3m1!4b1!4m6!3m5!1s0x47bda1b9c724433d:0x6bb3f87569d6a76a!8m2!3d50.1385787!4d8.5841811!16s%2Fg%2F1tfcgx28?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Aalst",
+      "city": "Aalst",
+      "country": "BE",
+      "address": "Ninovesteenweg 198, 9320 Aalst",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/erembodegem-aalst",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Brussels",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          50.9154435,
+          4.0451305
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll B.V."
+      ],
+      "displayed_address": [
+        "Ninovesteenweg 198, 9320 Aalst, 벨기에"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+B.V./@50.9154435,4.0451305,17z/data=!3m1!4b1!4m6!3m5!1s0x47c39ef80e8ebc63:0xab0d6dbe53db4b3b!8m2!3d50.9154435!4d4.0451305!16s%2Fg%2F1wrtc077?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Paris",
+      "city": "Paris",
+      "country": "FR",
+      "address": "10 Rue Auber, 75009 Paris",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/paris",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Paris",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          48.8727116,
+          2.3293909
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll Sarl"
+      ],
+      "displayed_address": [
+        "10 Rue Auber, 75009 Paris, 프랑스"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+Sarl/@48.8727116,2.3293909,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66f6f2c715c15:0x8138bd18f6b8667e!8m2!3d48.8727116!4d2.3293909!16s%2Fg%2F11b6d012cl?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Madrid",
+      "city": "Madrid",
+      "country": "ES",
+      "address": "Calle de Velazquez 47, 28001 Madrid",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/madrid",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Madrid",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          40.427331,
+          -3.6841707
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll S.A."
+      ],
+      "displayed_address": [
+        "Calle Velázquez, 47, Salamanca, 28001 Madrid, 스페인"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+S.A./@40.427331,-3.6841707,17z/data=!3m1!4b1!4m6!3m5!1s0xd4230da7ad21765:0xbbba1d7da8716d1c!8m2!3d40.427331!4d-3.6841707!16s%2Fg%2F1z44bk_zq?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Cadorago",
+      "city": "Cadorago",
+      "country": "IT",
+      "address": "Via Volta, 22071 Cadorago",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/cadorago",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Rome",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          45.7220568,
+          9.0253336
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll Srl"
+      ],
+      "displayed_address": [
+        "Via Alessandro Volta, 22071 Cadorago CO, 이탈리아"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+Srl/@45.7220568,9.0253336,17z/data=!3m1!4b1!4m6!3m5!1s0x47869a58f34635e5:0xa8ef67bdf4885013!8m2!3d45.7220568!4d9.0253336!16s%2Fg%2F1pty6175j?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Vienna",
+      "city": "Vienna",
+      "country": "AT",
+      "address": "Felberstrasse 80, 1150 Vienna",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/wien",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Vienna",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          48.1946082,
+          16.3246835
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll"
+      ],
+      "displayed_address": [
+        "Felberstraße 80/Stiege 2 / 2.OG / Top 2, 1150 Wien, 오스트리아"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll/@48.1946082,16.3246835,17z/data=!3m1!4b1!4m6!3m5!1s0x476d07f03242aacf:0x4ae995329247b6b9!8m2!3d48.1946082!4d16.3246835!16s%2Fg%2F11j8vg9tmj?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus Zoetermeer",
+      "city": "Zoetermeer",
+      "country": "NL",
+      "address": "Platinastraat 33, 2718 SZ Zoetermeer",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/zoetermeer",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/Amsterdam",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          52.0381698,
+          4.5036498
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll B.V."
+      ],
+      "displayed_address": [
+        "Platinastraat 33, 2718 SZ Zoetermeer, 네덜란드"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+B.V./@52.0381698,4.5036498,17z/data=!3m1!4b1!4m6!3m5!1s0x47c5ceb69aebffad:0xd771885d40c51b7b!8m2!3d52.0381698!4d4.5036498!16s%2Fg%2F1tg80nfd?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Sedus London",
+      "city": "London",
+      "country": "GB",
+      "address": "9 Brewhouse Yard, London EC1V 4JR",
+      "source": "https://www.sedus.com/de/kontakt/showrooms/london",
+      "brand": "Sedus",
+      "appointment": "required",
+      "timezone": "Europe/London",
+      "notes": "Visits are by appointment. Contact the showroom before travelling to arrange a chair trial.",
+      "coords": [
+        [
+          51.5240163,
+          -0.1017602
+        ]
+      ],
+      "heading": [
+        "Sedus Stoll Ltd."
+      ],
+      "displayed_address": [
+        "9 Brewhouse Yard, London EC1V 4JR 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Sedus+Stoll+Ltd./@51.5240163,-0.1017602,17z/data=!3m1!4b1!4m6!3m5!1s0x48761b83bbfac625:0xe758ee224c6a59a3!8m2!3d51.5240163!4d-0.1017602!16s%2Fg%2F1vg_6smk?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Interstuhl Hamburg",
+      "city": "Hamburg",
+      "country": "DE",
+      "address": "Grosse Elbstrasse 68, 22767 Hamburg",
+      "source": "https://www.interstuhl.com/I/de-de/showroom-hamburg.php",
+      "brand": "Interstuhl",
+      "appointment": "unknown",
+      "timezone": "Europe/Berlin",
+      "notes": "The showroom is on the third floor at Stilwerk. Contact the team to arrange a consultation and confirm the chairs on display.",
+      "coords": [
+        [
+          53.5448462,
+          9.9497449
+        ]
+      ],
+      "heading": [
+        "Große Elbstraße 68"
+      ],
+      "displayed_address": [],
+      "final_url": "https://www.google.com/maps/place/Gro%C3%9Fe+Elbstra%C3%9Fe+68,+22767+Altona,+%EB%8F%85%EC%9D%BC/@53.5448462,9.9497449,17z/data=!3m1!4b1!4m6!3m5!1s0x47b18f799023900d:0x3ad251fa11608188!8m2!3d53.5448462!4d9.9497449!16s%2Fg%2F11yj7yv74j?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "addressOnly": true
+    }
+  ]
+}

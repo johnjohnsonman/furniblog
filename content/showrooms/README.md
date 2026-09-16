@@ -1,7 +1,7 @@
 # Public chair-store registry
 
 The initial public release uses `SHOWROOMS_ENABLED=true` and `SHOWROOM_DATA_SOURCE=registry`.
-`registry.json` contains only reviewed, published records: 134 Japan, 172 US, 36 Europe and 10 Africa locations (352 total across 16 countries), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
+`registry.json` contains only reviewed, published records: 134 Japan, 172 US, 82 Europe and 10 Africa locations (398 total across 20 countries), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
 
 Each store and confirmed relationship has its own source URL and check date. Missing hours and trial availability remain unknown. Do not infer a model trial from a brand relationship or national product carousel. Do not copy vendor photographs without rights.
 
@@ -35,3 +35,5 @@ Official sources for the additional US batch:
 Humanscale Philadelphia was held because the official listing and map address conflict. SitOnIt Chicago is temporarily closed and excluded. Three additional records use verified street-address building pins; floor/suite and visit instructions are retained.
 
 Europe second batch: 12 additional stores in the UK, France, Germany and Spain. Evidence: research/europe-wave2-20260916.json. Closed Back in Action branches are excluded; La Boutique du Dos Paris is held pending address reconciliation.
+
+Europe third batch: 46 stores added from 53 candidates, including Flokk, Sedus, Interstuhl and independent chair/furniture stores. Evidence: research/europe-wave3-20260916.json. Seven conflicting/unresolved records were held; Sedus Rickenbach is not a customer showroom and was excluded. Address-only pins are explicitly labelled. Countries/cities now generate 45 indexable location pages.
