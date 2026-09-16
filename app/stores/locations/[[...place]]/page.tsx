@@ -9,6 +9,17 @@ import "./locations.css";
 
 export const revalidate = 300;
 export function generateStaticParams() { return []; }
+const countryEditorial: Record<string, string> = {
+  MX: "Compare chair showrooms and workplace furniture dealers in Mexico City, Monterrey, Guadalajara, Querétaro, Tijuana and other listed markets. The directory includes official brand showrooms and public dealer locations where visitors can ask about ergonomic office seating.",
+  NZ: "Browse workplace furniture and chair showrooms across Auckland, Wellington, Christchurch and Hamilton. Many New Zealand commercial showrooms recommend or require contacting the team before visiting, so confirm public access and the chair range first.",
+  IN: "Find source-checked chair showrooms in Bengaluru, Chennai, Gurugram, Hyderabad and Mumbai. These locations include working brand experience centres where availability and visitor access should be confirmed in advance.",
+  SG: "Explore chair and workplace showrooms across Singapore, including official brand spaces and specialist ergonomic seating retailers. Check appointments and current display models before travelling.",
+  MY: "Find chair showrooms in Kuala Lumpur and Johor Bahru, including official brand locations and specialist workplace furniture stores. Contact each location for current chair availability and weekend access.",
+  TH: "Compare chair and workplace showrooms in Bangkok from international seating brands and regional office furniture specialists. Most listed locations are commercial showrooms, so arrange your visit before travelling.",
+  ID: "Browse verified chair showrooms in Jakarta, including international brand experience spaces. Confirm appointment requirements and the exact chair configuration you want to test.",
+  VN: "Find chair showrooms in Ho Chi Minh City and Hanoi, from international workplace brands to local ergonomic chair specialists. Use the official source on each listing to confirm access and stock.",
+  PH: "Find verified workplace and ergonomic seating showrooms in Metro Manila. Coverage is expanding; contact the listed showroom before travelling to confirm public access and available chairs.",
+};
 const load = cache(async () => {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
   const [result, catalog] = await Promise.all([getPublicStores(), getStoreCatalog()]);
@@ -54,6 +65,7 @@ export default async function LocationsPage({ params }: Props) {
       <nav aria-label="Breadcrumb" className="location-crumbs">{crumbs.map((c,i) => <span key={c.path}>{i > 0 && " / "}<Link href={c.path} aria-current={i === crumbs.length-1 ? "page" : undefined}>{c.name}</Link></span>)}</nav>
       <section className="location-hero"><p className="location-eyebrow">FIND YOUR CHAIR. PLAN YOUR VISIT.</p><h1>{r.name ? `Chair stores in ${r.name}` : "A better chair starts with a visit."}</h1><p>{r.name ? `Explore ${r.stores.length} listed chair stores in ${r.name}. Compare the addresses and visit arrangements below, then contact your shortlist to check the exact chair you want to try.` : `Explore ${r.stores.length} chair stores across ${r.groups.length} countries. Start with a country, discover local showrooms and plan where to try your next chair.`}</p><Link className="location-cta" href={mapHref}>{r.name ? "View these stores on the map" : "Open the world map"} ↗</Link></section>
       {!r.country ? <section aria-labelledby="countries-title"><h2 id="countries-title">Browse by country</h2><div className="location-grid">{r.groups.map(g => <Link className="location-tile" key={g.code} href={g.path}><h3>{g.name}</h3><p>{g.stores.length} stores · {g.cities.length} cities</p><span>Explore stores →</span></Link>)}</div></section> : <>
+        {countryEditorial[r.country.code] && <section className="location-advice" aria-label={`${r.country.name} directory overview`}><p>{countryEditorial[r.country.code]}</p></section>}
         <aside className="location-summary"><div><strong>{r.stores.length}</strong><span>Listed stores</span></div><div><strong>{brands.length}</strong><span>Listed brands</span></div><div><strong>{appointmentCount}</strong><span>Appointment required</span></div></aside>
         {brands.length > 0 && <p className="location-brands"><strong>Brands in this directory:</strong> {brands.join(", ")}. A brand listing does not confirm that every model is on display.</p>}
         {!r.city && <section><h2>Choose a city</h2><div className="location-city-links">{r.country.cities.map(c => <Link key={c.key} href={c.stores.length >= 3 ? c.path : `/stores?country=${r.country!.code}&city=${c.key}`}>{c.name} <span>{c.stores.length}</span></Link>)}</div></section>}

@@ -43,7 +43,7 @@ async function main() {
 
 
 
- const paths=['/stores','/stores/locations','/stores/locations/united-kingdom/london','/stores/locations/france','/stores/locations/italy','/stores/locations/spain','/stores/locations/kenya/nairobi'];
+ const paths=['/stores','/stores/locations','/stores/locations/mexico','/stores/locations/new-zealand','/stores/locations/india','/stores/locations/singapore','/stores/locations/malaysia','/stores/locations/thailand','/stores/locations/indonesia','/stores/locations/vietnam','/stores/locations/philippines'];
  const base='https://www.googleapis.com/webmasters/v3/sites/'+encodeURIComponent('sc-domain:chairpedia.com');
  const checkedAt=new Date().toISOString(),endDate=checkedAt.slice(0,10),startDate=new Date(Date.now()-28*86400000).toISOString().slice(0,10);
  const inspections=[];for(const path of paths){const r=await request('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',{inspectionUrl:'https://www.chairpedia.com'+path,siteUrl:'sc-domain:chairpedia.com',languageCode:'en-US'});inspections.push({path,status:r.inspectionResult?.indexStatusResult});}
