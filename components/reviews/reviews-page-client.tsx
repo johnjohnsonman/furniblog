@@ -56,7 +56,7 @@ const PERIOD_OPTIONS = [
 
 type ReviewsPageClientProps = {
   initialMeta: ReviewsFeedMeta
-  brands: Brand[]
+  brands: Pick<Brand, "slug" | "name">[]
   initialReviews?: ReviewFeedItem[]
   initialTotal?: number
   initialSeed?: number

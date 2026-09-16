@@ -69,3 +69,6 @@ export function toDesignerView(designer: Designer) {
 }
 
 export type DesignerView = ReturnType<typeof toDesignerView>
+
+export type ProductCardView = Pick<ProductView, "id" | "name" | "brand" | "brandId" | "category" | "categoryLabel" | "priceUsd" | "price" | "image" | "images" | "rating" | "reviewCount" | "publishedAt">
+export function toProductCardView(p: ProductView): ProductCardView { return { id: p.id, name: p.name, brand: p.brand, brandId: p.brandId, category: p.category, categoryLabel: p.categoryLabel, priceUsd: p.priceUsd, price: p.price, image: p.image, images: p.images, rating: p.rating, reviewCount: p.reviewCount, publishedAt: p.publishedAt } }

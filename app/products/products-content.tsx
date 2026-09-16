@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react"
-import type { ProductView } from "@/lib/data/mappers"
+import type { ProductCardView } from "@/lib/data/mappers"
 import type { Brand } from "@/types/brand"
 import type {
   ReviewCountStats,
@@ -22,7 +22,7 @@ const SORT_OPTIONS = [
 ] as const
 
 export type ProductsPageContentProps = {
-  products: ProductView[]
+  products: ProductCardView[]
   brands: Brand[]
   reviewCounts: Record<string, ReviewCountStats>
   stats: SiteStats
@@ -31,7 +31,7 @@ export type ProductsPageContentProps = {
   initialSearch?: string
 }
 
-function resolvePriceUsd(product: ProductView): number | null {
+function resolvePriceUsd(product: ProductCardView): number | null {
   if (product.priceUsd != null && product.priceUsd > 0) {
     return product.priceUsd
   }
@@ -181,11 +181,11 @@ export function ProductsPageContent({
   return (
     <main className="flex-1 bg-premium-bg">
       <section className="border-b border-[#E5E5E5] bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-12 md:py-14">
+        <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-12 md:py-14">
           <h1 className="font-serif text-3xl font-medium leading-tight text-premium-text sm:text-[40px]">
             Premium Chair Database
           </h1>
-          <p className="mt-3 text-lg text-premium-text-secondary">
+          <p className="mt-2 text-sm sm:text-lg text-premium-text-secondary">
             Discover the world&apos;s finest ergonomic seating
           </p>
           <p className="mt-4 text-sm text-premium-text-tertiary">
@@ -196,9 +196,9 @@ export function ProductsPageContent({
         </div>
       </section>
 
-      <section className="sticky top-0 z-20 border-b border-[#E5E5E5] bg-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap gap-2">
+      <section className="sm:sticky sm:top-14 z-20 border-b border-[#E5E5E5] bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 sm:px-6 py-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-wrap">
             {categoryPills.map((pill) => {
               const active = selectedCategory === pill.value
               return (
@@ -207,7 +207,7 @@ export function ProductsPageContent({
                   type="button"
                   onClick={() => setSelectedCategory(pill.value)}
                   className={cn(
-                    "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                    "shrink-0 whitespace-nowrap min-h-11 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                     active
                       ? "bg-premium-accent text-white"
                       : "border border-premium-border bg-white text-premium-text hover:border-premium-border-hover"
@@ -228,14 +228,14 @@ export function ProductsPageContent({
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search chairs…"
                 aria-label="Search chairs"
-                className="w-full rounded-sm border border-premium-border bg-white py-2 pl-9 pr-3 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-56"
+                className="w-full rounded-sm border border-premium-border bg-white min-h-11 py-2 pl-9 pr-3 text-base sm:text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-56"
               />
             </div>
             <div className="relative flex-1 sm:flex-none">
               <select
                 value={selectedBrand}
                 onChange={(e) => setSelectedBrand(e.target.value)}
-                className="w-full appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
+                className="w-full appearance-none rounded-sm border border-premium-border bg-white min-h-11 py-2 pl-3 pr-9 text-base sm:text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
                 aria-label="Brand"
               >
                 <option value="All">All Brands</option>
@@ -252,7 +252,7 @@ export function ProductsPageContent({
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full appearance-none rounded-sm border border-premium-border bg-white py-2 pl-3 pr-9 text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
+                className="w-full appearance-none rounded-sm border border-premium-border bg-white min-h-11 py-2 pl-3 pr-9 text-base sm:text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
                 aria-label="Sort"
               >
                 {SORT_OPTIONS.map((opt) => (
@@ -267,7 +267,7 @@ export function ProductsPageContent({
         </div>
       </section>
 
-      <section ref={gridTopRef} className="mx-auto max-w-7xl px-6 py-10">
+      <section ref={gridTopRef} className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-10">
         {filteredProducts.length > 0 ? (
           <>
             <p className="mb-6 text-sm text-premium-text-tertiary">

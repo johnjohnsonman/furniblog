@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Menu, X, Search, ChevronDown } from "lucide-react"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
@@ -20,6 +20,7 @@ const mainNav = [
 
 export function Header() {
   const pathname = usePathname()
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [categoryOpen, setCategoryOpen] = useState(false)
   const [counts, setCounts] = useState<Record<string, number> | null>(null)
@@ -126,6 +127,8 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
+              onMouseEnter={() => router.prefetch(item.href)}
+              onFocus={() => router.prefetch(item.href)}
               className={cn(
                 "px-3 py-2 text-sm transition-colors rounded-md hover:bg-muted",
                 isActive(item.href)
@@ -197,6 +200,8 @@ export function Header() {
                   <Link
                     key={item.name}
                     href={item.href}
+              onMouseEnter={() => router.prefetch(item.href)}
+              onFocus={() => router.prefetch(item.href)}
                     className={cn(
                       "block py-3 text-base transition-colors",
                       isActive(item.href)

@@ -1,7 +1,7 @@
 # Public chair-store registry
 
 The initial public release uses `SHOWROOMS_ENABLED=true` and `SHOWROOM_DATA_SOURCE=registry`.
-`registry.json` contains only reviewed, published records: 134 Japan, 172 US, 111 Europe and 10 Africa locations (427 total across 20 countries), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
+`registry.json` contains only reviewed, published records: 134 Japan, 172 US, 130 Europe and 10 Africa locations (446 total across 20 countries), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
 
 Each store and confirmed relationship has its own source URL and check date. Missing hours and trial availability remain unknown. Do not infer a model trial from a brand relationship or national product carousel. Do not copy vendor photographs without rights.
 
@@ -41,3 +41,5 @@ Europe third batch: 46 stores added from 53 candidates, including Flokk, Sedus, 
 Europe fourth batch: 29 verified stores (France 8, Italy 8, Spain 13). Silvera Kleber held for a postal-code discrepancy. Evidence: research/europe-wave4-20260916.json. Current indexable location pages: 47.
 
 Index tracking: run `node scripts/track-store-indexing.cjs` with existing GSC read-only credentials. Timestamped snapshots and latest comparison are saved under data/search-growth/store-tracking. This is on-demand, not a scheduled monitor. Never commit credentials.
+
+Europe fifth batch: 19 additional stores (Germany 16, Netherlands 2, Belgium 1). Evidence: research/europe-wave5-20260916.json. smow Chemnitz held for entrance/address clarification. Current indexable location pages: 48.

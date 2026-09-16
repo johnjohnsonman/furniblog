@@ -82,14 +82,14 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
   return (
     <section className="border-b border-[#171717] bg-white">
       <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
-        <div className="border-[#171717] px-5 py-10 lg:border-r lg:px-8 lg:py-14">
+        <div className="border-[#171717] px-4 py-5 sm:py-10 lg:border-r lg:px-8 lg:py-14">
           <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#52606d]">Chairpedia - Chair research &amp; comparison</p>
-          <h1 className="mt-3 max-w-2xl font-serif text-4xl leading-[1.02] sm:text-5xl lg:text-6xl">Find your chair with Chairpedia</h1>
+          <h1 className="mt-3 max-w-2xl font-serif text-3xl leading-[1.08] sm:text-5xl lg:text-6xl">Find your chair with Chairpedia</h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-[#555]">Set your conditions. The shortlist and featured chair update instantly, using fields available in our catalog.</p>
 
-          <div className="mt-9 border-l-4 border-[#3157e8] bg-[#eef2ff] p-4">
+          <div className="mt-5 sm:mt-9 border-l-4 border-[#3157e8] bg-[#eef2ff] p-4">
             <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Your conditions</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-lg font-semibold">
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-base sm:text-lg font-semibold">
               <span>Show me</span>
               <select aria-label="Chair category" value={category} onChange={(e) => setCategory(e.target.value)} className="min-w-36 border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
                 <option value="all">any chair</option>{categories.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
@@ -114,7 +114,7 @@ export function ChairFinder({ products }: { products: FinderProduct[] }) {
           <div className="mt-7 flex items-center justify-between border-b border-[#171717] pb-2 text-xs">
             <strong>{matches.length} chairs match</strong><Link href="/products" className="text-[#3157e8] underline underline-offset-4">Browse all chairs</Link>
           </div>
-          <div className="divide-y divide-[#d8d8d8]">
+          <div className="max-h-[220px] overflow-auto lg:max-h-none divide-y divide-[#d8d8d8]">
             {matches.slice(0, 6).map((p, index) => (
               <button key={p.id} onClick={() => setActiveId(p.id)} className={`grid w-full grid-cols-[28px_46px_1fr_auto] items-center gap-3 px-2 py-3 text-left transition-all hover:bg-[#f2f5ff] ${active?.id === p.id ? "border-l-4 border-[#3157e8] bg-[#eef2ff]" : "border-l-4 border-transparent"}`}>
                 <span className="text-xs text-[#777]">{index + 1}</span><Image src={p.image} alt="" width={46} height={46} className="h-11 w-11 object-contain" />

@@ -1,3 +1,4 @@
+import { toProductCardView } from "@/lib/data/mappers"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -50,7 +51,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <ProductsPageContent
-        products={products}
+        products={products.map(toProductCardView)}
         brands={brands}
         reviewCounts={reviewCounts}
         stats={stats}

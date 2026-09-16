@@ -18,7 +18,7 @@ export function ReviewsTabbedClient({
   initialSeed,
 }: {
   initialMeta: ReviewsFeedMeta
-  brands: Brand[]
+  brands: Pick<Brand, "slug" | "name">[]
   experienceItems: ExperienceReviewCard[]
   initialReviews?: ReviewFeedItem[]
   initialTotal?: number

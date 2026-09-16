@@ -9,26 +9,26 @@ import { ArrowRight, Sparkles } from "lucide-react"
  */
 export function WriteReviewCTA() {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-[#1c1a17] via-[#241f1a] to-[#3a322a] px-6 py-7 text-white md:px-9 md:py-9">
+    <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-[#1c1a17] via-[#241f1a] to-[#3a322a] px-4 py-4 sm:px-6 sm:py-7 text-white md:px-9 md:py-9">
       {/* decorative glow */}
       <div className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[#9a7b4f]/30 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -left-16 h-48 w-48 rounded-full bg-[#9a7b4f]/10 blur-3xl" />
 
-      <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <div className="relative flex flex-col gap-3 sm:gap-6 md:flex-row md:items-center md:justify-between">
         <div className="max-w-xl">
           <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#e9c98c]">
             <Sparkles className="h-3.5 w-3.5" />
             Share your experience
           </div>
-          <h2 className="mt-3 font-serif text-2xl font-semibold leading-snug md:text-[27px]">
+          <h2 className="mt-2 font-serif text-lg sm:text-2xl font-semibold leading-snug md:text-[27px]">
             What are the best chairs you&apos;ve actually sat in?
           </h2>
-          <p className="mt-2.5 text-sm leading-relaxed text-white/70">
+          <p className="hidden sm:block mt-2.5 text-sm leading-relaxed text-white/70">
             Rank up to three chairs from your own experience. It&apos;s anonymous and
             takes about a minute — and it powers the &ldquo;people like you&rdquo;
             matches that help others find the right chair.
           </p>
-          <div className="mt-4 flex flex-wrap gap-2 text-[11px] text-white/65">
+          <div className="hidden sm:flex mt-4 flex-wrap gap-2 text-[11px] text-white/65">
             <span className="rounded-full border border-white/15 px-2.5 py-1">Anonymous</span>
             <span className="rounded-full border border-white/15 px-2.5 py-1">~1 minute</span>
             <span className="rounded-full border border-white/15 px-2.5 py-1">Based on real use</span>

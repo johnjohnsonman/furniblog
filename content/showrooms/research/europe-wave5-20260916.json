@@ -1,0 +1,512 @@
+{
+  "checked_on": "2026-09-16",
+  "added": [
+    "smow-dusseldorf",
+    "smow-berlin",
+    "smow-essen",
+    "smow-frankfurt",
+    "smow-freiburg",
+    "smow-hamburg",
+    "smow-hannover",
+    "smow-kempten",
+    "smow-cologne",
+    "smow-leipzig",
+    "smow-konstanz",
+    "smow-mainz",
+    "smow-nuremberg",
+    "smow-munich",
+    "smow-villingen-schwenningen",
+    "smow-stuttgart",
+    "desko-amsterdam",
+    "ergonomio-herk-de-stad",
+    "ergonomiewebshop-heerlen"
+  ],
+  "held": [
+    {
+      "name": "smow Chemnitz",
+      "reason": "Map address references Weststrasse 39 / Barbarossastrasse entrance; confirm entrance before publication."
+    }
+  ],
+  "coordinateEvidence": [
+    {
+      "name": "smow Dusseldorf",
+      "city": "Dusseldorf",
+      "country": "DE",
+      "address": "Lorettostrasse 28, 40219 Dusseldorf",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          51.213684,
+          6.765986
+        ]
+      ],
+      "heading": [
+        "smow Düsseldorf"
+      ],
+      "displayed_address": [
+        "Lorettostraße 28, 40219 Düsseldorf-Stadtbezirk 3, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+D%C3%BCsseldorf/@51.213684,6.765986,17z/data=!3m1!4b1!4m6!3m5!1s0x47b8ca6cb924a2b7:0xe0332c56378baab2!8m2!3d51.213684!4d6.765986!16s%2Fg%2F11bxb9t7cg?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Berlin",
+      "city": "Berlin",
+      "country": "DE",
+      "address": "Kurfurstendamm 100, 10709 Berlin",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          52.498356,
+          13.296852
+        ]
+      ],
+      "heading": [
+        "smow Berlin"
+      ],
+      "displayed_address": [
+        "Kurfürstendamm 100, 10709 Berlin-Bezirk Charlottenburg-Wilmersdorf, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Berlin/@52.498356,13.296852,17z/data=!3m1!4b1!4m6!3m5!1s0x47a850c3759d44bf:0x7592a1bf8c73383b!8m2!3d52.498356!4d13.296852!16s%2Fg%2F11c52x399w?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Chemnitz",
+      "city": "Chemnitz",
+      "country": "DE",
+      "address": "Barbarossastrasse 39, 09112 Chemnitz",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          50.8318882,
+          12.901487
+        ]
+      ],
+      "heading": [
+        "smow Chemnitz"
+      ],
+      "displayed_address": [
+        "Eingang, Barbarossastraße, Weststraße 39, 09112 Chemnitz, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Chemnitz/@50.8318882,12.901487,17z/data=!3m1!4b1!4m6!3m5!1s0x47a746526d39fb39:0x5dfeb533ffd920c2!8m2!3d50.8318882!4d12.901487!16s%2Fg%2F1tdvj607?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Essen",
+      "city": "Essen",
+      "country": "DE",
+      "address": "Ruttenscheider Strasse 30-32, 45128 Essen",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          51.4413166,
+          7.0063267
+        ]
+      ],
+      "heading": [
+        "smow Essen"
+      ],
+      "displayed_address": [
+        "Rüttenscheider Str. 30-32, 45128 Essen, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Essen/@51.4413166,7.0063267,17z/data=!3m1!4b1!4m6!3m5!1s0x47b8c3d455f86e2b:0x20fcc0a34f60a937!8m2!3d51.4413166!4d7.0063267!16s%2Fg%2F11r_mkg31m?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Frankfurt",
+      "city": "Frankfurt",
+      "country": "DE",
+      "address": "Hanauer Landstrasse 140, 60314 Frankfurt am Main",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          50.1117324,
+          8.7133243
+        ]
+      ],
+      "heading": [
+        "smow Frankfurt"
+      ],
+      "displayed_address": [
+        "Hanauer Landstraße 140, 60314 Frankfurt am Main-Bornheim/Ostend, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Frankfurt/@50.1117324,8.7133243,17z/data=!3m1!4b1!4m6!3m5!1s0x47bd0e85da9eacb9:0xae43690ca1e47e59!8m2!3d50.1117324!4d8.7133243!16s%2Fg%2F11ckr5zpzq?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Freiburg",
+      "city": "Freiburg",
+      "country": "DE",
+      "address": "Leo-Wohleb-Strasse 6/8, 79098 Freiburg",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          47.9913253,
+          7.8557474
+        ]
+      ],
+      "heading": [
+        "smow Freiburg"
+      ],
+      "displayed_address": [
+        "Leo-Wohleb-Straße 6/8, 79098 Freiburg im Breisgau, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Freiburg/@47.9913253,7.8557474,17z/data=!3m1!4b1!4m6!3m5!1s0x47911d18e7db6c47:0xf7b389d5ce94f1ea!8m2!3d47.9913253!4d7.8557474!16s%2Fg%2F11ft5qdsw_?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Hamburg",
+      "city": "Hamburg",
+      "country": "DE",
+      "address": "Domstrasse 18, 20095 Hamburg",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          53.5488142,
+          9.9948236
+        ]
+      ],
+      "heading": [
+        "smow Hamburg"
+      ],
+      "displayed_address": [
+        "Domstraße 18, 20095 Hamburg, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Hamburg/@53.5488142,9.9948236,17z/data=!3m1!4b1!4m6!3m5!1s0x47b18ee2f96aaaab:0x787f3eca320756bb!8m2!3d53.5488142!4d9.9948236!16s%2Fg%2F11gcdpxj2s?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Hannover",
+      "city": "Hannover",
+      "country": "DE",
+      "address": "Schmiedestrasse 8, 30159 Hannover",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          52.3721584,
+          9.7357847
+        ]
+      ],
+      "heading": [
+        "smow Hannover"
+      ],
+      "displayed_address": [
+        "Schmiedestraße 8, 30159 Hannover, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Hannover/@52.3721584,9.7357847,17z/data=!3m1!4b1!4m6!3m5!1s0x47b075c57773ef15:0xba8eb37a0f921270!8m2!3d52.3721584!4d9.7357847!16s%2Fg%2F11kbpf88kl?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Kempten",
+      "city": "Kempten",
+      "country": "DE",
+      "address": "Kaufbeurer Strasse 91, 87437 Kempten",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          47.73673,
+          10.32314
+        ]
+      ],
+      "heading": [
+        "smow Kempten"
+      ],
+      "displayed_address": [
+        "Kaufbeurer Str. 91, 87437 Kempten (Allgäu), 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Kempten/@47.73673,10.32314,17z/data=!3m1!4b1!4m6!3m5!1s0x479c79a71f4aecb1:0x96739b1aef487ff1!8m2!3d47.73673!4d10.32314!16s%2Fg%2F1q64kljmx?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Cologne",
+      "city": "Cologne",
+      "country": "DE",
+      "address": "Waidmarkt 11, 50676 Koln",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          50.9323669,
+          6.9560889
+        ]
+      ],
+      "heading": [
+        "smow Köln"
+      ],
+      "displayed_address": [
+        "Waidmarkt 11, 50676 Köln, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+K%C3%B6ln/@50.9323669,6.9560889,17z/data=!3m1!4b1!4m6!3m5!1s0x47bf25b2974b0175:0xf6e243d2fae83b18!8m2!3d50.9323669!4d6.9560889!16s%2Fg%2F1yfj43hpb?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Leipzig",
+      "city": "Leipzig",
+      "country": "DE",
+      "address": "Burgplatz 2, 04109 Leipzig",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          51.337567,
+          12.3729875
+        ]
+      ],
+      "heading": [
+        "smow Leipzig"
+      ],
+      "displayed_address": [
+        "Burgpl. 2, 04109 Leipzig, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Leipzig/@51.337567,12.3729875,17z/data=!3m1!4b1!4m6!3m5!1s0x47a6f826892266db:0x7c29d0a6d2e255c9!8m2!3d51.337567!4d12.3729875!16s%2Fg%2F1tglgbg7?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Konstanz",
+      "city": "Konstanz",
+      "country": "DE",
+      "address": "Zollernstrasse 29, 78462 Konstanz",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          47.6620953,
+          9.1754498
+        ]
+      ],
+      "heading": [
+        "smow Konstanz"
+      ],
+      "displayed_address": [
+        "Zollernstraße 29, 78462 Konstanz, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Konstanz/@47.6620953,9.1754498,17z/data=!3m1!4b1!4m6!3m5!1s0x479af7a1816db21d:0xf7ddb6a8b9d44dc0!8m2!3d47.6620953!4d9.1754498!16s%2Fg%2F11r7r08c3m?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Mainz",
+      "city": "Mainz",
+      "country": "DE",
+      "address": "Holzstrasse 32, 55116 Mainz",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          49.9967626,
+          8.2778192
+        ]
+      ],
+      "heading": [
+        "smow Mainz"
+      ],
+      "displayed_address": [
+        "Holzstraße 32, 55116 Mainz, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Mainz/@49.9967626,8.2778192,17z/data=!3m1!4b1!4m6!3m5!1s0x47bd97f872c78be9:0x72113cbb7a3d5d9c!8m2!3d49.9967626!4d8.2778192!16s%2Fg%2F11smmkwmk1?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Nuremberg",
+      "city": "Nuremberg",
+      "country": "DE",
+      "address": "Innere Laufer Gasse 24, 90403 Nurnberg",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          49.4557508,
+          11.0830452
+        ]
+      ],
+      "heading": [
+        "smow Nürnberg"
+      ],
+      "displayed_address": [
+        "Innere Laufer G. 24, 90403 Nürnberg, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+N%C3%BCrnberg/@49.4557508,11.0830452,17z/data=!3m1!4b1!4m6!3m5!1s0x479f57c084b555b3:0x7d55d1a7618889f1!8m2!3d49.4557508!4d11.0830452!16s%2Fg%2F11rd2cbdss?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Munich",
+      "city": "Munich",
+      "country": "DE",
+      "address": "Hohenzollernstrasse 70, 80801 Munchen",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          48.1603691,
+          11.5767975
+        ]
+      ],
+      "heading": [
+        "smow München"
+      ],
+      "displayed_address": [
+        "Hohenzollernstraße 70, 80801 München-Schwabing-West, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+M%C3%BCnchen/@48.1603691,11.5767975,17z/data=!3m1!4b1!4m6!3m5!1s0x479e75c411dc0001:0x38cc1b97b05e93d7!8m2!3d48.1603691!4d11.5767975!16s%2Fg%2F11g6p2ddpj?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Villingen-Schwenningen",
+      "city": "Villingen-Schwenningen",
+      "country": "DE",
+      "address": "Vorderer Eckweg 37, 78048 Villingen-Schwenningen",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          48.0731432,
+          8.4628693
+        ]
+      ],
+      "heading": [
+        "smow Schwarzwald"
+      ],
+      "displayed_address": [
+        "Vorderer Eckweg 37, 78048 Villingen-Schwenningen, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Schwarzwald/@48.0731432,8.4628693,17z/data=!3m1!4b1!4m6!3m5!1s0x47909609465bfafd:0x1fee97e7f7480f76!8m2!3d48.0731432!4d8.4628693!16s%2Fg%2F11f3n9ywvc?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "smow Stuttgart",
+      "city": "Stuttgart",
+      "country": "DE",
+      "address": "Sophienstrasse 17, 70178 Stuttgart",
+      "source": "https://www.smow.de/info/smow.html",
+      "appointment": "unknown",
+      "brand": "",
+      "timezone": "Europe/Berlin",
+      "notes": "Contact the store before travelling to confirm opening hours and chairs available to try.",
+      "coords": [
+        [
+          48.771295,
+          9.174494
+        ]
+      ],
+      "heading": [
+        "smow Stuttgart"
+      ],
+      "displayed_address": [
+        "Sophienstraße 17, 70178 Stuttgart, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/smow+Stuttgart/@48.771295,9.174494,17z/data=!3m1!4b1!4m6!3m5!1s0x4799db4c1d3c61bf:0xd2a4f07d5d4abbf8!8m2!3d48.771295!4d9.174494!16s%2Fg%2F11xcn6gdg?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Desko Amsterdam",
+      "city": "Amsterdam",
+      "country": "NL",
+      "address": "Latexweg 1, 1047 BJ Amsterdam",
+      "source": "https://www.desko.nl/opbergkasten/",
+      "appointment": "required",
+      "brand": "",
+      "timezone": "Europe/Amsterdam",
+      "notes": "Visits are by appointment. Contact the store to confirm chairs available to try.",
+      "coords": [
+        [
+          52.4139478,
+          4.7568795
+        ]
+      ],
+      "heading": [
+        "Desko | Kantoorinrichting"
+      ],
+      "displayed_address": [
+        "Latexweg 1, 1047 BJ Amsterdam, 네덜란드"
+      ],
+      "final_url": "https://www.google.com/maps/place/Desko+%7C+Kantoorinrichting/@52.4139478,4.7568795,17z/data=!3m1!4b1!4m6!3m5!1s0x47c5e374123019bd:0x9413d8722b1c03ac!8m2!3d52.4139478!4d4.7568795!16s%2Fg%2F1vzqrfx6?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Ergonomio Herk-de-Stad",
+      "city": "Herk-de-Stad",
+      "country": "BE",
+      "address": "Steenweg 3-701, 3540 Herk-de-Stad",
+      "source": "https://www.ergonomio.be/contact",
+      "appointment": "required",
+      "brand": "",
+      "timezone": "Europe/Brussels",
+      "notes": "Visits are by appointment. Contact the store to confirm chairs available to try.",
+      "coords": [
+        [
+          50.9493861,
+          5.2186266
+        ]
+      ],
+      "heading": [
+        "Ergonomio"
+      ],
+      "displayed_address": [
+        "Steenweg 3/701, 3540 Herk-de-Stad, 벨기에"
+      ],
+      "final_url": "https://www.google.com/maps/place/Ergonomio/@50.9493861,5.2186266,17z/data=!3m1!4b1!4m6!3m5!1s0x47c13cd01d1b0997:0xee6d0979cc9885e5!8m2!3d50.9493861!4d5.2186266!16s%2Fg%2F11flkcj8d7?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Ergonomiewebshop Heerlen",
+      "city": "Heerlen",
+      "country": "NL",
+      "address": "Akerstraat 27, 6411 GW Heerlen",
+      "source": "https://ergonomiewebshop.nl/klantenservice",
+      "appointment": "required",
+      "brand": "",
+      "timezone": "Europe/Amsterdam",
+      "notes": "Visits are by appointment. Contact the store to confirm chairs available to try.",
+      "coords": [
+        [
+          50.8854657,
+          5.9815963
+        ]
+      ],
+      "heading": [
+        "Ergonomiewebshop"
+      ],
+      "displayed_address": [
+        "Akerstraat 27, 6411 GW Heerlen, 네덜란드"
+      ],
+      "final_url": "https://www.google.com/maps/place/Ergonomiewebshop/@50.8854657,5.9815963,17z/data=!3m1!4b1!4m6!3m5!1s0x47c0bd4b684d789f:0x8a8fac507397a8b8!8m2!3d50.8854657!4d5.9815963!16s%2Fg%2F11q9r2hpj2?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    }
+  ]
+}

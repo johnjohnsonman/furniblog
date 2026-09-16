@@ -1,3 +1,4 @@
+import { NavigationProgress } from "@/components/NavigationProgress"
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Playfair_Display, Inter } from 'next/font/google'
@@ -85,6 +86,7 @@ export default function RootLayout({
             strategy="afterInteractive"
           />
         )}
+        <NavigationProgress />
         {children}
         <PageviewTracker />
         <GoogleAnalytics />

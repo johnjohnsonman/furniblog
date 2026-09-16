@@ -155,7 +155,7 @@ export default async function ReviewsPage({
         >
           <ReviewsTabbedClient
             initialMeta={meta}
-            brands={brands}
+            brands={brands.map(({ slug, name }) => ({ slug, name }))}
             experienceItems={experienceCards}
             initialReviews={initialFeed.reviews}
             initialTotal={initialFeed.total}

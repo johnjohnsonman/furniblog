@@ -38,13 +38,14 @@ export function ShowroomFinder({
     [pick, setPick] = useState<string[]>([]),
     [collapsed, setCollapsed] = useState(false),
     [filters, setFilters] = useState(false),
-    [sheet, setSheet] = useState(48),
+    [sheet, setSheet] = useState(32),
     [dragging, setDragging] = useState(false);
   const [command, setCommand] = useState<MapCommand>({ id: initialCountry ? 1 : 0, kind: initialCountry ? "fit" : "world" }),
     stage = useRef<HTMLDivElement>(null),
     handle = useRef<HTMLButtonElement>(null),
     drag = useRef<{ y: number; height: number } | null>(null),
-    savedSheet = useRef(48);
+    savedSheet = useRef(32);
+  const [visibleCount, setVisibleCount] = useState(24);
   const model = catalog.models.find((m) => m.id === f.model),
     results = useMemo(
       () => filterStores(stores, f, model?.brand_id),
@@ -52,6 +53,7 @@ export function ShowroomFinder({
     ),
     detail = stores.find((s) => s.id === selected);
   const change = (p: Partial<Filters>) => {
+    setVisibleCount(24);
     setF((x) => ({ ...x, ...p }));
     setSelected("");
   };
@@ -76,6 +78,7 @@ export function ShowroomFinder({
     setCommand((c) => ({ id: c.id + 1, kind: "world" }));
   };
   const reset = () => {
+    setVisibleCount(24);
     setF({
       q: "",
       brand: "",
@@ -100,7 +103,7 @@ export function ShowroomFinder({
         <Link href="/products">Explore chairs ↗</Link>
       </header>
       <div className="atlas-search">
-        <div>
+        <div className="atlas-intro">
           <p className="atlas-kicker">Find your chair. Try it in person.</p>
           <h1>Showrooms around the world</h1>
         </div>
@@ -120,16 +123,16 @@ export function ShowroomFinder({
           </span>
           <input
             value={f.q}
-            placeholder="Search registered cities, countries or stores"
+            placeholder="City or store name"
             onChange={(e) => change({ q: e.target.value, city: "", bounds: undefined })}
           />
         </label>
-        <button aria-expanded={filters} onClick={() => setFilters(!filters)}>
+        <button className="atlas-filter-toggle" aria-expanded={filters} onClick={() => setFilters(!filters)}>
           Filters {filters ? "−" : "+"}
         </button>
       </div>
       {filters && (
-        <section className="atlas-filters" aria-label="Store filters">
+        <section className="atlas-filters" onKeyDown={(e) => { if(e.key === "Escape") setFilters(false); }} aria-label="Store filters">
           <label>
             Brand
             <select
@@ -238,7 +241,7 @@ export function ShowroomFinder({
             Show list
           </button>
         )}
-        <aside className="atlas-panel" aria-label="Store results">
+        <aside className={`atlas-panel ${sheet <= 12 ? "atlas-peek" : ""}`} aria-label="Store results">
           <button
             ref={handle}
             className="atlas-sheet-handle"
@@ -288,10 +291,11 @@ export function ShowroomFinder({
           >
             ━━{" "}
             <span>
-              {results.length} stores · Drag or use keyboard to resize
+              Drag to resize
             </span>
           </button>
           <div className="atlas-panel-title">
+            <div className="atlas-mobile-views"><button aria-pressed={sheet <= 12} onClick={() => { setSelected(""); setSheet(12); }}>Map</button><button aria-pressed={sheet === 100} onClick={() => setSheet(100)}>List</button></div>
             {detail ? (
               <button onClick={close}>← Back to results</button>
             ) : (
@@ -337,12 +341,13 @@ export function ShowroomFinder({
                 )}
               </div>
             ) : (
-              results.map((s) => (
+              results.slice(0, visibleCount).map((s) => (
                 <Link
                   id={`store-${s.id}`}
                   key={s.id}
                   href={`/stores/${s.slug}`}
                   className="atlas-store-card"
+                  prefetch={false}
                   onClick={(e) => {
                     if (!e.ctrlKey && !e.metaKey && !e.shiftKey) {
                       e.preventDefault();
@@ -395,6 +400,7 @@ export function ShowroomFinder({
               ))
             )}
           </div>
+          {!detail && results.length > visibleCount && <button className="atlas-load-more" onClick={() => setVisibleCount(n => n + 24)}>Show more stores ({visibleCount} of {results.length})</button>}
           {detail && (
             <div className="atlas-detail-scroll">
               <StoreDetails key={detail.id} store={detail} correctionsEnabled={correctionsEnabled} />

@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Armchair } from "lucide-react"
-import type { ProductView } from "@/lib/data/mappers"
+import type { ProductCardView } from "@/lib/data/mappers"
 import type { ChairCategory } from "@/types/product"
 import { ChairProductImage } from "./ChairProductImage"
 import { stripBrandPrefix } from "@/lib/product-name"
@@ -14,7 +14,7 @@ const PLACEHOLDER_BG: Partial<Record<ChairCategory, string>> = {
 }
 
 interface ChairCardProps {
-  product: ProductView
+  product: ProductCardView
   reviewCount?: number
   avgScore?: number
 }

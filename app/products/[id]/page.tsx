@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { getProductRelatedBlogPosts } from "@/lib/growth/related-blog-server"
 import { guideIntent } from "@/lib/growth/related-blog"
 import { notFound } from "next/navigation"
@@ -39,11 +40,11 @@ interface ProductPageProps {
   params: Promise<{ id: string }>
 }
 
-async function resolveProduct(slug: string) {
+const resolveProduct = cache(async (slug: string) => {
   const fromDb = await getProductBySlug(slug)
   if (fromDb) return fromDb
   return products.find((p) => p.id === slug || p.slug === slug)
-}
+})
 
 /**
  * Published Chairpedia deep-dive linked to this product, if any.
@@ -115,31 +116,24 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound()
   }
 
-  const supabaseReviews = isSupabaseConfigured()
-    ? await getProductReviews(product.id)
-    : []
-  const {
-    videos: productVideos,
-    total: productVideoTotal,
-    chairId: productVideoChairId,
-  } = isSupabaseConfigured()
-    ? await fetchProductVideos(product.id)
-    : { videos: [], total: 0, chairId: null }
-  const chairReviews =
-    isSupabaseConfigured()
-      ? supabaseReviews
-      : getChairReviewsForProduct(product.id)
-
   const slug = product.slug ?? product.id
-  const chairpediaSlug = await getChairpediaSlug(slug)
-  const relatedBlog = isSupabaseConfigured() ? await getProductRelatedBlogPosts(slug, 3) : []
-  const productComparisons = isSupabaseConfigured() ? await getPublishedProductComparisons(slug) : []
+  const configured = isSupabaseConfigured()
+  // Independent public lookups run together; prices remain fresh per request.
+  const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool] = await Promise.all([
+    configured ? getProductReviews(product.id) : Promise.resolve([]),
+    configured ? fetchProductVideos(product.id) : Promise.resolve({ videos: [], total: 0, chairId: null }),
+    getChairpediaSlug(slug),
+    configured ? getProductRelatedBlogPosts(slug, 3) : Promise.resolve([]),
+    configured ? getPublishedProductComparisons(slug) : Promise.resolve([]),
+    configured ? getProducts({ category: product.category }) : Promise.resolve([]),
+  ])
+  const { videos: productVideos, total: productVideoTotal, chairId: productVideoChairId } = videoResult
+  const chairReviews = configured ? supabaseReviews : getChairReviewsForProduct(product.id)
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
-
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
-  const similarProducts = isSupabaseConfigured()
-    ? (await getProducts({ category: product.category })).filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
+  const similarProducts = configured
+    ? similarPool.filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
     : getSimilarProducts(productWithLinks, 3)
   const reviewCount =
     isSupabaseConfigured() || chairReviews.length > 0

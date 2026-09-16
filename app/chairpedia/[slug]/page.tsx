@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { englishImageDescriptions } from "@/lib/public-english"
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
@@ -60,7 +61,7 @@ function sourceLabel(url: string): string {
   }
 }
 
-async function getEntry(slug: string): Promise<Entry | null> {
+const getEntry = cache(async (slug: string): Promise<Entry | null> => {
   try {
     const supabase = createPublicServerClient()
     const { data } = await supabase
@@ -75,7 +76,7 @@ async function getEntry(slug: string): Promise<Entry | null> {
   } catch {
     return null
   }
-}
+})
 
 function linkedProduct(p: ProductRef): { slug: string; name: string } | null {
   if (!p) return null

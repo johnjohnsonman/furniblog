@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache"
 import { comparisonMedia } from "@/lib/comparisons/card-media"
 import { enrichBlogPosts } from "@/lib/blog/media-server"
 import type { Metadata } from "next"
@@ -76,11 +77,13 @@ async function getComparisonCardsAsBlog(): Promise<BlogCard[]> {
   }
 }
 
+const getCachedBlogCards = unstable_cache(async () => {
+  const [posts, comparisons] = await Promise.all([getPosts(), getComparisonCardsAsBlog()])
+  return [posts.map(({ slug, title, subtitle, excerpt, hero_image_url, published_at, featured, category, href }) => ({ slug, title, subtitle, excerpt, hero_image_url, published_at, featured, category, href })), comparisons]
+}, ["public-blog-cards-v1"], { revalidate: 60 })
+
 export default async function BlogIndexPage() {
-  const [blogPosts, comparisonCards] = await Promise.all([
-    getPosts(),
-    getComparisonCardsAsBlog(),
-  ])
+  const [blogPosts, comparisonCards] = await getCachedBlogCards()
 
   // Merge, then sort featured-first and newest-first so comparisons interleave
   // by date with regular posts (matching getPosts' ordering).
