@@ -2,7 +2,8 @@ import type { Store, StorePreview } from "./types";
 
 export const locationSlug = (s: string) => s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
-export const countryName = (code: string) => countryNames.of(code) || code;
+const countryNameOverrides: Record<string, string> = { HK: "Hong Kong" };
+export const countryName = (code: string) => countryNameOverrides[code] || countryNames.of(code) || code;
 export const countryPath = (code: string) => `/stores/locations/${locationSlug(countryName(code))}`;
 // Include the US state so cities with the same name never merge.
 export const cityKey = (s: Store | StorePreview) => locationSlug(s.city + (s.country_code === "US" ? ` ${s.region}` : ""));
