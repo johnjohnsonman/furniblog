@@ -1,5 +1,5 @@
 {
-  "checked_on": "2026-09-16",
+  "checked_on": "2026-09-17",
   "catalog": {
     "brands": [
       {
@@ -38199,8 +38199,33 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
-      "updated_at": "2026-09-16T15:00:00.000Z"
+      "models": [
+        {
+          "product_id": "83505c8e-39e5-4a87-858f-ab67e9edbfd0",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "fa7a9bfa-c3ed-475e-b194-c8542217e857",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "a6b1c7f3-b42d-4d1a-9c0c-74a715d00c46",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "53baa7fd-1f00-413c-8918-2d246e78f17a",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "updated_at": "2026-09-17T03:30:00.000Z"
     },
     {
       "id": "5f084168-58ea-4563-bbf1-6ec1a7281f87",
@@ -38239,8 +38264,27 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
-      "updated_at": "2026-09-16T15:00:00.000Z"
+      "models": [
+        {
+          "product_id": "6cdb2812-bfbf-45fe-81b5-4cb9ab424ca6",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "fa7a9bfa-c3ed-475e-b194-c8542217e857",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "a6b1c7f3-b42d-4d1a-9c0c-74a715d00c46",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "updated_at": "2026-09-17T03:30:00.000Z"
     },
     {
       "id": "2bc6ef00-9804-4dc6-9653-231b84285437",
@@ -38279,8 +38323,45 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
-      "updated_at": "2026-09-16T15:00:00.000Z"
+      "models": [
+        {
+          "product_id": "6cdb2812-bfbf-45fe-81b5-4cb9ab424ca6",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "83505c8e-39e5-4a87-858f-ab67e9edbfd0",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "fa7a9bfa-c3ed-475e-b194-c8542217e857",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "16315ab4-bb1d-4d44-b675-0ef246805d50",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "a6b1c7f3-b42d-4d1a-9c0c-74a715d00c46",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "53baa7fd-1f00-413c-8918-2d246e78f17a",
+          "trial": "confirmed",
+          "source_url": "https://shop.steelcase.com/pages/where-to-try",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "updated_at": "2026-09-17T03:30:00.000Z"
     },
     {
       "id": "a7fe8c32-8f75-415a-a7c8-689d9c68f7f6",
@@ -38391,8 +38472,21 @@
           "checked_on": "2026-09-16"
         }
       ],
-      "models": [],
-      "updated_at": "2026-09-16T15:00:00.000Z"
+      "models": [
+        {
+          "product_id": "7032ef01-1c82-4a5b-a579-1a86f61c12f3",
+          "trial": "confirmed",
+          "source_url": "https://www.hermanmiller.com/en_eur/contact/dubai-showroom/",
+          "checked_on": "2026-09-17"
+        },
+        {
+          "product_id": "ff3c7e19-4b5d-4d89-9905-bae927ecdd91",
+          "trial": "confirmed",
+          "source_url": "https://www.hermanmiller.com/en_eur/contact/dubai-showroom/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "updated_at": "2026-09-17T03:30:00.000Z"
     },
     {
       "id": "34cb86eb-37b2-4a89-8a49-023a508b6db7",
@@ -38529,6 +38623,806 @@
       "brands": [],
       "models": [],
       "updated_at": "2026-09-16T15:00:00.000Z"
+    },
+    {
+      "id": "9ccda1c8-19b7-443b-9c13-4d6e16947e66",
+      "slug": "okamura-taipei",
+      "name": "Okamura Taiwan Showroom",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "8F, No. 363, Songjiang Road, Zhongshan District, Taipei City 10482, Taiwan",
+      "unit": "",
+      "latitude": 25.063826253202,
+      "longitude": 121.533458317413,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.okamura.com.tw/pages/about-us",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.okamura.com.tw/pages/about-us",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "cb560f63-0950-4e58-9d0e-3a509b4af02c",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.okamura.com.tw/pages/about-us",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "64434574-0126-4ab8-ae5f-bc2d264ff4ed",
+      "slug": "fun-at-work-taipei",
+      "name": "Fun at Work Taipei",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "MF, No. 97, Section 2, Dunhua South Road, Daan District, Taipei City 106420, Taiwan",
+      "unit": "",
+      "latitude": 25.028912525172,
+      "longitude": 121.549184695608,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.okamura.com/zh/dealers/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.okamura.com/zh/dealers/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "cb560f63-0950-4e58-9d0e-3a509b4af02c",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.okamura.com/zh/dealers/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "ebe3f520-8cd4-491b-aa87-f59203d87220",
+      "slug": "yc-global-taipei",
+      "name": "YC Global Taipei",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "4F, No. 3, Lane 45, Section 2, Zhongshan North Road, Zhongshan District, Taipei City 10491, Taiwan",
+      "unit": "",
+      "latitude": 25.054510145008,
+      "longitude": 121.523112366685,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.okamura.com/zh/dealers/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.okamura.com/zh/dealers/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "cb560f63-0950-4e58-9d0e-3a509b4af02c",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.okamura.com/zh/dealers/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "698e2b1e-0f03-4e5d-8d41-6eda747e4c39",
+      "slug": "ystore-renai-taipei",
+      "name": "Ystore Renai Concept Store",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "1F, No. 125, Section 3, Renai Road, Daan District, Taipei City, Taiwan",
+      "unit": "",
+      "latitude": 25.038290282264,
+      "longitude": 121.542113470632,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.ystore.com.tw/pages/showroom",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.ystore.com.tw/pages/showroom",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.ystore.com.tw/pages/showroom",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "4bc4b87a-32bd-41bc-836e-31f33cd7c6fb",
+      "slug": "ystore-neihu-taipei",
+      "name": "Ystore Neihu Ergonomic Experience Space",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "3F, No. 303, Xinhu 1st Road, Neihu District, Taipei City 114065, Taiwan",
+      "unit": "",
+      "latitude": 25.062434563908,
+      "longitude": 121.583222430937,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.ystore.com.tw/pages/showroom",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.ystore.com.tw/pages/showroom",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.ystore.com.tw/pages/showroom",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "4010c2ce-80f9-4098-bdc9-20b0e60ac246",
+      "slug": "ergohuman-taipei",
+      "name": "Ergohuman Taipei Store",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "1F, No. 14, Lane 230, Jingfu Street, Wenshan District, Taipei City 116055, Taiwan",
+      "unit": "",
+      "latitude": 24.99309174949,
+      "longitude": 121.538750902535,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "1e41e78f-23ff-4a6e-a82c-4ba9597ba228",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "07572d08-7a48-4905-b165-7cf869090295",
+      "slug": "ergohuman-hsinchu",
+      "name": "Ergohuman Hsinchu Store",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Hsinchu",
+      "region": "Hsinchu City",
+      "address": "No. 6-5, Keyuan Road, East District, Hsinchu City 300071, Taiwan",
+      "unit": "",
+      "latitude": 24.786586004676,
+      "longitude": 121.009436985948,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "1e41e78f-23ff-4a6e-a82c-4ba9597ba228",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "6d0f9c12-1d01-45e0-9c92-0fea98e2ead1",
+      "slug": "ergohuman-taichung",
+      "name": "Ergohuman Taichung Store",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taichung",
+      "region": "Taichung City",
+      "address": "1F, No. 204, Dachang Street, West District, Taichung City 403019, Taiwan",
+      "unit": "",
+      "latitude": 24.145718596012,
+      "longitude": 120.652247295087,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "1e41e78f-23ff-4a6e-a82c-4ba9597ba228",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://ergohuman.com.tw/?m=0&t=247",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "7b398523-8ff8-4bf9-ae7b-71f183582294",
+      "slug": "stylegroup-taipei",
+      "name": "Style Group Taipei Showroom",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taipei",
+      "region": "Taipei City",
+      "address": "B1, No. 158, Ruihu Street, Neihu District, Taipei City, Taiwan",
+      "unit": "",
+      "latitude": 25.071743715122,
+      "longitude": 121.57609848379,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.stylegroup-inc.com/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.stylegroup-inc.com/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.stylegroup-inc.com/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "2bac8033-bfe2-4a53-a1a5-77f72cbb645b",
+      "slug": "stylegroup-taichung",
+      "name": "Style Group Taichung Showroom",
+      "status": "published",
+      "country_code": "TW",
+      "city": "Taichung",
+      "region": "Taichung City",
+      "address": "No. 520, Fuke Road, Xitun District, Taichung City, Taiwan",
+      "unit": "",
+      "latitude": 24.186512019572,
+      "longitude": 120.615434982169,
+      "timezone": "Asia/Taipei",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.stylegroup-inc.com/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.stylegroup-inc.com/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.stylegroup-inc.com/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "a4c8a284-ac79-4db2-b6db-aedfe4455bd6",
+      "slug": "afdc-riyadh",
+      "name": "Arabian Furniture and Design Company Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "Riyadh 12243, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.7080199,
+      "longitude": 46.7013046,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.hermanmiller.com/en_eur/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAkAAJ/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.hermanmiller.com/en_eur/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAkAAJ/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.hermanmiller.com/en_eur/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAkAAJ/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "ff101967-eb77-4ef9-84d3-509b70721467",
+      "slug": "afdc-jeddah",
+      "name": "Arabian Furniture and Design Company Jeddah",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Jeddah",
+      "region": "Makkah Province",
+      "address": "Office 102, Orient Tower, 3695 Sari Street, Al Khalidiyyah District, Jeddah 23423, Saudi Arabia",
+      "unit": "",
+      "latitude": 21.57383700906,
+      "longitude": 39.141597374874,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.hermanmiller.com/en_apc/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAlAAJ/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom to book an appointment and confirm the chair you want to try before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.hermanmiller.com/en_apc/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAlAAJ/",
+      "checked_on": "2026-09-17",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.hermanmiller.com/en_apc/where-to-buy/contact-a-dealer/Arabian%20Furniture%20and%20Design%20Company/001i000000IhaAlAAJ/",
+          "checked_on": "2026-09-17"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "541355c9-9f75-4992-b850-dc35fab6a1d9",
+      "slug": "quanta-riyadh",
+      "name": "Quanta Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "2582 Salman As Saqli, Riyadh, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.771272519031,
+      "longitude": 46.782222803115,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://quanta-sa.com/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://quanta-sa.com/",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "4861ff3d-0bf5-45d5-a9be-22290015a9d5",
+      "slug": "furniture-touch-riyadh",
+      "name": "Furniture Touch Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "King Fahd Branch Road, King Fahd District, Riyadh, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.720583323833,
+      "longitude": 46.6666171784,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://athathi.sa/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://athathi.sa/",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "78f471a7-e332-47df-a23e-16b0073f9bd3",
+      "slug": "office-hub-riyadh",
+      "name": "Office Hub Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "7204 King Fahd Road, Al Olaya, Riyadh 12331, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.699416390946,
+      "longitude": 46.677777416388,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://officehub.sa/pages/contact",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://officehub.sa/pages/contact",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "f0692509-c422-4d33-b1c0-5cbeac596ae6",
+      "slug": "damons-riyadh",
+      "name": "Damons Office Furniture Showroom",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "Khalid Ibn Yazid Ibn Muawiyah, Sayyidah Ar Ruasa, Riyadh 12462, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.7507741,
+      "longitude": 46.6967119,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://damons.sa/contactus",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://damons.sa/contactus",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "add68400-be06-4a83-b011-d00a8eca85f7",
+      "slug": "midas-riyadh-yasmeen",
+      "name": "Midas Riyadh Al Yasmeen",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "King Abdulaziz Road, Al Yasmeen, Exit 5, Riyadh 11321, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.802788852157,
+      "longitude": 46.651880939795,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://midasfurniture.com/ksa_en/ksa",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://midasfurniture.com/ksa_en/ksa",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "e9853292-8993-4c06-a22b-48154221162e",
+      "slug": "midas-jeddah",
+      "name": "Midas Jeddah",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Jeddah",
+      "region": "Makkah Province",
+      "address": "King Abdulaziz Branch Road, An Nahdah, Jeddah 23523, Saudi Arabia",
+      "unit": "",
+      "latitude": 21.598944435176,
+      "longitude": 39.121068791241,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://midasfurniture.com/ksa_en/ksa",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://midasfurniture.com/ksa_en/ksa",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "14f71ca9-e586-438b-94f9-d3175381a710",
+      "slug": "seatspace-riyadh",
+      "name": "SeatSpace Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "4456 King Fahd Road, Al Olaya, Riyadh 12331, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.698486148903,
+      "longitude": 46.67877843437,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://cdn.seatspace.com.sa/en",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://cdn.seatspace.com.sa/en",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "4c4cae14-96c5-4cde-9b1e-1f7b843b97fe",
+      "slug": "majestic-riyadh",
+      "name": "Majestic Furniture Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "Arcade Centre, King Fahd Road, Al Olaya, Riyadh, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.6993706,
+      "longitude": 46.6777926,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://majestic.com.sa/en/shop/c/office-chairs",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://majestic.com.sa/en/shop/c/office-chairs",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "1b38c974-dfc5-417e-bd69-27e006ba427e",
+      "slug": "majestic-jeddah",
+      "name": "Majestic Furniture Jeddah",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Jeddah",
+      "region": "Makkah Province",
+      "address": "6259 Madinah Road, Al Saad Commercial Center, Al Sharafiyah, Jeddah, Saudi Arabia",
+      "unit": "",
+      "latitude": 21.5172537,
+      "longitude": 39.1871321,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://majestic.com.sa/en/shop/c/office-chairs",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://majestic.com.sa/en/shop/c/office-chairs",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
+    },
+    {
+      "id": "9a8cffbd-782e-40c7-bf25-d5fdb7bbf5e2",
+      "slug": "badael-tech-riyadh",
+      "name": "Badael Tech Riyadh",
+      "status": "published",
+      "country_code": "SA",
+      "city": "Riyadh",
+      "region": "Riyadh",
+      "address": "Dar Al Wakalat Commercial Center, Olaya Main Street, Riyadh 11474, Saudi Arabia",
+      "unit": "",
+      "latitude": 24.784031053904,
+      "longitude": 46.63941989962,
+      "timezone": "Asia/Riyadh",
+      "phone": "",
+      "email": "",
+      "website_url": "https://badaeltech.com/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm chair availability and visit arrangements.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://badaeltech.com/",
+      "checked_on": "2026-09-17",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-17T03:00:00.000Z"
     }
   ]
 }

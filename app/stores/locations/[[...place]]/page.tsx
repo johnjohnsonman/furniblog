@@ -4,6 +4,7 @@ import { cache } from "react";
 import { notFound } from "next/navigation";
 import { getPublicStores, getStoreCatalog, enrichStore } from "@/lib/showrooms/server";
 import { locationGroups } from "@/lib/showrooms/locations";
+import { trialPages } from "@/lib/showrooms/trial-pages";
 import { SITE_URL } from "@/lib/site-config";
 import "./locations.css";
 
@@ -54,6 +55,7 @@ export default async function LocationsPage({ params }: Props) {
   const r = await resolve((await params).place);
   const brands = Array.from(new Map(r.stores.flatMap(s => s.brands.filter(b => b.carried === "confirmed" && b.name).map(b => [b.brand_id, b] as const))).values()).sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   const appointmentCount = r.stores.filter(s => s.appointment === "required").length;
+  const trials = trialPages(r.stores);
   const mapParams = new URLSearchParams(r.country ? { country: r.country.code } : {});
   if (r.city) mapParams.set("city", r.city.key);
   const mapHref = `/stores${mapParams.size ? `?${mapParams}` : ""}`;
@@ -73,6 +75,7 @@ export default async function LocationsPage({ params }: Props) {
         <aside className="location-summary"><div><strong>{r.stores.length}</strong><span>Listed stores</span></div><div><strong>{brands.length}</strong><span>Listed brands</span></div><div><strong>{appointmentCount}</strong><span>Appointment required</span></div></aside>
         {brands.length > 0 && <p className="location-brands"><strong>Brands in this directory:</strong>{" "}{brands.map((brand, index) => <span key={brand.brand_id}>{index > 0 && ", "}{brand.slug ? <Link href={`/brands/${brand.slug}`}>{brand.name}</Link> : brand.name}</span>)}. A brand listing does not confirm that every model is on display.</p>}
         {!r.city && <section><h2>Choose a city</h2><div className="location-city-links">{r.country.cities.map(c => <Link key={c.key} href={c.stores.length >= 3 ? c.path : `/stores?country=${r.country!.code}&city=${c.key}`}>{c.name} <span>{c.stores.length}</span></Link>)}</div></section>}
+        {trials.length > 0 && <section><h2>Chairs confirmed to try</h2><p>These model links are based on store-specific public sources. Contact the store to reconfirm availability.</p><div className="location-city-links">{trials.slice(0,18).map(page => <Link key={page.path} href={page.path}>{page.productName} in {page.cityName} <span>{page.stores.length}</span></Link>)}</div></section>}
         <section aria-labelledby="stores-title"><h2 id="stores-title">{r.city ? `Where to shop in ${r.city.name}` : `Stores in ${r.country.name}`}</h2><div className="location-store-grid">{r.stores.map(s => <article className="location-store-card" key={s.id}><p className="location-eyebrow">{s.city} · CHAIR STORE</p><h3><Link href={`/stores/${s.slug}`}>{s.name}</Link></h3><p>{[s.address,s.unit].filter(Boolean).join(", ")}</p><p><strong>{s.appointment === "required" ? "Appointment required" : s.appointment === "walk_in" ? "Walk-ins welcome" : "Contact before visiting"}</strong></p>{s.visit_notes && <p>{s.visit_notes}</p>}<p>{s.brands.filter(b => b.carried === "confirmed").map(b => b.name).filter(Boolean).join(" · ") || "Contact the store for its current chair range."}</p><div className="location-card-actions"><Link href={`/stores/${s.slug}`}>Visit details →</Link><a href={s.website_url || s.source_url} target="_blank" rel="noopener noreferrer">Official website ↗</a></div><small>Source checked: {s.checked_on} · <a href={s.source_url} target="_blank" rel="noopener noreferrer">Source</a></small></article>)}</div></section>
       </>}
       {r.city && <section><h2>Other cities in {r.country!.name}</h2><div className="location-city-links">{r.country!.cities.filter(c => c.key !== r.city!.key && c.stores.length >= 3).map(c => <Link key={c.path} href={c.path}>{c.name} <span>{c.stores.length} stores</span></Link>)}</div></section>}

@@ -46,7 +46,7 @@ async function main() {
 
 
 
- const paths=['/stores','/stores/locations','/stores/locations/mexico','/stores/locations/new-zealand','/stores/locations/india','/stores/locations/singapore','/stores/locations/malaysia','/stores/locations/thailand','/stores/locations/indonesia','/stores/locations/vietnam','/stores/locations/philippines','/stores/locations/hong-kong','/stores/locations/taiwan','/stores/locations/united-arab-emirates','/stores/locations/saudi-arabia'];
+ const paths=['/stores','/stores/locations','/stores/locations/mexico','/stores/locations/new-zealand','/stores/locations/india','/stores/locations/singapore','/stores/locations/malaysia','/stores/locations/thailand','/stores/locations/indonesia','/stores/locations/vietnam','/stores/locations/philippines','/stores/locations/hong-kong','/stores/locations/taiwan','/stores/locations/united-arab-emirates','/stores/locations/saudi-arabia','/stores/try/steelcase-leap-v2/hong-kong','/stores/try/herman-miller-embody/dubai'];
  const base='https://www.googleapis.com/webmasters/v3/sites/'+encodeURIComponent('sc-domain:chairpedia.com');
  const checkedAt=new Date().toISOString(),endDate=checkedAt.slice(0,10),startDate=new Date(Date.now()-28*86400000).toISOString().slice(0,10);
  const inspections=await Promise.all(paths.map(async path=>{const r=await request('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',{inspectionUrl:'https://www.chairpedia.com'+path,siteUrl:'sc-domain:chairpedia.com',languageCode:'en-US'});return {path,status:r.inspectionResult?.indexStatusResult};}));

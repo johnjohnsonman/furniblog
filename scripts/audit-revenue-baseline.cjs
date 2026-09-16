@@ -11,7 +11,8 @@ async function main() {
   const range = { startDate: start.toISOString().slice(0, 10), endDate: end.toISOString().slice(0, 10) }
   const report = { generatedAt: new Date().toISOString(), range, notes: ['GSC and GA4 use their own reporting timezones; counts are not a joined conversion funnel.', 'Affiliate events are not unique visitors, orders or commission.', 'Associates orders and net commission are unavailable through these APIs.'], ga4: {}, gsc: {}, affiliate: {} }
   const credentials = process.env.GSC_CREDENTIALS_FILE ? JSON.parse(readFileSync(process.env.GSC_CREDENTIALS_FILE, 'utf8')) : null
-  const key = createPrivateKey(credentials?.private_key || process.env.GSC_PRIVATE_KEY?.replace(/\\n/g, '\n'))
+  const pem = (credentials?.private_key || process.env.GSC_PRIVATE_KEY?.replace(/\\n/g, '\n') || '').trim().replace(/^["']/, '').replace(/["'],?\s*$/, '')
+  const key = createPrivateKey(pem)
   const enc = data => Buffer.from(JSON.stringify(data)).toString('base64url')
   const now = Math.floor(Date.now() / 1000)
   const unsigned = `${enc({ alg: 'RS256', typ: 'JWT' })}.${enc({ iss: credentials?.client_email || process.env.GSC_CLIENT_EMAIL, scope: 'https://www.googleapis.com/auth/analytics.readonly https://www.googleapis.com/auth/webmasters.readonly', aud: 'https://oauth2.googleapis.com/token', iat: now, exp: now + 1200 })}`
@@ -27,17 +28,22 @@ async function main() {
   try {
     const accounts = await google('https://analyticsadmin.googleapis.com/v1beta/accountSummaries?pageSize=200')
     if (accounts.nextPageToken) throw Error('Account list incomplete')
-    const properties = (accounts.accountSummaries || []).flatMap(a => a.propertySummaries || []).filter(p => /furniblog/i.test(p.displayName || ''))
-    if (properties.length !== 1) throw Error('Expected one Furniblog property')
+    const properties = (accounts.accountSummaries || []).flatMap(a => a.propertySummaries || []).filter(p => /chairpedia|furniblog/i.test(p.displayName || ''))
+    if (properties.length !== 1) throw Error(`Expected one Chairpedia/Furniblog property; found ${properties.length}`)
     const definitions = [
       ['sources', ['countryId', 'sessionSourceMedium'], ['sessions', 'engagedSessions']],
       ['landings', ['countryId', 'landingPagePlusQueryString'], ['sessions', 'engagedSessions']],
       ['affiliateEvents', ['countryId', 'pagePath'], ['eventCount']],
+      ['showroomEvents', ['countryId', 'pagePath'], ['eventCount']],
     ]
     for (const [name, dimensions, metrics] of definitions) {
       const data = await google(`https://analyticsdata.googleapis.com/v1beta/${properties[0].property}:runReport`, {
         dateRanges: [range], dimensions: dimensions.map(name => ({ name })), metrics: metrics.map(name => ({ name })),
-        ...(name === 'affiliateEvents' ? { dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: 'affiliate_click' } } } } : {}),
+        ...(['affiliateEvents', 'showroomEvents'].includes(name) ? {
+          dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: {
+            matchType: 'EXACT', value: name === 'affiliateEvents' ? 'affiliate_click' : 'showroom_action',
+          } } },
+        } : {}),
         limit: 10000, orderBys: [{ metric: { metricName: metrics[0] }, desc: true }],
       })
       if ((data.rowCount || 0) > (data.rows || []).length) throw Error(`${name}: result truncated`)
@@ -79,6 +85,6 @@ async function main() {
   mkdirSync(dir, { recursive: true })
   const file = resolve(dir, `baseline-${Date.now()}.json`)
   writeFileSync(file, JSON.stringify(report, null, 2), { flag: 'wx' })
-  console.log(JSON.stringify({ file, range, ga4: report.ga4.status, gsc: report.gsc.status, affiliateEvents: total, sources: report.ga4.sources?.rows.filter(r => r.countryId === 'US').slice(0, 12), landings: report.ga4.landings?.rows.filter(r => r.countryId === 'US').slice(0, 30), ga4Affiliate: report.ga4.affiliateEvents, postInstrumentation: report.ga4.postInstrumentation, errors: [report.ga4.error, report.gsc.error].filter(Boolean) }, null, 2))
+  console.log(JSON.stringify({ file, range, ga4: report.ga4.status, gsc: report.gsc.status, affiliateEvents: total, showroomEvents: report.ga4.showroomEvents, sources: report.ga4.sources?.rows.filter(r => r.countryId === 'US').slice(0, 12), landings: report.ga4.landings?.rows.filter(r => r.countryId === 'US').slice(0, 30), ga4Affiliate: report.ga4.affiliateEvents, postInstrumentation: report.ga4.postInstrumentation, errors: [report.ga4.error, report.gsc.error].filter(Boolean) }, null, 2))
 }
 main().catch(error => { console.error(error.message); process.exitCode = 1 })

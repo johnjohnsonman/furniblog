@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { contactLinks, hoursState } from "@/lib/showrooms/domain";
 import type { Store } from "@/lib/showrooms/types";
+import { cityKey } from "@/lib/showrooms/locations";
 export function trackStore(action: string, id: string) {
   if (
     process.env.NODE_ENV !== "production" ||
@@ -260,6 +261,9 @@ export function StoreDetails({ store: s, correctionsEnabled = true }: { store: S
                   </>
                 )}
                 {m.checked_on && ` · Checked ${m.checked_on}`}
+                {m.slug && m.trial === "confirmed" && (
+                  <>{" · "}<Link href={`/stores/try/${m.slug}/${cityKey(s)}`} onClick={() => trackStore("research_trial_page", s.id)}>Other places to try</Link></>
+                )}
               </li>
             ))}
           </ul>
