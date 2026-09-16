@@ -11,7 +11,8 @@ import { StoreDetails } from "@/components/showrooms/StoreDetails";
 import "@/components/showrooms/atlas.css";
 import { SITE_URL } from "@/lib/site-config";
 import { countryPath, countryName } from "@/lib/showrooms/locations";
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+export function generateStaticParams() { return []; }
 const load = cache(async (slug: string) => {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
   const [r, c] = await Promise.all([getPublicStores(), getStoreCatalog()]);

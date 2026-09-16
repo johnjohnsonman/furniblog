@@ -1,16 +1,9 @@
-import { toProductCardView } from "@/lib/data/mappers"
+import { getCatalogCards, getCatalogReviewCounts, getCatalogStats } from "@/lib/supabase/catalog-cards"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductsPageContent } from "./products-content"
 import { isChairCategory } from "@/lib/chair-categories"
-import {
-  getProducts,
-  getBrandsForProductFilter,
-  getSiteStats,
-  getReviewCounts,
-  getCategoryCounts,
-} from "@/lib/supabase/queries"
 
 // Read prices/specs fresh from the DB on every request so the catalog grid
 // always matches the (force-dynamic) product detail page. Without this the list
@@ -38,23 +31,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         ? rawCategory.toLowerCase()
         : "All"
 
-  const [products, brands, stats, categoryCounts] = await Promise.all([
-    getProducts(),
-    getBrandsForProductFilter(),
-    getSiteStats(),
-    getCategoryCounts(),
+  const [products, stats, reviewCounts] = await Promise.all([
+    getCatalogCards(),
+    getCatalogStats(),
+    getCatalogReviewCounts(),
   ])
-
-  const reviewCounts = await getReviewCounts(products.map((p) => p.id))
+  const brands = Array.from(new Map(products.filter(p => p.brandId).map(p => [p.brandId, { id: p.brandId, slug: p.brandId, name: p.brand, productCount: products.filter(item => item.brandId === p.brandId).length }])).values()).sort((a,b) => a.name.localeCompare(b.name))
+  const categoryCounts: Record<string, number> = {}
+  for (const p of products) categoryCounts[p.category] = (categoryCounts[p.category] ?? 0) + 1
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       <ProductsPageContent
-        products={products.map(toProductCardView)}
+        products={products}
         brands={brands}
         reviewCounts={reviewCounts}
-        stats={stats}
+        stats={{ ...stats, products: products.length, brands: brands.length }}
         categoryCounts={categoryCounts}
         initialCategory={initialCategory}
         initialSearch={params.search ?? ""}

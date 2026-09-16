@@ -23,7 +23,7 @@ const SORT_OPTIONS = [
 
 export type ProductsPageContentProps = {
   products: ProductCardView[]
-  brands: Brand[]
+  brands: Pick<Brand, "id" | "slug" | "name" | "productCount">[]
   reviewCounts: Record<string, ReviewCountStats>
   stats: SiteStats
   categoryCounts: CategoryCountMap

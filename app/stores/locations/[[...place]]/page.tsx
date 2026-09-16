@@ -7,7 +7,8 @@ import { locationGroups } from "@/lib/showrooms/locations";
 import { SITE_URL } from "@/lib/site-config";
 import "./locations.css";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
+export function generateStaticParams() { return []; }
 const load = cache(async () => {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
   const [result, catalog] = await Promise.all([getPublicStores(), getStoreCatalog()]);
@@ -58,6 +59,12 @@ export default async function LocationsPage({ params }: Props) {
         {!r.city && <section><h2>Choose a city</h2><div className="location-city-links">{r.country.cities.map(c => <Link key={c.key} href={c.stores.length >= 3 ? c.path : `/stores?country=${r.country!.code}&city=${c.key}`}>{c.name} <span>{c.stores.length}</span></Link>)}</div></section>}
         <section aria-labelledby="stores-title"><h2 id="stores-title">{r.city ? `Where to shop in ${r.city.name}` : `Stores in ${r.country.name}`}</h2><div className="location-store-grid">{r.stores.map(s => <article className="location-store-card" key={s.id}><p className="location-eyebrow">{s.city} · CHAIR STORE</p><h3><Link href={`/stores/${s.slug}`}>{s.name}</Link></h3><p>{[s.address,s.unit].filter(Boolean).join(", ")}</p><p><strong>{s.appointment === "required" ? "Appointment required" : s.appointment === "walk_in" ? "Walk-ins welcome" : "Contact before visiting"}</strong></p>{s.visit_notes && <p>{s.visit_notes}</p>}<p>{s.brands.filter(b => b.carried === "confirmed").map(b => b.name).filter(Boolean).join(" · ") || "Contact the store for its current chair range."}</p><div className="location-card-actions"><Link href={`/stores/${s.slug}`}>Visit details →</Link><a href={s.website_url || s.source_url} target="_blank" rel="noopener noreferrer">Official website ↗</a></div><small>Source checked: {s.checked_on} · <a href={s.source_url} target="_blank" rel="noopener noreferrer">Source</a></small></article>)}</div></section>
       </>}
+      {r.city && <section><h2>Other cities in {r.country!.name}</h2><div className="location-city-links">{r.country!.cities.filter(c => c.key !== r.city!.key && c.stores.length >= 3).map(c => <Link key={c.path} href={c.path}>{c.name} <span>{c.stores.length} stores</span></Link>)}</div></section>}
+      <section className="location-advice" aria-labelledby="visit-questions"><h2 id="visit-questions">Chair store visit questions{r.name ? ' — ' + r.name : ''}</h2>
+        <h3>Where can I try a chair before buying?</h3><p>{r.name ? 'Use the store addresses listed on this page to build a shortlist in ' + r.name + '.' : 'Choose a country and city in this directory, then open a store listing for its address and official contact details.'} Contact the store to confirm the exact model, size and configuration before travelling.</p>
+        <h3>Do I need an appointment?</h3><p>{r.country ? appointmentCount + ' of the ' + r.stores.length + ' listed stores explicitly require an appointment. ' : ''}Each listing distinguishes confirmed appointment requirements from unknown visiting arrangements. Unknown does not mean walk-ins are accepted.</p>
+        <h3>How is this directory checked?</h3><p>Each listing links to its public source and shows the date that source was checked. A listed brand does not guarantee stock or a chair available for testing. Check the store website for current hours, access and availability.</p>
+      </section>
       <section className="location-advice"><h2>Before you visit</h2><ol><li><strong>Confirm the exact model.</strong> Ask about the size, upholstery, headrest and adjustments you want to compare.</li><li><strong>Check access and hours.</strong> Some showrooms require an appointment. Holiday opening times may differ.</li><li><strong>Bring your desk measurements.</strong> Check seat height, armrest clearance and how the chair feels while typing and reclining.</li><li><strong>Ask about the purchase.</strong> Confirm delivery, assembly, returns and warranty coverage for your location.</li></ol><p>Listings are researched from public sources; coverage is growing and is not a complete inventory. Source checks do not guarantee current stock or opening hours. <Link href="/contact">Suggest a store or correction</Link>.</p><div className="location-card-actions"><Link href="/products">Compare chair specifications →</Link><Link href="/stores/locations">Browse all countries →</Link></div></section>
     </div>
   </main>;

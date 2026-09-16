@@ -19,6 +19,7 @@ export function Footer() {
               Products
             </h3>
             <ul className="space-y-2 text-sm">
+              <li><Link href="/stores/locations" className="text-foreground hover:text-muted-foreground transition-colors">Stores by Country &amp; City</Link></li>
               <li><Link href="/stores" className="text-foreground hover:text-muted-foreground transition-colors">Find Chair Stores</Link></li>
               <li>
                 <Link href="/products?category=office" className="text-foreground hover:text-muted-foreground transition-colors">
