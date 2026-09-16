@@ -1,0 +1,342 @@
+{
+  "checked_on": "2026-09-16",
+  "added": [
+    "steelcase-munich",
+    "steelcase-london",
+    "steelcase-paris",
+    "steelcase-madrid",
+    "haworth-paris",
+    "haworth-london",
+    "back2-london",
+    "back-in-action-cookham",
+    "back-in-action-bristol",
+    "wellworking-pershore",
+    "wellworking-london",
+    "wellworking-galashiels"
+  ],
+  "held": [
+    {
+      "name": "La Boutique du Dos Paris",
+      "reason": "Steelcase source lists 20 rue de Maubeuge; map lists 18. Resolve before publishing."
+    }
+  ],
+  "excluded": [
+    "Back in Action Amersham: closed",
+    "Back in Action Marlow: closed",
+    "Back in Action London: moved to Cookham"
+  ],
+  "coordinateEvidence": [
+    {
+      "name": "Steelcase Munich",
+      "city": "Munich",
+      "country": "DE",
+      "address": "Brienner Strasse 42, 80333 Munich",
+      "source": "https://www.steelcase.com/eu-fr/find-us/locations/europe-moyen-orient-afrique/",
+      "brand": "Steelcase",
+      "appointment": "unknown",
+      "notes": "Contact the showroom before travelling to confirm visiting arrangements and the chairs on display.",
+      "timezone": "Europe/Berlin",
+      "coords": [
+        [
+          48.1471538,
+          11.5619433
+        ]
+      ],
+      "heading": [
+        "Steelcase Munich Learning + Innovation Center"
+      ],
+      "displayed_address": [
+        "Brienner Str. 42, 80333 München, 독일"
+      ],
+      "final_url": "https://www.google.com/maps/place/Steelcase+Munich+Learning+%2B+Innovation+Center/@48.1471538,11.5619433,17z/data=!3m1!4b1!4m6!3m5!1s0x479e75e528322327:0x2a75ec662c1dc0cf!8m2!3d48.1471538!4d11.5619433!16s%2Fg%2F11c1s0_jbh?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Steelcase London",
+      "city": "London",
+      "country": "GB",
+      "address": "77-79 Farringdon Road, London EC1M 3JU",
+      "source": "https://www.steelcase.com/eu-fr/find-us/locations/europe-moyen-orient-afrique/",
+      "brand": "Steelcase",
+      "appointment": "unknown",
+      "notes": "Contact the showroom before travelling to confirm visiting arrangements and the chairs on display.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.521414,
+          -0.106666
+        ]
+      ],
+      "heading": [
+        "Steelcase WorkLife Centre"
+      ],
+      "displayed_address": [
+        "77-79 Farringdon Rd, London EC1M 3JU 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Steelcase+WorkLife+Centre/@51.521414,-0.106666,17z/data=!3m1!4b1!4m6!3m5!1s0x48760533aaaaaaab:0x515e65e35540d3fe!8m2!3d51.521414!4d-0.106666!16s%2Fg%2F1thggj28?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Steelcase Paris",
+      "city": "Paris",
+      "country": "FR",
+      "address": "3 Square Edouard VII, 75009 Paris",
+      "source": "https://www.steelcase.com/eu-fr/find-us/locations/europe-moyen-orient-afrique/",
+      "brand": "Steelcase",
+      "appointment": "unknown",
+      "notes": "Contact the showroom before travelling to confirm visiting arrangements and the chairs on display.",
+      "timezone": "Europe/Paris",
+      "coords": [
+        [
+          48.8711313,
+          2.3290477
+        ]
+      ],
+      "heading": [
+        "Steelcase WorkLife Center Showroom, Paris"
+      ],
+      "displayed_address": [
+        "3 Pl. Édouard VII, 75009 Paris, 프랑스"
+      ],
+      "final_url": "https://www.google.com/maps/place/Steelcase+WorkLife+Center+Showroom,+Paris/@48.8711313,2.3290477,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66e082c55558b:0x9bb5a0633332b4e3!8m2!3d48.8711313!4d2.3290477!16s%2Fg%2F1tg6pf3s?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Steelcase Madrid",
+      "city": "Madrid",
+      "country": "ES",
+      "address": "Calle Antonio Lopez 243, 28041 Madrid",
+      "source": "https://www.steelcase.com/eu-fr/find-us/locations/europe-moyen-orient-afrique/",
+      "brand": "Steelcase",
+      "appointment": "unknown",
+      "notes": "Contact the showroom before travelling to confirm visiting arrangements and the chairs on display.",
+      "timezone": "Europe/Madrid",
+      "coords": [
+        [
+          40.3784886,
+          -3.6950415
+        ]
+      ],
+      "heading": [
+        "Steelcase, Consultoría estratégica de espacios"
+      ],
+      "displayed_address": [
+        "Calle de Antonio López, 243, Usera, 28041 Madrid, 스페인"
+      ],
+      "final_url": "https://www.google.com/maps/place/Steelcase,+Consultor%C3%ADa+estrat%C3%A9gica+de+espacios/@40.3784886,-3.6950415,17z/data=!3m1!4b1!4m6!3m5!1s0xd422650d86fbe3f:0xf99e5784891399b1!8m2!3d40.3784886!4d-3.6950415!16s%2Fg%2F1vlzcp14?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Haworth Paris",
+      "city": "Paris",
+      "country": "FR",
+      "address": "101 Boulevard Murat, 75016 Paris",
+      "source": "https://www.haworth.com/eu/fr/espaces/showrooms/paris.html",
+      "brand": "Haworth",
+      "appointment": "unknown",
+      "notes": "Contact the showroom before travelling to confirm visiting arrangements and the chairs on display.",
+      "timezone": "Europe/Paris",
+      "coords": [
+        [
+          48.839711,
+          2.2569055
+        ]
+      ],
+      "heading": [
+        "Haworth"
+      ],
+      "displayed_address": [
+        "101 Bd Murat, 75016 Paris, 프랑스"
+      ],
+      "final_url": "https://www.google.com/maps/place/Haworth/@48.839711,2.2569055,17z/data=!3m1!4b1!4m6!3m5!1s0x47e67abe5b38c3d3:0xbd91e6b43225df5e!8m2!3d48.839711!4d2.2569055!16s%2Fg%2F11fxvqd8s_?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Haworth London",
+      "city": "London",
+      "country": "GB",
+      "address": "150 St John Street, London EC1V 4UD",
+      "source": "https://www.haworth.com/eu/en/spaces/showrooms/london.html",
+      "brand": "Haworth",
+      "appointment": "required",
+      "notes": "Visits are by appointment only. Contact the showroom to arrange a visit and confirm chair availability.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.5236824,
+          -0.1023719
+        ]
+      ],
+      "heading": [
+        "Haworth UK LLC"
+      ],
+      "displayed_address": [
+        "150 St John St, London EC1V 4UD 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Haworth+UK+LLC/@51.5236824,-0.1023719,17z/data=!3m1!4b1!4m6!3m5!1s0x48761b50f31b9c9d:0xd221acbcfa84e1fc!8m2!3d51.5236824!4d-0.1023719!16s%2Fg%2F1wfvm3yc?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Back2 London",
+      "city": "London",
+      "country": "GB",
+      "address": "40 Half Moon Crescent, London N1 0TJ",
+      "source": "https://www.back2.co.uk/pages/book-showroom-appointment",
+      "brand": "",
+      "appointment": "required",
+      "notes": "A showroom appointment is required. Contact Back2 to arrange an ergonomic chair consultation.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.535289,
+          -0.1133809
+        ]
+      ],
+      "heading": [
+        "Back2 International"
+      ],
+      "displayed_address": [
+        "40 Half Moon Cres, London N1 0TJ 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Back2+International/@51.535289,-0.1133809,17z/data=!3m1!4b1!4m6!3m5!1s0x48761ad36e8e8ef5:0xbe1d858f918b3c00!8m2!3d51.535289!4d-0.1133809!16s%2Fg%2F1th1c66z?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Back in Action Cookham",
+      "city": "Cookham",
+      "country": "GB",
+      "address": "Unit 2A, Lower Mount Farm, Long Lane, Cookham SL6 9EE",
+      "source": "https://www.backinaction.co.uk/stores",
+      "brand": "",
+      "appointment": "walk_in",
+      "notes": "Use Entrance 1 at Lower Mount Farm. Free parking is available. Contact the store about specific chairs before travelling.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.5489848,
+          -0.7310236
+        ]
+      ],
+      "heading": [
+        "Back in Action"
+      ],
+      "displayed_address": [
+        "Unit 2a, Lower mount farm, Cookham, Maidenhead SL6 9EE 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Back+in+Action/@51.5489848,-0.7310236,17z/data=!3m1!4b1!4m6!3m5!1s0x487689c0d7621e73:0xb338d5d9954df173!8m2!3d51.5489848!4d-0.7310236!16s%2Fg%2F1tfsbb9j?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Back in Action Bristol",
+      "city": "Bristol",
+      "country": "GB",
+      "address": "42-43 College Green, Bristol BS1 5SH",
+      "source": "https://www.backinaction.co.uk/stores",
+      "brand": "",
+      "appointment": "walk_in",
+      "notes": "Walk-ins are welcome during opening hours. Call ahead if you want to try a particular ergonomic chair.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.4524273,
+          -2.5987852
+        ]
+      ],
+      "heading": [
+        "Back in Action - The Back Shop"
+      ],
+      "displayed_address": [
+        "42-43 College Green, Bristol BS1 5SH 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Back+in+Action+-+The+Back+Shop/@51.4524273,-2.5987852,17z/data=!3m1!4b1!4m6!3m5!1s0x48718dd701689d2f:0x911a4c1952e1254b!8m2!3d51.4524273!4d-2.5987852!16s%2Fg%2F1tfzwynh?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Wellworking Pershore",
+      "city": "Pershore",
+      "country": "GB",
+      "address": "3-4 Goodwood Road, Keytec Business Park, Pershore WR10 2JL",
+      "source": "https://wellworking.co.uk/contact-us/",
+      "brand": "",
+      "appointment": "required",
+      "notes": "Showroom visits are by appointment only, Monday to Friday, 9am to 3pm. Confirm the chairs available when booking.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          52.1276575,
+          -2.0683564
+        ]
+      ],
+      "heading": [
+        "Wellworking"
+      ],
+      "displayed_address": [
+        "Keytec 7 Business Park, 3-4 Goodwood Rd, Pershore WR10 2JL 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Wellworking/@52.1276575,-2.0683564,17z/data=!3m1!4b1!4m6!3m5!1s0x4870e5a07b213f6d:0xb616e94135274403!8m2!3d52.1276575!4d-2.0683564!16s%2Fg%2F11p012k028?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Wellworking London",
+      "city": "London",
+      "country": "GB",
+      "address": "Unit 7, Western Avenue Business Park, Mansfield Road, London W3 0BZ",
+      "source": "https://wellworking.co.uk/contact-us/",
+      "brand": "",
+      "appointment": "required",
+      "notes": "Showroom visits are by appointment only, Monday to Friday, 9am to 4pm. Confirm the chairs available when booking.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          51.5247614,
+          -0.2735312
+        ]
+      ],
+      "heading": [
+        "Wellworking"
+      ],
+      "displayed_address": [
+        "Unit 7, western avenue business park, Mansfield Rd, London W3 0BZ 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Wellworking/@51.5247614,-0.2735312,17z/data=!3m1!4b1!4m6!3m5!1s0x487611fa5b32c9e7:0x9eb60bac90c4b16!8m2!3d51.5247614!4d-0.2735312!16s%2Fg%2F1tdzl0_7?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "Wellworking Galashiels",
+      "city": "Galashiels",
+      "country": "GB",
+      "address": "3 Tweedside Park, Tweedbank Industrial Estate, Galashiels TD1 3TE",
+      "source": "https://wellworking.co.uk/contact-us/",
+      "brand": "",
+      "appointment": "required",
+      "notes": "Showroom visits are by appointment only, Monday to Friday, 9am to 4pm. Confirm the chairs available when booking.",
+      "timezone": "Europe/London",
+      "coords": [
+        [
+          55.6044654,
+          -2.7538812
+        ]
+      ],
+      "heading": [
+        "Wellworking"
+      ],
+      "displayed_address": [
+        "Tweedbank Industrial Estate, 3 Tweedside Park, Tweedbank, Galashiels TD1 3TE 영국"
+      ],
+      "final_url": "https://www.google.com/maps/place/Wellworking/@55.6044654,-2.7538812,17z/data=!3m1!4b1!4m6!3m5!1s0x488784bc3944c1b5:0x3784aa74a0ee7116!8m2!3d55.6044654!4d-2.7538812!16s%2Fg%2F11ggsg7hp9?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    },
+    {
+      "name": "La Boutique du Dos Paris",
+      "city": "Paris",
+      "country": "FR",
+      "address": "20 rue de Maubeuge, 75009 Paris",
+      "source": "https://fr.steelcase.com/pages/contact",
+      "brand": "Steelcase",
+      "appointment": "unknown",
+      "notes": "Steelcase lists this store as a place to try its chairs. Contact the store to confirm the models available for your visit.",
+      "timezone": "Europe/Paris",
+      "coords": [
+        [
+          48.8767933,
+          2.3423083
+        ]
+      ],
+      "heading": [
+        "La Boutique du Dos Paris Magasin de matelas, sommiers, bureaux et sièges ergonomiques"
+      ],
+      "displayed_address": [
+        "18 Rue de Maubeuge, 75009 Paris, 프랑스"
+      ],
+      "final_url": "https://www.google.com/maps/place/La+Boutique+du+Dos+Paris+Magasin+de+matelas,+sommiers,+bureaux+et+si%C3%A8ges+ergonomiques/@48.8767933,2.3423083,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66fe8fdce2b13:0x9e368d91630a104f!8m2!3d48.8767933!4d2.3423083!16s%2Fg%2F119wd0cn9?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D"
+    }
+  ]
+}
