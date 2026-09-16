@@ -11,6 +11,7 @@ import { StoreDetails } from "@/components/showrooms/StoreDetails";
 import "@/components/showrooms/atlas.css";
 import { SITE_URL } from "@/lib/site-config";
 import { countryPath, countryName } from "@/lib/showrooms/locations";
+import { AtlasHeader } from "@/components/showrooms/AtlasHeader";
 export const revalidate = 300;
 export function generateStaticParams() { return []; }
 const load = cache(async (slug: string) => {
@@ -50,12 +51,15 @@ export default async function StorePage({
         geo: { "@type": "GeoCoordinates", latitude: s.latitude, longitude: s.longitude },
         ...(s.phone ? { telephone: s.phone } : {}),
       }).replace(/</g, "\\u003c") }} />
+      <AtlasHeader />
+      {/*
       <header className="atlas-header">
         <Link className="atlas-wordmark" href="/">
           Chairpedia
         </Link>
         <Link href="/stores">← All showrooms</Link>
       </header>
+      */}
       <StoreDetails store={s} correctionsEnabled={process.env.SHOWROOM_DATA_SOURCE !== "registry"} />
       <nav aria-label="More stores" style={{ padding: "20px" }}><Link href={countryPath(s.country_code)}>More chair stores in {countryName(s.country_code)} →</Link></nav>
     </main>

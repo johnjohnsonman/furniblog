@@ -5,6 +5,7 @@ import {
   getPublicStores,
   getStoreCatalog,
   enrichStore,
+  storePreview,
 } from "@/lib/showrooms/server";
 import { ShowroomFinder } from "@/components/showrooms/ShowroomFinder";
 export const dynamic = "force-dynamic";
@@ -40,9 +41,11 @@ export default async function StoresPage({
     "";
   return (
     <>
+    <link rel="preload" href="https://tiles.openfreemap.org/styles/positron" as="fetch" crossOrigin="anonymous" />
+    <link rel="preload" href="/maplibre/maplibre-gl-worker.mjs" as="script" />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", "@id": SITE_URL + "/stores#page", url: SITE_URL + "/stores", name: "Worldwide chair store map", inLanguage: "en", description: "Find chair stores by country, city, brand and model. Confirm visit arrangements with the store.", mainEntity: { "@type": "ItemList", name: "Chair stores by country and city", url: SITE_URL + "/stores/locations" } }).replace(/</g, "\\u003c") }} />
     <ShowroomFinder
-      stores={result.stores.map((s) => enrichStore(s, catalog))}
+      stores={result.stores.map((s) => storePreview(enrichStore(s, catalog)))}
       catalog={catalog}
       initialModel={model}
       initialCountry={q.country || ""}

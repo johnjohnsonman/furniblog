@@ -1,16 +1,22 @@
 import "server-only"
 import { unstable_cache } from "next/cache"
 import { createPublicServerClient } from "./public-server"
-import { getProducts, getSiteStats, isSupabaseConfigured } from "./queries"
-import { toProductCardView, type ProductCardView } from "@/lib/data/mappers"
+import type { ProductCardView } from "@/lib/data/mappers"
 import { getChairCategoryLabel, isChairCategory } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
 import { formatProductPrice } from "@/lib/pricing"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
-import type { ReviewCountStats } from "./queries"
+type ReviewCountStats = { count: number; avgScore: number }
+
+const isSupabaseConfigured = () => Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+)
 
 // Only aggregate counters are cached. Prices and publication state are read live.
-export const getCatalogStats = unstable_cache(getSiteStats, ["catalog-stats-v1"], { revalidate: 60 })
+export const getCatalogStats = unstable_cache(async () => {
+  const { getSiteStats } = await import("./queries")
+  return getSiteStats()
+}, ["catalog-stats-v1"], { revalidate: 60 })
 
 export const getCatalogReviewCounts = unstable_cache(loadCatalogReviewCounts, ["catalog-review-counts-v1"], { revalidate: 60 })
 
@@ -46,8 +52,14 @@ export async function loadCatalogReviewCounts(): Promise<Record<string, ReviewCo
   return counts
 }
 
-export async function getCatalogCards(): Promise<ProductCardView[]> {
-  if (!isSupabaseConfigured()) return (await getProducts()).map(toProductCardView)
+async function loadCatalogCards(): Promise<ProductCardView[]> {
+  if (!isSupabaseConfigured()) {
+    const [{ getProducts }, { toProductCardView }] = await Promise.all([
+      import("./queries"),
+      import("@/lib/data/mappers"),
+    ])
+    return (await getProducts()).map(toProductCardView)
+  }
   const db = createPublicServerClient()
   const { data, error } = await db.from("products").select(`
     slug,name,category,price_usd,thumbnail_url,images,rating_overall,review_count,created_at,
@@ -55,7 +67,13 @@ export async function getCatalogCards(): Promise<ProductCardView[]> {
   `).eq("published", true).eq("track", "chair")
     .order("rating_overall", { ascending: false, nullsFirst: false })
   // Preserve existing schema compatibility and image filtering on older databases.
-  if (error || !data) return (await getProducts()).map(toProductCardView)
+  if (error || !data) {
+    const [{ getProducts }, { toProductCardView }] = await Promise.all([
+      import("./queries"),
+      import("@/lib/data/mappers"),
+    ])
+    return (await getProducts()).map(toProductCardView)
+  }
   return data.map(row => {
     const brand = Array.isArray(row.brands) ? row.brands[0] : row.brands
     const category = isChairCategory(row.category) ? row.category : "office"
@@ -70,3 +88,9 @@ export async function getCatalogCards(): Promise<ProductCardView[]> {
       rating: Number(row.rating_overall ?? 0), reviewCount: row.review_count ?? 0, publishedAt: row.created_at }
   })
 }
+
+// A short shared cache removes a full database round trip from normal navigation
+// while keeping prices and publication changes within one minute of the source.
+export const getCatalogCards = unstable_cache(loadCatalogCards, ["catalog-cards-v2"], {
+  revalidate: 60,
+})

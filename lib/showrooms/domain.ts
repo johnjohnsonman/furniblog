@@ -1,4 +1,4 @@
-import type { Store, Hours, Period } from "./types";
+import type { Store, StorePreview, Hours, Period } from "./types";
 import { cityKey } from "./locations";
 
 export function httpUrl(value: string) {
@@ -124,7 +124,7 @@ export type Filters = {
   bounds?: [number, number, number, number];
 };
 export function filterStores(
-  stores: Store[],
+  stores: StorePreview[],
   f: Filters,
   catalogModelBrand?: string,
 ) {

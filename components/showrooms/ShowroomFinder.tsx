@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
-import type { Store, Catalog } from "@/lib/showrooms/types";
+import type { Store, StorePreview, Catalog } from "@/lib/showrooms/types";
 import { filterStores, type Filters } from "@/lib/showrooms/domain";
 import { cityKey } from "@/lib/showrooms/locations";
 import "./atlas.css";
+import { AtlasHeader } from "./AtlasHeader";
 export function ShowroomFinder({
   stores,
   catalog,
@@ -16,7 +17,7 @@ export function ShowroomFinder({
   unavailable = false,
   correctionsEnabled = true,
 }: {
-  stores: Store[];
+  stores: StorePreview[];
   catalog: Catalog;
   initialModel?: string;
   initialCountry?: string;
@@ -40,6 +41,8 @@ export function ShowroomFinder({
     [filters, setFilters] = useState(false),
     [sheet, setSheet] = useState(32),
     [dragging, setDragging] = useState(false);
+  const [detailStore, setDetailStore] = useState<Store | null>(null),
+    [detailState, setDetailState] = useState<"idle" | "loading" | "error">("idle");
   const [command, setCommand] = useState<MapCommand>({ id: initialCountry ? 1 : 0, kind: initialCountry ? "fit" : "world" }),
     stage = useRef<HTMLDivElement>(null),
     handle = useRef<HTMLButtonElement>(null),
@@ -52,6 +55,30 @@ export function ShowroomFinder({
       [stores, f, model?.brand_id],
     ),
     detail = stores.find((s) => s.id === selected);
+  useEffect(() => {
+    if (!detail) {
+      setDetailStore(null);
+      setDetailState("idle");
+      return;
+    }
+    const controller = new AbortController();
+    setDetailStore(null);
+    setDetailState("loading");
+    fetch(`/api/showrooms/public/${encodeURIComponent(detail.slug)}`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load store");
+        return response.json() as Promise<Store>;
+      })
+      .then((store) => {
+        setDetailStore(store);
+        setDetailState("idle");
+      })
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setDetailState("error");
+      });
+    return () => controller.abort();
+  }, [detail]);
   const change = (p: Partial<Filters>) => {
     setVisibleCount(24);
     setF((x) => ({ ...x, ...p }));
@@ -94,6 +121,8 @@ export function ShowroomFinder({
   );
   return (
     <div className="atlas">
+      <AtlasHeader />
+      {/*
       <header className="atlas-header">
         <Link href="/" className="atlas-wordmark">
           Chairpedia
@@ -102,6 +131,7 @@ export function ShowroomFinder({
         <Link href="/stores/locations">Browse locations</Link>
         <Link href="/products">Explore chairs ↗</Link>
       </header>
+      */}
       <div className="atlas-search">
         <div className="atlas-intro">
           <p className="atlas-kicker">Find your chair. Try it in person.</p>
@@ -403,7 +433,9 @@ export function ShowroomFinder({
           {!detail && results.length > visibleCount && <button className="atlas-load-more" onClick={() => setVisibleCount(n => n + 24)}>Show more stores ({visibleCount} of {results.length})</button>}
           {detail && (
             <div className="atlas-detail-scroll">
-              <StoreDetails key={detail.id} store={detail} correctionsEnabled={correctionsEnabled} />
+              {detailState === "loading" && <p className="atlas-detail-status" role="status">Loading store details…</p>}
+              {detailState === "error" && <p className="atlas-detail-status" role="alert">Store details could not be loaded. Open the full page below.</p>}
+              {detailStore && <StoreDetails key={detailStore.id} store={detailStore} correctionsEnabled={correctionsEnabled} />}
               <Link href={`/stores/${detail.slug}`}>
                 Open shareable store page ↗
               </Link>

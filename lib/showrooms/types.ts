@@ -51,6 +51,23 @@ export type Store = {
   models: StoreModel[];
   updated_at?: string;
 };
+export type StorePreview = Pick<
+  Store,
+  | "id"
+  | "slug"
+  | "name"
+  | "status"
+  | "country_code"
+  | "city"
+  | "region"
+  | "address"
+  | "latitude"
+  | "longitude"
+  | "store_type"
+  | "appointment"
+  | "brands"
+  | "models"
+>;
 export type Catalog = {
   brands: { id: string; name: string; slug: string }[];
   models: { id: string; name: string; slug: string; brand_id: string }[];

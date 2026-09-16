@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { Map as LibreMap, Marker } from "maplibre-gl";
-import type { Store } from "@/lib/showrooms/types";
+import type { StorePreview } from "@/lib/showrooms/types";
 import { compactBounds, wrapLongitude } from "@/lib/showrooms/domain";
 import "maplibre-gl/dist/maplibre-gl.css";
+const mapLibre = import("maplibre-gl");
 export type MapCommand = { id: number; kind: "world" | "fit" };
 export function AtlasMap({
   stores,
@@ -12,7 +13,7 @@ export function AtlasMap({
   onArea,
   command,
 }: {
-  stores: Store[];
+  stores: StorePreview[];
   selected: string;
   onSelect: (ids: string[]) => void;
   onArea: (b: [number, number, number, number]) => void;
@@ -36,7 +37,7 @@ export function AtlasMap({
       m: LibreMap | undefined;
     setState("loading");
     setMoved(false);
-    import("maplibre-gl")
+    mapLibre
       .then((lib) => {
         if (disposed || !host.current) return;
         lib.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
@@ -93,13 +94,13 @@ export function AtlasMap({
         paint.current = () => {
           if (!m || disposed) return;
           const compact = m.getZoom() < 9;
-          const label = (stores: Store[]) => stores.length > 1 ? `${stores.length} stores` : compact ? "1 store" : stores[0].name;
+          const label = (stores: StorePreview[]) => stores.length > 1 ? `${stores.length} stores` : compact ? "1 store" : stores[0].name;
           const groups: {
             x: number;
             y: number;
             lng: number;
             lat: number;
-            stores: Store[];
+            stores: StorePreview[];
           }[] = [];
           for (const s of latest.current.stores) {
             if (s.latitude === null || s.longitude === null) continue;
