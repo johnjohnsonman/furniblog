@@ -73,6 +73,16 @@ const candidates = [
   ["ofina-hanoi","OFINA Hanoi Showroom","VN","Hanoi","","135 K2 Road, Phu Do Ward, Hanoi","Asia/Ho_Chi_Minh","https://ofina.vn/","walk_in"],
   ["ofina-ho-chi-minh","OFINA Ho Chi Minh Showroom","VN","Ho Chi Minh City","","2nd Floor, 36 Luong Dinh Cua, Thu Duc City, Ho Chi Minh City","Asia/Ho_Chi_Minh","https://ofina.vn/","walk_in"],
   ["exsto-manila","EXSTO Philippines Showroom","PH","Muntinlupa","Metro Manila","Unit B-52, 2nd Floor Westgate Center, Zapote-Alabang Road, Alabang, Muntinlupa 1781","Asia/Manila","https://exsto.com.sg/innovative-privacy-office-solutions/ergonomic-solution/","required"],
+  ["umci-makati","The Space by UMCI","PH","Makati","Metro Manila","Ground Floor ENZO Building, The Wellington Centre, 399 Senator Gil Puyat Avenue, Makati 1200","Asia/Manila","https://umci.ph/","walk_in","Steelcase"],
+  ["gentleprince-taguig","Gentleprince Taguig","PH","Taguig","Metro Manila","Unit 1116, 11th Floor Park Triangle Corporate Plaza North Tower, 32nd Street corner 11th Avenue, BGC, Taguig","Asia/Manila","https://store.gentleprince.com/","unknown"],
+  ["group-perspective-taguig","Group Perspective Showroom","PH","Taguig","Metro Manila","Building 108, Panorama Compound Veterans Center, Western Bicutan, Taguig 1630","Asia/Manila","https://groupperspective.com.ph/","unknown"],
+  ["accent-grand-showroom-makati","Accent Grand Showroom","PH","Makati","Metro Manila","Ground Floor The World Centre Building, Senator Gil Puyat Avenue, Makati 1209","Asia/Manila","https://www.accent.com.ph/","walk_in"],
+  ["cwc-makati","CWC Design Center Makati","PH","Makati","Metro Manila","814 A. Arnaiz Street, San Lorenzo Village, Makati 1223","Asia/Manila","https://www.cwcinteriors.com.ph/","walk_in","Herman Miller"],
+  ["cwc-cebu","CWC Interiors Cebu","PH","Cebu City","Cebu","Retail Units 9 and 10, Upper Ground Floor, Latitude Corporate Center, Mindanao Avenue, Cebu Business Park, Cebu City 6000","Asia/Manila","https://www.cwcinteriors.com.ph/","walk_in","Herman Miller"],
+  ["cwc-davao","CWC Interiors Davao","PH","Davao City","Davao del Sur","Matina IT Park, McArthur Highway, Talomo, Davao City 8000","Asia/Manila","https://www.cwcinteriors.com.ph/","walk_in","Herman Miller"],
+  ["stacked-furniture-san-juan","Stacked Furniture San Juan","PH","San Juan","Metro Manila","2nd Floor Unit 02, Metro Pointe Center, P. Guevarra Street corner N. Averilla Street, San Juan City 1500","Asia/Manila","https://stackedfurniture.com/pages/contact-us","walk_in"],
+  ["greatyear-makati","Great Year Industries Makati","PH","Makati","Metro Manila","2nd Floor Cancio Building, 1047 Metropolitan Avenue, Makati 1203","Asia/Manila","https://www.greatyear.com.ph/","walk_in"],
+  ["greatyear-imus","Great Year Industries Imus","PH","Imus","Cavite","225 Advincula Road, Imus, Cavite","Asia/Manila","https://www.greatyear.com.ph/","walk_in"],
 ];
 
 const boxes = {
