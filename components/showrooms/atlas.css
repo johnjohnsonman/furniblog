@@ -335,6 +335,20 @@
   flex-wrap: wrap;
   margin: 15px 0;
 }
+.atlas-research {
+  background: #f1f5ff;
+  border: 1px solid #b9c9f4 !important;
+  margin: 12px 0 20px;
+  padding: 20px !important;
+}
+.atlas-research h2 {
+  margin-top: 6px;
+}
+.atlas-research .atlas-actions a {
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+}
 .atlas-photos img {
   width: 100%;
   max-height: 260px;

@@ -191,7 +191,13 @@ export function StoreDetails({ store: s, correctionsEnabled = true }: { store: S
           <ul>
             {s.brands.map((b) => (
               <li key={b.brand_id}>
-                {b.name || "Brand"} —{" "}
+                {b.slug ? (
+                  <Link href={`/brands/${b.slug}`} onClick={() => trackStore("research_brand", s.id)}>
+                    {b.name || "Brand"}
+                  </Link>
+                ) : (
+                  b.name || "Brand"
+                )}{" — "}
                 {b.carried === "confirmed"
                   ? "Brand carried"
                   : b.carried === "unavailable"
@@ -260,6 +266,25 @@ export function StoreDetails({ store: s, correctionsEnabled = true }: { store: S
         ) : (
           <p>No exact models confirmed yet.</p>
         )}
+      </section>
+      <section className="atlas-research">
+        <p className="atlas-kicker">RESEARCH BEFORE YOU VISIT</p>
+        <h2>Shortlist the right chairs first</h2>
+        <p>
+          Compare specifications and buying advice before contacting the store,
+          then ask which exact configurations are available to try.
+        </p>
+        <div className="atlas-actions">
+          <Link href="/products" onClick={() => trackStore("research_products", s.id)}>
+            Browse chair specifications
+          </Link>
+          <Link href="/compare" onClick={() => trackStore("research_compare", s.id)}>
+            Compare chair models
+          </Link>
+          <Link href="/best/best-chairs-to-buy" onClick={() => trackStore("research_best", s.id)}>
+            See the best chairs to buy
+          </Link>
+        </div>
       </section>
       <p>
         Information checked {s.checked_on || "date unconfirmed"}.{" "}

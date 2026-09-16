@@ -12,7 +12,10 @@ async function main() {
     if (credentials.type !== 'service_account') throw new Error('GSC credentials must be a service account');
   }
   const email = credentials?.client_email || process.env.GSC_CLIENT_EMAIL;
-  const pem = credentials?.private_key || process.env.GSC_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  const pem = (credentials?.private_key || process.env.GSC_PRIVATE_KEY?.replace(/\\n/g, '\n') || '')
+    .trim()
+    .replace(/^["']/, '')
+    .replace(/["'],?\s*$/, '');
   const site = 'sc-domain:chairpedia.com';
   if (!email || !pem || !site) throw new Error('Missing GSC environment configuration');
   let key;
@@ -43,10 +46,10 @@ async function main() {
 
 
 
- const paths=['/stores','/stores/locations','/stores/locations/mexico','/stores/locations/new-zealand','/stores/locations/india','/stores/locations/singapore','/stores/locations/malaysia','/stores/locations/thailand','/stores/locations/indonesia','/stores/locations/vietnam','/stores/locations/philippines'];
+ const paths=['/stores','/stores/locations','/stores/locations/mexico','/stores/locations/new-zealand','/stores/locations/india','/stores/locations/singapore','/stores/locations/malaysia','/stores/locations/thailand','/stores/locations/indonesia','/stores/locations/vietnam','/stores/locations/philippines','/stores/locations/hong-kong','/stores/locations/taiwan','/stores/locations/united-arab-emirates','/stores/locations/saudi-arabia'];
  const base='https://www.googleapis.com/webmasters/v3/sites/'+encodeURIComponent('sc-domain:chairpedia.com');
  const checkedAt=new Date().toISOString(),endDate=checkedAt.slice(0,10),startDate=new Date(Date.now()-28*86400000).toISOString().slice(0,10);
- const inspections=[];for(const path of paths){const r=await request('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',{inspectionUrl:'https://www.chairpedia.com'+path,siteUrl:'sc-domain:chairpedia.com',languageCode:'en-US'});inspections.push({path,status:r.inspectionResult?.indexStatusResult});}
+ const inspections=await Promise.all(paths.map(async path=>{const r=await request('https://searchconsole.googleapis.com/v1/urlInspection/index:inspect',{inspectionUrl:'https://www.chairpedia.com'+path,siteUrl:'sc-domain:chairpedia.com',languageCode:'en-US'});return {path,status:r.inspectionResult?.indexStatusResult};}));
  const analytics=await request(base+'/searchAnalytics/query',{startDate,endDate,dimensions:['page'],type:'web',dataState:'all',rowLimit:25000,dimensionFilterGroups:[{filters:[{dimension:'page',operator:'contains',expression:'/stores'}]}]});
  const sitemaps=await request(base+'/sitemaps');const dir=resolve(__dirname,'../data/search-growth/store-tracking');mkdirSync(dir,{recursive:true});let previous;try{previous=JSON.parse(readFileSync(dir+'/latest.json','utf8'));}catch(e){if(e.code!=='ENOENT')throw e;}
  const changes=inspections.map(x=>({path:x.path,previous:previous?.inspections.find(y=>y.path===x.path)?.status?.coverageState||null,current:x.status?.coverageState}));
