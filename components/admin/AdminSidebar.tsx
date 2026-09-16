@@ -49,6 +49,7 @@ const NAV = [
   { href: "/admin/audit", label: "Audit", icon: ShieldCheck },
   { href: "/admin/affiliate", label: "Affiliate Links", icon: Link2 },
   { href: "/admin/brands", label: "Brands", icon: Building2 },
+  { href: "/admin/showrooms", label: "Showrooms", icon: Building2 },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/seo", label: "SEO", icon: Search },
   { href: "/admin/growth", label: "Growth", icon: TrendingUp },

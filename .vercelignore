@@ -9,3 +9,5 @@ scripts/backups/
 .env*
 /data/
 .git/
+.next-showrooms/
+.next-showrooms-build/

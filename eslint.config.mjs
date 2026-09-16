@@ -6,7 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 
 // Correctness checks; TypeScript remains the type/undefined-name gate for TS.
 export default tseslint.config(
-  { ignores: ['.next/**', 'node_modules/**', '.vercel/**', 'data/**', 'next-env.d.ts'] },
+  { ignores: ['.next/**', '.next-showrooms*/**', 'public/maplibre/**', 'node_modules/**', '.vercel/**', 'data/**', 'next-env.d.ts'] },
   {
     files: ['**/*.{js,cjs,mjs,ts,tsx}'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },

@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Separate local review cache so the showroom preview does not stop another dev server.
+  ...(process.env.SHOWROOM_LOCAL_REVIEW === "true" ? { distDir: ".next-showrooms" } : process.env.SHOWROOM_LOCAL_REVIEW === "build" ? { distDir: ".next-showrooms-build" } : {}),
   images: {
     unoptimized: true,
     domains: ["images.unsplash.com"],

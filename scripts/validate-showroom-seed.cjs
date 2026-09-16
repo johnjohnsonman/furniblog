@@ -1,0 +1,8 @@
+const fs=require('node:fs'),path=require('node:path'),Module=require('node:module'),ts=require('typescript'),assert=require('node:assert/strict');
+function load(file){const p=path.resolve(__dirname,'..',file),m=new Module(p,module);m.filename=p;m.paths=Module._nodeModulePaths(path.dirname(p));m.require=n=>n==='./domain'?load('lib/showrooms/domain.ts'):require(n);m._compile(ts.transpileModule(fs.readFileSync(p,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,p);return m.exports;}
+const {storeSchema}=load('lib/showrooms/validation.ts'),{hoursState}=load('lib/showrooms/domain.ts');
+const seed=JSON.parse(fs.readFileSync(process.argv[2],'utf8'));const ids=new Set(seed.catalog.brands.map(b=>b.id)),modelIds=new Set(seed.catalog.models.map(m=>m.id));
+for(const s of seed.stores){const r=storeSchema.safeParse(s);assert(r.success,s.name+': '+JSON.stringify(r.error?.issues));assert.equal(s.country_code,'JP');for(const b of s.brands)assert(ids.has(b.brand_id));for(const m of s.models)assert(modelIds.has(m.product_id));}
+const office=seed.stores.find(s=>s.slug==='officecom-akihabara');assert.equal(hoursState(office.hours,'Asia/Tokyo',new Date('2026-09-21T02:00:00Z')).state,'closed','Japanese holiday must override Monday hours');assert.equal(hoursState(office.hours,'Asia/Tokyo',new Date('2026-09-17T02:00:00Z')).state,'open');
+const hm=seed.stores.find(s=>s.slug==='herman-miller-marunouchi');assert.equal(hoursState(hm.hours,'Asia/Tokyo',new Date('2026-09-21T02:30:00Z')).state,'open','Herman Miller holiday hours start at 11');
+console.log(`PASS: ${seed.stores.length} schema-valid stores, catalog references, Japan-only coordinates and holiday overrides`);

@@ -179,6 +179,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Header />
 
       <main className="flex-1">
+        {process.env.SHOWROOMS_ENABLED === "true" && <div className="mx-auto max-w-7xl px-5 py-3"><Link href={`/stores?model=${encodeURIComponent(product.id)}`} className="text-sm underline">Find a showroom to try {product.name} ↗</Link></div>}
         <div className="border-b border-[#171717] bg-[#f5f1e8]">
           <div className="mx-auto max-w-7xl px-5 py-3">
             <div className="flex items-center gap-2 text-xs text-[#66707a]">

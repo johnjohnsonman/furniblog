@@ -178,5 +178,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Comparisons table may not exist yet — ignore.
   }
 
+  if (process.env.SHOWROOMS_ENABLED === "true") {
+    const { getPublicStores } = await import("@/lib/showrooms/server")
+    const result = await getPublicStores()
+    if (!result.unavailable) {
+      dynamicPages.push(url("/stores", undefined, "weekly", 0.7))
+      for (const store of result.stores) dynamicPages.push(url(`/stores/${store.slug}`, toDate(store.updated_at), "weekly", 0.6))
+    }
+  }
   return [...staticPages, ...bestPages, ...dynamicPages]
 }

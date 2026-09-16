@@ -12,6 +12,9 @@ __v0_jsx-dev-runtime.ts
 # Common ignores
 node_modules
 .next/
+.next-showrooms/
+.next-showrooms-build/
+/public/maplibre/
 .DS_Store
 *.tsbuildinfo
 furniblog-website-design.zip
