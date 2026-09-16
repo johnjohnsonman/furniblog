@@ -5,22 +5,29 @@ import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
 import type { Store, Catalog } from "@/lib/showrooms/types";
 import { filterStores, type Filters } from "@/lib/showrooms/domain";
+import { cityKey } from "@/lib/showrooms/locations";
 import "./atlas.css";
 export function ShowroomFinder({
   stores,
   catalog,
   initialModel = "",
+  initialCountry = "",
+  initialCity = "",
   unavailable = false,
   correctionsEnabled = true,
 }: {
   stores: Store[];
   catalog: Catalog;
   initialModel?: string;
+  initialCountry?: string;
+  initialCity?: string;
   unavailable?: boolean;
   correctionsEnabled?: boolean;
 }) {
   const [f, setF] = useState<Filters>({
       q: "",
+      country: initialCountry,
+      city: initialCity,
       brand: "",
       model: initialModel,
       confirmed: false,
@@ -33,7 +40,7 @@ export function ShowroomFinder({
     [filters, setFilters] = useState(false),
     [sheet, setSheet] = useState(48),
     [dragging, setDragging] = useState(false);
-  const [command, setCommand] = useState<MapCommand>({ id: 0, kind: "world" }),
+  const [command, setCommand] = useState<MapCommand>({ id: initialCountry ? 1 : 0, kind: initialCountry ? "fit" : "world" }),
     stage = useRef<HTMLDivElement>(null),
     handle = useRef<HTMLButtonElement>(null),
     drag = useRef<{ y: number; height: number } | null>(null),
@@ -65,7 +72,7 @@ export function ShowroomFinder({
     );
   };
   const world = () => {
-    change({ q: "", country: "", bounds: undefined });
+    change({ q: "", country: "", city: "", bounds: undefined });
     setCommand((c) => ({ id: c.id + 1, kind: "world" }));
   };
   const reset = () => {
@@ -89,6 +96,7 @@ export function ShowroomFinder({
           Chairpedia
         </Link>
         <span>Showrooms</span>
+        <Link href="/stores/locations">Browse locations</Link>
         <Link href="/products">Explore chairs ↗</Link>
       </header>
       <div className="atlas-search">
@@ -99,7 +107,7 @@ export function ShowroomFinder({
         <label className="atlas-country">
           <span className="sr-only">Country</span>
           <select aria-label="Country" value={f.country || ""} onChange={(e) => {
-            change({ country: e.target.value, q: "", bounds: undefined });
+            change({ country: e.target.value, city: "", q: "", bounds: undefined });
             setCommand((c) => ({ id: c.id + 1, kind: "fit" }));
           }}>
             <option value="">All countries</option>
@@ -113,7 +121,7 @@ export function ShowroomFinder({
           <input
             value={f.q}
             placeholder="Search registered cities, countries or stores"
-            onChange={(e) => change({ q: e.target.value, bounds: undefined })}
+            onChange={(e) => change({ q: e.target.value, city: "", bounds: undefined })}
           />
         </label>
         <button aria-expanded={filters} onClick={() => setFilters(!filters)}>
@@ -201,6 +209,7 @@ export function ShowroomFinder({
           </button>
         </div>
       </div>
+      {f.city && <p className="atlas-model-note">City: {stores.find(s => s.country_code === f.country && cityKey(s) === f.city)?.city || f.city}. <button onClick={() => { change({ city: "" }); setCommand(c => ({ id: c.id + 1, kind: "fit" })); }}>Show entire country</button></p>}
       {model && (
         <p className="atlas-model-note">
           {model.name}: confirmed trial locations first; brand-only stores

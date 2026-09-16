@@ -1,4 +1,5 @@
 import type { Store, Hours, Period } from "./types";
+import { cityKey } from "./locations";
 
 export function httpUrl(value: string) {
   try {
@@ -113,6 +114,7 @@ export function hoursState(
 }
 export type Filters = {
   country?: string;
+  city?: string;
   q: string;
   brand: string;
   model: string;
@@ -139,6 +141,7 @@ export function filterStores(
       (s) =>
         s.status === "published" &&
         (!f.country || s.country_code === f.country) &&
+        (!f.city || cityKey(s) === f.city) &&
         (!q ||
           [
             s.name,

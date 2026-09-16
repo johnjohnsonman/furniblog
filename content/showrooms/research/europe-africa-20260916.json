@@ -1,0 +1,808 @@
+{
+  "checked_on": "2026-09-16",
+  "added": [
+    {
+      "slug": "humanscale-barcelona",
+      "name": "Humanscale Barcelona",
+      "country": "ES",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "humanscale-amsterdam",
+      "name": "Humanscale Amsterdam",
+      "country": "NL",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "humanscale-london",
+      "name": "Humanscale London",
+      "country": "GB",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "humanscale-manchester",
+      "name": "Humanscale Manchester",
+      "country": "GB",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "humanscale-paris",
+      "name": "Humanscale Paris",
+      "country": "FR",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "humanscale-warsaw",
+      "name": "Humanscale Warsaw",
+      "country": "PL",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "kinnarps-wemmel",
+      "name": "Kinnarps Wemmel",
+      "country": "BE",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-brondby",
+      "name": "Kinnarps Brondby",
+      "country": "DK",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-cestlice",
+      "name": "Kinnarps Cestlice",
+      "country": "CZ",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-helsinki",
+      "name": "Kinnarps Helsinki",
+      "country": "FI",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-worms",
+      "name": "Kinnarps Worms",
+      "country": "DE",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-orgeval",
+      "name": "Kinnarps Orgeval",
+      "country": "FR",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-budapest",
+      "name": "Kinnarps Budapest",
+      "country": "HU",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-warsaw",
+      "name": "Kinnarps Warsaw",
+      "country": "PL",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "dok-madrid",
+      "name": "Dok Madrid",
+      "country": "ES",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-barcelona",
+      "name": "Kinnarps Barcelona",
+      "country": "ES",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-schlieren",
+      "name": "Kinnarps Schlieren",
+      "country": "CH",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-grand-lancy",
+      "name": "Kinnarps Grand-Lancy",
+      "country": "CH",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-london",
+      "name": "Kinnarps London",
+      "country": "GB",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "slug": "kinnarps-hamburg",
+      "name": "Kinnarps Hamburg",
+      "country": "DE",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "slug": "kinnarps-cologne",
+      "name": "Kinnarps Cologne",
+      "country": "DE",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "slug": "kinnarps-munich",
+      "name": "Kinnarps Munich",
+      "country": "DE",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "slug": "formfunc-cape-town",
+      "name": "Formfunc Cape Town",
+      "country": "ZA",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "slug": "herman-miller-london",
+      "name": "Herman Miller London",
+      "country": "GB",
+      "source": "https://ukstore.hermanmiller.com/en-gg/pages/store-london-showroom"
+    },
+    {
+      "slug": "herman-miller-paris",
+      "name": "Herman Miller Paris",
+      "country": "FR",
+      "source": "https://frstore.hermanmiller.com/pages/paris-showroom"
+    },
+    {
+      "slug": "karo-kempton-park",
+      "name": "Karo Kempton Park",
+      "country": "ZA",
+      "source": "https://karo.co.za/contact-us/"
+    },
+    {
+      "slug": "minotti-johannesburg",
+      "name": "Minotti Johannesburg",
+      "country": "ZA",
+      "source": "https://minotti.co.za/contact/"
+    },
+    {
+      "slug": "minotti-cape-town",
+      "name": "Minotti Cape Town",
+      "country": "ZA",
+      "source": "https://minotti.co.za/contact/"
+    },
+    {
+      "slug": "furniture-palace-karen",
+      "name": "Furniture Palace Karen",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "slug": "furniture-palace-thika-road",
+      "name": "Furniture Palace Thika Road",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "slug": "furniture-palace-riverside",
+      "name": "Furniture Palace Riverside",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "slug": "furniture-palace-brookside",
+      "name": "Furniture Palace Brookside",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "slug": "furniture-palace-mombasa",
+      "name": "Furniture Palace Mombasa",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "slug": "furniture-palace-waiyaki-way",
+      "name": "Furniture Palace Waiyaki Way",
+      "country": "KE",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    }
+  ],
+  "held": [
+    "Kinnarps Vienna",
+    "Kinnarps Sofia",
+    "Formfunc Johannesburg",
+    "All Office Cape Town",
+    "Furniture Palace Mombasa Road"
+  ],
+  "coordinateEvidence": [
+    {
+      "name": "Humanscale Barcelona",
+      "address": "Pere IV 50, 08005 Barcelona",
+      "coords": [
+        [
+          41.3955119,
+          2.1919199
+        ]
+      ],
+      "heading": [
+        "Humanscale"
+      ],
+      "displayed_address": [
+        "Carrer de Pere IV, 50, Sant Martí, 08005 Barcelona, 스페인"
+      ],
+      "map_url": "https://www.google.com/maps/place/Humanscale/@41.3955119,2.1919199,17z/data=!3m1!4b1!4m6!3m5!1s0x12a4a348b3b4756b:0x571d68205764fe7!8m2!3d41.3955119!4d2.1919199!16s%2Fg%2F11vlt11wy8?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Humanscale Amsterdam",
+      "address": "Veemkade 350, 1019 HD Amsterdam",
+      "coords": [
+        [
+          52.376592,
+          4.9242877
+        ]
+      ],
+      "heading": [
+        "Humanscale"
+      ],
+      "displayed_address": [
+        "Veemkade 350, 1019 HD Amsterdam, 네덜란드"
+      ],
+      "map_url": "https://www.google.com/maps/place/Humanscale/@52.376592,4.9242877,17z/data=!3m1!4b1!4m6!3m5!1s0x47c60907e73f5a79:0xa2da528b9c80725d!8m2!3d52.376592!4d4.9242877!16s%2Fg%2F1td_4clq?entry=ttu&g_ep=EgoyMDI2MDkxNC4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Humanscale London",
+      "address": "200 St John Street, London EC1V 4RN",
+      "coords": [
+        [
+          51.524942,
+          -0.103473
+        ]
+      ],
+      "heading": [
+        "Humanscale"
+      ],
+      "displayed_address": [
+        "200 St John St, London EC1V 4RN 영국"
+      ],
+      "map_url": "https://www.google.com/maps/place/Humanscale/@51.524942,-0.103473,17z/data=!3m1!4b1!4m6!3m5!1s0x48761b50cbb8ffc5:0x7688960180b7ed53!8m2!3d51.524942!4d-0.103473!16s%2Fg%2F1whdhv6z?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Humanscale Manchester",
+      "address": "Chancery Place, 50 Brown Street, Manchester M2 2JT",
+      "coords": [
+        [
+          53.4802345,
+          -2.2429662
+        ]
+      ],
+      "heading": [
+        "Humanscale"
+      ],
+      "displayed_address": [
+        "chancery place, 50 Brown St, Manchester M2 2JT 영국"
+      ],
+      "map_url": "https://www.google.com/maps/place/Humanscale/@53.4802345,-2.2429662,17z/data=!3m1!4b1!4m6!3m5!1s0x487bb14213d34709:0xa382528e4eeec3e1!8m2!3d53.4802345!4d-2.2429662!16s%2Fg%2F11fdyh4vc8?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Humanscale Paris",
+      "address": "3 Rue Edouard VII, 75009 Paris",
+      "coords": [
+        [
+          48.8707091,
+          2.3289901
+        ]
+      ],
+      "heading": [
+        "Humanscale"
+      ],
+      "displayed_address": [
+        "3 Rue Édouard VII, 75009 Paris, 프랑스"
+      ],
+      "map_url": "https://www.google.com/maps/place/Humanscale/@48.8707091,2.3289901,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66e31592c8857:0xdf7a444e215fcb56!8m2!3d48.8707091!4d2.3289901!16s%2Fg%2F11mlq45689?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Humanscale Warsaw",
+      "address": "Mazowiecka 12, lokal 36, 00-048 Warsaw",
+      "coords": [
+        [
+          52.2378177,
+          21.0131345
+        ]
+      ],
+      "heading": [
+        "Mazowiecka 12/36"
+      ],
+      "displayed_address": [],
+      "map_url": "https://www.google.com/maps/place/Mazowiecka+12%2F36,+00-048+Warszawa,+%ED%8F%B4%EB%9E%80%EB%93%9C/@52.2378177,21.0131345,17z/data=!3m1!4b1!4m6!3m5!1s0x471ecc6005a3979b:0xe6ac7885a49e5a56!8m2!3d52.2378177!4d21.0131345!16s%2Fg%2F11q2nmv745?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Kinnarps Wemmel",
+      "address": "Heide 15, Wemmel",
+      "coords": [
+        [
+          50.8979032,
+          4.3193445
+        ]
+      ],
+      "heading": [
+        "Kinnarps Belgium"
+      ],
+      "displayed_address": [
+        "Heide 15, 1780 Wemmel, 벨기에"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Belgium/@50.8979032,4.3193445,17z/data=!3m1!4b1!4m6!3m5!1s0x47c3c229a45684a1:0xca4092387dc1898f!8m2!3d50.8979032!4d4.3193445!16s%2Fg%2F1tpljx4k?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Brondby",
+      "address": "Roskildevej 522, Brondby",
+      "coords": [
+        [
+          55.6687388,
+          12.423586
+        ]
+      ],
+      "heading": [
+        "Kinnarps"
+      ],
+      "displayed_address": [
+        "Roskildevej 522, 2605 Brøndby, 덴마크"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps/@55.6687388,12.423586,17z/data=!3m1!4b1!4m6!3m5!1s0x4652512c037f327f:0x205718c9b35f3b37!8m2!3d55.6687388!4d12.423586!16s%2Fg%2F1tdbjltr?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Cestlice",
+      "address": "Obchodni 124, Cestlice",
+      "coords": [
+        [
+          49.9995206,
+          14.5781366
+        ]
+      ],
+      "heading": [
+        "Kinnarps, A.s."
+      ],
+      "displayed_address": [
+        "Obchodní 124, 251 70 Čestlice-Říčany u Prahy, 체코"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps,+A.s./@49.9995206,14.5781366,17z/data=!3m1!4b1!4m6!3m5!1s0x470b8e7ae031945f:0x9192121d3f5d9c5c!8m2!3d49.9995206!4d14.5781366!16s%2Fg%2F1tdmcm0x?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Helsinki",
+      "address": "Ralssintie 2, Helsinki",
+      "coords": [
+        [
+          60.2407675,
+          24.9821843
+        ]
+      ],
+      "heading": [
+        "Kinnarps Oy"
+      ],
+      "displayed_address": [
+        "Rälssintie 2, 00720 Helsinki, 핀란드"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Oy/@60.2407675,24.9821843,17z/data=!3m1!4b1!4m6!3m5!1s0x46920065d274515d:0x67a3deaf86af0e99!8m2!3d60.2407675!4d24.9821843!16s%2Fg%2F1td1zxyl?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Worms",
+      "address": "Von-Steuben-Strasse 4-6, Worms",
+      "coords": [
+        [
+          49.6347113,
+          8.3549249
+        ]
+      ],
+      "heading": [
+        "Kinnarps GmbH"
+      ],
+      "displayed_address": [
+        "Von-Steuben-Straße 4-6, 67549 Worms, 독일"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+GmbH/@49.6347113,8.3549249,17z/data=!3m1!4b1!4m6!3m5!1s0x47962bb9f7284f1d:0x1b6e064fab9bb1da!8m2!3d49.6347113!4d8.3549249!16s%2Fg%2F1tlvngbw?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Orgeval",
+      "address": "1712 route de Quarante Sous, Orgeval",
+      "coords": [
+        [
+          48.9305991,
+          1.9781137
+        ]
+      ],
+      "heading": [
+        "Kinnarps SA"
+      ],
+      "displayed_address": [
+        "1712 Rte de Quarante Sous, 78630 Orgeval, 프랑스"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+SA/@48.9305991,1.9781137,17z/data=!3m1!4b1!4m6!3m5!1s0x47e68933bcac7815:0x8b45916fadd123f5!8m2!3d48.9305991!4d1.9781137!16s%2Fg%2F1tdc4j_c?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Budapest",
+      "address": "Esztergomi ut 31-39, Budapest",
+      "coords": [
+        [
+          47.5323503,
+          19.0642018
+        ]
+      ],
+      "heading": [
+        "Kinnarps Hungary Kft."
+      ],
+      "displayed_address": [
+        "Budapest, Esztergomi út 31-39-HUB 1. ép. 1. em, 1138 헝가리"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Hungary+Kft./@47.5323503,19.0642018,17z/data=!3m1!4b1!4m6!3m5!1s0x4741dbedde22d639:0x8d33524252601b90!8m2!3d47.5323503!4d19.0642018!16s%2Fg%2F1tjcn6xt?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Warsaw",
+      "address": "Pulawska 354/356, Warsaw",
+      "coords": [
+        [
+          52.1382153,
+          21.0171463
+        ]
+      ],
+      "heading": [
+        "Kinnarps Polska Sp. z o.o."
+      ],
+      "displayed_address": [
+        "Puławska 354/356, 02-819 Warszawa, 폴란드"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Polska+Sp.+z+o.o./@52.1382153,21.0171463,17z/data=!3m1!4b1!4m6!3m5!1s0x47193265bc688b93:0x23fc40753c846!8m2!3d52.1382153!4d21.0171463!16s%2Fg%2F1tycvd37?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Barcelona",
+      "address": "Alava 51, Barcelona",
+      "coords": [
+        [
+          41.3958044,
+          2.1945333
+        ]
+      ],
+      "heading": [
+        "Reyzabal Industrial"
+      ],
+      "displayed_address": [
+        "Carrer d'Àlaba, 51, Sant Martí, 08005 Barcelona, 스페인"
+      ],
+      "map_url": "https://www.google.com/maps/place/Reyzabal+Industrial/@41.3958044,2.1945333,17z/data=!3m1!4b1!4m6!3m5!1s0x12a4a31750b854ef:0x9e0aa65676e41f68!8m2!3d41.3958044!4d2.1945333!16s%2Fg%2F1wrmhgjb?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Schlieren",
+      "address": "Ifangstrasse 1, Schlieren",
+      "coords": [
+        [
+          47.4011579,
+          8.4550248
+        ]
+      ],
+      "heading": [
+        "Kinnarps Suisse SA"
+      ],
+      "displayed_address": [
+        "Ifangstrasse 1, 8952 Schlieren, 스위스"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Suisse+SA/@47.4011579,8.4550248,17z/data=!3m1!4b1!4m6!3m5!1s0x47900bbbda2a262d:0xa304e4a5dfd751a8!8m2!3d47.4011579!4d8.4550248!16s%2Fg%2F1vnrpjg9?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Grand-Lancy",
+      "address": "105 Route des Jeunes, Grand-Lancy",
+      "coords": [
+        [
+          46.1768302,
+          6.1301805
+        ]
+      ],
+      "heading": [
+        "Kinnarps Suisse SA"
+      ],
+      "displayed_address": [
+        "Rte des Jeunes 105, 1212 Lancy, 스위스"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+Suisse+SA/@46.1768302,6.1301805,17z/data=!3m1!4b1!4m6!3m5!1s0x478c7b192d5078a1:0x7453284d54cf2213!8m2!3d46.1768302!4d6.1301805!16s%2Fg%2F1tjjn8b2?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps London",
+      "address": "17-18 Britton Street, London EC1M 5NZ",
+      "coords": [
+        [
+          51.5217381,
+          -0.1043838
+        ]
+      ],
+      "heading": [
+        "Kinnarps UK"
+      ],
+      "displayed_address": [
+        "The Stock House, 17-18 Britton St, London EC1M 5NZ 영국"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+UK/@51.5217381,-0.1043838,17z/data=!3m1!4b1!4m6!3m5!1s0x487671a28bdb7cd1:0x1b314db1b4f493d8!8m2!3d51.5217381!4d-0.1043838!16s%2Fg%2F11ghp24n_f?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.com/showrooms/"
+    },
+    {
+      "name": "Kinnarps Hamburg",
+      "address": "Sachsenstrasse 6, Hamburg",
+      "coords": [
+        [
+          53.5459378,
+          10.0259913
+        ]
+      ],
+      "heading": [
+        "Kinnarps GmbH Hamburg"
+      ],
+      "displayed_address": [
+        "Sachsenstraße 6, 20097 Hamburg, 독일"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+GmbH+Hamburg/@53.5459378,10.0259913,17z/data=!3m1!4b1!4m6!3m5!1s0x47b185f0aa7aecef:0x4a52e914a1f61117!8m2!3d53.5459378!4d10.0259913!16s%2Fg%2F11b6dp4jgk?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "name": "Kinnarps Cologne",
+      "address": "Niehler Strasse 104, Cologne",
+      "coords": [
+        [
+          50.965009,
+          6.9596881
+        ]
+      ],
+      "heading": [
+        "Kinnarps GmbH"
+      ],
+      "displayed_address": [
+        "Niehler Str. 104, 50733 Nippes, 독일"
+      ],
+      "map_url": "https://www.google.com/maps/place/Kinnarps+GmbH/@50.965009,6.9596881,17z/data=!3m1!4b1!4m6!3m5!1s0x47bf25ac020b65bd:0xfbe192c93c981c9!8m2!3d50.965009!4d6.9596881!16s%2Fg%2F11qbj3c95r?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "name": "Kinnarps Munich",
+      "address": "Gotzinger Strasse 52B, Munich",
+      "coords": [
+        [
+          48.1188101,
+          11.5501297
+        ]
+      ],
+      "heading": [
+        "Gotzinger Str. 52 b"
+      ],
+      "displayed_address": [],
+      "map_url": "https://www.google.com/maps/place/Gotzinger+Str.+52+b,+81371+M%C3%BCnchen-Sendling,+%EB%8F%85%EC%9D%BC/@48.1188101,11.5501297,17z/data=!3m1!4b1!4m6!3m5!1s0x479ddf49b09990a9:0x1f51ce24a35823e0!8m2!3d48.1188101!4d11.5501297!16s%2Fg%2F11q2v89dfg?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.kinnarps.de/showrooms/"
+    },
+    {
+      "name": "Formfunc Cape Town",
+      "address": "9 Raciti Park, 5 Esso Road, Montague Gardens, Cape Town 7441",
+      "coords": [
+        [
+          -33.857548,
+          18.5224869
+        ]
+      ],
+      "heading": [
+        "Formfunc Studio"
+      ],
+      "displayed_address": [
+        "9 Raciti Park, 5 Esso Road, Montague Gardens, Cape Town, 7441 남아프리카"
+      ],
+      "map_url": "https://www.google.com/maps/place/Formfunc+Studio/@-33.857548,18.5224869,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc59535d9f962b:0x9edc3ee6423c73fa!8m2!3d-33.857548!4d18.5224869!16s%2Fg%2F12hkm315k?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://www.humanscale.com/about/company-overview/locations.cfm"
+    },
+    {
+      "name": "Herman Miller London",
+      "address": "The Sans, 20 St Johns Square, London EC1M 4AH",
+      "coords": [
+        [
+          51.5219217,
+          -0.1030675
+        ]
+      ],
+      "heading": [
+        "Herman Miller London"
+      ],
+      "displayed_address": [
+        "20 St John's Sq, London EC1M 4AH 영국"
+      ],
+      "map_url": "https://www.google.com/maps/place/Herman+Miller+London/@51.5219217,-0.1030675,17z/data=!3m1!4b1!4m6!3m5!1s0x487604b55fe9db49:0xd18ecdae18d4170!8m2!3d51.5219217!4d-0.1030675!16s%2Fg%2F1hc3zqmld?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://ukstore.hermanmiller.com/en-gg/pages/store-london-showroom"
+    },
+    {
+      "name": "Herman Miller Paris",
+      "address": "268 boulevard Saint-Germain, 75007 Paris",
+      "coords": [
+        [
+          48.8601085,
+          2.3224143
+        ]
+      ],
+      "heading": [
+        "Herman Miller Showroom Particuliers"
+      ],
+      "displayed_address": [
+        "268 Bd Saint-Germain, 75007 Paris, 프랑스"
+      ],
+      "map_url": "https://www.google.com/maps/place/Herman+Miller+Showroom+Particuliers/@48.8601085,2.3224143,17z/data=!3m1!4b1!4m6!3m5!1s0x47e66f486a654a73:0xcfd1a2ed347b78fe!8m2!3d48.8601085!4d2.3224143!16s%2Fg%2F11m5gsfch4?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://frstore.hermanmiller.com/pages/paris-showroom"
+    },
+    {
+      "name": "Karo Kempton Park",
+      "address": "3 Platinum Road, Spartan, Kempton Park 1619",
+      "coords": [
+        [
+          -26.113875,
+          28.1807082
+        ]
+      ],
+      "heading": [
+        "Karo Manufacturing (Pty) Ltd"
+      ],
+      "displayed_address": [
+        "Extension 16, 3 Platinum Rd, Spartan, Kempton Park, 1619 남아프리카"
+      ],
+      "map_url": "https://www.google.com/maps/place/Karo+Manufacturing+(Pty)+Ltd/@-26.113875,28.1807082,17z/data=!3m1!4b1!4m6!3m5!1s0x1e951312e94fc15b:0x3e1626a9710acda4!8m2!3d-26.113875!4d28.1807082!16s%2Fg%2F1v_ql4x7?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://karo.co.za/contact-us/"
+    },
+    {
+      "name": "Minotti Johannesburg",
+      "address": "10 Parks Boulevard, Rosebank, Johannesburg 2196",
+      "coords": [
+        [
+          -26.1403539,
+          28.0432804
+        ]
+      ],
+      "heading": [
+        "Minotti Johannesburg"
+      ],
+      "displayed_address": [
+        "c/o, 10 Parks Boulevard, Eastwood Rd, Rosebank, Johannesburg, 2196 남아프리카"
+      ],
+      "map_url": "https://www.google.com/maps/place/Minotti+Johannesburg/@-26.1403539,28.0432804,17z/data=!3m1!4b1!4m6!3m5!1s0x1e950d732e73c723:0xa10e844f3a688a5b!8m2!3d-26.1403539!4d28.0432804!16s%2Fg%2F11xv9_4yv8?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://minotti.co.za/contact/"
+    },
+    {
+      "name": "Minotti Cape Town",
+      "address": "Waterway House North, 3 Dock Road, Cape Town 8001",
+      "coords": [
+        [
+          -33.9129893,
+          18.4227788
+        ]
+      ],
+      "heading": [
+        "L I M E L I N E"
+      ],
+      "displayed_address": [
+        "Waterway House North, 3 Dock Rd, Victoria & Alfred Waterfront, Cape Town, 8001 남아프리카"
+      ],
+      "map_url": "https://www.google.com/maps/place/L+I+M+E+L+I+N+E/@-33.9129893,18.4227788,17z/data=!3m1!4b1!4m6!3m5!1s0x1dcc675e61f7e79d:0x56ffc13729f479d!8m2!3d-33.9129893!4d18.4227788!16s%2Fg%2F11bx5q8yml?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://minotti.co.za/contact/"
+    },
+    {
+      "name": "Furniture Palace Karen",
+      "address": "The Hub Mall, Karen, Nairobi",
+      "coords": [
+        [
+          -1.3202422,
+          36.7041057
+        ]
+      ],
+      "heading": [
+        "Furniture Palace (Intl) Kenya Ltd - The Hub Karen"
+      ],
+      "displayed_address": [
+        "The Hub, Dagoretti Rd, Nairobi, 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+(Intl)+Kenya+Ltd+-+The+Hub+Karen/@-1.3202422,36.7041057,17z/data=!3m1!4b1!4m6!3m5!1s0x182f1b7b20b13c9d:0x4b957956aafa0cd!8m2!3d-1.3202422!4d36.7041057!16s%2Fg%2F11f57fjczg?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "name": "Furniture Palace Thika Road",
+      "address": "Thika Road Mall, Nairobi",
+      "coords": [
+        [
+          -1.2195604,
+          36.8883664
+        ]
+      ],
+      "heading": [
+        "Furniture Palace International-Thika Road Mall (Trm)"
+      ],
+      "displayed_address": [
+        "Ground Floor & First Floor Thika Rd, Nairobi, 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+International-Thika+Road+Mall+(Trm)/@-1.2195604,36.8883664,17z/data=!3m1!4b1!4m6!3m5!1s0x182f15c80f4a3a61:0xb63c13f1abb896cd!8m2!3d-1.2195604!4d36.8883664!16s%2Fg%2F11f57fbm51?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "name": "Furniture Palace Riverside",
+      "address": "Segen Plaza, 96 Riverside Drive, Nairobi",
+      "coords": [
+        [
+          -1.2691716,
+          36.7916711
+        ]
+      ],
+      "heading": [
+        "Furniture Palace (Int) K Ltd - 96 Riverside"
+      ],
+      "displayed_address": [
+        "96 Riverside Dr, Nairobi, 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+(Int)+K+Ltd+-+96+Riverside/@-1.2691716,36.7916711,17z/data=!3m1!4b1!4m6!3m5!1s0x182f175b4759c699:0x9d867b191e972a20!8m2!3d-1.2691716!4d36.7916711!16s%2Fg%2F11c713f0xv?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "name": "Furniture Palace Brookside",
+      "address": "Piano, 171 Brookside Drive, Nairobi",
+      "coords": [
+        [
+          -1.2561491,
+          36.7963125
+        ]
+      ],
+      "heading": [
+        "Furniture Palace (Intl) Kenya Ltd - The Piano"
+      ],
+      "displayed_address": [
+        "171, The Piano, Brookside Dr, Nairobi, 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+(Intl)+Kenya+Ltd+-+The+Piano/@-1.2561491,36.7963125,17z/data=!3m1!4b1!4m6!3m5!1s0x182f178906f32505:0x68223e46cba49c27!8m2!3d-1.2561491!4d36.7963125!16s%2Fg%2F11y913t02f?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "name": "Furniture Palace Mombasa",
+      "address": "Mbaraki Road, near Mombasa Sports Club, Mombasa",
+      "coords": [
+        [
+          -4.0660013,
+          39.6650323
+        ]
+      ],
+      "heading": [
+        "Furniture Palace International-Mombasa"
+      ],
+      "displayed_address": [
+        "Mbaraki Rd, Mvita 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+International-Mombasa/@-4.0660013,39.6650323,17z/data=!3m1!4b1!4m6!3m5!1s0x1840130fb9b2116f:0x1dfbc0456f0c5a9a!8m2!3d-4.0660013!4d39.6650323!16s%2Fg%2F11h_d718lr?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    },
+    {
+      "name": "Furniture Palace Waiyaki Way",
+      "address": "Avenue 19, Musa Gitau Road, off Waiyaki Way, Nairobi",
+      "coords": [
+        [
+          -1.2650384,
+          36.763423
+        ]
+      ],
+      "heading": [
+        "Furniture Palace (Intl) Kenya Ltd - Avenue 19"
+      ],
+      "displayed_address": [
+        "Avenue 19, off Musa Gitau Rd, Nairobi, 케냐"
+      ],
+      "map_url": "https://www.google.com/maps/place/Furniture+Palace+(Intl)+Kenya+Ltd+-+Avenue+19/@-1.2650384,36.763423,17z/data=!3m1!4b1!4m6!3m5!1s0x182f193d76689f6f:0x21d4b9f8af0c0220!8m2!3d-1.2650384!4d36.763423!16s%2Fg%2F11j8sn_8ll?entry=ttu&g_ep=EgoyMDI2MDkxMy4wIKXMDSoASAFQAw%3D%3D",
+      "source": "https://furniturepalacekenya.com/our-stores/"
+    }
+  ]
+}

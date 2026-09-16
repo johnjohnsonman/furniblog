@@ -1,0 +1,10 @@
+const fs=require('fs'),path=require('path'),Module=require('module'),ts=require('typescript'),assert=require('node:assert/strict');
+function load(file){const p=path.resolve(__dirname,'..',file),m=new Module(p,module);m.filename=p;m.paths=Module._nodeModulePaths(path.dirname(p));m.require=n=>n==='./locations'?load('lib/showrooms/locations.ts'):require(n);m._compile(ts.transpileModule(fs.readFileSync(p,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText,p);return m.exports;}
+const {locationGroups,locationPages,cityKey}=load('lib/showrooms/locations.ts'),{filterStores}=load('lib/showrooms/domain.ts'),data=require('../content/showrooms/registry.json');
+assert.equal(new Set(data.stores.map(s=>s.id)).size,data.stores.length);assert.equal(new Set(data.stores.map(s=>s.slug)).size,data.stores.length);
+const mock=[{...data.stores[0],country_code:'US',city:'Portland',region:'OR'},{...data.stores[0],country_code:'US',city:'Portland',region:'ME'},{...data.stores[0],status:'draft',city:'Hidden'}];
+const groups=locationGroups(mock);assert.equal(groups.length,1);assert.equal(groups[0].cities.length,2);assert.notEqual(cityKey(mock[0]),cityKey(mock[1]));assert.equal(locationPages(mock).length,1);
+const f={q:'',brand:'',model:'',confirmed:false,appointment:'',type:'',country:'US',city:'portland-or'};assert.equal(filterStores(mock,f).length,1);
+const actual=locationGroups(data.stores);for(const c of actual)for(const city of c.cities)assert.equal(filterStores(data.stores,{...f,country:c.code,city:city.key}).length,city.stores.length);
+assert(!actual.some(c=>c.code==='KR'));assert(actual.some(c=>c.code==='KE'));assert(actual.some(c=>c.code==='GB'));
+console.log(JSON.stringify({stores:data.stores.length,countries:actual.length,indexableLocationPages:locationPages(data.stores).length+1,cityPages:actual.flatMap(c=>c.cities).filter(c=>c.stores.length>=3).length,checks:['unique IDs/slugs','same-name city isolation','draft exclusion','minimum coverage','every city map matches listing']}));

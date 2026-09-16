@@ -182,6 +182,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const { getPublicStores } = await import("@/lib/showrooms/server")
     const result = await getPublicStores()
     if (!result.unavailable) {
+      const { locationPages } = await import("@/lib/showrooms/locations")
+      dynamicPages.push(url("/stores/locations", undefined, "weekly", 0.7))
+      for (const path of locationPages(result.stores)) dynamicPages.push(url(path, undefined, "weekly", 0.7))
       dynamicPages.push(url("/stores", undefined, "weekly", 0.7))
       for (const store of result.stores) dynamicPages.push(url(`/stores/${store.slug}`, toDate(store.updated_at), "weekly", 0.6))
     }

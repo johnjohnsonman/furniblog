@@ -76,6 +76,21 @@
         "id": "50000000-0000-4000-8000-000000000015",
         "name": "SitOnIt Seating",
         "slug": "sitonitseating"
+      },
+      {
+        "id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+        "name": "Kinnarps",
+        "slug": "kinnarps"
+      },
+      {
+        "id": "3f797472-f476-485d-9a80-626773f4db6a",
+        "name": "Karo",
+        "slug": "karo"
+      },
+      {
+        "id": "55343d14-c64b-4900-a01e-69b9124fa6f2",
+        "name": "Minotti",
+        "slug": "minotti"
       }
     ],
     "models": [
@@ -27400,6 +27415,1389 @@
         }
       ],
       "models": []
+    },
+    {
+      "id": "51b4c5e3-4b9f-4a8b-855d-d6095f08dc79",
+      "slug": "humanscale-barcelona",
+      "name": "Humanscale Barcelona",
+      "status": "published",
+      "country_code": "ES",
+      "city": "Barcelona",
+      "region": "",
+      "address": "Pere IV 50, 08005 Barcelona",
+      "unit": "",
+      "latitude": 41.3955119,
+      "longitude": 2.1919199,
+      "timezone": "Europe/Madrid",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.250Z"
+    },
+    {
+      "id": "eed91ed1-877e-450e-806e-8d5ea10fcc7c",
+      "slug": "humanscale-amsterdam",
+      "name": "Humanscale Amsterdam",
+      "status": "published",
+      "country_code": "NL",
+      "city": "Amsterdam",
+      "region": "",
+      "address": "Veemkade 350, 1019 HD Amsterdam",
+      "unit": "",
+      "latitude": 52.376592,
+      "longitude": 4.9242877,
+      "timezone": "Europe/Amsterdam",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "8af92e37-9ab3-4d6b-b8e4-7c942510f99d",
+      "slug": "humanscale-london",
+      "name": "Humanscale London",
+      "status": "published",
+      "country_code": "GB",
+      "city": "London",
+      "region": "",
+      "address": "200 St John Street, London EC1V 4RN",
+      "unit": "",
+      "latitude": 51.524942,
+      "longitude": -0.103473,
+      "timezone": "Europe/London",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "1c9c9251-79d1-470c-ab1c-1affaff225b0",
+      "slug": "humanscale-manchester",
+      "name": "Humanscale Manchester",
+      "status": "published",
+      "country_code": "GB",
+      "city": "Manchester",
+      "region": "",
+      "address": "Chancery Place, 50 Brown Street, Manchester M2 2JT",
+      "unit": "",
+      "latitude": 53.4802345,
+      "longitude": -2.2429662,
+      "timezone": "Europe/London",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try. The showroom is on the 12th floor.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "8a6e9db1-0f2f-4ac4-b537-85819e1fa7c7",
+      "slug": "humanscale-paris",
+      "name": "Humanscale Paris",
+      "status": "published",
+      "country_code": "FR",
+      "city": "Paris",
+      "region": "",
+      "address": "3 Rue Edouard VII, 75009 Paris",
+      "unit": "",
+      "latitude": 48.8707091,
+      "longitude": 2.3289901,
+      "timezone": "Europe/Paris",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "7f6f82bb-53b7-4033-a102-9adeb1363e7e",
+      "slug": "humanscale-warsaw",
+      "name": "Humanscale Warsaw",
+      "status": "published",
+      "country_code": "PL",
+      "city": "Warsaw",
+      "region": "",
+      "address": "Mazowiecka 12, lokal 36, 00-048 Warsaw",
+      "unit": "",
+      "latitude": 52.2378177,
+      "longitude": 21.0131345,
+      "timezone": "Europe/Warsaw",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Call ahead to arrange a showroom appointment. Ask which chair models are available to try.",
+      "transport_notes": "Map pin marks the street address or building. Confirm the showroom entrance before travelling.",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "4075161e-421c-46a6-b705-5a6090680e96",
+      "slug": "kinnarps-wemmel",
+      "name": "Kinnarps Wemmel",
+      "status": "published",
+      "country_code": "BE",
+      "city": "Wemmel",
+      "region": "",
+      "address": "Heide 15, Wemmel",
+      "unit": "",
+      "latitude": 50.8979032,
+      "longitude": 4.3193445,
+      "timezone": "Europe/Brussels",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "003dc66a-a9a0-4d06-9b0b-62cea31bfd7d",
+      "slug": "kinnarps-brondby",
+      "name": "Kinnarps Brondby",
+      "status": "published",
+      "country_code": "DK",
+      "city": "Brondby",
+      "region": "",
+      "address": "Roskildevej 522, Brondby",
+      "unit": "",
+      "latitude": 55.6687388,
+      "longitude": 12.423586,
+      "timezone": "Europe/Copenhagen",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "2b671b5d-c994-4367-b654-6beb9efbc04b",
+      "slug": "kinnarps-cestlice",
+      "name": "Kinnarps Cestlice",
+      "status": "published",
+      "country_code": "CZ",
+      "city": "Cestlice",
+      "region": "",
+      "address": "Obchodni 124, Cestlice",
+      "unit": "",
+      "latitude": 49.9995206,
+      "longitude": 14.5781366,
+      "timezone": "Europe/Prague",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.263Z"
+    },
+    {
+      "id": "15f369dd-dfaa-4a49-a6c1-de5fdaec05ef",
+      "slug": "kinnarps-helsinki",
+      "name": "Kinnarps Helsinki",
+      "status": "published",
+      "country_code": "FI",
+      "city": "Helsinki",
+      "region": "",
+      "address": "Ralssintie 2, Helsinki",
+      "unit": "",
+      "latitude": 60.2407675,
+      "longitude": 24.9821843,
+      "timezone": "Europe/Helsinki",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "1e15d2fb-c91f-4083-9dcd-e96eecc4b73f",
+      "slug": "kinnarps-worms",
+      "name": "Kinnarps Worms",
+      "status": "published",
+      "country_code": "DE",
+      "city": "Worms",
+      "region": "",
+      "address": "Von-Steuben-Strasse 4-6, Worms",
+      "unit": "",
+      "latitude": 49.6347113,
+      "longitude": 8.3549249,
+      "timezone": "Europe/Berlin",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "d2f0a638-7e2f-4dfe-872c-37341dd19822",
+      "slug": "kinnarps-orgeval",
+      "name": "Kinnarps Orgeval",
+      "status": "published",
+      "country_code": "FR",
+      "city": "Orgeval",
+      "region": "",
+      "address": "1712 route de Quarante Sous, Orgeval",
+      "unit": "",
+      "latitude": 48.9305991,
+      "longitude": 1.9781137,
+      "timezone": "Europe/Paris",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "1bdd155d-7fdf-42b6-b8fc-6b903e884ea3",
+      "slug": "kinnarps-budapest",
+      "name": "Kinnarps Budapest",
+      "status": "published",
+      "country_code": "HU",
+      "city": "Budapest",
+      "region": "",
+      "address": "Esztergomi ut 31-39, Budapest",
+      "unit": "",
+      "latitude": 47.5323503,
+      "longitude": 19.0642018,
+      "timezone": "Europe/Budapest",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "9150a04e-4b26-4983-8754-faa2fd345ba8",
+      "slug": "kinnarps-warsaw",
+      "name": "Kinnarps Warsaw",
+      "status": "published",
+      "country_code": "PL",
+      "city": "Warsaw",
+      "region": "",
+      "address": "Pulawska 354/356, Warsaw",
+      "unit": "",
+      "latitude": 52.1382153,
+      "longitude": 21.0171463,
+      "timezone": "Europe/Warsaw",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "386da144-31a3-4e34-93e4-8693b1e8202b",
+      "slug": "dok-madrid",
+      "name": "Dok Madrid",
+      "status": "published",
+      "country_code": "ES",
+      "city": "Madrid",
+      "region": "",
+      "address": "Paseo Pintor Rosales 40, Madrid",
+      "unit": "",
+      "latitude": 40.4281049,
+      "longitude": -3.7205436,
+      "timezone": "Europe/Madrid",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "9cf94534-f5e0-4dbb-88f3-d1a7d27913d6",
+      "slug": "kinnarps-barcelona",
+      "name": "Kinnarps Barcelona",
+      "status": "published",
+      "country_code": "ES",
+      "city": "Barcelona",
+      "region": "",
+      "address": "Alava 51, Barcelona",
+      "unit": "",
+      "latitude": 41.3958044,
+      "longitude": 2.1945333,
+      "timezone": "Europe/Madrid",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Showroom on the second floor, units 1 and 2. Contact the showroom to arrange a visit and confirm chair availability.",
+      "transport_notes": "Map pin marks the street address or building. Confirm the showroom entrance before travelling.",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "2fe3ebe1-eae8-4fe9-8c85-30ffa10dc73b",
+      "slug": "kinnarps-schlieren",
+      "name": "Kinnarps Schlieren",
+      "status": "published",
+      "country_code": "CH",
+      "city": "Schlieren",
+      "region": "",
+      "address": "Ifangstrasse 1, Schlieren",
+      "unit": "",
+      "latitude": 47.4011579,
+      "longitude": 8.4550248,
+      "timezone": "Europe/Zurich",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "f73ec7ad-c948-4a37-80f1-2d53faccb193",
+      "slug": "kinnarps-grand-lancy",
+      "name": "Kinnarps Grand-Lancy",
+      "status": "published",
+      "country_code": "CH",
+      "city": "Grand-Lancy",
+      "region": "",
+      "address": "105 Route des Jeunes, Grand-Lancy",
+      "unit": "",
+      "latitude": 46.1768302,
+      "longitude": 6.1301805,
+      "timezone": "Europe/Zurich",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "bb17ec67-4a6d-4218-a0e9-aa055c5d48dd",
+      "slug": "kinnarps-london",
+      "name": "Kinnarps London",
+      "status": "published",
+      "country_code": "GB",
+      "city": "London",
+      "region": "",
+      "address": "17-18 Britton Street, London EC1M 5NZ",
+      "unit": "",
+      "latitude": 51.5217381,
+      "longitude": -0.1043838,
+      "timezone": "Europe/London",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.com/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.com/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.com/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "d35c8e03-57cc-4331-8a52-97cf97f707fd",
+      "slug": "kinnarps-hamburg",
+      "name": "Kinnarps Hamburg",
+      "status": "published",
+      "country_code": "DE",
+      "city": "Hamburg",
+      "region": "",
+      "address": "Sachsenstrasse 6, Hamburg",
+      "unit": "",
+      "latitude": 53.5459378,
+      "longitude": 10.0259913,
+      "timezone": "Europe/Berlin",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.de/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.de/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.de/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "0c926141-df66-471e-bbdb-42c746feb0fc",
+      "slug": "kinnarps-cologne",
+      "name": "Kinnarps Cologne",
+      "status": "published",
+      "country_code": "DE",
+      "city": "Cologne",
+      "region": "",
+      "address": "Niehler Strasse 104, Cologne",
+      "unit": "",
+      "latitude": 50.965009,
+      "longitude": 6.9596881,
+      "timezone": "Europe/Berlin",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.de/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.kinnarps.de/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.de/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "49bdd296-d218-453f-8161-e2b9cfe43eb3",
+      "slug": "kinnarps-munich",
+      "name": "Kinnarps Munich",
+      "status": "published",
+      "country_code": "DE",
+      "city": "Munich",
+      "region": "",
+      "address": "Gotzinger Strasse 52B, Munich",
+      "unit": "",
+      "latitude": 48.1188101,
+      "longitude": 11.5501297,
+      "timezone": "Europe/Berlin",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.kinnarps.de/showrooms/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "Map pin marks the street address or building. Confirm the showroom entrance before travelling.",
+      "photos": [],
+      "source_url": "https://www.kinnarps.de/showrooms/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "ce5ef183-b28e-427a-8da8-142d160fcec1",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://www.kinnarps.de/showrooms/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "abecda0e-9b70-4bc7-851b-e2182b7c7245",
+      "slug": "formfunc-cape-town",
+      "name": "Formfunc Cape Town",
+      "status": "published",
+      "country_code": "ZA",
+      "city": "Cape Town",
+      "region": "",
+      "address": "9 Raciti Park, 5 Esso Road, Montague Gardens, Cape Town 7441",
+      "unit": "",
+      "latitude": -33.857548,
+      "longitude": 18.5224869,
+      "timezone": "Africa/Johannesburg",
+      "phone": "",
+      "email": "",
+      "website_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Humanscale seating location. Call ahead to arrange an appointment.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "9c8b303b-c507-4ab1-9cd0-d50bc62cf285",
+      "slug": "herman-miller-london",
+      "name": "Herman Miller London",
+      "status": "published",
+      "country_code": "GB",
+      "city": "London",
+      "region": "",
+      "address": "The Sans, 20 St Johns Square, London EC1M 4AH",
+      "unit": "",
+      "latitude": 51.5219217,
+      "longitude": -0.1030675,
+      "timezone": "Europe/London",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ukstore.hermanmiller.com/en-gg/pages/store-london-showroom",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the store before travelling to confirm visiting arrangements and chair availability.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://ukstore.hermanmiller.com/en-gg/pages/store-london-showroom",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://ukstore.hermanmiller.com/en-gg/pages/store-london-showroom",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "89301412-8b8d-4fc9-a4eb-31b8f9202a30",
+      "slug": "herman-miller-paris",
+      "name": "Herman Miller Paris",
+      "status": "published",
+      "country_code": "FR",
+      "city": "Paris",
+      "region": "",
+      "address": "268 boulevard Saint-Germain, 75007 Paris",
+      "unit": "",
+      "latitude": 48.8601085,
+      "longitude": 2.3224143,
+      "timezone": "Europe/Paris",
+      "phone": "+33 1 59 03 28 33",
+      "email": "",
+      "website_url": "https://frstore.hermanmiller.com/pages/paris-showroom",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {
+          "0": [],
+          "1": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "10:00",
+              "close": "18:00"
+            }
+          ],
+          "6": [
+            {
+              "open": "11:00",
+              "close": "17:00"
+            }
+          ]
+        },
+        "exceptions": {}
+      },
+      "visit_notes": "Walk-ins welcome. Weekday visits are recommended for an in-depth seating demonstration. Confirm the model you want before travelling.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://frstore.hermanmiller.com/pages/paris-showroom",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://frstore.hermanmiller.com/pages/paris-showroom",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "09350e1a-c8c5-4468-9b32-91a473f51699",
+      "slug": "karo-kempton-park",
+      "name": "Karo Kempton Park",
+      "status": "published",
+      "country_code": "ZA",
+      "city": "Kempton Park",
+      "region": "",
+      "address": "3 Platinum Road, Spartan, Kempton Park 1619",
+      "unit": "",
+      "latitude": -26.113875,
+      "longitude": 28.1807082,
+      "timezone": "Africa/Johannesburg",
+      "phone": "+27 11 392 6803",
+      "email": "assist@karo.co.za",
+      "website_url": "https://karo.co.za/contact-us/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {
+          "0": [],
+          "1": [
+            {
+              "open": "07:00",
+              "close": "16:00"
+            }
+          ],
+          "2": [
+            {
+              "open": "07:00",
+              "close": "16:00"
+            }
+          ],
+          "3": [
+            {
+              "open": "07:00",
+              "close": "16:00"
+            }
+          ],
+          "4": [
+            {
+              "open": "07:00",
+              "close": "16:00"
+            }
+          ],
+          "5": [
+            {
+              "open": "07:00",
+              "close": "15:00"
+            }
+          ],
+          "6": []
+        },
+        "exceptions": {}
+      },
+      "visit_notes": "Book a showroom consultation to discuss ergonomic office chairs. Secure on-site visitor parking is available.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://karo.co.za/contact-us/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "3f797472-f476-485d-9a80-626773f4db6a",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://karo.co.za/contact-us/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "cd6acf10-8508-43c2-959c-789ab418a4a3",
+      "slug": "minotti-johannesburg",
+      "name": "Minotti Johannesburg",
+      "status": "published",
+      "country_code": "ZA",
+      "city": "Johannesburg",
+      "region": "",
+      "address": "10 Parks Boulevard, Rosebank, Johannesburg 2196",
+      "unit": "",
+      "latitude": -26.1403539,
+      "longitude": 28.0432804,
+      "timezone": "Africa/Johannesburg",
+      "phone": "",
+      "email": "",
+      "website_url": "https://minotti.co.za/contact/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contemporary lounge and dining furniture showroom. Saturday visits require an appointment; closed on public holidays.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://minotti.co.za/contact/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "55343d14-c64b-4900-a01e-69b9124fa6f2",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://minotti.co.za/contact/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "1208fbca-ddee-4251-ac8d-2a1fa28f3472",
+      "slug": "minotti-cape-town",
+      "name": "Minotti Cape Town",
+      "status": "published",
+      "country_code": "ZA",
+      "city": "Cape Town",
+      "region": "",
+      "address": "Waterway House North, 3 Dock Road, Cape Town 8001",
+      "unit": "",
+      "latitude": -33.9129893,
+      "longitude": 18.4227788,
+      "timezone": "Africa/Johannesburg",
+      "phone": "",
+      "email": "",
+      "website_url": "https://minotti.co.za/contact/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contemporary lounge and dining furniture showroom. Saturday visits require an appointment; closed on public holidays.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://minotti.co.za/contact/",
+      "checked_on": "2026-09-16",
+      "brands": [
+        {
+          "brand_id": "55343d14-c64b-4900-a01e-69b9124fa6f2",
+          "carried": "confirmed",
+          "official": "unknown",
+          "source_url": "https://minotti.co.za/contact/",
+          "checked_on": "2026-09-16"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "e53d6c79-23cd-4ca6-92c0-c0bd1de60188",
+      "slug": "furniture-palace-karen",
+      "name": "Furniture Palace Karen",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Nairobi",
+      "region": "",
+      "address": "The Hub Mall, Karen, Nairobi",
+      "unit": "",
+      "latitude": -1.3202422,
+      "longitude": 36.7041057,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "6e32de34-a74f-4a68-84eb-946f77996da2",
+      "slug": "furniture-palace-thika-road",
+      "name": "Furniture Palace Thika Road",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Nairobi",
+      "region": "",
+      "address": "Thika Road Mall, Nairobi",
+      "unit": "",
+      "latitude": -1.2195604,
+      "longitude": 36.8883664,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "303912d8-5151-452f-93c5-f73b9ff80cbc",
+      "slug": "furniture-palace-riverside",
+      "name": "Furniture Palace Riverside",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Nairobi",
+      "region": "",
+      "address": "Segen Plaza, 96 Riverside Drive, Nairobi",
+      "unit": "",
+      "latitude": -1.2691716,
+      "longitude": 36.7916711,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "37c93834-7c6b-4080-934a-cf0d5881da0c",
+      "slug": "furniture-palace-brookside",
+      "name": "Furniture Palace Brookside",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Nairobi",
+      "region": "",
+      "address": "Piano, 171 Brookside Drive, Nairobi",
+      "unit": "",
+      "latitude": -1.2561491,
+      "longitude": 36.7963125,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "961ae7c2-0d44-47fc-add0-dbec3f05ccc6",
+      "slug": "furniture-palace-mombasa",
+      "name": "Furniture Palace Mombasa",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Mombasa",
+      "region": "",
+      "address": "Mbaraki Road, near Mombasa Sports Club, Mombasa",
+      "unit": "",
+      "latitude": -4.0660013,
+      "longitude": 39.6650323,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
+    },
+    {
+      "id": "f5c8c8cc-1960-423b-89f0-37e2b6c0bdd3",
+      "slug": "furniture-palace-waiyaki-way",
+      "name": "Furniture Palace Waiyaki Way",
+      "status": "published",
+      "country_code": "KE",
+      "city": "Nairobi",
+      "region": "",
+      "address": "Avenue 19, Musa Gitau Road, off Waiyaki Way, Nairobi",
+      "unit": "",
+      "latitude": -1.2650384,
+      "longitude": 36.763423,
+      "timezone": "Africa/Nairobi",
+      "phone": "",
+      "email": "",
+      "website_url": "https://furniturepalacekenya.com/our-stores/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Furniture store with an office and home chair range. Contact this branch to confirm which chairs are on display.",
+      "transport_notes": "",
+      "photos": [],
+      "source_url": "https://furniturepalacekenya.com/our-stores/",
+      "checked_on": "2026-09-16",
+      "brands": [],
+      "models": [],
+      "updated_at": "2026-09-16T05:55:51.264Z"
     }
   ]
 }

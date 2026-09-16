@@ -19,14 +19,14 @@ export async function generateMetadata({
       "Find registered chair showrooms and retailers. Check brands, confirmed models to try, visit arrangements and contact information.",
     alternates: { canonical: "/stores" },
     ...(Object.keys(q).length
-      ? { robots: { index: false, follow: true } }
+      ? { robots: { index: false, follow: true, googleBot: { index: false, follow: true } } }
       : {}),
   };
 }
 export default async function StoresPage({
   searchParams,
 }: {
-  searchParams: Promise<{ model?: string }>;
+  searchParams: Promise<{ model?: string; country?: string; city?: string }>;
 }) {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
   const [result, catalog, q] = await Promise.all([
@@ -42,6 +42,8 @@ export default async function StoresPage({
       stores={result.stores.map((s) => enrichStore(s, catalog))}
       catalog={catalog}
       initialModel={model}
+      initialCountry={q.country || ""}
+      initialCity={q.city || ""}
       unavailable={result.unavailable}
       correctionsEnabled={process.env.SHOWROOM_DATA_SOURCE !== "registry"}
     />

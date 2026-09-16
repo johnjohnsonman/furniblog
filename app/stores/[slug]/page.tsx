@@ -10,6 +10,7 @@ import {
 import { StoreDetails } from "@/components/showrooms/StoreDetails";
 import "@/components/showrooms/atlas.css";
 import { SITE_URL } from "@/lib/site-config";
+import { countryPath, countryName } from "@/lib/showrooms/locations";
 export const dynamic = "force-dynamic";
 const load = cache(async (slug: string) => {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
@@ -55,6 +56,7 @@ export default async function StorePage({
         <Link href="/stores">← All showrooms</Link>
       </header>
       <StoreDetails store={s} correctionsEnabled={process.env.SHOWROOM_DATA_SOURCE !== "registry"} />
+      <nav aria-label="More stores" style={{ padding: "20px" }}><Link href={countryPath(s.country_code)}>More chair stores in {countryName(s.country_code)} →</Link></nav>
     </main>
   );
 }

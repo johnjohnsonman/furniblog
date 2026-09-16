@@ -378,7 +378,10 @@
   .atlas-header {
     padding: 8px 14px;
     gap: 10px;
+    flex-wrap: wrap;
   }
+  .atlas-header > span { display: none; }
+  .atlas-header > a:not(.atlas-wordmark) { font-size: 12px; }
   .atlas-wordmark {
     font-size: 22px;
   }

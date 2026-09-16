@@ -9,7 +9,7 @@ function load(file) {
   m.filename = p;
   m.paths = Module._nodeModulePaths(path.dirname(p));
   m.require = (name) =>
-    name === "./domain" ? load("lib/showrooms/domain.ts") : require(name);
+    name === "./domain" ? load("lib/showrooms/domain.ts") : name === "./locations" ? load("lib/showrooms/locations.ts") : require(name);
   m._compile(
     ts.transpileModule(fs.readFileSync(p, "utf8"), {
       compilerOptions: {

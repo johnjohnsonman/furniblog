@@ -1,7 +1,7 @@
 # Public chair-store registry
 
 The initial public release uses `SHOWROOMS_ENABLED=true` and `SHOWROOM_DATA_SOURCE=registry`.
-`registry.json` contains only reviewed, published records: 134 Japan and 172 US locations (306 total), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
+`registry.json` contains only reviewed, published records: 134 Japan, 172 US, 24 Europe and 10 Africa locations (340 total across 16 countries), checked 2026-09-16. This is not a complete national inventory. Korea is excluded.
 
 Each store and confirmed relationship has its own source URL and check date. Missing hours and trial availability remain unknown. Do not infer a model trial from a brand relationship or national product carousel. Do not copy vendor photographs without rights.
 
@@ -17,6 +17,10 @@ node scripts/test-showrooms.cjs
 npm run lint
 npm run build
 ```
+
+Run `node scripts/test-store-locations.cjs` for country/city boundaries, private-record exclusion, city map consistency and landing-page coverage. `/stores/locations` is the browsable directory; countries with fewer than two stores stay noindex and city pages require at least three published stores. US city URLs include state to avoid merging namesakes. Public filter URLs remain noindex. Counts and sitemap inclusion are derived from the same published store collection.
+
+Europe/Africa source and coordinate audit: `research/europe-africa-20260916.json`. Address conflicts in Vienna/Sofia and an implausible Johannesburg map pin were held. Unresolved All Office Cape Town and Furniture Palace Mombasa Road pins were held. Address-level pins are explicitly described; unknown opening hours/model trials remain unknown. No vendor photos were copied.
 
 Verify changed locations and map/filter behavior before releasing. Keep public text English. The application validates registry records using the same schema as database entries.
 
