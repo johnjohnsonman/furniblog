@@ -1,0 +1,49 @@
+{
+  "checked_on": "2026-09-18",
+  "scope": "US and Japan value and mid-priced chair brands with public physical locations",
+  "policy": "A confirmed brand relationship does not imply a confirmed model trial. Exact model trial links are added only when a store-specific official source names the model.",
+  "sources": [
+    "https://www.sihoo.com/pages/sihoo-dealer-locator",
+    "https://www.sihoo.com/",
+    "https://www.hon.com/about/hon-showrooms",
+    "https://www.hon.com/about/hon-showrooms/chicago",
+    "https://www.hon.com/about/hon-showrooms/new-york",
+    "https://www.hon.com/about/hon-showrooms/washington-dc",
+    "https://www.hon.com/about/hon-showrooms/muscatine-hon-headquarters",
+    "https://www.hon.com/customer-support/faq/chairs/where-to-buy-office-chairs",
+    "https://www.okamura.com/showrooms/",
+    "https://www.okamura.com/showrooms/tokyo-showroom/",
+    "https://www.okamura.com/showrooms/fukuoka-showroom/",
+    "https://www.branchfurniture.com/pages/location/branch-nyc",
+    "https://www.branchfurniture.com/collections/nyc-showroom-branch"
+  ],
+  "published": {
+    "stores": [
+      "sihoo-healthy-posture-chicago",
+      "hon-chicago-flagship",
+      "hon-new-york-showroom",
+      "hon-washington-dc-showroom",
+      "hon-muscatine-headquarters-showroom",
+      "okamura-tokyo-showroom",
+      "okamura-fukuoka-showroom"
+    ],
+    "exact_model_trials": {
+      "branch-new-york": ["branch-ergonomic-chair", "branch-verve"]
+    }
+  },
+  "online_only_products": [
+    "SIHOO M18",
+    "SIHOO Doro C300",
+    "SIHOO Doro S300",
+    "HON Ignition 2.0",
+    "HON Wave",
+    "HON Convergence",
+    "HON Nucleus"
+  ],
+  "notes": [
+    "The online-only list records existing Chairpedia catalog coverage and does not claim current Amazon sales rank.",
+    "SIHOO calls several products Best Sellers on its own site; this is a manufacturer label, not an independently verified Amazon ranking.",
+    "HON showroom pages confirm seating can be experienced, but do not name the catalog models above at each location, so no exact-model trial links were created.",
+    "Korea remains excluded."
+  ]
+}
