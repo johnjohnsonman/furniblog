@@ -17,15 +17,17 @@ const domains = {
   SE: "www.amazon.se", PL: "www.amazon.pl", BE: "www.amazon.com.be", IE: "www.amazon.ie",
   TR: "www.amazon.com.tr", EG: "www.amazon.eg",
 };
+const oneLinkCountries = new Set(["GB", "DE", "FR", "CA", "IT", "ES", "NL", "SE", "PL"]);
 for (const [country, domain] of Object.entries(domains)) {
   const result = resolveAmazonDestination("https://www.amazon.com/dp/B07GNDDNMW?tag=wrong-20&ascsubtag=products_test", "SIHOO M18", country);
   const url = new URL(result.url);
-  assert.equal(url.hostname, domain, country);
-  if (country === "US") assert.equal(url.pathname, "/dp/B07GNDDNMW");
+  assert.equal(url.hostname, oneLinkCountries.has(country) ? domains.US : domain, country);
+  if (country === "US" || oneLinkCountries.has(country)) assert.equal(url.pathname, "/dp/B07GNDDNMW");
   else { assert.equal(url.pathname, "/s"); assert.equal(url.searchParams.get("k"), "SIHOO M18"); }
-  assert.equal(result.search, country !== "US");
-  assert.equal(result.affiliate, ["US", "JP", "SG"].includes(country));
+  assert.equal(result.search, country !== "US" && !oneLinkCountries.has(country));
+  assert.equal(result.affiliate, ["US", "JP", "SG"].includes(country) || oneLinkCountries.has(country));
   assert.equal(Boolean(url.searchParams.get("tag")), result.affiliate);
+  if (oneLinkCountries.has(country)) assert.equal(url.searchParams.get("tag"), "furniblog0e-20");
   assert.equal(url.searchParams.get("ascsubtag"), "products_test");
 }
 assert.equal(resolveAmazonDestination("https://example.com/chair", "Chair", "GB").url, "https://example.com/chair");
@@ -34,4 +36,4 @@ assert.equal(readAmazonCountry(), "US");
 global.document = { cookie: "other=1; x-country=IE" };
 assert.equal(readAmazonCountry(), "IE");
 delete global.document;
-console.log("PASS: all 22 Amazon locales use official domains; only verified IDs produce affiliate-tagged links.");
+console.log("PASS: 22 Amazon locales route through verified direct IDs or US OneLink without dropping attribution.");

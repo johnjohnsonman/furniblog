@@ -50,7 +50,7 @@ try {
   }
   for (const configured of [false, true]) {
     keys.forEach(key => configured ? process.env[key] = 'https://affiliate.example/?url={url}' : delete process.env[key]);
-    for (country of ['US', 'KR', 'JP', ...sea.SEA_COUNTRIES]) {
+    for (country of ['US', 'GB', 'CA', 'DE', 'KR', 'JP', ...sea.SEA_COUNTRIES]) {
       for (const variant of ['inline', 'block']) {
         for (const direct of [false, true]) {
           const url = 'https://www.amazon.com/dp/B0C3T865C2?tag=furniblog0e-20';
