@@ -1,0 +1,30 @@
+{
+  "checked_on": "2026-09-18",
+  "scope": "Physical chair dealers in Amazon marketplace countries absent from the registry",
+  "records": [
+    {
+      "slug": "mjf-interiors-dublin-showroom",
+      "country_code": "IE",
+      "evidence": [
+        "https://www.mjfinteriors.ie/get-in-touch/",
+        "https://www.hermanmiller.com/where-to-buy/contact-a-dealer/MJF%20Interiors%20-%20Ireland/001i000000IhZyHAAV/"
+      ],
+      "coordinate_evidence": "https://mapcarta.com/W1443058370",
+      "notes": "MJF identifies this as its Dublin showroom; Herman Miller identifies MJF as an accredited dealer."
+    },
+    {
+      "slug": "connection-turkey-istanbul",
+      "country_code": "TR",
+      "evidence": ["https://www.okamura.com/dealers/"],
+      "coordinate_evidence": "https://www.haritamap.com/yer/yuzbasi-kaya-aldogan-sokak2-sisli",
+      "notes": "Official Okamura dealer. Coordinate is a disclosed street-level pin."
+    },
+    {
+      "slug": "multi-m-group-mohm-cairo",
+      "country_code": "EG",
+      "evidence": ["https://www.okamura.com/dealers/"],
+      "coordinate_evidence": "https://www.address-mideast.com/EG/8-off-asmaa-fahmy-st-%D8%8C-al-golf-heliopolis-cairo-governorate-egypt",
+      "notes": "Official Okamura dealer. Coordinate is a disclosed nearby street-level pin; public showroom access must be confirmed."
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
+import { getAmazonMarketplace, resolveAmazonDestination } from "@/lib/affiliate/amazon-region"
 import {
   buildAffiliateUrl,
   pageSubtag,
@@ -30,8 +30,7 @@ function readCountryCookie(): AffiliateCountry {
   if (typeof document === "undefined") return "US"
   const match = document.cookie.match(/(?:^|;\s*)x-country=([^;]+)/)
   const value = match?.[1]?.toUpperCase()
-  if (value === "KR" || value === "JP" || value === "SG") return value
-  return "US"
+  return getAmazonMarketplace(value || "US").country as AffiliateCountry
 }
 
 interface BuyButtonProps {
@@ -64,8 +63,8 @@ export function BuyButton({
   }, [countryProp])
 
   const original = buildAffiliateUrl(baseUrl, retailer, country, pageSubtag(usePathname()))
-  const href = retailer === "amazon" ? singaporeAmazonUrl(original, productName, country) : original
-  const singapore = retailer === "amazon" && country === "SG" && /^https:\/\/(www\.)?amazon\.sg\//.test(href)
+  const amazon = retailer === "amazon" ? resolveAmazonDestination(original, productName || productId.replace(/-/g, " "), country) : null
+  const href = amazon?.url || original
 
   const handleClick = useCallback(() => {
     void trackAffiliateClick(productId, retailer, country)
@@ -75,7 +74,7 @@ export function BuyButton({
     <a
       href={href}
       target="_blank"
-      rel="nofollow sponsored noopener noreferrer"
+      rel={`${amazon?.affiliate || retailer !== "amazon" ? "sponsored " : ""}nofollow noopener noreferrer`}
       onClick={handleClick}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
@@ -84,7 +83,7 @@ export function BuyButton({
         className
       )}
     >
-      {singapore ? (new URL(href).pathname === "/s" ? "Search on Amazon.sg" : "View on Amazon.sg") : VARIANT_LABELS[retailer]}
+      {amazon ? (amazon.search ? `Search on ${amazon.label}` : `View on ${amazon.label}`) : VARIANT_LABELS[retailer]}
       <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
     </a>
   )
@@ -124,14 +123,15 @@ export function BuyButtonGroup({
     <div className={cn("space-y-2", className)}>
       <BuyButton
         productId={productId}
+        productName={productId.replace(/-/g, " ")}
         baseUrl={amazonUrl}
         retailer="amazon"
         country={country}
         fullWidth
       />
-      <p className="text-[11px] text-muted-foreground italic leading-relaxed">
+      {getAmazonMarketplace(country).tag && <p className="text-[11px] text-muted-foreground italic leading-relaxed">
         Affiliate link — we may earn a commission
-      </p>
+      </p>}
     </div>
   )
 }

@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { buildAffiliateUrl, pageSubtag, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
-import { singaporeAmazonUrl } from "@/lib/affiliate/amazon-region"
+import { resolveAmazonDestination } from "@/lib/affiliate/amazon-region"
 
 const FALLBACK_AMAZON_TAG =
   process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
@@ -63,11 +63,11 @@ export function SmartBuyLink({
   const query = name.trim()
   const sea = isSeaCountry(country) ? resolveSeaLinks(query, country as SeaCountry) : null
 
-  const track = (retailer: string) =>
+  const track = (retailer: string, trackingCountry?: string) =>
     void trackAffiliateClick(
       productId ?? query,
       retailer,
-      (isSeaCountry(country) ? country : "US") as AffiliateCountry,
+      (trackingCountry || (isSeaCountry(country) ? country : "US")) as AffiliateCountry,
       placement
     )
 
@@ -77,20 +77,18 @@ export function SmartBuyLink({
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
 
   // Local searches supplement the supplied Amazon product link.
-  const href = singaporeAmazonUrl(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US", subtag), query, country)
+  const amazon = resolveAmazonDestination(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US", subtag), query, country)
+  const href = amazon.url
   // A search URL is NOT a verified product/price — label it honestly so it isn't
   // presented as a confirmed listing.
-  const isSearch = /[?&]k=/.test(href) || /amazon\.[a-z.]+\/s(\/|\?|$)/.test(href)
-  const label = country === "SG" && /^https:\/\/(www\.)?amazon\.sg\//.test(href)
-    ? (isSearch ? "Search on Amazon.sg" : "View on Amazon.sg")
-    : isSearch ? "Search on Amazon" : amazonLabel
+  const label = amazon.search ? `Search on ${amazon.label}` : country === "US" ? amazonLabel : `View on ${amazon.label}`
   return (
     <div className={cn(variant === "block" ? "space-y-2" : "inline-block", className)}>
       <a
         href={href}
         target="_blank"
-        rel="sponsored nofollow noopener noreferrer"
-        onClick={() => track("amazon")}
+        rel={`${amazon.affiliate ? "sponsored " : ""}nofollow noopener noreferrer`}
+        onClick={() => track("amazon", amazon.country)}
         className={cn(base, RETAILER_STYLE.amazon)}
       >
         {label}
@@ -113,7 +111,7 @@ export function SmartBuyLink({
           ))}
         </div>
       )}
-      {showDisclaimer && (
+      {showDisclaimer && amazon.affiliate && (
         <p className="text-[11px] italic leading-relaxed text-muted-foreground">
           Affiliate link — we may earn a commission
         </p>

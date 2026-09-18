@@ -3,6 +3,8 @@ import { isUuid } from "@/lib/pipeline/queue-mapper"
 
 export type AffiliateCountry =
   | "US"
+  | "GB" | "DE" | "FR" | "CA" | "IT" | "ES" | "IN" | "BR" | "MX"
+  | "AU" | "AE" | "NL" | "SA" | "SE" | "PL" | "BE" | "IE" | "TR" | "EG"
   | "KR"
   | "JP"
   // Southeast Asia (routed to Shopee / Lazada, see lib/affiliate/sea.ts)

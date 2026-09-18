@@ -58,10 +58,11 @@ try {
           const links = anchors(tree);
           assert.equal(links.length, sea.isSeaCountry(country) ? 3 : 1);
           const amazon = new URL(links[0].props.href);
-          assert.equal(amazon.hostname, country === 'SG' ? 'www.amazon.sg' : 'www.amazon.com');
+          const localDomain = country === 'SG' ? 'www.amazon.sg' : country === 'JP' ? 'www.amazon.co.jp' : 'www.amazon.com';
+          assert.equal(amazon.hostname, localDomain);
           assert.ok(amazon.searchParams.get('tag'));
-          if (country === 'SG') {
-            assert.equal(amazon.searchParams.get('tag'), 'furniblog-22');
+          if (country === 'SG' || country === 'JP') {
+            assert.equal(amazon.searchParams.get('tag'), country === 'SG' ? 'furniblog-22' : 'furniblogjp-22');
             assert.equal(amazon.pathname, '/s');
             assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
           } else if (direct) {
@@ -71,7 +72,7 @@ try {
           }
           else assert.equal(amazon.searchParams.get('k'), 'SIHOO Doro C300');
           const html = renderToStaticMarkup(tree);
-          assert.match(html, country === 'SG' ? /Search on Amazon.sg/ : direct ? /View on Amazon/ : /Search on Amazon/);
+          assert.match(html, country === 'SG' ? /Search on Amazon.sg/ : country === 'JP' ? /Search on Amazon.co.jp/ : direct ? /View on Amazon/ : /Search on Amazon/);
           assert.match(html, /we may earn a commission/);
           for (const link of links) {
             assert.match(link.props.rel, /sponsored/);
