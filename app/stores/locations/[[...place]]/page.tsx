@@ -6,11 +6,22 @@ import { getPublicStores, getStoreCatalog, enrichStore } from "@/lib/showrooms/s
 import { locationGroups } from "@/lib/showrooms/locations";
 import { trialPages } from "@/lib/showrooms/trial-pages";
 import { SITE_URL } from "@/lib/site-config";
+import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink";
 import "./locations.css";
 
 export const revalidate = 300;
 export function generateStaticParams() { return []; }
 const countryEditorial: Record<string, string> = {
+  US: "Browse chair stores across the United States, from official workplace brand showrooms to independent ergonomic seating specialists. Compare nearby options and confirm the exact chair, size and configuration before visiting.",
+  CA: "Find chair showrooms and ergonomic seating retailers across Canada. Compare stores by city, review appointment details and contact each location to confirm the chair models currently available to try.",
+  GB: "Compare chair showrooms across the United Kingdom, including official brand spaces and independent ergonomic seating specialists. Many commercial showrooms prefer advance booking, so confirm access before travelling.",
+  DE: "Find chair stores and workplace furniture showrooms across Germany. Use the city directory to compare official brand spaces and specialist retailers, then confirm current seating displays before visiting.",
+  FR: "Browse chair showrooms and workplace furniture stores across France. Listings include official brand spaces and established retailers; contact each store to verify access, hours and display models.",
+  IT: "Find chair stores and office seating showrooms across Italy. Compare listed locations by city and contact the store before travelling to confirm public access and the chairs available to test.",
+  ES: "Compare chair stores and ergonomic seating showrooms across Spain. Browse locations by city, check visit arrangements and confirm the exact model or configuration before travelling.",
+  NL: "Find chair showrooms and ergonomic office furniture stores in the Netherlands. Check each source-listed location for appointments, opening hours and current seating displays.",
+  PL: "Browse chair stores and workplace showrooms across Poland. Contact each listed location before travelling to confirm public access and which ergonomic chairs are currently displayed.",
+  SE: "Find chair stores and workplace furniture showrooms across Sweden. Compare city locations and confirm visitor access, opening hours and chair availability directly with the showroom.",
   MX: "Compare chair showrooms and workplace furniture dealers in Mexico City, Monterrey, Guadalajara, Querétaro, Tijuana and other listed markets. The directory includes official brand showrooms and public dealer locations where visitors can ask about ergonomic office seating.",
   NZ: "Browse workplace furniture and chair showrooms across Auckland, Wellington, Christchurch and Hamilton. Many New Zealand commercial showrooms recommend or require contacting the team before visiting, so confirm public access and the chair range first.",
   IN: "Find source-checked chair showrooms in Bengaluru, Chennai, Gurugram, Hyderabad and Mumbai. These locations include working brand experience centres where availability and visitor access should be confirmed in advance.",
@@ -25,6 +36,7 @@ const countryEditorial: Record<string, string> = {
   AE: "Browse international chair and workplace showrooms in Dubai. Many are commercial design centres that require advance appointments, so confirm access and the exact seating range before visiting.",
   SA: "Find source-checked workplace furniture showrooms in Saudi Arabia. Coverage is in its first stage; contact each location before travelling because public access and chair displays can change.",
 };
+const amazonConnectedCountries = new Set(["US", "CA", "GB", "DE", "FR", "IT", "ES", "NL", "PL", "SE", "JP", "SG"]);
 const load = cache(async () => {
   if (process.env.SHOWROOMS_ENABLED !== "true") notFound();
   const [result, catalog] = await Promise.all([getPublicStores(), getStoreCatalog()]);
@@ -60,9 +72,15 @@ export default async function LocationsPage({ params }: Props) {
   if (r.city) mapParams.set("city", r.city.key);
   const mapHref = `/stores${mapParams.size ? `?${mapParams}` : ""}`;
   const crumbs = [{ name: "Chairpedia", path: "/" }, { name: "Find stores", path: "/stores" }, { name: "Locations", path: "/stores/locations" }, ...(r.country ? [{ name: r.country.name, path: r.country.path }] : []), ...(r.city ? [{ name: r.city.name, path: r.city.path }] : [])];
+  const faq = [
+    { question: "Where can I try a chair before buying?", answer: r.name ? `Use the verified store listings on this page to build a shortlist in ${r.name}, then contact each store to confirm the exact model, size and configuration.` : "Choose a country and city, then open a store listing for its address, source and visit details." },
+    { question: "Do I need an appointment?", answer: r.country ? `${appointmentCount} of the ${r.stores.length} listed stores explicitly require an appointment. Unknown visit arrangements should be confirmed directly.` : "Appointment requirements vary by showroom and are shown on each listing when publicly confirmed." },
+    { question: "How is the chair store directory checked?", answer: "Every listing links to a public source and shows its source-check date. Visitors should reconfirm hours, access and chair availability before travelling." },
+  ];
   const schema = { "@context": "https://schema.org", "@graph": [
     { "@type": "BreadcrumbList", itemListElement: crumbs.map((c,i) => ({ "@type": "ListItem", position: i+1, name: c.name, item: SITE_URL+c.path })) },
-    { "@type": "CollectionPage", "@id": SITE_URL+r.path, url: SITE_URL+r.path, name: r.name ? `Chair stores in ${r.name}` : "Chair stores by country and city", inLanguage: "en", mainEntity: { "@type": "ItemList", numberOfItems: r.country ? r.stores.length : r.groups.length, itemListElement: (r.country ? r.stores.map(s => ({ name: s.name, path: `/stores/${s.slug}` })) : r.groups.map(g => ({ name: g.name, path: g.path }))).map((s,i) => ({ "@type": "ListItem", position: i+1, name: s.name, url: SITE_URL+s.path })) } }
+    { "@type": "CollectionPage", "@id": SITE_URL+r.path, url: SITE_URL+r.path, name: r.name ? `Chair stores in ${r.name}` : "Chair stores by country and city", inLanguage: "en", mainEntity: { "@type": "ItemList", numberOfItems: r.country ? r.stores.length : r.groups.length, itemListElement: (r.country ? r.stores.map(s => ({ name: s.name, path: `/stores/${s.slug}` })) : r.groups.map(g => ({ name: g.name, path: g.path }))).map((s,i) => ({ "@type": "ListItem", position: i+1, name: s.name, url: SITE_URL+s.path })) } },
+    { "@type": "FAQPage", mainEntity: faq.map(item => ({ "@type": "Question", name: item.question, acceptedAnswer: { "@type": "Answer", text: item.answer } })) }
   ] };
   return <main className="store-locations">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g,"\\u003c") }} />
@@ -74,15 +92,19 @@ export default async function LocationsPage({ params }: Props) {
         {countryEditorial[r.country.code] && <section className="location-advice" aria-label={`${r.country.name} directory overview`}><p>{countryEditorial[r.country.code]}</p></section>}
         <aside className="location-summary"><div><strong>{r.stores.length}</strong><span>Listed stores</span></div><div><strong>{brands.length}</strong><span>Listed brands</span></div><div><strong>{appointmentCount}</strong><span>Appointment required</span></div></aside>
         {brands.length > 0 && <p className="location-brands"><strong>Brands in this directory:</strong>{" "}{brands.map((brand, index) => <span key={brand.brand_id}>{index > 0 && ", "}{brand.slug ? <Link href={`/brands/${brand.slug}`}>{brand.name}</Link> : brand.name}</span>)}. A brand listing does not confirm that every model is on display.</p>}
+        {amazonConnectedCountries.has(r.country.code) && <section className="location-advice" aria-labelledby="shop-online-title">
+          <p className="location-eyebrow">COMPARE BEFORE YOU TRAVEL</p>
+          <h2 id="shop-online-title">Check online chair options in {r.country.name}</h2>
+          <p>Compare online availability before visiting a showroom. Amazon search results can change by location and do not confirm that a chair is available to try in store.</p>
+          <SmartBuyLink name="SIHOO Doro C300 ergonomic office chair" productId="sihoo-doro-c300" placement="store_location_page" showDisclaimer />
+        </section>}
         {!r.city && <section><h2>Choose a city</h2><div className="location-city-links">{r.country.cities.map(c => <Link key={c.key} href={c.stores.length >= 3 ? c.path : `/stores?country=${r.country!.code}&city=${c.key}`}>{c.name} <span>{c.stores.length}</span></Link>)}</div></section>}
         {trials.length > 0 && <section><h2>Chairs confirmed to try</h2><p>These model links are based on store-specific public sources. Contact the store to reconfirm availability.</p><div className="location-city-links">{trials.slice(0,18).map(page => <Link key={page.path} href={page.path}>{page.productName} in {page.cityName} <span>{page.stores.length}</span></Link>)}</div></section>}
         <section aria-labelledby="stores-title"><h2 id="stores-title">{r.city ? `Where to shop in ${r.city.name}` : `Stores in ${r.country.name}`}</h2><div className="location-store-grid">{r.stores.map(s => <article className="location-store-card" key={s.id}><p className="location-eyebrow">{s.city} · CHAIR STORE</p><h3><Link href={`/stores/${s.slug}`}>{s.name}</Link></h3><p>{[s.address,s.unit].filter(Boolean).join(", ")}</p><p><strong>{s.appointment === "required" ? "Appointment required" : s.appointment === "walk_in" ? "Walk-ins welcome" : "Contact before visiting"}</strong></p>{s.visit_notes && <p>{s.visit_notes}</p>}<p>{s.brands.filter(b => b.carried === "confirmed").map(b => b.name).filter(Boolean).join(" · ") || "Contact the store for its current chair range."}</p><div className="location-card-actions"><Link href={`/stores/${s.slug}`}>Visit details →</Link><a href={s.website_url || s.source_url} target="_blank" rel="noopener noreferrer">Official website ↗</a></div><small>Source checked: {s.checked_on} · <a href={s.source_url} target="_blank" rel="noopener noreferrer">Source</a></small></article>)}</div></section>
       </>}
       {r.city && <section><h2>Other cities in {r.country!.name}</h2><div className="location-city-links">{r.country!.cities.filter(c => c.key !== r.city!.key && c.stores.length >= 3).map(c => <Link key={c.path} href={c.path}>{c.name} <span>{c.stores.length} stores</span></Link>)}</div></section>}
       <section className="location-advice" aria-labelledby="visit-questions"><h2 id="visit-questions">Chair store visit questions{r.name ? ' — ' + r.name : ''}</h2>
-        <h3>Where can I try a chair before buying?</h3><p>{r.name ? 'Use the store addresses listed on this page to build a shortlist in ' + r.name + '.' : 'Choose a country and city in this directory, then open a store listing for its address and official contact details.'} Contact the store to confirm the exact model, size and configuration before travelling.</p>
-        <h3>Do I need an appointment?</h3><p>{r.country ? appointmentCount + ' of the ' + r.stores.length + ' listed stores explicitly require an appointment. ' : ''}Each listing distinguishes confirmed appointment requirements from unknown visiting arrangements. Unknown does not mean walk-ins are accepted.</p>
-        <h3>How is this directory checked?</h3><p>Each listing links to its public source and shows the date that source was checked. A listed brand does not guarantee stock or a chair available for testing. Check the store website for current hours, access and availability.</p>
+        {faq.map(item => <div key={item.question}><h3>{item.question}</h3><p>{item.answer}</p></div>)}
       </section>
       <section className="location-advice"><h2>Before you visit</h2><ol><li><strong>Confirm the exact model.</strong> Ask about the size, upholstery, headrest and adjustments you want to compare.</li><li><strong>Check access and hours.</strong> Some showrooms require an appointment. Holiday opening times may differ.</li><li><strong>Bring your desk measurements.</strong> Check seat height, armrest clearance and how the chair feels while typing and reclining.</li><li><strong>Ask about the purchase.</strong> Confirm delivery, assembly, returns and warranty coverage for your location.</li></ol><p>Listings are researched from public sources; coverage is growing and is not a complete inventory. Source checks do not guarantee current stock or opening hours. <Link href="/contact">Suggest a store or correction</Link>.</p><div className="location-card-actions"><Link href="/products">Browse chair specifications →</Link><Link href="/compare">Compare chair models →</Link><Link href="/best/best-chairs-to-buy">See the best chairs to buy →</Link><Link href="/stores/locations">Browse all countries →</Link></div></section>
     </div>
