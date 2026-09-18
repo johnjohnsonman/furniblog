@@ -79,6 +79,10 @@ function extractSpecs(raw: Record<string, unknown> | null): ChairSpecs | null {
     seatHeightMax: num(raw.seatHeightMax),
     chairWeightKg: num(raw.chairWeightKg),
     backrestHeight: num(raw.backrestHeight),
+    seatDepthMin: num(raw.seatDepthMin),
+    seatDepthMax: num(raw.seatDepthMax),
+    armrestFloorHeightMin: num(raw.armrestFloorHeightMin),
+    armrestFloorHeightMax: num(raw.armrestFloorHeightMax),
   }
   return s
 }

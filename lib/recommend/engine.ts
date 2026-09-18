@@ -1,3 +1,12 @@
+import {
+  buildFitProfile,
+  evaluateProductFit,
+  type FitConfidence,
+  type FitProfile,
+  type FitStatus,
+  type ProductFit,
+} from "@/lib/recommend/fit"
+
 /**
  * Chair recommendation engine (pure scoring + diversity re-ranking).
  *
@@ -68,6 +77,10 @@ export type ChairSpecs = {
   seatHeightMax?: number
   chairWeightKg?: number
   backrestHeight?: number
+  seatDepthMin?: number
+  seatDepthMax?: number
+  armrestFloorHeightMin?: number
+  armrestFloorHeightMax?: number
 }
 
 export type QuizAnswers = {
@@ -80,6 +93,11 @@ export type QuizAnswers = {
   priorities?: Priority[]
   heightCm?: number
   weightKg?: number
+  deskHeightCm?: number
+  armrestsUnderDesk?: boolean
+  countryCode?: string
+  latitude?: number
+  longitude?: number
   seed?: number
 }
 
@@ -126,6 +144,7 @@ export type RecTag =
   | "new-noteworthy"
 
 export type Recommendation = {
+  id: string
   slug: string
   name: string
   brand: string | null
@@ -136,6 +155,14 @@ export type Recommendation = {
   why: string[]
   tag: RecTag | null
   picks: number
+  fitStatus: FitStatus
+  fitConfidence: FitConfidence
+  fit: ProductFit
+}
+
+export type RecommendationResponse = {
+  profile: FitProfile
+  results: Recommendation[]
 }
 
 // ---- weights (tunable) ----
@@ -319,6 +346,7 @@ type Fits = {
   weight: number
   quality: number
   reviewDriven: boolean
+  physical: ProductFit
 }
 
 function scoreProduct(
@@ -327,6 +355,7 @@ function scoreProduct(
   aff: Affinity
 ): { score: number; fits: Fits } {
   const text = `${p.bestFor} ${p.pros.join(" ")} ${p.chairType ?? ""} ${p.name}`.toLowerCase()
+  const physical = evaluateProductFit(a, p.specs)
 
   // use
   let use = 1
@@ -452,6 +481,10 @@ function scoreProduct(
     W.style * style +
     W.quality * quality
 
+  // Physical fit is the primary differentiator of the calculator. Limited
+  // data stays neutral rather than receiving a fabricated advantage.
+  score += 3.1 * (physical.confidence === "limited" ? 0.5 : physical.score / 100)
+
   // light rotation so near-ties vary per visit / similar users
   score += (seeded(p.id, a.seed ?? 1) - 0.5) * JITTER
 
@@ -471,6 +504,7 @@ function scoreProduct(
       weight,
       quality,
       reviewDriven,
+      physical,
     },
   }
 }
@@ -533,8 +567,12 @@ export function recommend(
         (p) => !p.priceRange || TIER[p.priceRange] <= TIER[answers.budget!]
       )
     : products
+  const safeEligible = eligible.filter((p) => {
+    const capacity = p.specs?.weightCapacityKg
+    return !answers.weightKg || capacity == null || capacity >= answers.weightKg
+  })
 
-  const scored = eligible
+  const scored = safeEligible
     .map((p) => ({ p, ...scoreProduct(p, answers, affinity) }))
     .sort((x, y) => y.score - x.score)
 
@@ -585,6 +623,7 @@ export function recommend(
   return selected.map((s, i) => {
     const match = Math.round(70 + 29 * (s.score / maxScore))
     return {
+      id: s.p.id,
       slug: s.p.slug,
       name: s.p.name,
       brand: s.p.brand,
@@ -595,6 +634,21 @@ export function recommend(
       why: buildWhy(s.p, answers, s.fits),
       tag: tagFor(s.p, i === 0, s.p.editorial != null && s.p.picks < 5),
       picks: s.p.picks,
+      fitStatus: s.fits.physical.status,
+      fitConfidence: s.fits.physical.confidence,
+      fit: s.fits.physical,
     }
   })
+}
+
+export function recommendWithProfile(
+  products: ProductFeature[],
+  affinity: Affinity,
+  answers: QuizAnswers,
+  topN = 5,
+): RecommendationResponse {
+  return {
+    profile: buildFitProfile(answers),
+    results: recommend(products, affinity, answers, topN),
+  }
 }

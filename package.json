@@ -41,7 +41,8 @@
     "expand:revenue-comparisons-wave2": "node scripts/expand-revenue-comparisons-wave2.cjs",
     "test:revenue-expansion-wave2-live": "node scripts/test-revenue-expansion-wave2-live.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
-    "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
+    "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts",
+    "test:chair-fit": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-chair-fit-engine.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.96.0",
