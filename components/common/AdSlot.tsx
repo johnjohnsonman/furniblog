@@ -22,12 +22,16 @@ const SIZE_MAP: Record<
 const ADSENSE_ID = process.env.NEXT_PUBLIC_ADSENSE_ID
 
 function isAdsenseEnabled(): boolean {
-  return Boolean(ADSENSE_ID && ADSENSE_ID !== "ca-pub-XXXXXXXX")
+  return Boolean(
+    process.env.NEXT_PUBLIC_ADSENSE_ENABLED === "true" &&
+    ADSENSE_ID &&
+    ADSENSE_ID !== "ca-pub-XXXXXXXX"
+  )
 }
 
 export function AdSlot({ position, className, adSlot }: AdSlotProps) {
   const insRef = useRef<HTMLElement>(null)
-  const { width, height, label } = SIZE_MAP[position]
+  const { width, height } = SIZE_MAP[position]
   const enabled = isAdsenseEnabled()
 
   useEffect(() => {
@@ -42,21 +46,7 @@ export function AdSlot({ position, className, adSlot }: AdSlotProps) {
   }, [enabled, position])
 
   if (!enabled) {
-    return (
-      <div
-        className={cn(
-          "flex flex-col items-center justify-center rounded-lg border border-dashed border-border bg-muted/40 text-muted-foreground mx-auto",
-          className
-        )}
-        style={{ width: "100%", maxWidth: width, minHeight: height }}
-        aria-hidden
-      >
-        <span className="text-[10px] uppercase tracking-wider font-medium">
-          Advertisement
-        </span>
-        <span className="text-xs mt-1">{label}</span>
-      </div>
-    )
+    return null
   }
 
   return (

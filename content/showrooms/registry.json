@@ -40751,6 +40751,246 @@
       "brands": [],
       "models": [],
       "updated_at": "2026-09-18T16:30:00.000Z"
+    },
+    {
+      "id": "cca68d53-ed8a-4c40-903a-5a14115700df",
+      "slug": "humanscale-montreal",
+      "name": "Humanscale Montreal",
+      "status": "published",
+      "country_code": "CA",
+      "city": "Montreal",
+      "region": "Quebec",
+      "address": "50 Queen Street, Building 1, Suite 202, Montreal, Quebec H3C 2N5, Canada",
+      "unit": "",
+      "latitude": 45.497002790448,
+      "longitude": -73.554192284846,
+      "timezone": "America/Toronto",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (50 Queen St, Montreal, Quebec, H3C 2N5). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "39e8d9df-0a5d-4987-8083-f9364d8f405d",
+      "slug": "humanscale-toronto",
+      "name": "Humanscale Toronto",
+      "status": "published",
+      "country_code": "CA",
+      "city": "Toronto",
+      "region": "Ontario",
+      "address": "555 Richmond Street West, Suite 101, Toronto, Ontario M5V 3B1, Canada",
+      "unit": "",
+      "latitude": 43.64647939971,
+      "longitude": -79.401742377971,
+      "timezone": "America/Toronto",
+      "phone": "",
+      "email": "",
+      "website_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (555 Richmond St W, Unit 101, Toronto, Ontario, M5V 3B1). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "fabcbbea-3370-4038-a774-0e5f68e45de6",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://ca.humanscale.com/about/company-overview/locations.cfm",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "ddfde57a-5f40-4269-9f0a-712eb2864ee3",
+      "slug": "herman-miller-toronto-showroom",
+      "name": "Herman Miller Toronto Showroom",
+      "status": "published",
+      "country_code": "CA",
+      "city": "Toronto",
+      "region": "Ontario",
+      "address": "109 Atlantic Avenue, Suite 200, Toronto, Ontario M6K 1X4, Canada",
+      "unit": "",
+      "latitude": 43.639820103366,
+      "longitude": -79.42046277198,
+      "timezone": "America/Toronto",
+      "phone": "+14163663300",
+      "email": "",
+      "website_url": "https://www.hermanmiller.com/en_au/where-to-buy/visit-a-showroom/Herman%20Miller%20Canada%2C%20Inc./0013100001qntkEAAQ/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (109 Atlantic Ave, Unit 200, Toronto, Ontario, M6K 1X4). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://www.hermanmiller.com/en_au/where-to-buy/visit-a-showroom/Herman%20Miller%20Canada%2C%20Inc./0013100001qntkEAAQ/",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.hermanmiller.com/en_au/where-to-buy/visit-a-showroom/Herman%20Miller%20Canada%2C%20Inc./0013100001qntkEAAQ/",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "bbed4565-98f1-4955-967e-c886d1d754e1",
+      "slug": "haworth-toronto-showroom",
+      "name": "Haworth Toronto Showroom",
+      "status": "published",
+      "country_code": "CA",
+      "city": "Toronto",
+      "region": "Ontario",
+      "address": "55 University Avenue, Toronto, Ontario M5J 2H7, Canada",
+      "unit": "",
+      "latitude": 43.64695729392,
+      "longitude": -79.38400903688,
+      "timezone": "America/Toronto",
+      "phone": "+14163633486",
+      "email": "",
+      "website_url": "https://www.haworth.com/ap/en/spaces/showrooms/toronto.html",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "required",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (55 University Ave, Toronto, Ontario, M5J 2H7). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/toronto.html",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "585c98d2-0bc3-4cba-872c-ef97f21f245b",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.haworth.com/ap/en/spaces/showrooms/toronto.html",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "ba885cd3-2cbf-4a42-89e9-b63d3b74ca3c",
+      "slug": "dwr-toronto-king-street",
+      "name": "Design Within Reach Toronto",
+      "status": "published",
+      "country_code": "CA",
+      "city": "Toronto",
+      "region": "Ontario",
+      "address": "214 King Street East, Toronto, Ontario M5A 1J7, Canada",
+      "unit": "",
+      "latitude": 43.651395511651,
+      "longitude": -79.368855561767,
+      "timezone": "America/Toronto",
+      "phone": "+14169774003",
+      "email": "",
+      "website_url": "https://store.hermanmiller.com/store?StoreId=28&lang=en_CA",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "walk_in",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (214 King St E, Toronto, Ontario, M5A 1J7). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://store.hermanmiller.com/store?StoreId=28&lang=en_CA",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://store.hermanmiller.com/store?StoreId=28&lang=en_CA",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "5818bb52-842c-4194-902c-3ab1359d09f2",
+      "slug": "ergonomic-office-stockholm",
+      "name": "Ergonomic Office Stockholm",
+      "status": "published",
+      "country_code": "SE",
+      "city": "Stockholm",
+      "region": "Stockholm",
+      "address": "Rosenlundsgatan 40, 118 53 Stockholm, Sweden",
+      "unit": "",
+      "latitude": 59.314006450267,
+      "longitude": 18.056895629529,
+      "timezone": "Europe/Stockholm",
+      "phone": "+4686150250",
+      "email": "",
+      "website_url": "https://www.hermanmiller.com/where-to-buy/contact-a-dealer/Ergonomic%20Office/001i000000Iha2mAAB/",
+      "booking_url": "",
+      "store_type": "retailer",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "The official source publishes this location. Contact the team before travelling to confirm access, hours and the exact chairs available to try.",
+      "transport_notes": "The map pin was matched to the published address (Rosenlundsgatan 40, 118 53, Högalid, Stockholm). Confirm directions before travelling.",
+      "photos": [],
+      "source_url": "https://www.hermanmiller.com/where-to-buy/contact-a-dealer/Ergonomic%20Office/001i000000Iha2mAAB/",
+      "checked_on": "2026-09-18",
+      "brands": [
+        {
+          "brand_id": "e892c622-73b0-447e-9bf6-b11b54927515",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.hermanmiller.com/where-to-buy/contact-a-dealer/Ergonomic%20Office/001i000000Iha2mAAB/",
+          "checked_on": "2026-09-18"
+        }
+      ],
+      "models": [],
+      "updated_at": "2026-09-18T17:30:00.000Z"
     }
   ]
 }

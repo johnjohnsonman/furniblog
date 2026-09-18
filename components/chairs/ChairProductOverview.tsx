@@ -162,9 +162,6 @@ export function ChairProductOverview({
         </section>
       )}
 
-      <div className="mt-10 p-4 bg-muted/30 rounded-lg border border-dashed border-border text-center">
-        <p className="text-xs text-muted-foreground">Advertisement</p>
-      </div>
     </>
   )
 }

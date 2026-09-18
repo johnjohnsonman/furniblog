@@ -228,6 +228,19 @@ export default function AdminAnalyticsPage() {
               </ul>
             </section>
           </div>
+          {data.visitors && <section className="mt-10">
+            <h2 className="text-lg font-medium mb-2">Country affiliate funnel (30-day clicks / 7-day visits)</h2>
+            <p className="text-xs text-muted-foreground mb-4">Directional only: the visit and click windows differ. Use it to spot countries that have traffic but no purchase-intent clicks.</p>
+            <div className="border border-border rounded-lg overflow-hidden">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b border-border bg-muted/40"><th className="text-left py-3 px-4">Country</th><th className="text-right py-3 px-4">Visits</th><th className="text-right py-3 px-4">Clicks</th><th className="text-right py-3 px-4">Rate</th></tr></thead>
+                <tbody>{data.visitors.by_country.map(row => {
+                  const clicks = data.byCountry[row.country] ?? 0
+                  return <tr key={row.country} className="border-b border-border last:border-0"><td className="py-3 px-4">{row.country}</td><td className="py-3 px-4 text-right">{row.views}</td><td className="py-3 px-4 text-right">{clicks}</td><td className="py-3 px-4 text-right">{row.views ? `${((clicks / row.views) * 100).toFixed(1)}%` : "—"}</td></tr>
+                })}</tbody>
+              </table>
+            </div>
+          </section>}
         </>
       )}
     </div>

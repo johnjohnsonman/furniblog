@@ -59,6 +59,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/affiliate-disclosure", undefined, "yearly", 0.2),
     url("/privacy", undefined, "yearly", 0.2),
     url("/terms", undefined, "yearly", 0.2),
+    url("/stores/guides/best-ergonomic-chair-showrooms-singapore", undefined, "weekly", 0.8),
+    url("/stores/guides/where-to-try-herman-miller-chairs-singapore", undefined, "weekly", 0.8),
+    url("/stores/guides/where-to-try-office-chairs-singapore", undefined, "weekly", 0.8),
   ]
 
   const bestPages: MetadataRoute.Sitemap = bestLists.map((list) =>

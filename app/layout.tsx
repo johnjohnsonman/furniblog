@@ -73,7 +73,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ENABLED === 'true'
+    ? process.env.NEXT_PUBLIC_ADSENSE_ID
+    : undefined
 
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable} bg-background`}>
