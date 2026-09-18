@@ -1,7 +1,7 @@
 # Public chair-store registry
 
 The initial public release uses `SHOWROOMS_ENABLED=true` and `SHOWROOM_DATA_SOURCE=registry`.
-`registry.json` contains only reviewed, published records. After the 2026-09-18 marketplace-country wave it contains 651 stores across 46 countries, including 136 in Japan and 177 in the United States. This is not a complete national inventory. Korea is excluded.
+`registry.json` contains only reviewed, published records. After the 2026-09-18 marketplace-country expansion it contains 659 stores across 46 countries, including 136 in Japan and 177 in the United States. Every country with a current Amazon Associates marketplace now has at least two registered chair stores. This is not a complete national inventory. Korea is excluded.
 
 Each store and confirmed relationship has its own source URL and check date. Missing hours and trial availability remain unknown. Do not infer a model trial from a brand relationship or national product carousel. Do not copy vendor photographs without rights.
 
@@ -47,3 +47,5 @@ Europe fifth batch: 19 additional stores (Germany 16, Netherlands 2, Belgium 1).
 US/Japan value-brand wave: seven source-checked public locations were added: four HON showrooms and one SIHOO authorized dealer in the US, plus two Okamura showrooms in Japan. Branch New York received two store-specific model trial links from its official showroom collection. HON and SIHOO locations remain brand-only because their official location pages do not identify the exact catalog models available to try. Evidence: `research/us-japan-value-brand-wave-20260918.json`.
 
 Amazon marketplace-country wave: one source-checked chair dealer was added in each of Ireland, Turkey and Egypt. Exact model trials and hours remain unknown. The Istanbul and Cairo pins are explicitly approximate, and each page tells visitors to confirm access before travelling. Evidence: `research/amazon-marketplace-showroom-wave-20260918.json`.
+
+Ireland/Turkey/Egypt expansion: eight additional showroom records brought every current Amazon Associates marketplace country above the two-store threshold used for indexable country landing pages. Sources include official Humanscale and Herman Miller location pages plus showroom operators' own pages. Address candidates had to pass score and national-boundary checks; exact model trials remain unknown. Evidence: `research/ie-tr-eg-showroom-expansion-20260918.json`.
