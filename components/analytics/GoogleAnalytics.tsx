@@ -10,18 +10,27 @@ export function GoogleAnalytics() {
   const id = process.env.NEXT_PUBLIC_GA_ID?.trim()
   if (!id || !id.startsWith("G-") || id.includes("XXXX")) return null
 
+  const bootstrap = `(function(w,d,id){
+    var params=new URLSearchParams(w.location.search);
+    var explicit=params.get('__analytics');
+    if(explicit==='off'){try{w.sessionStorage.setItem('chairpedia_analytics','off')}catch(e){}}
+    if(explicit==='on'){try{w.sessionStorage.removeItem('chairpedia_analytics')}catch(e){}}
+    var sessionOff=false;
+    try{sessionOff=w.sessionStorage.getItem('chairpedia_analytics')==='off'}catch(e){}
+    var disabled=w.navigator.webdriver===true||sessionOff;
+    w.__chairpediaAnalyticsEnabled=!disabled;
+    if(disabled)return;
+    w.dataLayer=w.dataLayer||[];
+    w.gtag=function(){w.dataLayer.push(arguments)};
+    w.gtag('js',new Date());
+    w.gtag('config',id,{send_page_view:false});
+    var script=d.createElement('script');
+    script.async=true;
+    script.src='https://www.googletagmanager.com/gtag/js?id='+encodeURIComponent(id);
+    d.head.appendChild(script);
+  })(window,document,${JSON.stringify(id)});`
+
   return (
-    <>
-      <script
-        async
-        src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
-      />
-      <script
-        id="ga4-init"
-        dangerouslySetInnerHTML={{
-          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');`,
-        }}
-      />
-    </>
+    <script id="ga4-init" dangerouslySetInnerHTML={{ __html: bootstrap }} />
   )
 }
