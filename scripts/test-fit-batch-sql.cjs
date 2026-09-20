@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { PGlite } = require('@electric-sql/pglite');
 async function main() {
-  const sql = fs.readFileSync(path.resolve(__dirname, '../lib/supabase/migrations/052_seed_priority_fit_evidence_batch_4.sql'), 'utf8');
+  const sql = fs.readFileSync(process.argv[2] ? path.resolve(process.argv[2]) : path.resolve(__dirname, '../lib/supabase/migrations/052_seed_priority_fit_evidence_batch_4.sql'), 'utf8');
   const slugs = [...new Set([...sql.matchAll(/where slug = '([^']+)'/g)].map(m => m[1]))];
   const db = new PGlite();
   await db.exec(`create table products(id uuid primary key default gen_random_uuid(), slug text unique, chair_specs jsonb, updated_at timestamptz);
@@ -15,12 +15,20 @@ async function main() {
   assert.equal((await db.query('select * from product_fit_evidence')).rows.length, first.rows.length, 'rerun must be idempotent');
   const products = (await db.query('select slug,chair_specs from products')).rows;
   for (const product of products) assert.equal(product.chair_specs.unrelated, 'preserve');
-  const karman = products.find(p => p.slug === 'steelcase-karman').chair_specs;
+  const karman = products.find(p => p.slug === 'steelcase-karman')?.chair_specs;
+  if (karman) {
   assert.equal(karman.seatDepth, 43.8);
   assert.equal(karman.seatDepthMin, undefined);
-  const embody = products.find(p => p.slug === 'herman-miller-embody').chair_specs;
+  }
+  const embody = products.find(p => p.slug === 'herman-miller-embody')?.chair_specs;
+  if (embody) {
   assert.equal(embody.seatDepth, undefined);
   assert.equal(embody.seatDepthMin, 38.1);
+  }
+  for (const product of products) {
+    const specs = product.chair_specs;
+    if (typeof specs.seatDepthMin === 'number' && specs.seatDepthMin !== 98) assert.equal(specs.seatDepth, undefined, `${product.slug}: stale fixed depth`);
+  }
   await db.query('delete from product_fit_evidence where product_id in (select id from products where slug=$1)', [slugs[0]]);
   await db.query('delete from products where slug=$1', [slugs[0]]);
   await db.query("update products set chair_specs='{}'");
