@@ -12,6 +12,7 @@ export function PageviewTracker() {
   useEffect(() => {
     if (!pathname) return
     if (pathname.startsWith("/admin")) return
+    if (navigator.webdriver || window.__chairpediaAnalyticsEnabled === false) return
     if (last.current === pathname) return
     last.current = pathname
 
@@ -21,6 +22,12 @@ export function PageviewTracker() {
     })
 
     try {
+      window.gtag?.("event", "page_view", {
+        page_path: pathname,
+        page_location: window.location.href,
+        page_title: document.title,
+      })
+
       if (navigator.sendBeacon) {
         navigator.sendBeacon(
           "/api/track/pageview",
@@ -40,4 +47,15 @@ export function PageviewTracker() {
   }, [pathname])
 
   return null
+}
+
+declare global {
+  interface Window {
+    __chairpediaAnalyticsEnabled?: boolean
+    gtag?: (
+      command: "event",
+      eventName: string,
+      parameters: Record<string, string>
+    ) => void
+  }
 }
