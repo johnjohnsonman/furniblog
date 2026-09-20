@@ -1,0 +1,9 @@
+{
+  "checked_on": "2026-09-20",
+  "status": "held_pending_coordinate_verification",
+  "records": [
+    {"city":"Melbourne","country_code":"AU","address":"Level 1, 75-77 Flinders Lane, Melbourne, Victoria 3000, Australia","source_url":"https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html","map_url":"https://goo.gl/maps/z7DDV6j9tnWDyNkt7"},
+    {"city":"Shanghai","country_code":"CN","address":"32F, Tower 1, Jingan Kerry Center, 1515 West Nanjing Road, Shanghai 200040, China","source_url":"https://www.haworth.com/eu/en/spaces/showrooms/shanghai.html","map_url":"https://goo.gl/maps/P2SabugRHQhvECjK6"},
+    {"city":"Sydney","country_code":"AU","address":"Ground Floor, 1 O'Connell St, Sydney NSW 2000, Australia","source_url":"https://www.haworth.com/ap/en/spaces/showrooms/sydney---the-porter.html","map_url":"https://goo.gl/maps/sqVMS5Xyver7PSPi9","note":"Confirm public chair-trial access for this collaborative workspace before publication."}
+  ]
+}

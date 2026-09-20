@@ -1,0 +1,33 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const { PGlite } = require('@electric-sql/pglite');
+async function main() {
+  const sql = fs.readFileSync(path.resolve(__dirname, '../lib/supabase/migrations/052_seed_priority_fit_evidence_batch_4.sql'), 'utf8');
+  const slugs = [...new Set([...sql.matchAll(/where slug = '([^']+)'/g)].map(m => m[1]))];
+  const db = new PGlite();
+  await db.exec(`create table products(id uuid primary key default gen_random_uuid(), slug text unique, chair_specs jsonb, updated_at timestamptz);
+    create table product_fit_evidence(product_id uuid references products(id), field_key text, evidence_type text, source_title text, source_url text, checked_on date, notes text, updated_at timestamptz, unique(product_id,field_key,source_url));`);
+  for (const slug of slugs) await db.query('insert into products(slug,chair_specs) values($1,$2)', [slug, { seatDepth: 99, seatDepthMin: 98, seatDepthMax: 100, unrelated: 'preserve' }]);
+  await db.exec(sql);
+  const first = await db.query('select * from product_fit_evidence');
+  await db.exec(sql);
+  assert.equal((await db.query('select * from product_fit_evidence')).rows.length, first.rows.length, 'rerun must be idempotent');
+  const products = (await db.query('select slug,chair_specs from products')).rows;
+  for (const product of products) assert.equal(product.chair_specs.unrelated, 'preserve');
+  const karman = products.find(p => p.slug === 'steelcase-karman').chair_specs;
+  assert.equal(karman.seatDepth, 43.8);
+  assert.equal(karman.seatDepthMin, undefined);
+  const embody = products.find(p => p.slug === 'herman-miller-embody').chair_specs;
+  assert.equal(embody.seatDepth, undefined);
+  assert.equal(embody.seatDepthMin, 38.1);
+  await db.query('delete from product_fit_evidence where product_id in (select id from products where slug=$1)', [slugs[0]]);
+  await db.query('delete from products where slug=$1', [slugs[0]]);
+  await db.query("update products set chair_specs='{}'");
+  await assert.rejects(db.exec(sql), /not found|no evidence/);
+  await db.exec('rollback');
+  assert.ok((await db.query('select chair_specs from products')).rows.every(p => Object.keys(p.chair_specs).length === 0), 'missing slug rolls back all writes');
+  console.log(`PASS: ${slugs.length} chairs, ${first.rows.length} evidence rows; idempotency, depth cleanup, unrelated keys and atomic rollback`);
+  await db.close();
+}
+main().catch(error => { console.error(error); process.exitCode = 1; });

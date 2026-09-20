@@ -1,5 +1,5 @@
 {
-  "checked_on": "2026-09-18",
+  "checked_on": "2026-09-20",
   "catalog": {
     "brands": [
       {
@@ -40991,6 +40991,45 @@
       ],
       "models": [],
       "updated_at": "2026-09-18T17:30:00.000Z"
+    },
+    {
+      "id": "1aa33aa0-361b-4dfc-95f5-5aad9d6b0d30",
+      "slug": "haworth-dubai-showroom",
+      "name": "Haworth Dubai Showroom",
+      "status": "published",
+      "country_code": "AE",
+      "city": "Dubai",
+      "region": "",
+      "address": "Building 7, Dubai Design District, Dubai, United Arab Emirates",
+      "unit": "Office A304",
+      "latitude": 25.1890674,
+      "longitude": 55.297806,
+      "timezone": "Asia/Dubai",
+      "phone": "+971 4 428 3303",
+      "email": "",
+      "website_url": "https://www.haworth.com/eu/en/spaces/showrooms/dubai.html",
+      "booking_url": "",
+      "store_type": "brand_showroom",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Contact the showroom before visiting to confirm access and the chair you want to try. Opening hours and exact model trials are not confirmed.",
+      "transport_notes": "Map pin follows the Google Maps place linked from Haworth's official showroom page; office is A304 in Building 7.",
+      "photos": [],
+      "source_url": "https://www.haworth.com/eu/en/spaces/showrooms/dubai.html",
+      "checked_on": "2026-09-20",
+      "brands": [
+        {
+          "brand_id": "585c98d2-0bc3-4cba-872c-ef97f21f245b",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.haworth.com/eu/en/spaces/showrooms/dubai.html",
+          "checked_on": "2026-09-20"
+        }
+      ],
+      "models": []
     }
   ]
 }

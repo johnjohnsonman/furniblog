@@ -43,16 +43,28 @@ export async function getPublicStores(): Promise<{
     return { stores: [], unavailable: true };
   }
 }
+const catalogIndexes = new WeakMap<Catalog, {
+  brands: Map<string, Catalog['brands'][number]>;
+  models: Map<string, Catalog['models'][number]>;
+}>();
 export function enrichStore(s: Store, c: Catalog): Store {
+  let index = catalogIndexes.get(c);
+  if (!index) {
+    index = {
+      brands: new Map(c.brands.map(item => [item.id, item])),
+      models: new Map(c.models.map(item => [item.id, item])),
+    };
+    catalogIndexes.set(c, index);
+  }
   return {
     ...s,
     brands: s.brands.map((b) => ({
       ...b,
-      ...c.brands.find((x) => x.id === b.brand_id),
+      ...index.brands.get(b.brand_id),
     })),
     models: s.models.map((m) => ({
       ...m,
-      ...c.models.find((x) => x.id === m.product_id),
+      ...index.models.get(m.product_id),
     })),
   };
 }
