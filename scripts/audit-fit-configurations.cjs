@@ -15,6 +15,10 @@ async function main() {
   const options={auth:{persistSession:false,autoRefreshToken:false}};
   const admin=createClient(url,key,options), anon=createClient(url,anonKey,options);
   const expected=JSON.parse(fs.readFileSync(path.join(root,'content/chair-fit-import/configurations-batch-1.json'),'utf8'));
+  const activated = process.argv.includes('--after-056');
+  if (activated) for (const row of expected) {
+    if (['haworth-soji','haworth-very-task'].includes(row.product_slug)) row.status='verified';
+  }
   const products=await admin.from('products').select('id,slug').in('slug',[...new Set(expected.map(r=>r.product_slug))]);
   if(products.error) throw new Error(products.error.message);
   const ids=new Map(products.data.map(p=>[p.slug,p.id]));
@@ -22,6 +26,7 @@ async function main() {
   if(result.error) throw new Error(result.error.message);
   let values=0;
   const verified=[];
+  const expectedPublic=[];
   for(const row of expected){
     const match=result.data.find(r=>r.product_id===ids.get(row.product_slug)&&r.market_code===row.market_code&&r.configuration_key===row.configuration_key);
     assert.ok(match,`Missing configuration: ${row.product_slug}/${row.configuration_key}`);
@@ -33,11 +38,12 @@ async function main() {
     for(const field of ['seat_depth_fixed','armrest_floor_height_min','armrest_floor_height_max']) assert.equal(match[field],null,`Unexpected ${field}`);
     if(!('weight_capacity' in row)) assert.equal(match.weight_capacity,null,'Unknown capacity must stay null');
     verified.push(match.id);
+    if(row.status==='verified') expectedPublic.push(match.id);
   }
   const publicRows=await anon.from('product_fit_configurations').select('id').in('id',verified);
   if(publicRows.error) throw new Error(publicRows.error.message);
-  assert.equal(publicRows.data.length,0,'Seed drafts must not be publicly visible');
-  const summary={generatedAt:new Date().toISOString(),configurations:expected.length,products:ids.size,comparedFields:values,draftsHiddenFromAnonymous:true,productionWrites:0};
+  assert.deepEqual(publicRows.data.map(r=>r.id).sort(),expectedPublic.sort(),'Only expected verified configurations may be publicly visible');
+  const summary={generatedAt:new Date().toISOString(),phase:activated?'after-056':'after-055',configurations:expected.length,products:ids.size,comparedFields:values,publicConfigurations:expectedPublic.length,draftConfigurations:expected.length-expectedPublic.length,draftsHiddenFromAnonymous:true,productionWrites:0};
   const dest=path.join(root,'content/reports/fit-configurations-audit.json');
   fs.writeFileSync(dest,JSON.stringify(summary,null,2)+'\n');
   console.log(JSON.stringify(summary,null,2));

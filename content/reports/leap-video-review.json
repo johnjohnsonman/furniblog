@@ -1,0 +1,97 @@
+{
+  "checkedAt": "2026-09-20T08:37:09.656Z",
+  "method": "YouTube oEmbed metadata; not a playback or content review",
+  "rows": [
+    {
+      "youtubeId": "O3OZ9-Qrfso",
+      "title": "Aeron vs. Leap: My Opinion 3 Years Later",
+      "channel": "BTODtv",
+      "url": "https://www.youtube.com/watch?v=O3OZ9-Qrfso",
+      "metadataStatus": "accessible",
+      "currentTitle": "Aeron vs. Leap: My Opinion 3 Years Later",
+      "currentChannel": "BTODtv",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "cOtsAbpqyz8",
+      "title": "Steelcase Leap V2 - 3 Month Review",
+      "channel": "OT Focus",
+      "url": "https://www.youtube.com/watch?v=cOtsAbpqyz8",
+      "metadataStatus": "accessible",
+      "currentTitle": "Steelcase Leap V2 - 3 Month Review",
+      "currentChannel": "OT Focus",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "NfIF-8pwP7w",
+      "title": "Leap VS Fern VS Embody: My Quest For a God-Tier Office Chair",
+      "channel": "BTODtv",
+      "url": "https://www.youtube.com/watch?v=NfIF-8pwP7w",
+      "metadataStatus": "accessible",
+      "currentTitle": "Leap VS Fern VS Embody: My Quest For a God-Tier Office Chair",
+      "currentChannel": "BTODtv",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "iaZPWPqCsIo",
+      "title": "Steelcase Leap v2 Review: My Opinion 3 Years Later",
+      "channel": "BTODtv",
+      "url": "https://www.youtube.com/watch?v=iaZPWPqCsIo",
+      "metadataStatus": "accessible",
+      "currentTitle": "Steelcase Leap v2 Review: My Opinion 3 Years Later",
+      "currentChannel": "BTODtv",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "XsnHSQMubQM",
+      "title": "New vs Remanufactured Steelcase Leap v2",
+      "channel": "Ahnestly",
+      "url": "https://www.youtube.com/watch?v=XsnHSQMubQM",
+      "metadataStatus": "accessible",
+      "currentTitle": "New vs Remanufactured Steelcase Leap v2",
+      "currentChannel": "Ahnestly",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "KnhcIPUs1lU",
+      "title": "Leap vs Gesture: My Opinion 3 Years Later",
+      "channel": "BTODtv",
+      "url": "https://www.youtube.com/watch?v=KnhcIPUs1lU",
+      "metadataStatus": "accessible",
+      "currentTitle": "Leap vs Gesture: My Opinion 3 Years Later",
+      "currentChannel": "BTODtv",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    },
+    {
+      "youtubeId": "oNcjg47iTZ4",
+      "title": "DO NOT Buy Steelcase Leap V2 Before Watching This Video",
+      "channel": "BTODtv",
+      "url": "https://www.youtube.com/watch?v=oNcjg47iTZ4",
+      "metadataStatus": "accessible",
+      "currentTitle": "DO NOT Buy Steelcase Leap V2 Before Watching This Video",
+      "currentChannel": "BTODtv",
+      "titleMatches": true,
+      "channelMatches": true,
+      "playbackVerified": false,
+      "contentReviewed": false
+    }
+  ]
+}

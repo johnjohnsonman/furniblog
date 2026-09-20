@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-09-20T07:17:59.857Z",
+  "input": "content\\showrooms\\import\\haworth-melbourne-20260920.json",
+  "mode": "preview",
+  "totals": {
+    "rows": 1,
+    "accepted": 1,
+    "published": 1,
+    "held_as_draft": 0,
+    "rejected": 0
+  },
+  "rows": [
+    {
+      "row": 2,
+      "slug": "haworth-melbourne-showroom",
+      "status": "published",
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

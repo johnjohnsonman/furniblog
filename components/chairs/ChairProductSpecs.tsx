@@ -66,6 +66,14 @@ export function ChairProductSpecs({ product }: ChairProductSpecsProps) {
         </section>
       </section>
       <ChairHeightGuide chairSpecs={product.chairSpecs} />
+      {product.id === "steelcase-leap-v2" && (
+        <section className="mt-8 border-t border-border pt-6">
+          <h2 className="font-serif text-xl font-medium">Source and configuration notes</h2>
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">Steelcase distinguishes the standard Leap work chair, optional height cylinders, Leap Plus and stools. Check the cylinder and model on the chair you plan to buy; their adjustment ranges differ.</p>
+          <a href="https://www.steelcase.com/resources/documents/leap-spec-guide/" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm underline underline-offset-4">Steelcase Leap 462 Series specification guide (February 2024)</a>
+          <p className="mt-2 text-xs text-muted-foreground">Source checked September 20, 2026. See printed pages 49 and 52 for adjustments and dimensions.</p>
+        </section>
+      )}
     </>
   )
 }

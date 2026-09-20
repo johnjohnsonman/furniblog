@@ -1,0 +1,2 @@
+product_slug,seat_height_min,seat_height_max,seat_depth_min,seat_depth_max,seat_depth_fixed,seat_width,weight_capacity,armrest_floor_height_min,armrest_floor_height_max,evidence_type,source_title,source_url,checked_on,notes
+example-product,40,52,40,48,,49,136,56,79,manufacturer,Official specification guide,https://example.com/specification-guide,2026-09-19,Replace this example with source-checked manufacturer values.

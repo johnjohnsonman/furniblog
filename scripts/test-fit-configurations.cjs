@@ -22,6 +22,18 @@ async function main() {
   assert.equal((await db.query('select * from product_fit_configurations')).rows.length,0,'drafts hidden');
   await assert.rejects(db.exec("update product_fit_configurations set status='verified'"),/permission denied/);
   await db.exec('reset role');
+  const activation = fs.readFileSync(path.join(root,'lib/supabase/migrations/056_activate_reviewed_us_fit_configurations.sql'),'utf8');
+  await db.exec(activation); await db.exec(activation);
+  assert.equal((await db.query("select count(*)::int as n from product_fit_configurations where status='verified'")).rows[0].n,3);
+  await db.exec('set role anon');
+  assert.equal((await db.query('select * from product_fit_configurations')).rows.length,3,'only reviewed configurations public');
+  await db.exec('reset role');
+  await db.exec(seed);
+  await db.exec("update product_fit_configurations set weight_capacity=140 where configuration_key='with-forward-tilt'");
+  await assert.rejects(db.exec(activation),/Reviewed configuration missing or changed/);
+  await db.exec('rollback');
+  assert.equal((await db.query("select count(*)::int as n from product_fit_configurations where status='verified'")).rows[0].n,0,'activation fails atomically on changed values');
+  await db.exec(seed);
   await db.exec("update product_fit_configurations set status='verified'");
   await db.exec("update products set published=false where slug='haworth-zody-ii'");
   await db.exec('set role authenticated');

@@ -9,6 +9,7 @@ import { CHAIR_CATEGORIES } from "@/lib/chair-categories"
 
 const mainNav = [
   { name: "Find Stores", href: "/stores" },
+  { name: "Fit Calculator", href: "/chair-fit-calculator" },
   { name: "chA.I.r", href: "/chair" },
   { name: "Guides", href: "/chairpedia" },
   { name: "Blog", href: "/blog" },

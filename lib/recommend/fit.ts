@@ -210,9 +210,24 @@ export function evaluateProductFit(
   }
 
   const known = Object.values(components).filter((v): v is number => v != null)
-  const score = known.length
-    ? Math.round((known.reduce((sum, value) => sum + value, 0) / known.length) * 100)
-    : 50
+  // Fit Score is an evidence index, not a probability. Every measurement that
+  // the user's inputs make relevant stays in the denominator; unpublished
+  // values therefore reduce the score instead of disappearing from it.
+  const weightedComponents: Array<[number | null, number]> = []
+  if (input.heightCm) weightedComponents.push([components.bodyHeight, 10])
+  if (profile.suggestedSeatHeightCm)
+    weightedComponents.push([components.seatHeight, 30])
+  if (profile.suggestedSeatDepthCm)
+    weightedComponents.push([components.seatDepth, 25])
+  if (input.weightKg) weightedComponents.push([components.weightCapacity, 15])
+  if (input.armrestsUnderDesk && input.deskHeightCm)
+    weightedComponents.push([components.deskClearance, 20])
+  const totalWeight = weightedComponents.reduce((sum, [, weight]) => sum + weight, 0)
+  const earned = weightedComponents.reduce(
+    (sum, [value, weight]) => sum + (value ?? 0) * weight,
+    0,
+  )
+  const score = totalWeight ? Math.round((earned / totalWeight) * 100) : 0
   const criticalKnown = [seatHeight, seatDepth, specs?.weightCapacityKg].filter(Boolean).length
   const confidence: FitConfidence =
     criticalKnown >= 3 && known.length >= 4

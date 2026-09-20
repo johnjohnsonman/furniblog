@@ -1,7 +1,6 @@
 import { presentVideo } from "@/lib/videos/public-presentation"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { resolveProductUuid } from "@/lib/supabase/queries"
-import { shuffle } from "@/lib/utils/shuffle"
 
 export type ProductVideo = {
   id: string
@@ -21,8 +20,6 @@ export type ProductVideosResult = {
 }
 
 const PRODUCT_VIDEO_LIMIT = 6
-// Randomise the shown videos from a wider most-viewed pool.
-const PRODUCT_VIDEO_POOL = 30
 
 function isUuid(value: string): boolean {
   return value.includes("-") && value.length === 36
@@ -42,8 +39,7 @@ export async function fetchProductVideos(
   if (!chairId) return { videos: [], total: 0, chairId: null }
 
   const supabase = createPublicServerClient()
-  // Pull a wider pool of the most-viewed videos, then show a random handful so
-  // the section feels fresh on each visit (total count stays accurate).
+  // Keep product evidence stable across visits; ID resolves equal view counts.
   const { data, count, error } = await supabase
     .from("videos")
     .select(
@@ -53,14 +49,12 @@ export async function fetchProductVideos(
     .eq("status", "published")
     .eq("chair_id", chairId)
     .order("view_count", { ascending: false, nullsFirst: false })
-    .limit(PRODUCT_VIDEO_POOL)
+    .order("id", { ascending: true })
+    .limit(PRODUCT_VIDEO_LIMIT)
 
   if (error) return { videos: [], total: 0, chairId }
 
-  const videos = shuffle(((data ?? []) as ProductVideo[]).map(presentVideo)).slice(
-    0,
-    PRODUCT_VIDEO_LIMIT
-  )
+  const videos = ((data ?? []) as ProductVideo[]).map(presentVideo)
 
   return {
     videos,

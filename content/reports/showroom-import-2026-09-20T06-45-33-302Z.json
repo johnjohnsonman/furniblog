@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-09-20T06:45:33.301Z",
+  "input": "content\\showrooms\\import\\haworth-dubai-20260920.json",
+  "mode": "write",
+  "totals": {
+    "rows": 1,
+    "accepted": 1,
+    "published": 1,
+    "held_as_draft": 0,
+    "rejected": 0
+  },
+  "rows": [
+    {
+      "row": 2,
+      "slug": "haworth-dubai-showroom",
+      "status": "published",
+      "errors": [],
+      "warnings": []
+    }
+  ]
+}

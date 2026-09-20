@@ -15,7 +15,8 @@ type Props = {
 }
 
 function formatViewCount(value: number | null): string {
-  if (!value || value <= 0) return "0 views"
+  if (value === null || value < 0) return "Views unavailable"
+  if (value === 0) return "0 views"
   if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M views`
   if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K views`
   return `${value} views`
@@ -54,7 +55,7 @@ export function ProductVideosSection({
         return (
           <article
             key={video.id}
-            className="flex flex-col rounded-xl border border-border bg-card p-4 shadow-sm"
+            className="flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 shadow-sm"
           >
             <VideoEmbedFacade
               youtubeId={video.youtube_id}
@@ -62,7 +63,7 @@ export function ProductVideosSection({
               thumbnailUrl={video.thumbnail_url}
             />
             <div className="mt-4 flex flex-1 flex-col space-y-2">
-              <h3 className="line-clamp-2 text-base font-medium text-foreground">
+              <h3 className="break-words text-base font-medium text-foreground">
                 {title}
               </h3>
               <p className="text-xs text-muted-foreground">

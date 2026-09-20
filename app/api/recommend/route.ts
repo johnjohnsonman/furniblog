@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { loadRecommenderData } from "@/lib/recommend/data"
 import { recommendWithProfile } from "@/lib/recommend/engine"
 import { matchRecommendationShowrooms } from "@/lib/recommend/showrooms"
+import { rankRecommendationResults } from "@/lib/recommend/ranking"
 import { z } from "zod"
 
 export const runtime = "nodejs"
@@ -44,6 +45,7 @@ const requestSchema = z.object({
 })
 
 export async function POST(request: NextRequest) {
+  const startedAt = performance.now()
   try {
     const parsed = requestSchema.safeParse(await request.json().catch(() => ({})))
     if (!parsed.success)
@@ -53,13 +55,23 @@ export async function POST(request: NextRequest) {
       )
     const answers = parsed.data
     const { products, affinity } = await loadRecommenderData()
-    const response = recommendWithProfile(products, affinity, answers, 5)
+    const loadedAt = performance.now()
+    const response = recommendWithProfile(products, affinity, answers, 10)
+    const ranked = rankRecommendationResults(response.results)
+    const rankedAt = performance.now()
     const showrooms = await matchRecommendationShowrooms(response.results, answers).catch(
       () => [],
     )
-    return NextResponse.json({ ...response, showrooms })
+    const finishedAt = performance.now()
+    return NextResponse.json({ ...response, ...ranked, showrooms }, { headers: {
+      "Cache-Control": "private, no-store",
+      "Server-Timing": `catalog;dur=${(loadedAt - startedAt).toFixed(1)}, ranking;dur=${(rankedAt - loadedAt).toFixed(1)}, showrooms;dur=${(finishedAt - rankedAt).toFixed(1)}, total;dur=${(finishedAt - startedAt).toFixed(1)}`,
+    } })
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Failed"
-    return NextResponse.json({ error: message }, { status: 500 })
+    console.error(
+      "Recommendation catalog request failed:",
+      error instanceof Error ? error.message : "Unknown error",
+    )
+    return NextResponse.json({ error: "Catalog data unavailable" }, { status: 503 })
   }
 }

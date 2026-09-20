@@ -138,6 +138,23 @@ Deliver as reusable SVG frames, not video.
 
 Keep these diagrammatic and editorial. They should not look cartoonish.
 
+### 9. Result ranking components
+
+Provide code-ready responsive specifications for:
+
+- Featured Best Overall Fit card
+- Standard role-based standout card
+- Fit Score component breakdown
+- Compact alternatives 6–10 row
+- Expanded compact-row evidence state
+- Persistent desktop evidence rail
+- Inline mobile evidence rail
+- Compare-selection tray for two to four chairs
+- Exact-model and brand-carried showroom-count treatments
+- Product-record and price last-checked labels
+
+The Fit Score must read as an explainable 0–100 index. The supporting evidence, conflicts, unknowns, and confidence state must remain more prominent than decorative score graphics.
+
 ## Product photography
 
 Do not invent or generate fake product photos for real chair models. Production cards must use the catalog's licensed or approved product images and the existing fallback when unavailable.
@@ -157,4 +174,3 @@ Request:
 - Color and typography tokens
 - Light/dark usage rules if both are used
 - Reduced-motion variants
-

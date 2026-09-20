@@ -1,13 +1,22 @@
 # Public chair-store registry
 
 The initial public release uses `SHOWROOMS_ENABLED=true` and `SHOWROOM_DATA_SOURCE=registry`.
-`registry.json` contains only reviewed, published records. After the 2026-09-18 marketplace-country expansion it contains 659 stores across 46 countries, including 136 in Japan and 177 in the United States. Every country with a current Amazon Associates marketplace now has at least two registered chair stores. This is not a complete national inventory. Korea is excluded.
+`registry.json` contains only reviewed records and currently exposes 678 published stores across 46 countries. Counts are derived from the registry and should be re-audited after each batch instead of being maintained manually in this document. Every country with a current Amazon Associates marketplace has at least two registered chair stores. This is not a complete national inventory. Korea is excluded.
 
 Each store and confirmed relationship has its own source URL and check date. Missing hours and trial availability remain unknown. Do not infer a model trial from a brand relationship or national product carousel. Do not copy vendor photographs without rights.
 
 Existing published product/brand IDs are reused where exact matches exist. Store-only models retain independent directory IDs and empty product slugs; these must not produce fabricated product links. This release does not insert brands/products or modify the production database.
 
 ## Updates
+
+For large batches, start with `content/showrooms/import/showrooms-template.csv`. Preview and review the generated report before writing:
+
+```
+npm run import:showrooms -- content/showrooms/import/my-batch.xlsx
+npm run import:showrooms -- content/showrooms/import/my-batch.xlsx --write
+```
+
+The importer blocks duplicate slugs, websites, addresses, and near-identical coordinates. Incomplete publish requests are held as drafts.
 
 Edit reviewed records in registry.json, then run:
 

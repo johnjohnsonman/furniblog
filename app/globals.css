@@ -154,6 +154,25 @@
   [class*="finder-in"] { animation: none !important; }
 }
 
+@media print {
+  .fit-passport-page {
+    max-width: none !important;
+    padding: 24px !important;
+  }
+
+  .fit-passport-page a,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  .fit-passport-page section,
+  .fit-passport-page article,
+  .fit-passport-page > div {
+    break-inside: avoid;
+  }
+}
+
 /* ─────────────────────────────────────────────────────────────
    Chairpedia article body — shared by the admin editor and the
    public page so editing is WYSIWYG. Editorial-magazine rhythm:

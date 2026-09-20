@@ -1,0 +1,4879 @@
+{
+  "generatedAt": "2026-09-20T08:29:19.736Z",
+  "productionWrites": 0,
+  "contentReviewed": false,
+  "summary": {
+    "publishedProducts": 236,
+    "publishedVideos": 513,
+    "productsWithVideos": 141,
+    "productsWithoutVideos": 95,
+    "videosWithoutPublishedProduct": 1
+  },
+  "records": [
+    {
+      "slug": "anthros-chair",
+      "name": "Anthros Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "anthros-v2-chair",
+      "name": "Anthros V2 Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "bene-bay-chair",
+      "name": "Bene Bay Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "bestoffice-breathable-mid-back",
+      "name": "BestOffice Ergonomic Mid-Back Mesh Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "bestoffice-mesh-task",
+      "name": "BestOffice Mesh Task Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "carl-hansen-ch24-wishbone",
+      "name": "Carl Hansen & Søn CH24 Wishbone Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "carl-hansen-ch88",
+      "name": "Carl Hansen & Son CH88 Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "carl-hansen-shell-chair-ch07",
+      "name": "Carl Hansen & Son Shell Chair CH07",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "cassina-cab-412",
+      "name": "Cassina Cab 412",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "dauphin-magnum",
+      "name": "Dauphin Magnum",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "dauphin-to-strike",
+      "name": "Dauphin to-strike",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "emeco-navy-1006",
+      "name": "Emeco 1006 Navy Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "flexform-morgan",
+      "name": "Flexform Morgan Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "fritz-hansen-ant-chair",
+      "name": "Fritz Hansen Ant Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "fritz-hansen-grand-prix",
+      "name": "Fritz Hansen Grand Prix Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "fritz-hansen-series-7",
+      "name": "Fritz Hansen Series 7 Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "fritz-hansen-swan-chair",
+      "name": "Fritz Hansen Swan Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "global-accord",
+      "name": "Global Accord",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "global-concorde-presidential",
+      "name": "Global Concorde Presidential",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "gtplayer-gaming-footrest",
+      "name": "GTPLAYER Gaming Chair with Footrest",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "hay-aac",
+      "name": "HAY About A Chair (AAC)",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "hay-soft-edge",
+      "name": "HAY Soft Edge Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "herman-miller-eames-executive",
+      "name": "Herman Miller Eames Executive Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "herman-miller-eames-lounge-chair",
+      "name": "Herman Miller Eames Lounge Chair and Ottoman",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "herman-miller-eames-soft-pad-executive",
+      "name": "Herman Miller Eames Soft Pad Executive Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "herman-miller-nelson-coconut-chair",
+      "name": "Herman Miller Nelson Coconut Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "homall-executive",
+      "name": "Homall High-Back Executive Leather Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "hon-convergence",
+      "name": "HON Convergence",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "hon-nucleus",
+      "name": "HON Nucleus",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "hon-wave",
+      "name": "HON Wave",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "itoki-vertebra-03",
+      "name": "Itoki Vertebra 03",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "itoki-vertebra-03-wood",
+      "name": "Itoki Vertebra 03 Wood",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "kartell-louis-ghost",
+      "name": "Kartell Louis Ghost",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "kartell-masters",
+      "name": "Kartell Masters Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "kastel-kruna",
+      "name": "Kastel Kruna",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "ki-kiaura",
+      "name": "KI Kiaura",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "ki-ruckus",
+      "name": "KI Ruckus",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "ki-signia",
+      "name": "KI Signia",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-bertoia-side-chair",
+      "name": "Knoll Bertoia Side Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-cesca-chair",
+      "name": "Knoll Cesca Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-generation",
+      "name": "Generation by Knoll",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-platner-chair",
+      "name": "Knoll Platner Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-pollock-executive",
+      "name": "Knoll Pollock Executive Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-saarinen-executive",
+      "name": "Knoll Saarinen Executive Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "knoll-wassily",
+      "name": "Knoll Wassily Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "konig-neurath-okay-2",
+      "name": "König+Neurath Okay.2",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "la-z-boy-bellamy",
+      "name": "La-Z-Boy Bellamy",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "la-z-boy-delano",
+      "name": "La-Z-Boy Delano",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "la-z-boy-trafford",
+      "name": "La-Z-Boy Trafford",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "libernovo-omni",
+      "name": "LiberNovo Omni",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "martela-kilta",
+      "name": "Martela Kilta",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "muuto-fiber-chair",
+      "name": "Muuto Fiber Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "office-star-progrid",
+      "name": "Office Star ProGrid",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "office-star-ventilated-managers",
+      "name": "Office Star Ventilated Manager's Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "okamura-duke",
+      "name": "Okamura Duke",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-archibald",
+      "name": "Poltrona Frau Archibald Executive",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-dora",
+      "name": "Poltrona Frau Isadora",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-downtown",
+      "name": "Poltrona Frau Downtown",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-oxford-executive",
+      "name": "Poltrona Frau Oxford Executive",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-oxford-president",
+      "name": "Poltrona Frau Oxford President",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "poltrona-frau-oxford-visitor",
+      "name": "Poltrona Frau Oxford Visitor",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "sihoo-doro-c300",
+      "name": "SIHOO Doro C300",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "sihoo-doro-s300",
+      "name": "SIHOO Doro S300",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "steelcase-coalesse-sw1",
+      "name": "Steelcase Coalesse SW_1",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "thonet-214",
+      "name": "Thonet No. 14 Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "thonet-s43",
+      "name": "Thonet S 43 Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "uplift-envoke",
+      "name": "UPLIFT Envoke",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "uplift-pursuit",
+      "name": "UPLIFT Pursuit",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "uplift-vert",
+      "name": "UPLIFT Vert",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "varier-variable-balans",
+      "name": "Varier Variable balans",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-eames-daw",
+      "name": "Vitra Eames Plastic Armchair DAW",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-eames-dsr",
+      "name": "Vitra Eames Plastic Side Chair DSR",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-grand-executive",
+      "name": "Vitra Grand Executive",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-grand-repos",
+      "name": "Vitra Grand Repos",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-lobby-chair-es-104",
+      "name": "Vitra Lobby Chair ES 104",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-panton-chair",
+      "name": "Vitra Panton Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-physix-conference",
+      "name": "Vitra Physix Conference",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-soft-pad-chair-ea-219",
+      "name": "Vitra Soft Pad Chair EA 219",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "vitra-standard-chair",
+      "name": "Vitra Standard Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-375-armchair",
+      "name": "Walter Knoll 375 Armchair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-andoo-chair",
+      "name": "Walter Knoll Andoo Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-andoo-lounge-chair",
+      "name": "Walter Knoll Andoo Lounge Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-burgaz-chair",
+      "name": "Walter Knoll Burgaz Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-fk-chair",
+      "name": "Walter Knoll FK Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-healey-lounge-chair",
+      "name": "Walter Knoll Healey Lounge Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-leadchair-management",
+      "name": "Walter Knoll Leadchair Management",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-liz-chair",
+      "name": "Walter Knoll Liz Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-osuu-chair",
+      "name": "Walter Knoll Osuu Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-sheru-chair",
+      "name": "Walter Knoll Sheru Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-turtle-lounge-chair",
+      "name": "Walter Knoll Turtle Lounge Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "walter-knoll-vostra-chair",
+      "name": "Walter Knoll Vostra Chair",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "x-chair-x1",
+      "name": "X-Chair X1",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "x-chair-x2",
+      "name": "X-Chair X2",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "x-chair-x3",
+      "name": "X-Chair X3",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "x-chair-x4",
+      "name": "X-Chair X4",
+      "videoCount": 0,
+      "needsMetadataReview": 0,
+      "videos": []
+    },
+    {
+      "slug": "boss-design-mera",
+      "name": "Klöber Mera",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "ptnISNQ2ux8",
+          "title": "Klober Mera  By DURF Projectinrichting",
+          "channel": "DURF Projectinrichting",
+          "url": "https://www.youtube.com/watch?v=ptnISNQ2ux8"
+        }
+      ]
+    },
+    {
+      "slug": "ergohuman-lx",
+      "name": "Ergohuman LX",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "V3BEv5GKEts",
+          "title": "ANTARES ERGOHUMAN forgószék összeszerelési útmutató",
+          "channel": "antareshu",
+          "url": "https://www.youtube.com/watch?v=V3BEv5GKEts"
+        }
+      ]
+    },
+    {
+      "slug": "flash-furniture-mid-back-mesh",
+      "name": "Flash Furniture Mid-Back Mesh Task Chair",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "CuspZyS9iTE",
+          "title": "Flash Furniture Mid Back Black Mesh Chair with Triple Paddle Control",
+          "channel": "April Darren",
+          "url": "https://www.youtube.com/watch?v=CuspZyS9iTE"
+        }
+      ]
+    },
+    {
+      "slug": "flokk-rh-mereo",
+      "name": "Flokk RH Mereo",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "cdJN3aAX3Nw",
+          "title": "RH Mereo | Unboxing & construction | Flokk Assembly Guides",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=cdJN3aAX3Nw"
+        }
+      ]
+    },
+    {
+      "slug": "girsberger-diagon",
+      "name": "Girsberger Diagon",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "z6pqNYi5M_4",
+          "title": "Diagon functions Girsberger",
+          "channel": "Girsberger Holding AG",
+          "url": "https://www.youtube.com/watch?v=z6pqNYi5M_4"
+        }
+      ]
+    },
+    {
+      "slug": "global-sora",
+      "name": "Global Sora",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "lj-DGMvneaw",
+          "title": "OfficeAnything com   Global Sora Chair Review",
+          "channel": "Office Anything Furniture",
+          "url": "https://www.youtube.com/watch?v=lj-DGMvneaw"
+        }
+      ]
+    },
+    {
+      "slug": "hag-sofi",
+      "name": "HÅG SoFi",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "A0ETScDdffg",
+          "title": "Why choose HÅG SoFi? | A user friendly versatile desk chair (ENG Subtitles)",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=A0ETScDdffg"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-comforto-29",
+      "name": "Haworth Comforto 29",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Lhg7ImRnB-0",
+          "title": "Gebruiksaanwijzing bureaustoel Haworth Comforto 29",
+          "channel": "Eurodesk Business Furniture",
+          "url": "https://www.youtube.com/watch?v=Lhg7ImRnB-0"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-very-task",
+      "name": "Haworth Very Task",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "fCCOotnXZN0",
+          "title": "Very Task Ergonomics",
+          "channel": "Haworth, Inc.",
+          "url": "https://www.youtube.com/watch?v=fCCOotnXZN0"
+        }
+      ]
+    },
+    {
+      "slug": "humanscale-world-one",
+      "name": "Humanscale World One",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "X7sGkaYvyIQ",
+          "title": "4 Most Popular Humanscale Chairs We’ve Tested",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=X7sGkaYvyIQ"
+        }
+      ]
+    },
+    {
+      "slug": "itoki-spina",
+      "name": "Itoki Spina",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "sdrpjy3NYwI",
+          "title": "【スピーナチェア機能】ランバーサポート／レバーの位置や動作を紹介 Spina Lumber",
+          "channel": "オフィスバスターズ公式",
+          "url": "https://www.youtube.com/watch?v=sdrpjy3NYwI"
+        }
+      ]
+    },
+    {
+      "slug": "keilhauer-swurve",
+      "name": "Keilhauer Swurve",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "i7t8u23F0IA",
+          "title": "Swurve",
+          "channel": "Keilhauer",
+          "url": "https://www.youtube.com/watch?v=i7t8u23F0IA"
+        }
+      ]
+    },
+    {
+      "slug": "ki-impress",
+      "name": "KI Impress",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "oSqaCx-EpEw",
+          "title": "KI's Impress Ultra Task Chair Adjustments",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=oSqaCx-EpEw"
+        }
+      ]
+    },
+    {
+      "slug": "ki-torsion-air",
+      "name": "KI Torsion Air",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "cgLyI08GpEI",
+          "title": "Torsion Air Office Chair",
+          "channel": "TheFranklinInteriors",
+          "url": "https://www.youtube.com/watch?v=cgLyI08GpEI"
+        }
+      ]
+    },
+    {
+      "slug": "klober-connex2",
+      "name": "Klober Connex2",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "4cjxg3KA7fo",
+          "title": "Connex - Klober",
+          "channel": "T3 Atelier",
+          "url": "https://www.youtube.com/watch?v=4cjxg3KA7fo"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-bertoia-diamond-chair",
+      "name": "Knoll Bertoia Diamond Chair",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "EV0Yykp6Q6w",
+          "title": "422 Diamond Chair Designed for Knoll, 1950-53",
+          "channel": "Seatscollection",
+          "url": "https://www.youtube.com/watch?v=EV0Yykp6Q6w"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-rpm-executive",
+      "name": "Knoll RPM",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "hic3QKWMUcU",
+          "title": "How to Replace the cylinder in RPM chair",
+          "channel": "David Yeagy",
+          "url": "https://www.youtube.com/watch?v=hic3QKWMUcU"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-baron",
+      "name": "Okamura Baron",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "yNL5z0zv-fk",
+          "title": "OKAMURA   Baron Chair   A0047756",
+          "channel": "tomizawa thailand",
+          "url": "https://www.youtube.com/watch?v=yNL5z0zv-fk"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-legender",
+      "name": "Okamura Legender",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "F13HO64RJ88",
+          "title": "Эргономичное кожаное кресло руководителя Okamura Legender",
+          "channel": "Ergoboss",
+          "url": "https://www.youtube.com/watch?v=F13HO64RJ88"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-portone",
+      "name": "Okamura Portone",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "eY-I2GtDAfU",
+          "title": "Okamura Portone Adjustments",
+          "channel": "英凡Innovative Workplace",
+          "url": "https://www.youtube.com/watch?v=eY-I2GtDAfU"
+        }
+      ]
+    },
+    {
+      "slug": "poltrona-frau-vanity-fair-xc",
+      "name": "Poltrona Frau Vanity Fair XC",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "3xEdt2fOnIM",
+          "title": "Poltrona Frau | Vanity Fair XC | Renzo Frau",
+          "channel": "Intermeuble Design",
+          "url": "https://www.youtube.com/watch?v=3xEdt2fOnIM"
+        }
+      ]
+    },
+    {
+      "slug": "sedus-sedo",
+      "name": "Sedus se:do",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "wvKwWaCH4dg",
+          "title": "Büro-Point GmbH, Reutlingen | Sedus se:do",
+          "channel": "Ulrich Hövemeyer",
+          "url": "https://www.youtube.com/watch?v=wvKwWaCH4dg"
+        }
+      ]
+    },
+    {
+      "slug": "serta-fairbanks",
+      "name": "Serta Fairbanks Big and Tall Executive Chair",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "2zThj4mLwcU",
+          "title": "Serta Office Chair for Big and Tall Guys (Review)",
+          "channel": "Christopher Michael",
+          "url": "https://www.youtube.com/watch?v=2zThj4mLwcU"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-id-soft",
+      "name": "Vitra ID Soft",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "UbxKyOc5x_4",
+          "title": "Vitra ID Chair Trim L",
+          "channel": "pro office Shop",
+          "url": "https://www.youtube.com/watch?v=UbxKyOc5x_4"
+        }
+      ]
+    },
+    {
+      "slug": "wilkhahn-at",
+      "name": "Wilkhahn AT",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Xr9nQsUHeSQ",
+          "title": "Wilkhahn  AT Chair Review by the \"The Travelling Ergonomist\"",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=Xr9nQsUHeSQ"
+        }
+      ]
+    },
+    {
+      "slug": "wilkhahn-fs",
+      "name": "Wilkhahn FS",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "lRQlgjtQH7s",
+          "title": "FS-Line –211/8  by Wilkhahn",
+          "channel": "便利屋あんしんLife",
+          "url": "https://www.youtube.com/watch?v=lRQlgjtQH7s"
+        }
+      ]
+    },
+    {
+      "slug": "wilkhahn-graph",
+      "name": "Wilkhahn Graph",
+      "videoCount": 1,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "lhzR59w1WHI",
+          "title": "New: Wilkhahn Graph Conference range - introducing Graph iconic edition. By jehs + laub",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=lhzR59w1WHI"
+        }
+      ]
+    },
+    {
+      "slug": "aeris-3dee",
+      "name": "Aeris 3Dee",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Q7Lgu96DWBo",
+          "title": "aeris 3Dee ergonomic office chair",
+          "channel": "ERGOKID",
+          "url": "https://www.youtube.com/watch?v=Q7Lgu96DWBo"
+        },
+        {
+          "youtubeId": "_oTjxeosK2A",
+          "title": "Aeris 3DEE Office Chair demonstration",
+          "channel": "Active-Sit-Stand",
+          "url": "https://www.youtube.com/watch?v=_oTjxeosK2A"
+        }
+      ]
+    },
+    {
+      "slug": "aeris-swopper",
+      "name": "Aeris Swopper",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "4hOFiHQZgnY",
+          "title": "aeris GmbH Swopper Active Office Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=4hOFiHQZgnY"
+        },
+        {
+          "youtubeId": "ABlqJPZAbXQ",
+          "title": "Top 6 Problems For The aeris GmbH Swopper Active Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=ABlqJPZAbXQ"
+        }
+      ]
+    },
+    {
+      "slug": "flexispot-oc3",
+      "name": "FlexiSpot OC3",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Ci8tYTo3YKE",
+          "title": "I Tried The Flexispot Ergonomic Chair (Worth It?)",
+          "channel": "Easy Boink | Steam Gaming",
+          "url": "https://www.youtube.com/watch?v=Ci8tYTo3YKE"
+        },
+        {
+          "youtubeId": "UNTuNLKitiE",
+          "title": "FlexiSpot OC3 Ergonomic Chair Review #FlexiSpot #OC3 #ErgonomicChair",
+          "channel": "Plume Gaming",
+          "url": "https://www.youtube.com/watch?v=UNTuNLKitiE"
+        }
+      ]
+    },
+    {
+      "slug": "hag-capisco",
+      "name": "HÅG Capisco",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "zo4ZDJ01muI",
+          "title": "6 Months with the Joe Rogan Chair | HÅG Capisco",
+          "channel": "Break It Yourself",
+          "url": "https://www.youtube.com/watch?v=zo4ZDJ01muI"
+        },
+        {
+          "youtubeId": "sgV2mYopr70",
+          "title": "HÅG Capisco | Our Chair Expert Reviews",
+          "channel": "Posturite Limited",
+          "url": "https://www.youtube.com/watch?v=sgV2mYopr70"
+        }
+      ]
+    },
+    {
+      "slug": "hag-capisco-puls",
+      "name": "HÅG Capisco Puls",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "2sq41tJSAVM",
+          "title": "Flokk HAG Capisco Puls 8020. Let's Talk Ergonomic Chairs!",
+          "channel": "Jeorge Paolo",
+          "url": "https://www.youtube.com/watch?v=2sq41tJSAVM"
+        },
+        {
+          "youtubeId": "g-wwCpemFmY",
+          "title": "Fully Capisco Puls by HAG - Review",
+          "channel": "Tomas Villegas",
+          "url": "https://www.youtube.com/watch?v=g-wwCpemFmY"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-embody",
+      "name": "Herman Miller Embody",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "GgdsxxO88oQ",
+          "title": "The Only Herman Miller Embody Review You'll Need to Watch",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=GgdsxxO88oQ"
+        },
+        {
+          "youtubeId": "ny0LrPJt5RA",
+          "title": "Herman Miller Embody Review | My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=ny0LrPJt5RA"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-platner-lounge-chair",
+      "name": "Knoll Platner Lounge Chair",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Xz4Zm2eBy_g",
+          "title": "Platner chair",
+          "channel": "James Wang",
+          "url": "https://www.youtube.com/watch?v=Xz4Zm2eBy_g"
+        },
+        {
+          "youtubeId": "4DIisvT2Sb4",
+          "title": "4 Warren Platner For Knoll Lounge Chairs",
+          "channel": "ClarkeAuction",
+          "url": "https://www.youtube.com/watch?v=4DIisvT2Sb4"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-tulip-chair",
+      "name": "Knoll Tulip Chair",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "GaelEbVmhxw",
+          "title": "Tulip Arm Chair + Tulip Chair",
+          "channel": "NightFreezeHK",
+          "url": "https://www.youtube.com/watch?v=GaelEbVmhxw"
+        },
+        {
+          "youtubeId": "mSGwS0RoDrA",
+          "title": "Tulip by Eero Saarinen - 1001 CHAIRS",
+          "channel": "Olavo",
+          "url": "https://www.youtube.com/watch?v=mSGwS0RoDrA"
+        }
+      ]
+    },
+    {
+      "slug": "kokuyo-duora",
+      "name": "Kokuyo Duora",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "upA1WH2jTLk",
+          "title": "KOKUYO Duora Chair",
+          "channel": "Ali Hon",
+          "url": "https://www.youtube.com/watch?v=upA1WH2jTLk"
+        },
+        {
+          "youtubeId": "C5w3dO5FrxM",
+          "title": "Duora Chair KOKUYO #A0047603",
+          "channel": "tomizawa thailand",
+          "url": "https://www.youtube.com/watch?v=C5w3dO5FrxM"
+        }
+      ]
+    },
+    {
+      "slug": "kokuyo-entry",
+      "name": "Kokuyo Entry",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "wCA4Rk3e8qk",
+          "title": "コクヨ ENTRYチェア 操作編",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=wCA4Rk3e8qk"
+        },
+        {
+          "youtubeId": "XrqKJLNU4FA",
+          "title": "KOKUYO ENTRY CHAIR",
+          "channel": "Kokuyo Indonesia",
+          "url": "https://www.youtube.com/watch?v=XrqKJLNU4FA"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-sabrina",
+      "name": "Okamura Sabrina",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "ciWCeMrwNTA",
+          "title": "Dessa Muebles | Sillon Okamura Sabrina",
+          "channel": "Dessa Muebles",
+          "url": "https://www.youtube.com/watch?v=ciWCeMrwNTA"
+        },
+        {
+          "youtubeId": "xnJ1MtRbE6k",
+          "title": "Okamura Sabrina Office Chair Functions - Hunts Office Furniture",
+          "channel": "Hunts Office Furniture",
+          "url": "https://www.youtube.com/watch?v=xnJ1MtRbE6k"
+        }
+      ]
+    },
+    {
+      "slug": "sedus-open-up",
+      "name": "Sedus open up",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "4Chs1syB9b8",
+          "title": "Büro-Point GmbH, Reutlingen | Sedus open up",
+          "channel": "Ulrich Hövemeyer",
+          "url": "https://www.youtube.com/watch?v=4Chs1syB9b8"
+        },
+        {
+          "youtubeId": "O_h7u0wBDbc",
+          "title": "Sedus Open Up",
+          "channel": "Office Chairs UK",
+          "url": "https://www.youtube.com/watch?v=O_h7u0wBDbc"
+        }
+      ]
+    },
+    {
+      "slug": "teknion-projek",
+      "name": "Teknion Projek",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "iSiW09a1HnE",
+          "title": "Teknion Seating | User Video | Projek",
+          "channel": "Angie Embry",
+          "url": "https://www.youtube.com/watch?v=iSiW09a1HnE"
+        },
+        {
+          "youtubeId": "Wxq54Uyv50E",
+          "title": "Teknion Store Assembly Guide: Projek Task Chair",
+          "channel": "Teknion",
+          "url": "https://www.youtube.com/watch?v=Wxq54Uyv50E"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-id-trim",
+      "name": "Vitra ID Trim",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "I0pK19TK7R0",
+          "title": "Vitra ID Trim Bureaustoel met armleggers Oranje Stof InrichtingAnders",
+          "channel": "Inrichting Anders",
+          "url": "https://www.youtube.com/watch?v=I0pK19TK7R0"
+        },
+        {
+          "youtubeId": "upP7TqRnAQU",
+          "title": "pro office - Vitra ID Trim Bürodrehstuhl",
+          "channel": "pro office Shop",
+          "url": "https://www.youtube.com/watch?v=upP7TqRnAQU"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-pacific-chair",
+      "name": "Vitra Pacific Chair",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Kg_VU65gGvg",
+          "title": "Vitra Pacific Chair | 哪張辦公座椅，讓高標準的蘋果也愛不釋手？",
+          "channel": "北歐櫥窗Nordic Lifestyle",
+          "url": "https://www.youtube.com/watch?v=Kg_VU65gGvg"
+        },
+        {
+          "youtubeId": "NwLQ8wCjSow",
+          "title": "PACIFIC CHAIR",
+          "channel": "Rufi Lee",
+          "url": "https://www.youtube.com/watch?v=NwLQ8wCjSow"
+        }
+      ]
+    },
+    {
+      "slug": "walter-knoll-leadchair",
+      "name": "Walter Knoll Leadchair",
+      "videoCount": 2,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "3q6DTB7gWDs",
+          "title": "Walter Knoll Leadchair - HGEsch",
+          "channel": "HGEsch Photography",
+          "url": "https://www.youtube.com/watch?v=3q6DTB7gWDs"
+        },
+        {
+          "youtubeId": "9Aoy1bCOATM",
+          "title": "Walter Knoll Leadchair",
+          "channel": "INDESIGN",
+          "url": "https://www.youtube.com/watch?v=9Aoy1bCOATM"
+        }
+      ]
+    },
+    {
+      "slug": "allsteel-acuity",
+      "name": "Allsteel Acuity",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "LhZcMECnacw",
+          "title": "Acuity   Allsteel OA",
+          "channel": "atwork",
+          "url": "https://www.youtube.com/watch?v=LhZcMECnacw"
+        },
+        {
+          "youtubeId": "V_fZjjagyng",
+          "title": "AllSteel Acuity Review",
+          "channel": "hugo salinas",
+          "url": "https://www.youtube.com/watch?v=V_fZjjagyng"
+        },
+        {
+          "youtubeId": "YRpseWzIY6U",
+          "title": "Allsteel Acuity Chair",
+          "channel": "Sam Clar Office Furniture | Commercial Services Group",
+          "url": "https://www.youtube.com/watch?v=YRpseWzIY6U"
+        }
+      ]
+    },
+    {
+      "slug": "boss-office-b991",
+      "name": "Boss Office Products B991 Executive Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "GOrFtj37Eqw",
+          "title": "American Gaming Supply Boss Executive Leather Plus Chair W/Padded Arm",
+          "channel": "American Gaming Supply",
+          "url": "https://www.youtube.com/watch?v=GOrFtj37Eqw"
+        },
+        {
+          "youtubeId": "JoLeh_UtNuo",
+          "title": "Boss Office Products B991 CP Heavy Duty Double Plush LeatherPlus Chair - Review",
+          "channel": "Zenfento",
+          "url": "https://www.youtube.com/watch?v=JoLeh_UtNuo"
+        },
+        {
+          "youtubeId": "7Za6zn_g3Jk",
+          "title": "Boss Office Products CaressoftPlus Big And Tall Chair Review - Pros & Cons - Boss Office Products",
+          "channel": "Office Chair Review",
+          "url": "https://www.youtube.com/watch?v=7Za6zn_g3Jk"
+        }
+      ]
+    },
+    {
+      "slug": "branch-verve",
+      "name": "Branch Verve Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "iJ1AFKPvwxs",
+          "title": "Branch Verve Chair - High Performance Executive Office Chair Review (Link Below 👇)",
+          "channel": "SPB Reviews",
+          "url": "https://www.youtube.com/watch?v=iJ1AFKPvwxs"
+        },
+        {
+          "youtubeId": "kkvcq5ZUU84",
+          "title": "Branch Verve Chair 🤍",
+          "channel": "wlovejesh",
+          "url": "https://www.youtube.com/watch?v=kkvcq5ZUU84"
+        },
+        {
+          "youtubeId": "Uo7-TdoCnKA",
+          "title": "Branch Verve Chair Review - BEAUTIFUL, But Is it Worth It??",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=Uo7-TdoCnKA"
+        }
+      ]
+    },
+    {
+      "slug": "duorest-alpha",
+      "name": "Duorest Alpha",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "_C-vujsAqM8",
+          "title": "DUOREST Alpha Chair: The Revolutionary Back Support Solution",
+          "channel": "EBPMAN Tech Reviews",
+          "url": "https://www.youtube.com/watch?v=_C-vujsAqM8"
+        },
+        {
+          "youtubeId": "m4HC2AkEXMw",
+          "title": "This Weird Chair Has INSANE Back Support!! | DUOREST Alpha Review",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=m4HC2AkEXMw"
+        },
+        {
+          "youtubeId": "pTWJm6TkMF0",
+          "title": "Our Point of View on DUOREST ALPHA DUAL-BACK Desk Chairs From Amazon",
+          "channel": "WTI",
+          "url": "https://www.youtube.com/watch?v=pTWJm6TkMF0"
+        }
+      ]
+    },
+    {
+      "slug": "duorest-gold-plus",
+      "name": "Duorest Gold Plus",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "o2ol6RQoKQM",
+          "title": "DUOREST GOLD PLUS series   Adjustment Guide",
+          "channel": "Ergonomic Solutions",
+          "url": "https://www.youtube.com/watch?v=o2ol6RQoKQM"
+        },
+        {
+          "youtubeId": "YMP9ym3p71Q",
+          "title": "DUOREST GOLD RENEWAL ENG R1FINAL",
+          "channel": "Simply Smart",
+          "url": "https://www.youtube.com/watch?v=YMP9ym3p71Q"
+        },
+        {
+          "youtubeId": "P2RUu0StXPc",
+          "title": "Duorest Office Chair for Posture Review- Cool Design and Good Support",
+          "channel": "JohnnyK",
+          "url": "https://www.youtube.com/watch?v=P2RUu0StXPc"
+        }
+      ]
+    },
+    {
+      "slug": "ergohuman-plus",
+      "name": "Ergohuman Plus",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "dMwHEC81xws",
+          "title": "Silla Ergohuman V2",
+          "channel": "SICATO",
+          "url": "https://www.youtube.com/watch?v=dMwHEC81xws"
+        },
+        {
+          "youtubeId": "t4qBU2I4JSs",
+          "title": "Ergohuman Plus Office Chair - Green Mesh",
+          "channel": "Mesh Office Seating (UK) Ltd",
+          "url": "https://www.youtube.com/watch?v=t4qBU2I4JSs"
+        },
+        {
+          "youtubeId": "EMjJ0RVnFzQ",
+          "title": "Ergohuman Mesh Office Chair Review by Bestchair",
+          "channel": "Jeffrey Anderton",
+          "url": "https://www.youtube.com/watch?v=EMjJ0RVnFzQ"
+        }
+      ]
+    },
+    {
+      "slug": "ergohuman-pro",
+      "name": "Ergohuman Pro",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "UY6qdWc21lQ",
+          "title": "Review Product Ergohuman Gaming Chair Part 2",
+          "channel": "Style Furniture",
+          "url": "https://www.youtube.com/watch?v=UY6qdWc21lQ"
+        },
+        {
+          "youtubeId": "3gj71IuIm8o",
+          "title": "ERGOHUMAN LEGPRO - Function",
+          "channel": "hjh-Office.uk",
+          "url": "https://www.youtube.com/watch?v=3gj71IuIm8o"
+        },
+        {
+          "youtubeId": "k2HYoa2qBRg",
+          "title": "高性能オフィスチェアのエルゴヒューマンプロって本当に快適なの？！",
+          "channel": "みるみるランド",
+          "url": "https://www.youtube.com/watch?v=k2HYoa2qBRg"
+        }
+      ]
+    },
+    {
+      "slug": "fritz-hansen-oxford",
+      "name": "Fritz Hansen Oxford",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "XhWG6NTNLj8",
+          "title": "Fritz Hansen | Interior Design im Büro | Oxford Konferenzstuhl von Arne Jacobsen | smow",
+          "channel": "smow",
+          "url": "https://www.youtube.com/watch?v=XhWG6NTNLj8"
+        },
+        {
+          "youtubeId": "b5OOvDx0STQ",
+          "title": "Fritz Hansen Oxford Office Chair | Style with a Purpose | Designed by Arne Jacobsen",
+          "channel": "Nestcouk",
+          "url": "https://www.youtube.com/watch?v=b5OOvDx0STQ"
+        },
+        {
+          "youtubeId": "c-tsUYyK1d8",
+          "title": "Fritz Hansen - Oxford Premium Chair",
+          "channel": "Flinders Design",
+          "url": "https://www.youtube.com/watch?v=c-tsUYyK1d8"
+        }
+      ]
+    },
+    {
+      "slug": "furmax-gaming",
+      "name": "Furmax Gaming Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "lupy4MvCOkU",
+          "title": "Review Furmax Gaming Chair Office Chair Leather Computer Desk Chair Racing Style Ergonomic Adjustabl",
+          "channel": "Beta Bench",
+          "url": "https://www.youtube.com/watch?v=lupy4MvCOkU"
+        },
+        {
+          "youtubeId": "lfs4GtCzAdU",
+          "title": "Furmax Gaming Chair Unboxing Assembly #shorts #furmaxgamingchair #gamingchair #gamer #retrogamer",
+          "channel": "Shane The Munchist",
+          "url": "https://www.youtube.com/watch?v=lfs4GtCzAdU"
+        },
+        {
+          "youtubeId": "_Bi58cS60Uo",
+          "title": "The Best Office/Gaming Chair for Your Money! Furmax Office/Gaming Chair Review",
+          "channel": "The Bob & Brad Crew",
+          "url": "https://www.youtube.com/watch?v=_Bi58cS60Uo"
+        }
+      ]
+    },
+    {
+      "slug": "hag-tion",
+      "name": "HÅG Tion",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "yiRbgqFDG3I",
+          "title": "Why choose HÅG Tion? - An office chair for the modern workplace (ENG Subtitles)",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=yiRbgqFDG3I"
+        },
+        {
+          "youtubeId": "Kw5FE_GiQWA",
+          "title": "HÅG Tion - A Designer Story - Anderssen & Voll",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=Kw5FE_GiQWA"
+        },
+        {
+          "youtubeId": "7w45r76a0fE",
+          "title": "Introducing the HÅG Tion - A Chair for the modern workplace (ENG Subtitles)",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=7w45r76a0fE"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-comforto-59",
+      "name": "Haworth Comforto 59",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "KUeBzYF2zFw",
+          "title": "Haworth Comforto 59  By DURF Projectinrichting",
+          "channel": "DURF Projectinrichting",
+          "url": "https://www.youtube.com/watch?v=KUeBzYF2zFw"
+        },
+        {
+          "youtubeId": "rN8cd6DdfsY",
+          "title": "Bureaustoelen Haworth Comforto 59 NPR, Kantoormeubelen Rotterdam, Purmerend",
+          "channel": "De Projectinrichter, Kantoormeubelen, Directiemeubilair, Projectinricting Rotterdam en Purmerend",
+          "url": "https://www.youtube.com/watch?v=rN8cd6DdfsY"
+        },
+        {
+          "youtubeId": "mSEf4NVFPbI",
+          "title": "Haworth Comforto 59 эргономичное кресло",
+          "channel": "Dezarro",
+          "url": "https://www.youtube.com/watch?v=mSEf4NVFPbI"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-cosm-high-back",
+      "name": "Herman Miller Cosm High Back",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "FX1K9p0E384",
+          "title": "Herman Miller Cosm Chair with Leaf Arms Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=FX1K9p0E384"
+        },
+        {
+          "youtubeId": "4Gfr63GpkaQ",
+          "title": "WHICH HERMAN MILLER CHAIR IS BEST? (Embody, Aeron, Cosm, Sayl)",
+          "channel": "Chase Reeves",
+          "url": "https://www.youtube.com/watch?v=4Gfr63GpkaQ"
+        },
+        {
+          "youtubeId": "1kLvGB915Ms",
+          "title": "THE Best Office Chair for Your Desk Setup?!",
+          "channel": "Dailytekk",
+          "url": "https://www.youtube.com/watch?v=1kLvGB915Ms"
+        }
+      ]
+    },
+    {
+      "slug": "hon-ignition-2",
+      "name": "HON Ignition 2.0",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "9ga1l1OmcEg",
+          "title": "HON Ignition 2.0 Wide Office Chair Review",
+          "channel": "Jenia",
+          "url": "https://www.youtube.com/watch?v=9ga1l1OmcEg"
+        },
+        {
+          "youtubeId": "u2JCjl7Lu-M",
+          "title": "Ignition® 2.0 Seating | Two Minute Tutorial",
+          "channel": "The HON Company",
+          "url": "https://www.youtube.com/watch?v=u2JCjl7Lu-M"
+        },
+        {
+          "youtubeId": "SF6ynoCSCV4",
+          "title": "HON Ignition 2.0 Chair Review: The Best Office/Gaming Chair",
+          "channel": "Samuel's Overviews",
+          "url": "https://www.youtube.com/watch?v=SF6ynoCSCV4"
+        }
+      ]
+    },
+    {
+      "slug": "humanscale-diffrient-world",
+      "name": "Humanscale Diffrient World",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "F0_klLfWwpQ",
+          "title": "How-To: Adjust the Humanscale Diffrient World Mesh Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=F0_klLfWwpQ"
+        },
+        {
+          "youtubeId": "jngSGJ4WAc0",
+          "title": "Humanscale Diffrient World Office Task Chair Review - One Year Later",
+          "channel": "Everyday Carry and Tech (ECT)",
+          "url": "https://www.youtube.com/watch?v=jngSGJ4WAc0"
+        },
+        {
+          "youtubeId": "kKHkPP5GtSs",
+          "title": "Humanscale Diffrient World Task Office Chair Review",
+          "channel": "Everyday Carry and Tech (ECT)",
+          "url": "https://www.youtube.com/watch?v=kKHkPP5GtSs"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-pure-active",
+      "name": "Interstuhl Pure Active",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "bsQ8OpTM83U",
+          "title": "Interstuhl PURE ACTIVE im Test - ein Design-Stuhl mit einfacher Bedienung",
+          "channel": "Stuhlio",
+          "url": "https://www.youtube.com/watch?v=bsQ8OpTM83U"
+        },
+        {
+          "youtubeId": "TVG4TOtaRfE",
+          "title": "Interstuhl Pure Active — VS —  Interstuhl Every Active",
+          "channel": "MEGA-Testberichte",
+          "url": "https://www.youtube.com/watch?v=TVG4TOtaRfE"
+        },
+        {
+          "youtubeId": "7xim8go08wE",
+          "title": "Interstuhl Pure",
+          "channel": "Kontor Syd, Rødekro",
+          "url": "https://www.youtube.com/watch?v=7xim8go08wE"
+        }
+      ]
+    },
+    {
+      "slug": "kinnarps-capella",
+      "name": "Kinnarps Capella",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "e_SsjAh-QKk",
+          "title": "Kinnarps Capella",
+          "channel": "buerostuehle-4u",
+          "url": "https://www.youtube.com/watch?v=e_SsjAh-QKk"
+        },
+        {
+          "youtubeId": "JJZieRoif5o",
+          "title": "Kinnarps Capella",
+          "channel": "Kontor Syd, Rødekro",
+          "url": "https://www.youtube.com/watch?v=JJZieRoif5o"
+        },
+        {
+          "youtubeId": "YftjMIwTzuA",
+          "title": "Kinnarps Capella X - My Next Chair After Plus 8?",
+          "channel": "Olivier Girard - the Posture Guy",
+          "url": "https://www.youtube.com/watch?v=YftjMIwTzuA"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-life-chair",
+      "name": "Knoll Life Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "G4nrTLcG3U0",
+          "title": "knoll life chair",
+          "channel": "pajonate",
+          "url": "https://www.youtube.com/watch?v=G4nrTLcG3U0"
+        },
+        {
+          "youtubeId": "DEv-6Go2I5Y",
+          "title": "Knoll Life Chair Installing Instructions",
+          "channel": "OfficeLogixShop.cоm",
+          "url": "https://www.youtube.com/watch?v=DEv-6Go2I5Y"
+        },
+        {
+          "youtubeId": "3-c9gUlwEb4",
+          "title": "Knoll Life Chair Adjustments",
+          "channel": "Office Furniture Resources",
+          "url": "https://www.youtube.com/watch?v=3-c9gUlwEb4"
+        }
+      ]
+    },
+    {
+      "slug": "mimoglad-high-back",
+      "name": "Mimoglad High-Back Office Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "sF-iuZeHAr4",
+          "title": "Mimoglad Ergonomic Office Chair Review - Is It Worth It?",
+          "channel": "Bainy Rv",
+          "url": "https://www.youtube.com/watch?v=sF-iuZeHAr4"
+        },
+        {
+          "youtubeId": "6EBDLl9ydJU",
+          "title": "Mimoglad Ergonomic Office Chair - How to Setup & Review",
+          "channel": "Jame Garner",
+          "url": "https://www.youtube.com/watch?v=6EBDLl9ydJU"
+        },
+        {
+          "youtubeId": "gh0XazjjVa0",
+          "title": "Mimoglad - Ergonomic Office Chair Review | Best Office Chair - Best Chair",
+          "channel": "Top Ten Ever World",
+          "url": "https://www.youtube.com/watch?v=gh0XazjjVa0"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-contessa-ii",
+      "name": "Okamura Contessa II",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "CaY2vnqyV_4",
+          "title": "XTRA - okamura contessa II［コンテッサ セコンダ］",
+          "channel": "XTRA furniture",
+          "url": "https://www.youtube.com/watch?v=CaY2vnqyV_4"
+        },
+        {
+          "youtubeId": "ceD5wRdG3K0",
+          "title": "Ergonomic mesh office chair Contessa review by Back2",
+          "channel": "Back2 International",
+          "url": "https://www.youtube.com/watch?v=ceD5wRdG3K0"
+        },
+        {
+          "youtubeId": "Anm-Ul7hnHw",
+          "title": "Okamura Contessa Chair vs Herman Miller Aeron - THE Aeron Vanquisher?",
+          "channel": "Modern Exploration",
+          "url": "https://www.youtube.com/watch?v=Anm-Ul7hnHw"
+        }
+      ]
+    },
+    {
+      "slug": "okamura-sylphy",
+      "name": "Okamura Sylphy",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "5kvjEKYIYi0",
+          "title": "Okamura  -  Sylphy",
+          "channel": "Posh Studio",
+          "url": "https://www.youtube.com/watch?v=5kvjEKYIYi0"
+        },
+        {
+          "youtubeId": "JX_N2DYMWG4",
+          "title": "Một \"mảnh NHẬT BẢN\" mới cho PHÒNG MÌNH! OKAMURA Sylphy",
+          "channel": "Tài Xài Tech",
+          "url": "https://www.youtube.com/watch?v=JX_N2DYMWG4"
+        },
+        {
+          "youtubeId": "OPllt0xUKe4",
+          "title": "XTRA - how to adjust your okamura sylphy",
+          "channel": "XTRA furniture",
+          "url": "https://www.youtube.com/watch?v=OPllt0xUKe4"
+        }
+      ]
+    },
+    {
+      "slug": "orangebox-do",
+      "name": "Orangebox Do",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "JHsuGn3iFQk",
+          "title": "Orangebox Do Chair - The Design Story",
+          "channel": "Hunts Office Furniture",
+          "url": "https://www.youtube.com/watch?v=JHsuGn3iFQk"
+        },
+        {
+          "youtubeId": "TUPl2ppOG5A",
+          "title": "More Orangebox Do's coming! #officechair #sustainability #officefurniture",
+          "channel": "Chris Cass Strong",
+          "url": "https://www.youtube.com/watch?v=TUPl2ppOG5A"
+        },
+        {
+          "youtubeId": "ukkMPcrOCd4",
+          "title": "Orangebox Do User Instructions",
+          "channel": "Spotted Penguin",
+          "url": "https://www.youtube.com/watch?v=ukkMPcrOCd4"
+        }
+      ]
+    },
+    {
+      "slug": "salli-saddle-swing",
+      "name": "Salli SwingFit",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "CjUUE-D0qs4",
+          "title": "Salli SwingFit",
+          "channel": "SalliSystems",
+          "url": "https://www.youtube.com/watch?v=CjUUE-D0qs4"
+        },
+        {
+          "youtubeId": "MCJS1lFc9_4",
+          "title": "How to adjust new Salli SwingFit",
+          "channel": "SalliSystems",
+          "url": "https://www.youtube.com/watch?v=MCJS1lFc9_4"
+        },
+        {
+          "youtubeId": "DPWFkfLM2Jk",
+          "title": "How to install Salli Allround for Swing and SwingFit",
+          "channel": "SalliSystems",
+          "url": "https://www.youtube.com/watch?v=DPWFkfLM2Jk"
+        }
+      ]
+    },
+    {
+      "slug": "secretlab-omega",
+      "name": "Secretlab Omega",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "FcXL7lyP38A",
+          "title": "SECRETLAB GAMING CHAIR REVIEW (OMEGA COOKIES & CREAM)",
+          "channel": "ElectricityWave",
+          "url": "https://www.youtube.com/watch?v=FcXL7lyP38A"
+        },
+        {
+          "youtubeId": "BZoratKJSfA",
+          "title": "Is The Secretlab Omega Gaming Chair's Seat Too Firm? Q&A With Greg",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=BZoratKJSfA"
+        },
+        {
+          "youtubeId": "4j0_3qEE98o",
+          "title": "Secretlab Omega Review: Is the Omega the Best Gaming Chair for 2020?",
+          "channel": "Tech Guided",
+          "url": "https://www.youtube.com/watch?v=4j0_3qEE98o"
+        }
+      ]
+    },
+    {
+      "slug": "sedus-black-dot",
+      "name": "Sedus Black Dot",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Q_9yZPYoyH8",
+          "title": "Drehstuhl Sedus black dot | Jetzt verfügbar im Büromöbel Outlet Heyne",
+          "channel": "Büromöbel Outlet Heyne",
+          "url": "https://www.youtube.com/watch?v=Q_9yZPYoyH8"
+        },
+        {
+          "youtubeId": "nQCNEGrBaNY",
+          "title": "Zitinstructie Bureaustoel Sedus Black Dot",
+          "channel": "Visser",
+          "url": "https://www.youtube.com/watch?v=nQCNEGrBaNY"
+        },
+        {
+          "youtubeId": "duAVJ9nr9tI",
+          "title": "black dot - User Manual",
+          "channel": "Sedus Stoll AG",
+          "url": "https://www.youtube.com/watch?v=duAVJ9nr9tI"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-series-2",
+      "name": "Steelcase Series 2",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "YDOohJbWFSs",
+          "title": "Unboxing & First Impressions: Steelcase Series 2 Office Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=YDOohJbWFSs"
+        },
+        {
+          "youtubeId": "ka0EWW0Sen0",
+          "title": "Steelcase Series 2 Review",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=ka0EWW0Sen0"
+        },
+        {
+          "youtubeId": "BGFez02C9c4",
+          "title": "Steelcase Series 2 Review: A Chair for Everyone!",
+          "channel": "Sypnotix",
+          "url": "https://www.youtube.com/watch?v=BGFez02C9c4"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-think-v2",
+      "name": "Steelcase Think V2",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "KSagWWhZE6I",
+          "title": "The Perfect Home Office Chair ?? | Steelcase Think V2",
+          "channel": "Shawn Koh",
+          "url": "https://www.youtube.com/watch?v=KSagWWhZE6I"
+        },
+        {
+          "youtubeId": "y2SJ2YYf3ts",
+          "title": "Steelcase Think v2 Office Chair Features",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=y2SJ2YYf3ts"
+        },
+        {
+          "youtubeId": "NupNRC6PrIQ",
+          "title": "Spot the Difference: Steelcase Think - V1 or V2?",
+          "channel": "Crandall Office Furniture",
+          "url": "https://www.youtube.com/watch?v=NupNRC6PrIQ"
+        }
+      ]
+    },
+    {
+      "slug": "ticova-ergonomic",
+      "name": "Ticova Ergonomic Office Chair",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "srKnImfnAkU",
+          "title": "Ticova Ergonomic Chair Review",
+          "channel": "Ryan Snaadt",
+          "url": "https://www.youtube.com/watch?v=srKnImfnAkU"
+        },
+        {
+          "youtubeId": "-3uXrE3etHM",
+          "title": "This is the BEST Budget Office Chair Under $200 on Amazon | Ticova Ergonomic Office Chair Review",
+          "channel": "Dan Hoang - Sleek Setups",
+          "url": "https://www.youtube.com/watch?v=-3uXrE3etHM"
+        },
+        {
+          "youtubeId": "56CNqw5I2Ro",
+          "title": "Ticova Ergonomic Office Chair Review -  1 Year Later!",
+          "channel": "Daniel",
+          "url": "https://www.youtube.com/watch?v=56CNqw5I2Ro"
+        }
+      ]
+    },
+    {
+      "slug": "wilkhahn-modus",
+      "name": "Wilkhahn Modus",
+      "videoCount": 3,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "eoM-QYo2sX8",
+          "title": "Modus task chair / office chair - how to use.",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=eoM-QYo2sX8"
+        },
+        {
+          "youtubeId": "FBtedP8bHwU",
+          "title": "Обзор на кресло Wilkhahn modus small",
+          "channel": "Стол Тумба Кресло",
+          "url": "https://www.youtube.com/watch?v=FBtedP8bHwU"
+        },
+        {
+          "youtubeId": "Gun-zQ6tQus",
+          "title": "Немецкое кресло WILKHAHN MODUS",
+          "channel": "Стол Тумба Кресло",
+          "url": "https://www.youtube.com/watch?v=Gun-zQ6tQus"
+        }
+      ]
+    },
+    {
+      "slug": "ahrend-2020",
+      "name": "Ahrend 2020",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "tb5SXorhGAA",
+          "title": "Bediening Ahrend 2020 bureaustoel",
+          "channel": "Mauron tweedehands en refurbished kantoormeubelen",
+          "url": "https://www.youtube.com/watch?v=tb5SXorhGAA"
+        },
+        {
+          "youtubeId": "6KqMR1vQSFc",
+          "title": "De Ahrend 2020 productvideo",
+          "channel": "Han Hoezen",
+          "url": "https://www.youtube.com/watch?v=6KqMR1vQSFc"
+        },
+        {
+          "youtubeId": "DDhroh46z2o",
+          "title": "Ahrend 2020 zachte wielen ongremd",
+          "channel": "AIKantoorinrichting",
+          "url": "https://www.youtube.com/watch?v=DDhroh46z2o"
+        },
+        {
+          "youtubeId": "kdudqDI0Y_s",
+          "title": "bureaustoel instructie Ahrend 2020",
+          "channel": "Randstad Nederland",
+          "url": "https://www.youtube.com/watch?v=kdudqDI0Y_s"
+        }
+      ]
+    },
+    {
+      "slug": "allsteel-mimeo",
+      "name": "Allsteel Mimeo",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "F1sN-pjM4gg",
+          "title": "Allsteel Mimeo chair adjustments",
+          "channel": "Allsteel",
+          "url": "https://www.youtube.com/watch?v=F1sN-pjM4gg"
+        },
+        {
+          "youtubeId": "PqLmcEjOgBQ",
+          "title": "How to: Adjust the Allsteel MIMEO Task Chair",
+          "channel": "Office Furniture Resources",
+          "url": "https://www.youtube.com/watch?v=PqLmcEjOgBQ"
+        },
+        {
+          "youtubeId": "d0WnOZfeKzA",
+          "title": "Allsteel Mimeo Series Task Chair",
+          "channel": "Almo Corporation",
+          "url": "https://www.youtube.com/watch?v=d0WnOZfeKzA"
+        },
+        {
+          "youtubeId": "8iZLLnAim4k",
+          "title": "Allsteel Mimeo presentation",
+          "channel": "Ergotronica.com",
+          "url": "https://www.youtube.com/watch?v=8iZLLnAim4k"
+        }
+      ]
+    },
+    {
+      "slug": "andaseat-kaiser-3",
+      "name": "AndaSeat Kaiser 3",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Yir3M7zntu0",
+          "title": "AndaSeat Kaiser 3 vs Secretlab Titan Evo 2022 - Which is King of Gaming Chairs?",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=Yir3M7zntu0"
+        },
+        {
+          "youtubeId": "lmrG9QvLQiM",
+          "title": "The New Best Gaming Chair?? | Andaseat Kaiser 4 vs Kaiser 3",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=lmrG9QvLQiM"
+        },
+        {
+          "youtubeId": "7DpGSPgjyZ0",
+          "title": "Testing the Anda Seat Kaiser 3E Ergonomic Gaming Chair! | Luxury Comfort on a Budget?",
+          "channel": "Chase Brogan",
+          "url": "https://www.youtube.com/watch?v=7DpGSPgjyZ0"
+        },
+        {
+          "youtubeId": "LVOJ41TNCLo",
+          "title": "\"We now have High Quality and Comfort\" The AndaSeat Kaiser 3E Series Ergonomic Gaming Chair *Review*",
+          "channel": "Button Check",
+          "url": "https://www.youtube.com/watch?v=LVOJ41TNCLo"
+        }
+      ]
+    },
+    {
+      "slug": "branch-ergonomic-chair",
+      "name": "Branch Ergonomic Chair",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "V48WdbppTkw",
+          "title": "One of the BEST $300 CHAIRS I've Reviewed - Branch Ergonomic Chair",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=V48WdbppTkw"
+        },
+        {
+          "youtubeId": "euoq_eHn478",
+          "title": "This is the BEST $300 Office Chair | Branch Ergonomic Chair Review",
+          "channel": "Dan Hoang - Sleek Setups",
+          "url": "https://www.youtube.com/watch?v=euoq_eHn478"
+        },
+        {
+          "youtubeId": "puNQw_-FbQQ",
+          "title": "Are Branch Office Chairs REALLY That Good?",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=puNQw_-FbQQ"
+        },
+        {
+          "youtubeId": "EEeolTJs7R0",
+          "title": "Branch Ergonomic Chair",
+          "channel": "Parker Burton",
+          "url": "https://www.youtube.com/watch?v=EEeolTJs7R0"
+        }
+      ]
+    },
+    {
+      "slug": "corsair-tc100-relaxed",
+      "name": "Corsair TC100 Relaxed",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "jKwxrqEVEQc",
+          "title": "Don't Buy a Gaming Chair Until You See THIS!",
+          "channel": "High Tech Point",
+          "url": "https://www.youtube.com/watch?v=jKwxrqEVEQc"
+        },
+        {
+          "youtubeId": "jdUK2pYDM20",
+          "title": "Corsair TC100 Relaxed Review: Budget King or Skip It? Unboxing + Sit Test",
+          "channel": "DoughsLife",
+          "url": "https://www.youtube.com/watch?v=jdUK2pYDM20"
+        },
+        {
+          "youtubeId": "uUpKFCVSLWU",
+          "title": "CORSAIR TC100 RELAXED Gaming Chair - Fabric/GREY REVIEW #gamingchair #corsair #gaming #chair",
+          "channel": "ROMAN Gaming",
+          "url": "https://www.youtube.com/watch?v=uUpKFCVSLWU"
+        },
+        {
+          "youtubeId": "MtuKqN3N0y0",
+          "title": "The BMW of gaming chairs - Corsair TC100 Relaxed (Grey) - you're only paying for the brand name!",
+          "channel": "Reseller Chris",
+          "url": "https://www.youtube.com/watch?v=MtuKqN3N0y0"
+        }
+      ]
+    },
+    {
+      "slug": "flokk-rh-logic-400",
+      "name": "Flokk RH Logic 400",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "vM7s6RymQFs",
+          "title": "RH | Logic 400/300 | User Guide (ENG Subtitles)",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=vM7s6RymQFs"
+        },
+        {
+          "youtubeId": "xWIy7AYvURs",
+          "title": "RH | Logic 400/300 | User Guide (ENG Subtitles)",
+          "channel": "Flokk",
+          "url": "https://www.youtube.com/watch?v=xWIy7AYvURs"
+        },
+        {
+          "youtubeId": "y8A--E-Brr4",
+          "title": "RH 400 Logic Office Chair",
+          "channel": "Wave Office Ltd.",
+          "url": "https://www.youtube.com/watch?v=y8A--E-Brr4"
+        },
+        {
+          "youtubeId": "GYBHHhcTXh8",
+          "title": "Flokk RH Logic 400 300 Ergonomische bureaustoel  instructievideo",
+          "channel": "Objectform kantoor- en projectinrichtingen b.v.",
+          "url": "https://www.youtube.com/watch?v=GYBHHhcTXh8"
+        }
+      ]
+    },
+    {
+      "slug": "fritz-hansen-egg-chair",
+      "name": "Fritz Hansen Egg Chair",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "dROkySkViIY",
+          "title": "Fritz Hansen Egg Chair | Berden Mode, Wonen & Slapen",
+          "channel": "Berden Mode, Wonen & meer",
+          "url": "https://www.youtube.com/watch?v=dROkySkViIY"
+        },
+        {
+          "youtubeId": "oHQGjS7Behk",
+          "title": "Egg Chair and Swan Chair by Find Me The Original",
+          "channel": "Couch Potato Company",
+          "url": "https://www.youtube.com/watch?v=oHQGjS7Behk"
+        },
+        {
+          "youtubeId": "KqInfdZwWcA",
+          "title": "Egg Chair Review",
+          "channel": "THE LONDONER BY IEJ",
+          "url": "https://www.youtube.com/watch?v=KqInfdZwWcA"
+        },
+        {
+          "youtubeId": "FiczYemPEWY",
+          "title": "HD16716 Egg chair $499.00",
+          "channel": "CrazySales.co.nz",
+          "url": "https://www.youtube.com/watch?v=FiczYemPEWY"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-zody-ii",
+      "name": "Haworth Zody II",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "ldZq6Fz3hqg",
+          "title": "Haworth Zody Comparison - Zody Upholstered (LX) vs Zody II",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=ldZq6Fz3hqg"
+        },
+        {
+          "youtubeId": "DbMF8-vMc00",
+          "title": "NEW Haworth Zody Review - The ULTIMATE Standing Desk Chair",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=DbMF8-vMc00"
+        },
+        {
+          "youtubeId": "B-DhqpRAgj0",
+          "title": "My First Look at Haworth's NEWEST Zody Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=B-DhqpRAgj0"
+        },
+        {
+          "youtubeId": "VauNYFyTB1I",
+          "title": "Haworth Zody Office Chair Walkthrough and How To",
+          "channel": "Office Furniture Liquidations",
+          "url": "https://www.youtube.com/watch?v=VauNYFyTB1I"
+        }
+      ]
+    },
+    {
+      "slug": "hbada-p5",
+      "name": "Hbada P5",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "6fAm5doWVJU",
+          "title": "The HBADA P5 Office Chair Will BLOW Your Mind in 2024!",
+          "channel": "Nerd Gadget",
+          "url": "https://www.youtube.com/watch?v=6fAm5doWVJU"
+        },
+        {
+          "youtubeId": "fsZ0Kk0fxVc",
+          "title": "HBADA P5 Ergonomic Office Chair",
+          "channel": "911Reviews - Shopping, Gadgets & Tech",
+          "url": "https://www.youtube.com/watch?v=fsZ0Kk0fxVc"
+        },
+        {
+          "youtubeId": "I3yjtxPLIO8",
+          "title": "HBADA P5 Ergonomic Office Chair Honest Review",
+          "channel": "Shopping with Amy - Homegoods, Tech, Gift Ideas",
+          "url": "https://www.youtube.com/watch?v=I3yjtxPLIO8"
+        },
+        {
+          "youtubeId": "h9dFYwfOuqk",
+          "title": "HBADA P5 Ergonomic Office Chair For Short People ASMR Unboxing! #shorts",
+          "channel": "Underground Tech",
+          "url": "https://www.youtube.com/watch?v=h9dFYwfOuqk"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-mirra-2",
+      "name": "Herman Miller Mirra 2",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "aMlmbw4VSLo",
+          "title": "Herman Miller Mirra 2 Ergonomic Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=aMlmbw4VSLo"
+        },
+        {
+          "youtubeId": "_8pthKC5sf4",
+          "title": "The Herman Miller Mirra 2 is $1300 Now",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=_8pthKC5sf4"
+        },
+        {
+          "youtubeId": "rJ-H8LCWG_c",
+          "title": "Herman Miller Mirra 2 - The Best Mesh Chair???",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=rJ-H8LCWG_c"
+        },
+        {
+          "youtubeId": "geAxAc0c0rw",
+          "title": "Herman Miller Mirra 2 In-Depth Review",
+          "channel": "IrixGuy's Adventure Channel",
+          "url": "https://www.youtube.com/watch?v=geAxAc0c0rw"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-sayl",
+      "name": "Herman Miller Sayl",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "2ArdwrncbR8",
+          "title": "Herman Miller Sayl Review: My Opinion 1 Year Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=2ArdwrncbR8"
+        },
+        {
+          "youtubeId": "fIU4XdG6Cxw",
+          "title": "Herman Miller Sayl vs Steelcase Amia l Office Chair Tier List",
+          "channel": "moreBTODtv",
+          "url": "https://www.youtube.com/watch?v=fIU4XdG6Cxw"
+        },
+        {
+          "youtubeId": "dU5d6cPe230",
+          "title": "Watch this before buying the Sayl Office Chair by Herman Miller! #hermanmiller #review #officechair",
+          "channel": "Olivia E Bertram",
+          "url": "https://www.youtube.com/watch?v=dU5d6cPe230"
+        },
+        {
+          "youtubeId": "MoAdBkhfejc",
+          "title": "The BEST Herman Miller Ergonomic Chair Buyer’s Guide: Aeron, Embody, and Sayl",
+          "channel": "This is Tech Today",
+          "url": "https://www.youtube.com/watch?v=MoAdBkhfejc"
+        }
+      ]
+    },
+    {
+      "slug": "humanscale-diffrient-smart",
+      "name": "Humanscale Diffrient Smart",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "94_VCqCV-lY",
+          "title": "Niels Diffrient talks about Diffrient Smart Chair",
+          "channel": "Hansen Interiors",
+          "url": "https://www.youtube.com/watch?v=94_VCqCV-lY"
+        },
+        {
+          "youtubeId": "zzqyRVuDEuU",
+          "title": "How-To: Adjust The Humanscale Diffrient Smart Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=zzqyRVuDEuU"
+        },
+        {
+          "youtubeId": "GQeec7zLLPg",
+          "title": "Diffrient Smart Chair Review - 6 Months Later",
+          "channel": "6 Months Later",
+          "url": "https://www.youtube.com/watch?v=GQeec7zLLPg"
+        },
+        {
+          "youtubeId": "Mtds4MEzKOc",
+          "title": "Humanscale Diffrient Smart Mesh Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=Mtds4MEzKOc"
+        }
+      ]
+    },
+    {
+      "slug": "humanscale-liberty",
+      "name": "Humanscale Liberty",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "8OR7vCxtXlk",
+          "title": "Humanscale Liberty Mesh Back Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=8OR7vCxtXlk"
+        },
+        {
+          "youtubeId": "PvbQGmHZz_g",
+          "title": "Humanscale Liberty Task Office Desk Chair Review",
+          "channel": "The Back Store",
+          "url": "https://www.youtube.com/watch?v=PvbQGmHZz_g"
+        },
+        {
+          "youtubeId": "ESmz3q2i63w",
+          "title": "Liberty Chair by Humanscale",
+          "channel": "Seated Video",
+          "url": "https://www.youtube.com/watch?v=ESmz3q2i63w"
+        },
+        {
+          "youtubeId": "B7P3WvqBFwI",
+          "title": "Humanscale Liberty Chair Comparison: Why Fewer Controls Can Mean Better Ergonomics",
+          "channel": "Alter Ergo",
+          "url": "https://www.youtube.com/watch?v=B7P3WvqBFwI"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-hero",
+      "name": "Interstuhl Hero",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "32WJkUVehyk",
+          "title": "Bureaustoel Hero van Interstuhl",
+          "channel": "dijkgraafapeldoorn",
+          "url": "https://www.youtube.com/watch?v=32WJkUVehyk"
+        },
+        {
+          "youtubeId": "mxy-mr5m9nw",
+          "title": "Interstuhl bureaustoel HERO model 172H",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=mxy-mr5m9nw"
+        },
+        {
+          "youtubeId": "HX2K6uf-VLs",
+          "title": "Hero Interstuhl bureaustoel productvideo | Flowork",
+          "channel": "Bureaustoelexpert",
+          "url": "https://www.youtube.com/watch?v=HX2K6uf-VLs"
+        },
+        {
+          "youtubeId": "8lyWGGoeVXk",
+          "title": "Interstuhl Hero Autofit System mit Synchronmechanik - Bedienungsanleitung - JourTym",
+          "channel": "JourTym",
+          "url": "https://www.youtube.com/watch?v=8lyWGGoeVXk"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-movyis3",
+      "name": "Interstuhl MOVYis3",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "oK_f8YTVB-0",
+          "title": "Interstuhl #MOVYis3 Autolift-System - Bedienungsanleitung - JourTym",
+          "channel": "JourTym",
+          "url": "https://www.youtube.com/watch?v=oK_f8YTVB-0"
+        },
+        {
+          "youtubeId": "wK4q90x79_w",
+          "title": "#Interstuhl MOVYis3 Synchronmechanik - Bedienungsanleitung - JourTym",
+          "channel": "JourTym",
+          "url": "https://www.youtube.com/watch?v=wK4q90x79_w"
+        },
+        {
+          "youtubeId": "ssPXgAGeWxg",
+          "title": "Bureaustoel Interstuhl Movy",
+          "channel": "dijkgraafapeldoorn",
+          "url": "https://www.youtube.com/watch?v=ssPXgAGeWxg"
+        },
+        {
+          "youtubeId": "Ccut_HkGNpc",
+          "title": "#InterstuhlAnleitung - MOVYis3 Netzrücken Interstuhl - Autolift-System - JourTym",
+          "channel": "JourTym",
+          "url": "https://www.youtube.com/watch?v=Ccut_HkGNpc"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-silver-262s",
+      "name": "Interstuhl Silver 262S",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "eW-vgmg3fAw",
+          "title": "Interstuhl SILVER-collectie bureaustoelen en vergaderstoelen",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=eW-vgmg3fAw"
+        },
+        {
+          "youtubeId": "ztjDyWwToM0",
+          "title": "interstuhl Silver",
+          "channel": "United Interiors",
+          "url": "https://www.youtube.com/watch?v=ztjDyWwToM0"
+        },
+        {
+          "youtubeId": "jNX2mO4zgL4",
+          "title": "This chair was featured in a James Bond film | 262S Chair #shorts #haditeherani #quantumofsolace",
+          "channel": "Rarify",
+          "url": "https://www.youtube.com/watch?v=jNX2mO4zgL4"
+        },
+        {
+          "youtubeId": "jg-2Q4h6q5A",
+          "title": "can’t go wrong with interstuhl silver Made in Germany 🇩🇪",
+          "channel": "Yi 熊熊不怕",
+          "url": "https://www.youtube.com/watch?v=jg-2Q4h6q5A"
+        }
+      ]
+    },
+    {
+      "slug": "noblechairs-epic",
+      "name": "noblechairs EPIC",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "jU1Qbfvw3p8",
+          "title": "Noblechairs? OR ONLY A NOBLE PRICE TAG... | Noblechairs EPIC Honest Review",
+          "channel": "Chris Vee",
+          "url": "https://www.youtube.com/watch?v=jU1Qbfvw3p8"
+        },
+        {
+          "youtubeId": "__mWz8o7fy8",
+          "title": "Noblechairs EPIC Real Leather Chair - Is it Really Epic?",
+          "channel": "Hardware Canucks",
+          "url": "https://www.youtube.com/watch?v=__mWz8o7fy8"
+        },
+        {
+          "youtubeId": "jRe6PglnXX4",
+          "title": "Noblechairs EPIC Leather Review. The best chair for big gamers?",
+          "channel": "Gaming For The Weekend",
+          "url": "https://www.youtube.com/watch?v=jRe6PglnXX4"
+        },
+        {
+          "youtubeId": "o04bVEoSeQ8",
+          "title": "Noblechairs Epic Review After 2 Years",
+          "channel": "ChrisViral Vlogs",
+          "url": "https://www.youtube.com/watch?v=o04bVEoSeQ8"
+        }
+      ]
+    },
+    {
+      "slug": "noblechairs-hero",
+      "name": "noblechairs HERO",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "6_gG6juXrHk",
+          "title": "SecretLab Titan 2020 vs noblechairs Hero Black Edition",
+          "channel": "The Provoked Prawn",
+          "url": "https://www.youtube.com/watch?v=6_gG6juXrHk"
+        },
+        {
+          "youtubeId": "wVazx4TCrAo",
+          "title": "noblechairs HERO Unboxing, Assembly and Review",
+          "channel": "TechBroll",
+          "url": "https://www.youtube.com/watch?v=wVazx4TCrAo"
+        },
+        {
+          "youtubeId": "GSJ2iDFiSbE",
+          "title": "Is Noblechairs Hero Worth it - 8 Months Later",
+          "channel": "Gamers' Clinic",
+          "url": "https://www.youtube.com/watch?v=GSJ2iDFiSbE"
+        },
+        {
+          "youtubeId": "fUwYF8DVZjY",
+          "title": "Noblechairs Hero (2023 Review) - AFTER 4+ YEARS (Gaming Chair)",
+          "channel": "LeyzarGamingViews",
+          "url": "https://www.youtube.com/watch?v=fUwYF8DVZjY"
+        }
+      ]
+    },
+    {
+      "slug": "nouhaus-ergo3d",
+      "name": "Nouhaus Ergo3D",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "4iFMcyE-JEo",
+          "title": "My Honest Review of Nouhaus Ergo3D Ergonomic Chair | Zitting Reviews",
+          "channel": "Zitting Reviews | Honest Amazon Products Insights",
+          "url": "https://www.youtube.com/watch?v=4iFMcyE-JEo"
+        },
+        {
+          "youtubeId": "pXMzzW64e-k",
+          "title": "Boost Your Productivity with the Nouhaus Ergo3D Ergonomic Office Chair",
+          "channel": "Seb & Mich • GominPlanet",
+          "url": "https://www.youtube.com/watch?v=pXMzzW64e-k"
+        },
+        {
+          "youtubeId": "XpLhuffkFQ4",
+          "title": "Nouhaus Ergo3D Office Chair Review | Mesh Support + 4D Arms + Headrest – Is It Worth It?",
+          "channel": "Daniel reviews",
+          "url": "https://www.youtube.com/watch?v=XpLhuffkFQ4"
+        },
+        {
+          "youtubeId": "EPjgAuN1jZg",
+          "title": "This Budget Chair is ACTUALLY GOOD! | Nouhaus Ergo3D",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=EPjgAuN1jZg"
+        }
+      ]
+    },
+    {
+      "slug": "razer-iskur-v2",
+      "name": "Razer Iskur V2",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "9K5Dd7AQTfg",
+          "title": "@razer Iskur V2 Gaming Chair First Look!  #gamingsetup #razerchair #razeriskurv2",
+          "channel": "DanKamYouKnow",
+          "url": "https://www.youtube.com/watch?v=9K5Dd7AQTfg"
+        },
+        {
+          "youtubeId": "Yhk74XTDs70",
+          "title": "A doctor told me I’m sitting wrong - Razer Iskur V2",
+          "channel": "ShortCircuit",
+          "url": "https://www.youtube.com/watch?v=Yhk74XTDs70"
+        },
+        {
+          "youtubeId": "UbzJaa1aC40",
+          "title": "Razer Iskur V2 Chair Review",
+          "channel": "PCBros LLC",
+          "url": "https://www.youtube.com/watch?v=UbzJaa1aC40"
+        },
+        {
+          "youtubeId": "5XiGLnqgl5A",
+          "title": "Razer Iskur v2 - Is it Worth It??",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=5XiGLnqgl5A"
+        }
+      ]
+    },
+    {
+      "slug": "razer-iskur-v2-x",
+      "name": "Razer Iskur V2 X",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "QR2oDGHNppA",
+          "title": "Razer Iskur V2 X Worth The Price? (Review)",
+          "channel": "Too Much Tech",
+          "url": "https://www.youtube.com/watch?v=QR2oDGHNppA"
+        },
+        {
+          "youtubeId": "q088WdPf05Y",
+          "title": "Watch before you buy the Razer ISKUR v2 X",
+          "channel": "GivemChills",
+          "url": "https://www.youtube.com/watch?v=q088WdPf05Y"
+        },
+        {
+          "youtubeId": "3IWvPfL5VZg",
+          "title": "Razer Iskur V2 X unlocks the ergonomics you need for long-lasting support. #CES2025Razer",
+          "channel": "R Λ Z Ξ R",
+          "url": "https://www.youtube.com/watch?v=3IWvPfL5VZg"
+        },
+        {
+          "youtubeId": "UrDm4QXH9II",
+          "title": "Full Razer Iskur V2 X Review – Worth the Hype in 2025?",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=UrDm4QXH9II"
+        }
+      ]
+    },
+    {
+      "slug": "sidiz-t50",
+      "name": "Sidiz T50",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "JAgk1xP3SBI",
+          "title": "Sidiz T50 Office Chair Review - What you Need to Know",
+          "channel": "Ergonomic Trends",
+          "url": "https://www.youtube.com/watch?v=JAgk1xP3SBI"
+        },
+        {
+          "youtubeId": "fx6ec4YMfCw",
+          "title": "SIDIZ T50 Desk Chair",
+          "channel": "Chase Farber",
+          "url": "https://www.youtube.com/watch?v=fx6ec4YMfCw"
+        },
+        {
+          "youtubeId": "T6kWQkKbB5U",
+          "title": "Sidiz T50 Office Chair Review - Better Than Autonomous?",
+          "channel": "No Shame Income",
+          "url": "https://www.youtube.com/watch?v=T6kWQkKbB5U"
+        },
+        {
+          "youtubeId": "iYZnubPAic4",
+          "title": "SIDIZ T50 Home/Office Chair | Review | Amazon",
+          "channel": "teaves",
+          "url": "https://www.youtube.com/watch?v=iYZnubPAic4"
+        }
+      ]
+    },
+    {
+      "slug": "sidiz-t80",
+      "name": "Sidiz T80",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "VXK22BreyIE",
+          "title": "Sidiz T80 Office Chair Review (vs Sidiz T50)",
+          "channel": "Ergonomic Trends",
+          "url": "https://www.youtube.com/watch?v=VXK22BreyIE"
+        },
+        {
+          "youtubeId": "oTJ5TglaKnY",
+          "title": "SIDIZ Australia - T80 Premium Ergonomic Office Chair",
+          "channel": "Sidiz Australia",
+          "url": "https://www.youtube.com/watch?v=oTJ5TglaKnY"
+        },
+        {
+          "youtubeId": "w2EdftYLBQE",
+          "title": "Amazing Lumbar Support - Sidiz T50 vs Sidiz T80",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=w2EdftYLBQE"
+        },
+        {
+          "youtubeId": "90vC_B9U1zo",
+          "title": "Sidiz T80 -  An Office chair with INSANE Comfort and STYLE...",
+          "channel": "Luigi's Product Reviews",
+          "url": "https://www.youtube.com/watch?v=90vC_B9U1zo"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-gesture",
+      "name": "Steelcase Gesture",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "7zc6MURAsa0",
+          "title": "Steelcase Gesture: Is It Worth It?",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=7zc6MURAsa0"
+        },
+        {
+          "youtubeId": "dfnaaCn1lrM",
+          "title": "These Two Chairs are Highly Ranked…But I’ll Prove One is Better",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=dfnaaCn1lrM"
+        },
+        {
+          "youtubeId": "7wG5UqCH_mY",
+          "title": "Steelcase Gesture - The Best Chair for Tall People",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=7wG5UqCH_mY"
+        },
+        {
+          "youtubeId": "5Y0NZjUecE8",
+          "title": "Steelcase Gesture Review: My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=5Y0NZjUecE8"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-karman",
+      "name": "Steelcase Karman",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "_8KTABv9mrk",
+          "title": "The KING of MESH CHAIRS - Steelcase Karman Review",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=_8KTABv9mrk"
+        },
+        {
+          "youtubeId": "Z1L7bfPsBv0",
+          "title": "Is Steelcase Karman GOD TIER with New Built-in Headrest?",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=Z1L7bfPsBv0"
+        },
+        {
+          "youtubeId": "HWMCMwJD19Y",
+          "title": "This is the Best Mesh Chair | Steelcase Karman High Back",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=HWMCMwJD19Y"
+        },
+        {
+          "youtubeId": "EuKBaVurHXU",
+          "title": "Steelcase Karman Review: 6 Months Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=EuKBaVurHXU"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-series-1",
+      "name": "Steelcase Series 1",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Ft5FslAJMiA",
+          "title": "Steelcase Series 1 Office Chair Review",
+          "channel": "Jame Garner",
+          "url": "https://www.youtube.com/watch?v=Ft5FslAJMiA"
+        },
+        {
+          "youtubeId": "hWyk8a911nw",
+          "title": "Steelcase Series 1 Office Chair Review",
+          "channel": "Victor",
+          "url": "https://www.youtube.com/watch?v=hWyk8a911nw"
+        },
+        {
+          "youtubeId": "TRUilVP_dv4",
+          "title": "Steelcase Series 1 Review: Best Office Chair Under $500",
+          "channel": "Crandall Office Furniture",
+          "url": "https://www.youtube.com/watch?v=TRUilVP_dv4"
+        },
+        {
+          "youtubeId": "mwz0QA9tH_s",
+          "title": "Steelcase Series 1 Chair Review",
+          "channel": "Every Day People Reviews",
+          "url": "https://www.youtube.com/watch?v=mwz0QA9tH_s"
+        }
+      ]
+    },
+    {
+      "slug": "sweetcrispy-high-back-mesh",
+      "name": "Sweetcrispy High-Back Mesh Chair",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "am_YM7SOF_k",
+          "title": "Sweetcrispy Ergonomic Office Chair REVIEW",
+          "channel": "Andrew",
+          "url": "https://www.youtube.com/watch?v=am_YM7SOF_k"
+        },
+        {
+          "youtubeId": "AEqTdvCO9z0",
+          "title": "Sweetcrispy Office Chair Review – Swivel, Roll, and Relax in Style",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=AEqTdvCO9z0"
+        },
+        {
+          "youtubeId": "WxBKUSsaoPE",
+          "title": "Unlock Productivity: Sweetcrispy Ergonomic Office Chair Review",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=WxBKUSsaoPE"
+        },
+        {
+          "youtubeId": "A8gdbuoHKUs",
+          "title": "Sweetcrispy Ergonomic Office Chair - Full Review",
+          "channel": "Liquid State",
+          "url": "https://www.youtube.com/watch?v=A8gdbuoHKUs"
+        }
+      ]
+    },
+    {
+      "slug": "tolix-marais-a",
+      "name": "Tolix Chair A",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "8keU7xorD7w",
+          "title": "Tolix Chairs Video",
+          "channel": "www.robert-thomson.com",
+          "url": "https://www.youtube.com/watch?v=8keU7xorD7w"
+        },
+        {
+          "youtubeId": "fhAf_3BXgME",
+          "title": "METAL TOLIX CHAIR PAINTING PROCESS #factory #furniture #furniturefactory #furnituresupplier #chair",
+          "channel": "Tianjin Kingnod Furniture Co., Ltd",
+          "url": "https://www.youtube.com/watch?v=fhAf_3BXgME"
+        },
+        {
+          "youtubeId": "-fZXZghrLKA",
+          "title": "Tolix Chair Stool wholesale",
+          "channel": "Tianjin Kingnod Furniture Co., Ltd",
+          "url": "https://www.youtube.com/watch?v=-fZXZghrLKA"
+        },
+        {
+          "youtubeId": "82hQaF3rZWE",
+          "title": "Tolix Stools and Chairs by Xavior Pauchard",
+          "channel": "Tysiza",
+          "url": "https://www.youtube.com/watch?v=82hQaF3rZWE"
+        }
+      ]
+    },
+    {
+      "slug": "uchida-finora",
+      "name": "Okamura Finora",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "YGVfgFbYLm8",
+          "title": "Официальное промо кресла Okamura Finora",
+          "channel": "Эрготроника",
+          "url": "https://www.youtube.com/watch?v=YGVfgFbYLm8"
+        },
+        {
+          "youtubeId": "LWYTyFcLI58",
+          "title": "О создании нового эргономичного кресла Finora от Окамуры",
+          "channel": "Эрготроника",
+          "url": "https://www.youtube.com/watch?v=LWYTyFcLI58"
+        },
+        {
+          "youtubeId": "beqTR-79ij8",
+          "title": "Ghế công thái học đắt tiền có thực sự khác biệt - Review Okamura Finora.",
+          "channel": "Didu",
+          "url": "https://www.youtube.com/watch?v=beqTR-79ij8"
+        },
+        {
+          "youtubeId": "4dH0mIdn4A0",
+          "title": "Armado Finora - Okamura",
+          "channel": "Grupo Requiez",
+          "url": "https://www.youtube.com/watch?v=4dH0mIdn4A0"
+        }
+      ]
+    },
+    {
+      "slug": "varier-thatsit-balans",
+      "name": "Varier Thatsit balans",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "JjQ9ngKWfJ0",
+          "title": "The Balans Kneeling Chair Collection by Varier",
+          "channel": "Fully",
+          "url": "https://www.youtube.com/watch?v=JjQ9ngKWfJ0"
+        },
+        {
+          "youtubeId": "eEyB5icdz8k",
+          "title": "Thatsit™ - Adjustable Kneeling Chair - Design by Peter Opsvik, 1991 - Varier",
+          "channel": "Varier Furniture",
+          "url": "https://www.youtube.com/watch?v=eEyB5icdz8k"
+        },
+        {
+          "youtubeId": "sQ4tv604sVU",
+          "title": "Varier Thatsit Balans Kneeling Chair - Radius Office Furniture",
+          "channel": "Radius Office",
+          "url": "https://www.youtube.com/watch?v=sQ4tv604sVU"
+        },
+        {
+          "youtubeId": "4lNT69Tig_c",
+          "title": "How To: Varier Thatsit Balans  Kneeling Chair Assembly",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=4lNT69Tig_c"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-eames-aluminium-group",
+      "name": "Vitra Eames Aluminium Group Chair",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "npulZdGxRj4",
+          "title": "Vitra Eames Aluminium Chair",
+          "channel": "ewop Office Furniture",
+          "url": "https://www.youtube.com/watch?v=npulZdGxRj4"
+        },
+        {
+          "youtubeId": "JyJGG4Lj-oY",
+          "title": "Eames Aluminium Group 117 and 108 by Find Me The Original",
+          "channel": "Couch Potato Company",
+          "url": "https://www.youtube.com/watch?v=JyJGG4Lj-oY"
+        },
+        {
+          "youtubeId": "r1kKYNi1P8I",
+          "title": "Vitra. Alu Chair",
+          "channel": "designcollectors",
+          "url": "https://www.youtube.com/watch?v=r1kKYNi1P8I"
+        },
+        {
+          "youtubeId": "1DD2BsD8j8M",
+          "title": "Vitra EA 217 unboxing 🤩#design #furniture #unboxing",
+          "channel": "SEBWORLD",
+          "url": "https://www.youtube.com/watch?v=1DD2BsD8j8M"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-eames-dsw",
+      "name": "Vitra Eames Plastic Side Chair DSW",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "MgkS9LRgfeI",
+          "title": "Vitra Eames Plastic Side Chair DSW Capture",
+          "channel": "Adrian Rafael Avalos",
+          "url": "https://www.youtube.com/watch?v=MgkS9LRgfeI"
+        },
+        {
+          "youtubeId": "EpxDuXJd39g",
+          "title": "DSW side chair designed by Charles Eames",
+          "channel": "Unboxingexperience7",
+          "url": "https://www.youtube.com/watch?v=EpxDuXJd39g"
+        },
+        {
+          "youtubeId": "8K0ho5RLCF4",
+          "title": "Sedie Vitra Eames Plastic Side Chair DSW / Vitra Eames Plastic Side Chairs DSW",
+          "channel": "Pescetta Home Decoration",
+          "url": "https://www.youtube.com/watch?v=8K0ho5RLCF4"
+        },
+        {
+          "youtubeId": "HSWx9b5zEAI",
+          "title": "Vitra Eames Plastic Side Chair DSW Review",
+          "channel": "Bayer Review",
+          "url": "https://www.youtube.com/watch?v=HSWx9b5zEAI"
+        }
+      ]
+    },
+    {
+      "slug": "wilkhahn-on",
+      "name": "Wilkhahn ON",
+      "videoCount": 4,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "NR8Qbd9pLe0",
+          "title": "Wilkhahn ON office chair - Experience Video (short version)",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=NR8Qbd9pLe0"
+        },
+        {
+          "youtubeId": "weoQ789bUOo",
+          "title": "Wilkhahn ON office chair with Trimension®",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=weoQ789bUOo"
+        },
+        {
+          "youtubeId": "GWyJnttmaBQ",
+          "title": "Wilkhahn ON office chair \"use\" (dutch)",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=GWyJnttmaBQ"
+        },
+        {
+          "youtubeId": "Z6_CODU5lKw",
+          "title": "Wilkhahn ON office Chair - the next generation of seating (Dutch)",
+          "channel": "wilkhahn",
+          "url": "https://www.youtube.com/watch?v=Z6_CODU5lKw"
+        }
+      ]
+    },
+    {
+      "slug": "autonomous-ergochair-pro",
+      "name": "Autonomous ErgoChair Pro",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "o1aDPYkRcHg",
+          "title": "Autonomous ErgoChair Pro vs ErgoChair Mesh vs ErgoChair Ultra 2",
+          "channel": "Tech Guided",
+          "url": "https://www.youtube.com/watch?v=o1aDPYkRcHg"
+        },
+        {
+          "youtubeId": "Ny0GVIv8qqY",
+          "title": "The Perfect Office Chair For Your Desk Setup? ErgoChair Pro Honest Review",
+          "channel": "SoulOfTech",
+          "url": "https://www.youtube.com/watch?v=Ny0GVIv8qqY"
+        },
+        {
+          "youtubeId": "xLtksEbR2_I",
+          "title": "Autonomous ErgoChair Pro Mesh Review: Best Mid-Range Office Chair for Posture?",
+          "channel": "Tech Guided",
+          "url": "https://www.youtube.com/watch?v=xLtksEbR2_I"
+        },
+        {
+          "youtubeId": "8dHGt-RC-7Q",
+          "title": "Autonomous ErgoChair Pro: Is It Worth It?",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=8dHGt-RC-7Q"
+        },
+        {
+          "youtubeId": "tNA_DjmU_-g",
+          "title": "Autonomous ErgoChair Pro Office Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=tNA_DjmU_-g"
+        }
+      ]
+    },
+    {
+      "slug": "dauphin-just-evo",
+      "name": "Dauphin @Just evo",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "xLbg2OhsuR0",
+          "title": "Dauphin | @Just evo mesh (SE) Manual – english",
+          "channel": "Dauphin Group",
+          "url": "https://www.youtube.com/watch?v=xLbg2OhsuR0"
+        },
+        {
+          "youtubeId": "G3RUkB_4i3E",
+          "title": "Bürostuhl @Just Evo von Dauphin ➜ Vorstellung, Funktionen + Features",
+          "channel": "der Büro Experte",
+          "url": "https://www.youtube.com/watch?v=G3RUkB_4i3E"
+        },
+        {
+          "youtubeId": "tJWQ3Izoqd8",
+          "title": "Dauphin | @Just evo operator (SE) Manual – english",
+          "channel": "Dauphin Group",
+          "url": "https://www.youtube.com/watch?v=tJWQ3Izoqd8"
+        },
+        {
+          "youtubeId": "G0RpyJJmWBI",
+          "title": "Bürodrehstuhl Dauphin @just evo",
+          "channel": "BOCK Handelsunternehmen GmbH",
+          "url": "https://www.youtube.com/watch?v=G0RpyJJmWBI"
+        },
+        {
+          "youtubeId": "XahmnfXrwL0",
+          "title": "Bürostuhl Dauphin @Just evo mesh",
+          "channel": "der Büro Experte",
+          "url": "https://www.youtube.com/watch?v=XahmnfXrwL0"
+        }
+      ]
+    },
+    {
+      "slug": "dowinx-gaming",
+      "name": "Dowinx Gaming Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "jgSmRC4xUgw",
+          "title": "Dowinx Chair Review. Worth it?!",
+          "channel": "Let's talk about it",
+          "url": "https://www.youtube.com/watch?v=jgSmRC4xUgw"
+        },
+        {
+          "youtubeId": "ww-Pv851GuY",
+          "title": "This chair is so comfortable! |Dowinx.com |Simple Series6657D#gamingchair #gamingsetup #gaming",
+          "channel": "Dowinx_JP",
+          "url": "https://www.youtube.com/watch?v=ww-Pv851GuY"
+        },
+        {
+          "youtubeId": "HCoSl5AgGtI",
+          "title": "Dowinx Gaming Chair 300LBS Review – Comfort Meets Functionality!",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=HCoSl5AgGtI"
+        },
+        {
+          "youtubeId": "wpcMye9yYMg",
+          "title": "Dowinx Big & Tall Office Chair Review | Gaming Chair with Footrest",
+          "channel": "Alysse Reviews |  Top Creator",
+          "url": "https://www.youtube.com/watch?v=wpcMye9yYMg"
+        },
+        {
+          "youtubeId": "OWKpX9wsBK0",
+          "title": "Dowinx 6668A Review – Budget Gaming Chair With Premium Comfort",
+          "channel": "1 Up Nerdcore",
+          "url": "https://www.youtube.com/watch?v=OWKpX9wsBK0"
+        }
+      ]
+    },
+    {
+      "slug": "duramont-ergonomic",
+      "name": "Duramont Ergonomic Office Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "7k1HziUVr3g",
+          "title": "Duramont Ergonomic Office Chair - Review 2024",
+          "channel": "LAWRENCE",
+          "url": "https://www.youtube.com/watch?v=7k1HziUVr3g"
+        },
+        {
+          "youtubeId": "gkKNk2MSH68",
+          "title": "Can a $200 Chair Be This Good? – Duramont Ergonomic Office Chair Review",
+          "channel": "YourOfficeGear",
+          "url": "https://www.youtube.com/watch?v=gkKNk2MSH68"
+        },
+        {
+          "youtubeId": "alZuhe8djCI",
+          "title": "Duramont Ergonomic Office Chair Review - Is It Worth It?",
+          "channel": "Brison",
+          "url": "https://www.youtube.com/watch?v=alZuhe8djCI"
+        },
+        {
+          "youtubeId": "lFyet0tTow0",
+          "title": "Duramont Ergonomic Office Chair   Adjustable Desk Chair with Lumbar Support Review",
+          "channel": "Bryon Reviews",
+          "url": "https://www.youtube.com/watch?v=lFyet0tTow0"
+        },
+        {
+          "youtubeId": "GjRdeet41GQ",
+          "title": "Duramont Ergonomic Office Chair - Assembly & Review",
+          "channel": "Pulisic",
+          "url": "https://www.youtube.com/watch?v=GjRdeet41GQ"
+        }
+      ]
+    },
+    {
+      "slug": "ergohuman-classic",
+      "name": "Ergohuman Classic",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "TBwU2dP-z1w",
+          "title": "Montaggio Ergohuman Classic 2021",
+          "channel": "Belardi Arredamenti",
+          "url": "https://www.youtube.com/watch?v=TBwU2dP-z1w"
+        },
+        {
+          "youtubeId": "OqhrlCwIrl4",
+          "title": "Ергономичен стол Antares ERGOHUMAN CLASSIC",
+          "channel": "АНТАРЕС БЪЛГАРИЯ ООД",
+          "url": "https://www.youtube.com/watch?v=OqhrlCwIrl4"
+        },
+        {
+          "youtubeId": "AERFhv9ICpI",
+          "title": "Montaj Scaun Ergohuman V1 Classic Plus",
+          "channel": "Ergohuman România",
+          "url": "https://www.youtube.com/watch?v=AERFhv9ICpI"
+        },
+        {
+          "youtubeId": "k_-8qKZJSF0",
+          "title": "ERGOHUMAN Leder/Netz - Funktionsvideo - hjh OFFICE",
+          "channel": "buerostuhl24com",
+          "url": "https://www.youtube.com/watch?v=k_-8qKZJSF0"
+        },
+        {
+          "youtubeId": "95SHEzN8MEw",
+          "title": "Ergohuman Classic Chair",
+          "channel": "Ergohuman Singapore",
+          "url": "https://www.youtube.com/watch?v=95SHEzN8MEw"
+        }
+      ]
+    },
+    {
+      "slug": "ergohuman-elite",
+      "name": "Ergohuman Elite",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "lGQ32w1yow0",
+          "title": "Czy Ergohuman Elite 2 ST jest tak DOBRY jak mówiliście?",
+          "channel": "Radyjko",
+          "url": "https://www.youtube.com/watch?v=lGQ32w1yow0"
+        },
+        {
+          "youtubeId": "rTK3e8RdOH8",
+          "title": "An ergonomic chair for a healthier home office – the remastered Ergohuman Elite G2 office chair",
+          "channel": "Comfort Seating",
+          "url": "https://www.youtube.com/watch?v=rTK3e8RdOH8"
+        },
+        {
+          "youtubeId": "xFdEpd9Jb8g",
+          "title": "Ergohuman Plus Elite V2 Chair Review | Overview",
+          "channel": "Techness Corner",
+          "url": "https://www.youtube.com/watch?v=xFdEpd9Jb8g"
+        },
+        {
+          "youtubeId": "tddzeIsehEE",
+          "title": "Unbox and make my new Ergohuman Elite 2 office chair with me, I’m obsessed with the colour 🌿 [ad]",
+          "channel": "Beth Bartholomew",
+          "url": "https://www.youtube.com/watch?v=tddzeIsehEE"
+        },
+        {
+          "youtubeId": "uJw59Eu1eoc",
+          "title": "Cadeira Ergohuman Elite 2",
+          "channel": "Cadeira Certa",
+          "url": "https://www.youtube.com/watch?v=uJw59Eu1eoc"
+        }
+      ]
+    },
+    {
+      "slug": "flexispot-c7",
+      "name": "FlexiSpot C7",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Uvrh1tH4Qs4",
+          "title": "FlexiSpot C7 Ergonomic Office Chair Review | Best Budget Ergonomic Office Chair?",
+          "channel": "GH Tech Review",
+          "url": "https://www.youtube.com/watch?v=Uvrh1tH4Qs4"
+        },
+        {
+          "youtubeId": "Kj9om0Q6TaQ",
+          "title": "FlexiSpot C7 Chair - One Month Later",
+          "channel": "SemiPro Tech+Gear",
+          "url": "https://www.youtube.com/watch?v=Kj9om0Q6TaQ"
+        },
+        {
+          "youtubeId": "BMJvtz6ZmeI",
+          "title": "This Budget Chair is ACTUALLY GOOD! (FlexiSpot C7 Review)",
+          "channel": "Justin Tech",
+          "url": "https://www.youtube.com/watch?v=BMJvtz6ZmeI"
+        },
+        {
+          "youtubeId": "pEw5FMy12yo",
+          "title": "Is This the ULTIMATE Ergonomic Desk Chair? FlexiSpot C7 Review",
+          "channel": "Upgradeitis",
+          "url": "https://www.youtube.com/watch?v=pEw5FMy12yo"
+        },
+        {
+          "youtubeId": "qsS013E9ijQ",
+          "title": "This Might Be the Worst Chair I've Ever Reviewed | FlexiSpot C7 Morpher",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=qsS013E9ijQ"
+        }
+      ]
+    },
+    {
+      "slug": "gabrylly-ergonomic",
+      "name": "Gabrylly Ergonomic Office Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "GM6fRV-29sU",
+          "title": "2 Year Update + Review | Is This Gabrylly Mesh Chair Good ?",
+          "channel": "Danny Lightning Audio and Reviews",
+          "url": "https://www.youtube.com/watch?v=GM6fRV-29sU"
+        },
+        {
+          "youtubeId": "nbSo3M_96AA",
+          "title": "1+ Year Update : Gabrylly Ergonomic Mesh Office Chair",
+          "channel": "Is It Worth It?",
+          "url": "https://www.youtube.com/watch?v=nbSo3M_96AA"
+        },
+        {
+          "youtubeId": "17sEVD01d5w",
+          "title": "Why Is Everyone Buying This GABRYLLY Big and Tall Ergonomic Office Chair?",
+          "channel": "Amazing Random Products",
+          "url": "https://www.youtube.com/watch?v=17sEVD01d5w"
+        },
+        {
+          "youtubeId": "wS4_PzqErQM",
+          "title": "Gabrylly Ergonomic Mesh Office Chair | Real Review",
+          "channel": "Danny Lightning Audio and Reviews",
+          "url": "https://www.youtube.com/watch?v=wS4_PzqErQM"
+        },
+        {
+          "youtubeId": "udCTHA-xi-Y",
+          "title": "GABRYLLY Ergonomic Office Chair Review: Comfort and Functionality",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=udCTHA-xi-Y"
+        }
+      ]
+    },
+    {
+      "slug": "gtracing-gaming",
+      "name": "GTRACING Gaming Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "eGem-aw9YLw",
+          "title": "GTRACING Gaming Chair with Footrest and Bluetooth Speakers Review, Ergonomic Computer Office Desk",
+          "channel": "Product Test & Reviews",
+          "url": "https://www.youtube.com/watch?v=eGem-aw9YLw"
+        },
+        {
+          "youtubeId": "Rhzgepw8Rug",
+          "title": "GTRacing GTPlayer Gaming Chair Review",
+          "channel": "Eberwithoutheh",
+          "url": "https://www.youtube.com/watch?v=Rhzgepw8Rug"
+        },
+        {
+          "youtubeId": "_V1QBOnD0dM",
+          "title": "GTRACING Gaming Chair Review – Ergonomic Comfort for Gamers",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=_V1QBOnD0dM"
+        },
+        {
+          "youtubeId": "4ofQMQYia4g",
+          "title": "GTRACING Ergonomic Gaming Chair Review – Is It Worth It?",
+          "channel": "Review Central",
+          "url": "https://www.youtube.com/watch?v=4ofQMQYia4g"
+        },
+        {
+          "youtubeId": "HF5nW6PlNc0",
+          "title": "GT Racing Gaming Chair Unboxing, assembly and first use!",
+          "channel": "SuperZydan Reviews",
+          "url": "https://www.youtube.com/watch?v=HF5nW6PlNc0"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-fern",
+      "name": "Haworth Fern",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "GW6fD5SzNOg",
+          "title": "Is My #1 Chair Pick Worth it? | Haworth Fern",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=GW6fD5SzNOg"
+        },
+        {
+          "youtubeId": "6oOW20epIH8",
+          "title": "My NEW #1 Pick | Haworth Fern Review 1 Year Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=6oOW20epIH8"
+        },
+        {
+          "youtubeId": "YOPA08wBgE4",
+          "title": "Haworth Fern Office Chair - Real Review",
+          "channel": "VisualMaestro",
+          "url": "https://www.youtube.com/watch?v=YOPA08wBgE4"
+        },
+        {
+          "youtubeId": "f4-_vJ7XimA",
+          "title": "My New #1 Chair Pick - Haworth Fern",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=f4-_vJ7XimA"
+        },
+        {
+          "youtubeId": "2kmo-f-ziRQ",
+          "title": "Haworth Fern Review, no one is telling you the Truth!",
+          "channel": "Tristan Pope (Crafting Worlds)",
+          "url": "https://www.youtube.com/watch?v=2kmo-f-ziRQ"
+        }
+      ]
+    },
+    {
+      "slug": "haworth-soji",
+      "name": "Haworth Soji",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "62UYpRWRn4E",
+          "title": "Haworth Soji First Impressions",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=62UYpRWRn4E"
+        },
+        {
+          "youtubeId": "WS6QhUfDVE8",
+          "title": "The Haworth Soji is FANTASTIC",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=WS6QhUfDVE8"
+        },
+        {
+          "youtubeId": "J2l-3G4-feo",
+          "title": "Haworth Soji Office Chair Review -- Ergonomic + Style",
+          "channel": "DaVon's Decisions",
+          "url": "https://www.youtube.com/watch?v=J2l-3G4-feo"
+        },
+        {
+          "youtubeId": "HKFvR8xLHSA",
+          "title": "Is This The Best Value in Chairs Right Now? Haworth Soji Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=HKFvR8xLHSA"
+        },
+        {
+          "youtubeId": "php-wFB20xM",
+          "title": "This is the Best Office Chair Under $500 | Haworth Soji Review",
+          "channel": "Dan Hoang - Sleek Setups",
+          "url": "https://www.youtube.com/watch?v=php-wFB20xM"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-cosm-low-back",
+      "name": "Herman Miller Cosm Low Back",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "-mkJvnObxwY",
+          "title": "Cosm Chair by Herman Miller",
+          "channel": "Design Insider",
+          "url": "https://www.youtube.com/watch?v=-mkJvnObxwY"
+        },
+        {
+          "youtubeId": "fiBMh6rWUsU",
+          "title": "Cosm Chair by Herman Miller-Everything You Need to Know",
+          "channel": "Grooms Office Environments",
+          "url": "https://www.youtube.com/watch?v=fiBMh6rWUsU"
+        },
+        {
+          "youtubeId": "e_JIEgEAL2M",
+          "title": "Herman Miller Cosm Review - Is The Replacement For The Aeron Any Good?",
+          "channel": "Robert Wilkie",
+          "url": "https://www.youtube.com/watch?v=e_JIEgEAL2M"
+        },
+        {
+          "youtubeId": "8ZxFr3m8b7U",
+          "title": "Why Herman Miller’s Cosm Is the Most Important Office Chair in Decades",
+          "channel": "Gear Patrol",
+          "url": "https://www.youtube.com/watch?v=8ZxFr3m8b7U"
+        },
+        {
+          "youtubeId": "gcl_U7D9h1U",
+          "title": "Cosm Chair by Herman Miller - amazing ergonomics chair",
+          "channel": "Amp Amable",
+          "url": "https://www.youtube.com/watch?v=gcl_U7D9h1U"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-lino",
+      "name": "Herman Miller Lino",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "qpGEKfEQRSI",
+          "title": "Unboxing & First Impressions: Herman Miller Lino Office Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=qpGEKfEQRSI"
+        },
+        {
+          "youtubeId": "n0IWnEbbTR4",
+          "title": "Herman Miller Lino Chair",
+          "channel": "Zac Cerrato",
+          "url": "https://www.youtube.com/watch?v=n0IWnEbbTR4"
+        },
+        {
+          "youtubeId": "yZYkEFQDhb4",
+          "title": "Herman Miller Lino Features",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=yZYkEFQDhb4"
+        },
+        {
+          "youtubeId": "ufq-DD6MToc",
+          "title": "Herman Miller Lino Review - 3 Weeks",
+          "channel": "Civnopes GG",
+          "url": "https://www.youtube.com/watch?v=ufq-DD6MToc"
+        },
+        {
+          "youtubeId": "4DkmmNNILeo",
+          "title": "Herman Miller Lino Chair Tutorial",
+          "channel": "Office Furniture Resources",
+          "url": "https://www.youtube.com/watch?v=4DkmmNNILeo"
+        }
+      ]
+    },
+    {
+      "slug": "homall-racing",
+      "name": "Homall Racing Gaming Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "vs1v0JupC78",
+          "title": "review Homall Gaming Chair Racing Office Chair High Back Computer Desk",
+          "channel": "AnAn",
+          "url": "https://www.youtube.com/watch?v=vs1v0JupC78"
+        },
+        {
+          "youtubeId": "e_RcVXEPJVU",
+          "title": "REVIEW ON MY $100 GAMING CHAIR HOMALL",
+          "channel": "Josh TechGamer",
+          "url": "https://www.youtube.com/watch?v=e_RcVXEPJVU"
+        },
+        {
+          "youtubeId": "7YKqF32V53k",
+          "title": "$99 DX Racer Knock Off Worth it? Homall S-Racer Racing Gaming Chair",
+          "channel": "iLuvTrading",
+          "url": "https://www.youtube.com/watch?v=7YKqF32V53k"
+        },
+        {
+          "youtubeId": "idBd0OW5MPc",
+          "title": "\"GAMING CHAIRS\" Are they worth it?  | Homall Racing Style Gaming Chair | REVIEW",
+          "channel": "MrTechVisuals",
+          "url": "https://www.youtube.com/watch?v=idBd0OW5MPc"
+        },
+        {
+          "youtubeId": "Tu97v1iFoyI",
+          "title": "Homall S-Racer Office Chair Unboxing/Review - Is A $120 Gaming Chair Worth It?",
+          "channel": "Digital Cynics",
+          "url": "https://www.youtube.com/watch?v=Tu97v1iFoyI"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-every-e3",
+      "name": "Interstuhl EVERYis1",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "s33h0p8_WuY",
+          "title": "Interstuhl bureaustoel EVERYis1 model EV117 zitinstructie",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=s33h0p8_WuY"
+        },
+        {
+          "youtubeId": "R3bR8oHz2Es",
+          "title": "Interstuhl - EVERYis1",
+          "channel": "stuhl_pe",
+          "url": "https://www.youtube.com/watch?v=R3bR8oHz2Es"
+        },
+        {
+          "youtubeId": "iZ7Ghez488E",
+          "title": "EVERY Office Chair by Interstuhl | myocco.ee",
+          "channel": "myOCCO Estonia",
+          "url": "https://www.youtube.com/watch?v=iZ7Ghez488E"
+        },
+        {
+          "youtubeId": "f4PmB0YbBJk",
+          "title": "Interstuhl EVERYis1 (EV216) stoelinstructie",
+          "channel": "Interstuhl NL & BE",
+          "url": "https://www.youtube.com/watch?v=f4PmB0YbBJk"
+        },
+        {
+          "youtubeId": "AwuIlHsa3X4",
+          "title": "Interstuhl EVERYis1 (EV151) stoelinstructie",
+          "channel": "Interstuhl NL & BE",
+          "url": "https://www.youtube.com/watch?v=AwuIlHsa3X4"
+        }
+      ]
+    },
+    {
+      "slug": "interstuhl-joyceis3",
+      "name": "Interstuhl JOYCEis3",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "3XoTQZz5qgU",
+          "title": "Interstuhl bureaustoel JOYCEis3 JC2N1 Handleiding",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=3XoTQZz5qgU"
+        },
+        {
+          "youtubeId": "NgnkMfUHRc8",
+          "title": "JOYCEis3 Bureaustoel Interstuhl  - Review Video | De Bureaustoelen Specialist",
+          "channel": "TOC kantoorinrichting",
+          "url": "https://www.youtube.com/watch?v=NgnkMfUHRc8"
+        },
+        {
+          "youtubeId": "UBV8BWTMQeA",
+          "title": "Interstuhl bureaustoel JOYCEis3 JC113",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=UBV8BWTMQeA"
+        },
+        {
+          "youtubeId": "MvsgAJk5-hA",
+          "title": "Interstuhl bureaustoel JOYCEis3 model JC216. Gebruiksaanwijzing.",
+          "channel": "www.bureaustoel.nl",
+          "url": "https://www.youtube.com/watch?v=MvsgAJk5-hA"
+        },
+        {
+          "youtubeId": "M-_zcKYWSP4",
+          "title": "Interstuhl Flexgrid am joyceis3 video",
+          "channel": "CLEVER Büromöbel und Arbeitswelten",
+          "url": "https://www.youtube.com/watch?v=M-_zcKYWSP4"
+        }
+      ]
+    },
+    {
+      "slug": "itoki-act2",
+      "name": "Itoki ACT2",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "gpHgwI_jncs",
+          "title": "Act（アクトチェア）ITOKI操作方法【オフィスコム】",
+          "channel": "オフィスコム",
+          "url": "https://www.youtube.com/watch?v=gpHgwI_jncs"
+        },
+        {
+          "youtubeId": "D9-oeQS97ZM",
+          "title": "イトーキ Act2（アクト2）紹介動画60sec",
+          "channel": "【公式】イトーキ オンラインショップ",
+          "url": "https://www.youtube.com/watch?v=D9-oeQS97ZM"
+        },
+        {
+          "youtubeId": "DoegiaJFEmo",
+          "title": "체어파크가 추천하는 의자계의 평양냉면, 이토키 Act2",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=DoegiaJFEmo"
+        },
+        {
+          "youtubeId": "GUbXd1PzWE0",
+          "title": "【ItokiAct2】イトーキ アクト2 エラストマー を購入して3年半使用した COFO Chair Premium を長期レビューしつつ比較しながら確認してみました",
+          "channel": "Surface だっていいじゃないか",
+          "url": "https://www.youtube.com/watch?v=GUbXd1PzWE0"
+        },
+        {
+          "youtubeId": "BIRRLDooNfA",
+          "title": "イトーキ Act2(アクト2) 紹介動画15sec",
+          "channel": "【公式】イトーキ オンラインショップ",
+          "url": "https://www.youtube.com/watch?v=BIRRLDooNfA"
+        }
+      ]
+    },
+    {
+      "slug": "ki-altus",
+      "name": "KI Altus",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "Kfwmc72qVjw",
+          "title": "KI Altus Fabric Task Chair - Seat - Depth Adjustment",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=Kfwmc72qVjw"
+        },
+        {
+          "youtubeId": "SG_uky6D3rc",
+          "title": "KI Altus Mesh Task Chair - Adjustments",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=SG_uky6D3rc"
+        },
+        {
+          "youtubeId": "uSt5WG7y3lw",
+          "title": "KI Altus Fabric Task Chair - Back - Tilt Tension Adjustment",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=uSt5WG7y3lw"
+        },
+        {
+          "youtubeId": "7eSRSw-RDvA",
+          "title": "KI Altus Fabric Task Chair - Adjustments",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=7eSRSw-RDvA"
+        },
+        {
+          "youtubeId": "8lGBmj3PIng",
+          "title": "Introducing the KI Altus Chair",
+          "channel": "KI Furniture",
+          "url": "https://www.youtube.com/watch?v=8lGBmj3PIng"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-barcelona-chair",
+      "name": "Knoll Barcelona Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "9SeeVquK3xw",
+          "title": "Authenticating a Barcelona Chair #barcelonachair #authenticdesign #miesvanderrohe #knoll #rarify",
+          "channel": "Rarify",
+          "url": "https://www.youtube.com/watch?v=9SeeVquK3xw"
+        },
+        {
+          "youtubeId": "ercGFsFX9Bg",
+          "title": "Barcelona Chair Working From Home",
+          "channel": "Real Life Architecture",
+          "url": "https://www.youtube.com/watch?v=ercGFsFX9Bg"
+        },
+        {
+          "youtubeId": "bCXu8YupWAo",
+          "title": "Why Our Barcelona Chair: Update 2018 from Iconic Interiors",
+          "channel": "iconicinteriors",
+          "url": "https://www.youtube.com/watch?v=bCXu8YupWAo"
+        },
+        {
+          "youtubeId": "YtrWY2Sa7nE",
+          "title": "KNOLL Barcelona Chair Original Label Black Ludwig Mies van der Rohe Chrome",
+          "channel": "Gannons Antiques and Art",
+          "url": "https://www.youtube.com/watch?v=YtrWY2Sa7nE"
+        },
+        {
+          "youtubeId": "lMLOKc-p1M4",
+          "title": "Mies Van Der Rohe Barcelona Chair by Find Me The Original",
+          "channel": "Couch Potato Company",
+          "url": "https://www.youtube.com/watch?v=lMLOKc-p1M4"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-chadwick",
+      "name": "Knoll Chadwick",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "xn4CXxVKMhs",
+          "title": "Офисные кресла Knoll Chadwick",
+          "channel": "MEBELSTOCK",
+          "url": "https://www.youtube.com/watch?v=xn4CXxVKMhs"
+        },
+        {
+          "youtubeId": "e1L8gz8vD7k",
+          "title": "Knoll Chadwick Chair Review",
+          "channel": "ChairReportvideo",
+          "url": "https://www.youtube.com/watch?v=e1L8gz8vD7k"
+        },
+        {
+          "youtubeId": "oQfDYQmLFUY",
+          "title": "Knoll Chadwick Chair",
+          "channel": "Randall Harvey",
+          "url": "https://www.youtube.com/watch?v=oQfDYQmLFUY"
+        },
+        {
+          "youtubeId": "-D-JMIcLPd4",
+          "title": "Knoll Chadwick Chair Review",
+          "channel": "Jospeh Laverde",
+          "url": "https://www.youtube.com/watch?v=-D-JMIcLPd4"
+        },
+        {
+          "youtubeId": "oO5P6rF1kE0",
+          "title": "Knoll Chadwick High Task Chair Review",
+          "channel": "Jospeh Laverde",
+          "url": "https://www.youtube.com/watch?v=oO5P6rF1kE0"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-regeneration",
+      "name": "Knoll ReGeneration",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "EQfmu7GSa_A",
+          "title": "Knoll Regeneration Review - One of the Best Ergonomic Chairs",
+          "channel": "Modern Exploration",
+          "url": "https://www.youtube.com/watch?v=EQfmu7GSa_A"
+        },
+        {
+          "youtubeId": "O7TgMRNzToc",
+          "title": "Knoll Regeneration Features",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=O7TgMRNzToc"
+        },
+        {
+          "youtubeId": "NxRUV-3lmGk",
+          "title": "Knoll Generation VS ReGeneration Chair: Things You Should Know Review",
+          "channel": "OfficeLogixShop.cоm",
+          "url": "https://www.youtube.com/watch?v=NxRUV-3lmGk"
+        },
+        {
+          "youtubeId": "rBVRZDYEhrM",
+          "title": "Unboxing & First Impressions: Knoll Regeneration Office Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=rBVRZDYEhrM"
+        },
+        {
+          "youtubeId": "mkQr8aMoSc0",
+          "title": "How To: Knoll Regeneration Office Chair Adjustments",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=mkQr8aMoSc0"
+        }
+      ]
+    },
+    {
+      "slug": "knoll-womb-chair",
+      "name": "Knoll Womb Chair",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "UahdaZJeznY",
+          "title": "Rove Concepts Womb Chair Replica | Saarinen Knoll Chair review, initial impressions",
+          "channel": "Randy S",
+          "url": "https://www.youtube.com/watch?v=UahdaZJeznY"
+        },
+        {
+          "youtubeId": "ozVys2_2I0E",
+          "title": "Cleaning a DISGUSTING $8,000 Knoll womb chair",
+          "channel": "Jeeves NY",
+          "url": "https://www.youtube.com/watch?v=ozVys2_2I0E"
+        },
+        {
+          "youtubeId": "6JSpacZQ-eg",
+          "title": "Modern classic furniture leisure fabric lounge womb chair #furnishing #loungechair #interiordesign",
+          "channel": "QIYU Furniture Factory",
+          "url": "https://www.youtube.com/watch?v=6JSpacZQ-eg"
+        },
+        {
+          "youtubeId": "q3JwbI1cJNs",
+          "title": "Inform Favourites: Knoll's Womb Chair",
+          "channel": "Inform",
+          "url": "https://www.youtube.com/watch?v=q3JwbI1cJNs"
+        },
+        {
+          "youtubeId": "iPKip04M0b0",
+          "title": "Womb Chair video FINAL",
+          "channel": "Adam Mendoza",
+          "url": "https://www.youtube.com/watch?v=iPKip04M0b0"
+        }
+      ]
+    },
+    {
+      "slug": "modway-articulate",
+      "name": "Modway Articulate",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "xClwrIeLvtc",
+          "title": "Modway Articulate Chair Review — Budget Ergonomic Winner or Overhyped Office Seat?",
+          "channel": "Cain Brands Reviews",
+          "url": "https://www.youtube.com/watch?v=xClwrIeLvtc"
+        },
+        {
+          "youtubeId": "PzZ7xUjULYs",
+          "title": "Modway Articulate Ergonomic Mesh Office Chair - Review 2022",
+          "channel": "Pulisic",
+          "url": "https://www.youtube.com/watch?v=PzZ7xUjULYs"
+        },
+        {
+          "youtubeId": "Qq8VRwE5FdU",
+          "title": "I got a new Chair! Modway Articulate Office Chair Unboxing and Assembly",
+          "channel": "Gabriel Omassi",
+          "url": "https://www.youtube.com/watch?v=Qq8VRwE5FdU"
+        },
+        {
+          "youtubeId": "-8gcb5tFtLs",
+          "title": "Honest Review: Modway EEI-757-BLK Articulate Ergonomic Mesh Office Chair",
+          "channel": "Shopping With Jen",
+          "url": "https://www.youtube.com/watch?v=-8gcb5tFtLs"
+        },
+        {
+          "youtubeId": "j_8CdMF_cSw",
+          "title": "Modway Articulate Ergonomic Mesh Office Chair Review – Comfort Meets Style!",
+          "channel": "Market Ratings",
+          "url": "https://www.youtube.com/watch?v=j_8CdMF_cSw"
+        }
+      ]
+    },
+    {
+      "slug": "nightingale-cxo-6200",
+      "name": "Nightingale CXO 6200",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "-FMeK-jl4Ac",
+          "title": "6200 CXO Mech",
+          "channel": "Nightingale CXO ti Training",
+          "url": "https://www.youtube.com/watch?v=-FMeK-jl4Ac"
+        },
+        {
+          "youtubeId": "09HZAgmrfIA",
+          "title": "CXO Chair by Nightingale",
+          "channel": "Seated Video",
+          "url": "https://www.youtube.com/watch?v=09HZAgmrfIA"
+        },
+        {
+          "youtubeId": "NU1uss4d9pc",
+          "title": "How To: Nightingale CXO Office Chair Adjustments",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=NU1uss4d9pc"
+        },
+        {
+          "youtubeId": "3sEUd_9nOFw",
+          "title": "Nightingale CXO 6200 Mesh Chair Review",
+          "channel": "UPLIFT Desk",
+          "url": "https://www.youtube.com/watch?v=3sEUd_9nOFw"
+        },
+        {
+          "youtubeId": "xCIUO-IOEvU",
+          "title": "Nightingale CXO 6200D Ergonomic Chair",
+          "channel": "Newmarket Office Furniture",
+          "url": "https://www.youtube.com/watch?v=xCIUO-IOEvU"
+        }
+      ]
+    },
+    {
+      "slug": "razer-enki",
+      "name": "Razer Enki",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "zYbFOfzR_-A",
+          "title": "Not as good as the Iskur! Razer Enki Gaming Chair Review",
+          "channel": "WePC",
+          "url": "https://www.youtube.com/watch?v=zYbFOfzR_-A"
+        },
+        {
+          "youtubeId": "ufAo3UgCafw",
+          "title": "Razer Enki Gaming Chair in 2024 - (Still Worth It?)",
+          "channel": "Kevin Breeze",
+          "url": "https://www.youtube.com/watch?v=ufAo3UgCafw"
+        },
+        {
+          "youtubeId": "5rEVYftHYos",
+          "title": "I Spent a Month With Razer's NEW ENKI Gaming Chair | Razer Enki Review",
+          "channel": "Brainbean",
+          "url": "https://www.youtube.com/watch?v=5rEVYftHYos"
+        },
+        {
+          "youtubeId": "8mJBLPxyEPs",
+          "title": "Razer Enki X Review - The Best Gaming Chair In The Market",
+          "channel": "Thomas Tech",
+          "url": "https://www.youtube.com/watch?v=8mJBLPxyEPs"
+        },
+        {
+          "youtubeId": "0uOmE5Gs9Qw",
+          "title": "Razer made it cheaper by removing THIS! - Razer ENKI",
+          "channel": "ShortCircuit",
+          "url": "https://www.youtube.com/watch?v=0uOmE5Gs9Qw"
+        }
+      ]
+    },
+    {
+      "slug": "secretlab-titan-evo-2022",
+      "name": "Secretlab Titan Evo 2022",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "NKcjKqwxPtY",
+          "title": "I Secretly LOVE This Chair!!! - Secretlab TITAN Evo 2022 Series",
+          "channel": "ShortCircuit",
+          "url": "https://www.youtube.com/watch?v=NKcjKqwxPtY"
+        },
+        {
+          "youtubeId": "9tNUQ-cVJrY",
+          "title": "The World's MOST OVERRATED Gaming Chair (Secretlab Titan EVO Review)",
+          "channel": "Ty Tries Tech",
+          "url": "https://www.youtube.com/watch?v=9tNUQ-cVJrY"
+        },
+        {
+          "youtubeId": "cdpGS3c-ySM",
+          "title": "Is The Secret Lab Titan Evo 2022 Overrated?",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=cdpGS3c-ySM"
+        },
+        {
+          "youtubeId": "QYCdGNUn_6Q",
+          "title": "3 YEARS OF PROBLEMS! | Secretlab Titan Evo Long Term Review",
+          "channel": "MTG Gaming",
+          "url": "https://www.youtube.com/watch?v=QYCdGNUn_6Q"
+        },
+        {
+          "youtubeId": "Ok77YTfowXA",
+          "title": "Is the Secretlab Titan Evo Worth It in 2025? | Secretlab Titan Evo 2 Year Review",
+          "channel": "Dan Hoang - Sleek Setups",
+          "url": "https://www.youtube.com/watch?v=Ok77YTfowXA"
+        }
+      ]
+    },
+    {
+      "slug": "sihoo-m18",
+      "name": "SIHOO M18",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "dhBRdj2t3-s",
+          "title": "Sihoo M18 Mesh Office Chair Review (Are the Positive Ratings Fake?)",
+          "channel": "Ergonomic Trends",
+          "url": "https://www.youtube.com/watch?v=dhBRdj2t3-s"
+        },
+        {
+          "youtubeId": "haLhk3iAfzE",
+          "title": "Ticova vs Dexley vs Sihoo M18 | Office Chair Tier List",
+          "channel": "moreBTODtv",
+          "url": "https://www.youtube.com/watch?v=haLhk3iAfzE"
+        },
+        {
+          "youtubeId": "aWiOdAP5YHk",
+          "title": "SIHOO M18 Desk Chair - The Herman Miller Killer?",
+          "channel": "Linx Gear",
+          "url": "https://www.youtube.com/watch?v=aWiOdAP5YHk"
+        },
+        {
+          "youtubeId": "vZSSyOFZmdI",
+          "title": "Sihoo M18 Chair Review - High Quality & Comfort Without the High Price Tag!",
+          "channel": "1 Up Nerdcore",
+          "url": "https://www.youtube.com/watch?v=vZSSyOFZmdI"
+        },
+        {
+          "youtubeId": "SLOg5BSb-jU",
+          "title": "SIHOO M18 Office Chair Review",
+          "channel": "BeatTheBush DIY",
+          "url": "https://www.youtube.com/watch?v=SLOg5BSb-jU"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-amia",
+      "name": "Steelcase Amia",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "aL8SJOYixK4",
+          "title": "Steelcase Amia Chair Review | Best Office Chair Ever?",
+          "channel": "Kristen Reviews",
+          "url": "https://www.youtube.com/watch?v=aL8SJOYixK4"
+        },
+        {
+          "youtubeId": "rrhbt6Ps0Bo",
+          "title": "My FAVORITE Steelcase Chair That NO ONE KNOWS ABOUT!!!",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=rrhbt6Ps0Bo"
+        },
+        {
+          "youtubeId": "VjhKsxct8qQ",
+          "title": "Steelcase Amia Office Chair Review: The ACTUAL Best Steelcase Chair",
+          "channel": "Dan Hoang - Sleek Setups",
+          "url": "https://www.youtube.com/watch?v=VjhKsxct8qQ"
+        },
+        {
+          "youtubeId": "ocgZH5I9Kac",
+          "title": "The AMIA- Top Tier Office Chair Review",
+          "channel": "KeeferVision",
+          "url": "https://www.youtube.com/watch?v=ocgZH5I9Kac"
+        },
+        {
+          "youtubeId": "dNqRnY0tMU4",
+          "title": "Steelcase Amia Review: My Opinion 1 Year Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=dNqRnY0tMU4"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-id-chair-concept",
+      "name": "Vitra ID Chair Concept",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "HkQ1-UlQAGk",
+          "title": "Vitra ID chairs",
+          "channel": "Zuzana Fajta",
+          "url": "https://www.youtube.com/watch?v=HkQ1-UlQAGk"
+        },
+        {
+          "youtubeId": "T5VU7ngY4jg",
+          "title": "Vitra ID Chair User Guide",
+          "channel": "VitraUKSeating",
+          "url": "https://www.youtube.com/watch?v=T5VU7ngY4jg"
+        },
+        {
+          "youtubeId": "X36-zj5IHE8",
+          "title": "Vitra ID Trim Bureaustoel met armleggers Lichtblauw/Grijs Stof InrichtingAnders",
+          "channel": "Inrichting Anders",
+          "url": "https://www.youtube.com/watch?v=X36-zj5IHE8"
+        },
+        {
+          "youtubeId": "dSGuytsV9e0",
+          "title": "Vitra ID Office Chair by Antonio Citterio",
+          "channel": "ewop Office Furniture",
+          "url": "https://www.youtube.com/watch?v=dSGuytsV9e0"
+        },
+        {
+          "youtubeId": "eGuQEJVDiAI",
+          "title": "Vitra ID Chair User Guide",
+          "channel": "Vitra UK",
+          "url": "https://www.youtube.com/watch?v=eGuQEJVDiAI"
+        }
+      ]
+    },
+    {
+      "slug": "vitra-physix",
+      "name": "Vitra Physix",
+      "videoCount": 5,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "pqrKMoZXWHU",
+          "title": "Unser Vitra Physix Bürostuhl #shorts",
+          "channel": "workstatt",
+          "url": "https://www.youtube.com/watch?v=pqrKMoZXWHU"
+        },
+        {
+          "youtubeId": "rvRdqhwYHBQ",
+          "title": "Vitra Physix Office Chair by Alberto Meda",
+          "channel": "ewop Office Furniture",
+          "url": "https://www.youtube.com/watch?v=rvRdqhwYHBQ"
+        },
+        {
+          "youtubeId": "VvFjwS3cgPo",
+          "title": "Vitra Physix Bürostuhl Produktvorstellung bei workstatt.de",
+          "channel": "workstatt",
+          "url": "https://www.youtube.com/watch?v=VvFjwS3cgPo"
+        },
+        {
+          "youtubeId": "8Vk4CH8zDvg",
+          "title": "Vitra Physix Office Chair Review",
+          "channel": "The Tech Nostalgia",
+          "url": "https://www.youtube.com/watch?v=8Vk4CH8zDvg"
+        },
+        {
+          "youtubeId": "s2jLNpB9BF4",
+          "title": "Vitra -  Physix Chair",
+          "channel": "Posh Studio",
+          "url": "https://www.youtube.com/watch?v=s2jLNpB9BF4"
+        }
+      ]
+    },
+    {
+      "slug": "bambach-saddle-seat",
+      "name": "Bambach Saddle Seat",
+      "videoCount": 6,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "pfcFO-l5ZQk",
+          "title": "Bambach Saddle Seat the Original Saddle Seat",
+          "channel": "Bambach",
+          "url": "https://www.youtube.com/watch?v=pfcFO-l5ZQk"
+        },
+        {
+          "youtubeId": "gq5eIn9tfJk",
+          "title": "Backpain ? THE BAMBACH SADDLE SEAT",
+          "channel": "Hager Werken",
+          "url": "https://www.youtube.com/watch?v=gq5eIn9tfJk"
+        },
+        {
+          "youtubeId": "HLJErObLiEg",
+          "title": "Bambach Saddle Chair Unboxing Plus Review",
+          "channel": "Nurse Teacher Kristine Australia",
+          "url": "https://www.youtube.com/watch?v=HLJErObLiEg"
+        },
+        {
+          "youtubeId": "MeZ8rXWOir4",
+          "title": "Bambach Saddle Seat",
+          "channel": "Bambach",
+          "url": "https://www.youtube.com/watch?v=MeZ8rXWOir4"
+        },
+        {
+          "youtubeId": "eL0le8XijMs",
+          "title": "BAMBACH SADDLE SEAT Video",
+          "channel": "BambachSaddleSeat",
+          "url": "https://www.youtube.com/watch?v=eL0le8XijMs"
+        },
+        {
+          "youtubeId": "StIGwwwHg2I",
+          "title": "Adjusting and using a Bambach Saddle Seat",
+          "channel": "The Bambach Saddle Seat",
+          "url": "https://www.youtube.com/watch?v=StIGwwwHg2I"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-aeron",
+      "name": "Herman Miller Aeron",
+      "videoCount": 6,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "kZrnMKSe9oo",
+          "title": "Herman Miller Aeron Review: My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=kZrnMKSe9oo"
+        },
+        {
+          "youtubeId": "uj13Vjup6lw",
+          "title": "The Ultimate Office Chair? ~ Herman Miller Aeron Overview",
+          "channel": "minimalistik",
+          "url": "https://www.youtube.com/watch?v=uj13Vjup6lw"
+        },
+        {
+          "youtubeId": "8UbWCjJ6ooY",
+          "title": "The BEST Office And Gaming Chair | Herman Miller Aeron Review",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=8UbWCjJ6ooY"
+        },
+        {
+          "youtubeId": "OG0lV090XDs",
+          "title": "5 Minutes and I'll Tell You Why NOT to Buy a Herman Miller Chair",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=OG0lV090XDs"
+        },
+        {
+          "youtubeId": "gi9R57g9s9U",
+          "title": "10 Reasons To NEVER BUY a Herman Miller Aeron",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=gi9R57g9s9U"
+        },
+        {
+          "youtubeId": "L72uLEUm-Uc",
+          "title": "Herman Miller AERON Office GAMING Chair - 3 Years LATER! (HONEST REVIEW)",
+          "channel": "CKid",
+          "url": "https://www.youtube.com/watch?v=L72uLEUm-Uc"
+        }
+      ]
+    },
+    {
+      "slug": "steelcase-leap-v2",
+      "name": "Steelcase Leap V2",
+      "videoCount": 7,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "O3OZ9-Qrfso",
+          "title": "Aeron vs. Leap: My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=O3OZ9-Qrfso"
+        },
+        {
+          "youtubeId": "cOtsAbpqyz8",
+          "title": "Steelcase Leap V2 - 3 Month Review",
+          "channel": "OT Focus",
+          "url": "https://www.youtube.com/watch?v=cOtsAbpqyz8"
+        },
+        {
+          "youtubeId": "NfIF-8pwP7w",
+          "title": "Leap VS Fern VS Embody: My Quest For a God-Tier Office Chair",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=NfIF-8pwP7w"
+        },
+        {
+          "youtubeId": "iaZPWPqCsIo",
+          "title": "Steelcase Leap v2 Review: My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=iaZPWPqCsIo"
+        },
+        {
+          "youtubeId": "XsnHSQMubQM",
+          "title": "New vs Remanufactured Steelcase Leap v2",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=XsnHSQMubQM"
+        },
+        {
+          "youtubeId": "KnhcIPUs1lU",
+          "title": "Leap vs Gesture: My Opinion 3 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=KnhcIPUs1lU"
+        },
+        {
+          "youtubeId": "oNcjg47iTZ4",
+          "title": "DO NOT Buy Steelcase Leap V2 Before Watching This Video",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=oNcjg47iTZ4"
+        }
+      ]
+    },
+    {
+      "slug": "kokuyo-ing",
+      "name": "Kokuyo Ing",
+      "videoCount": 15,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "71OMruHNxzc",
+          "title": "Introducing the first in its category! Kokuyo ing 360 degree Gliding Chair",
+          "channel": "Magnum Group",
+          "url": "https://www.youtube.com/watch?v=71OMruHNxzc"
+        },
+        {
+          "youtubeId": "xzMhLg3Oj2s",
+          "title": "【世紀の中古オフィスチェア対決】イトーキ / ITOKI スピーナチェア vs コクヨ / KOKUYO ing / イング",
+          "channel": "Restyle",
+          "url": "https://www.youtube.com/watch?v=xzMhLg3Oj2s"
+        },
+        {
+          "youtubeId": "Nyce1UEWI5c",
+          "title": "KOKUYO I Subscription Program",
+          "channel": "Kokuyo Thailand",
+          "url": "https://www.youtube.com/watch?v=Nyce1UEWI5c"
+        },
+        {
+          "youtubeId": "dvSFeuc7bYY",
+          "title": "KOKUYO ING: 360° Gliding Chair",
+          "channel": "KokuyoSG",
+          "url": "https://www.youtube.com/watch?v=dvSFeuc7bYY"
+        },
+        {
+          "youtubeId": "vpmBY3Fs80o",
+          "title": "KOKUYO ing",
+          "channel": "Kokuyo Thailand",
+          "url": "https://www.youtube.com/watch?v=vpmBY3Fs80o"
+        },
+        {
+          "youtubeId": "w8uAFCa6bHM",
+          "title": "座面が360°動くオフィスチェア ing メリットデメリット【リモートワーク】KOKUYO Workstyle Shop",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=w8uAFCa6bHM"
+        },
+        {
+          "youtubeId": "L7jAvGkgSo0",
+          "title": "KOKUYO ing I 360° Gliding Mechanism",
+          "channel": "Kokuyo Thailand",
+          "url": "https://www.youtube.com/watch?v=L7jAvGkgSo0"
+        },
+        {
+          "youtubeId": "ki8O-kDWfKQ",
+          "title": "KOKUYO ING: 360° Gliding Chair",
+          "channel": "Kokuyo Indonesia",
+          "url": "https://www.youtube.com/watch?v=ki8O-kDWfKQ"
+        },
+        {
+          "youtubeId": "VH0XsoivWSw",
+          "title": "KOKUYO〜ing〜",
+          "channel": "インテリアショップLABOTTO(ラボット)",
+          "url": "https://www.youtube.com/watch?v=VH0XsoivWSw"
+        },
+        {
+          "youtubeId": "6N9aMApbFzI",
+          "title": "KOKUYO ING Chair- 360° Gliding Chair",
+          "channel": "Kokuyo Indonesia",
+          "url": "https://www.youtube.com/watch?v=6N9aMApbFzI"
+        },
+        {
+          "youtubeId": "T2vERSsbMkU",
+          "title": "【コクヨ ing（イング）がやってきた！#3】結局、ぼくは定着しませんでした…。",
+          "channel": "瀬戸弘司ミニ",
+          "url": "https://www.youtube.com/watch?v=T2vERSsbMkU"
+        },
+        {
+          "youtubeId": "MyqQyU3Ojt0",
+          "title": "이 의자 운동 많이된다 - 요즘 핫한 고쿠요 ing #체어파크",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=MyqQyU3Ojt0"
+        },
+        {
+          "youtubeId": "nuvj_3U0l2w",
+          "title": "4시간 85kcal? ‘앉아서 움직이는’ 의자 고쿠요 ing 체어 #360도글라이딩 #사무용의자 #프리미엄의자 #오피스체어 #고쿠요 #ING체어",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=nuvj_3U0l2w"
+        },
+        {
+          "youtubeId": "skP2DVSoP1A",
+          "title": "【コクヨ ing（イング）がやってきた！#2】１週間座ってみた感想！",
+          "channel": "瀬戸弘司 / Koji Seto",
+          "url": "https://www.youtube.com/watch?v=skP2DVSoP1A"
+        },
+        {
+          "youtubeId": "N2V8ReFbMpA",
+          "title": "The Revolutionary \"360° Gliding Chair ING\" • Befitted to various sitting postures",
+          "channel": "Kokuyo Indonesia",
+          "url": "https://www.youtube.com/watch?v=N2V8ReFbMpA"
+        }
+      ]
+    },
+    {
+      "slug": "kokuyo-ing-cloud",
+      "name": "Kokuyo Ing Cloud",
+      "videoCount": 15,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "ZVxUznsh6JM",
+          "title": "コクヨ　次世代オフィスチェアー　＜ingCloud＞",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=ZVxUznsh6JM"
+        },
+        {
+          "youtubeId": "b0q7pYPO1_c",
+          "title": "[체어파크] ING Cloud 사용 가이드 공식 영상",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=b0q7pYPO1_c"
+        },
+        {
+          "youtubeId": "Bqhv5HR7r3s",
+          "title": "[체어파크] ING Cloud 공식 메이킹 영상",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=Bqhv5HR7r3s"
+        },
+        {
+          "youtubeId": "HYbxk5oZv6k",
+          "title": "KOKUYO ingCloud – Feels Like Sitting on a Cloud",
+          "channel": "トバログ",
+          "url": "https://www.youtube.com/watch?v=HYbxk5oZv6k"
+        },
+        {
+          "youtubeId": "_fbGFFK2Llo",
+          "title": "コクヨ 次世代オフィスチェアー ＜ingCloud＞ short",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=_fbGFFK2Llo"
+        },
+        {
+          "youtubeId": "pRunNk0Gn5c",
+          "title": "【圧倒的な座り心地！】コクヨのワークチェア『ingCloud』先行レビュー。2ヶ月使った感想＆開発拠点ツアー",
+          "channel": "トバログ",
+          "url": "https://www.youtube.com/watch?v=pRunNk0Gn5c"
+        },
+        {
+          "youtubeId": "VR0G9SLJPlw",
+          "title": "Making of ingCloud Chair | KOKUYO",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=VR0G9SLJPlw"
+        },
+        {
+          "youtubeId": "dWCa3UqwMvA",
+          "title": "包み込まれる異次元クラスの椅子KOKUYO ingCloud",
+          "channel": "やまかふぇ yamacafe",
+          "url": "https://www.youtube.com/watch?v=dWCa3UqwMvA"
+        },
+        {
+          "youtubeId": "wMP_r7LeFNw",
+          "title": "체어파크가 추천하는 독보적인 편안함, ING Cloud☁️",
+          "channel": "CHAIRPARK",
+          "url": "https://www.youtube.com/watch?v=wMP_r7LeFNw"
+        },
+        {
+          "youtubeId": "4jJI88vlVGw",
+          "title": "手に入れたくなるデスク環境・インテリアアイテム | デザイン、技術が詰まった理想のオフィス空間を見に行く | オルガテック東京2025",
+          "channel": "Nagomi-ke | 難波拓斗",
+          "url": "https://www.youtube.com/watch?v=4jJI88vlVGw"
+        },
+        {
+          "youtubeId": "xp0jQIUl60M",
+          "title": "Making of ingCloud Chair | KOKUYO",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=xp0jQIUl60M"
+        },
+        {
+          "youtubeId": "VT2xNbPTy60",
+          "title": "「ingCloud（イングクラウド）」開発者インタビュー | 8年の歳月を経て実現した“まるで雲に浮かんでいるかのような”座り心地",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=VT2xNbPTy60"
+        },
+        {
+          "youtubeId": "gI66f3TT4yQ",
+          "title": "Beyond \"Correct Posture.\" A chair designed to move with you. #ingcloud #kokuyo",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=gI66f3TT4yQ"
+        },
+        {
+          "youtubeId": "24bQItjoUl0",
+          "title": "コクヨ 次世代オフィスチェアー ＜ingCloud＞ short2",
+          "channel": "コクヨ公式チャンネル",
+          "url": "https://www.youtube.com/watch?v=24bQItjoUl0"
+        },
+        {
+          "youtubeId": "IMPuax1XohU",
+          "title": "唯一無二・異次元の座り心地！もう他の椅子には座れない KOKUYO ingCloud",
+          "channel": "やまかふぇ yamacafe",
+          "url": "https://www.youtube.com/watch?v=IMPuax1XohU"
+        }
+      ]
+    },
+    {
+      "slug": "herman-miller-embody-gaming",
+      "name": "Herman Miller x Logitech G Embody Gaming Chair",
+      "videoCount": 18,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "c5PAhwEIKSY",
+          "title": "Herman Miller Embody® Reviewed by a Chair Designer",
+          "channel": "Steve The Chair Guy",
+          "url": "https://www.youtube.com/watch?v=c5PAhwEIKSY"
+        },
+        {
+          "youtubeId": "qtQ1cFeIicY",
+          "title": "The Kings of Chairs | Herman Miller Embody vs Haworth Fern",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=qtQ1cFeIicY"
+        },
+        {
+          "youtubeId": "VWWHxdeWQus",
+          "title": "Herman Miller Gaming Embody VERSUS Regular Embody (Heat Buildup, Cushion Differences, etc)",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=VWWHxdeWQus"
+        },
+        {
+          "youtubeId": "N8KM_wI4A3M",
+          "title": "WHAT THEY DON'T TELL YOU! - Herman Miller Embody Gaming Chair",
+          "channel": "FishBee Productions",
+          "url": "https://www.youtube.com/watch?v=N8KM_wI4A3M"
+        },
+        {
+          "youtubeId": "WMbc0x5jwRw",
+          "title": "Unboxing: Logitech x Herman Miller Gaming Embody 💚 Galaxy color",
+          "channel": "nothatminimal",
+          "url": "https://www.youtube.com/watch?v=WMbc0x5jwRw"
+        },
+        {
+          "youtubeId": "S6I-LqsN0u8",
+          "title": "The Embody Chair is Still S-TIER 5 Years Later",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=S6I-LqsN0u8"
+        },
+        {
+          "youtubeId": "b7YB-5dKKX4",
+          "title": "The $1500 Gaming Chair. Worth the Upgrade? | Herman Miller x Logitech Embody Office Chair",
+          "channel": "David Zhang",
+          "url": "https://www.youtube.com/watch?v=b7YB-5dKKX4"
+        },
+        {
+          "youtubeId": "2rnfTifzqcY",
+          "title": "i am obsessed with the herman miller embody gaming chair",
+          "channel": "lilsimsie",
+          "url": "https://www.youtube.com/watch?v=2rnfTifzqcY"
+        },
+        {
+          "youtubeId": "X9ohKk8IV7s",
+          "title": "2.5 Years Later | Herman Miller Embody Gaming Chair | Long Term Review",
+          "channel": "Rekcinol",
+          "url": "https://www.youtube.com/watch?v=X9ohKk8IV7s"
+        },
+        {
+          "youtubeId": "xpkG0FGEogQ",
+          "title": "Introducing the Herman Miller x Logitech G Embody Gaming Chair",
+          "channel": "Herman Miller",
+          "url": "https://www.youtube.com/watch?v=xpkG0FGEogQ"
+        },
+        {
+          "youtubeId": "uEz4UyMqMio",
+          "title": "Herman Miller Embody is the best chair for work and gaming",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=uEz4UyMqMio"
+        },
+        {
+          "youtubeId": "ExbmdD1WS9Q",
+          "title": "This Chair Gets BETTER The More You Sit In It - New vs Old Gaming Herman Miller Gaming Embody",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=ExbmdD1WS9Q"
+        },
+        {
+          "youtubeId": "c9kU2YDEpdE",
+          "title": "New Colorways for Embody Gaming Chair: Nova and Ignite",
+          "channel": "Herman Miller Gaming",
+          "url": "https://www.youtube.com/watch?v=c9kU2YDEpdE"
+        },
+        {
+          "youtubeId": "sE4kcGS2xXY",
+          "title": "Why I Almost Returned the $2,000 Embody Chair – Embody Vs. Haworth Chairs",
+          "channel": "Kurt Yaz",
+          "url": "https://www.youtube.com/watch?v=sE4kcGS2xXY"
+        },
+        {
+          "youtubeId": "BqKJ1uub1n8",
+          "title": "I've Reviewed 100+ Chairs - Here's Why The Herman Miller Gaming Embody is STILL the Best Chair",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=BqKJ1uub1n8"
+        },
+        {
+          "youtubeId": "VJxS_iGtFCA",
+          "title": "Why I Returned the $2,000 Herman Miller Embody Chair (Honest Review)",
+          "channel": "Ty Tries Tech",
+          "url": "https://www.youtube.com/watch?v=VJxS_iGtFCA"
+        },
+        {
+          "youtubeId": "7jh90J4P2hQ",
+          "title": "How To Adjust The Herman Miller Embody Gaming Chair",
+          "channel": "Herman Miller Gaming",
+          "url": "https://www.youtube.com/watch?v=7jh90J4P2hQ"
+        },
+        {
+          "youtubeId": "Xoj3SeI0H2c",
+          "title": "The Embody gaming chair is next level 🤯",
+          "channel": "Dean Wethers",
+          "url": "https://www.youtube.com/watch?v=Xoj3SeI0H2c"
+        }
+      ]
+    },
+    {
+      "slug": "humanscale-freedom",
+      "name": "Humanscale Freedom",
+      "videoCount": 20,
+      "needsMetadataReview": 0,
+      "videos": [
+        {
+          "youtubeId": "KM7cFgm47Us",
+          "title": "Meet our Freedom Headrest Chair",
+          "channel": "Humanscale",
+          "url": "https://www.youtube.com/watch?v=KM7cFgm47Us"
+        },
+        {
+          "youtubeId": "L_sTSY1RfBg",
+          "title": "Got a new chair for the setup the Freedom Headrest Chair by Humanscale. #desksetup #office",
+          "channel": "Thomas Williams",
+          "url": "https://www.youtube.com/watch?v=L_sTSY1RfBg"
+        },
+        {
+          "youtubeId": "ILjz_PzdtBg",
+          "title": "사무용 의자 3대장 중 진짜 대장? 휴먼스케일 프리덤",
+          "channel": "오늘의 데스크",
+          "url": "https://www.youtube.com/watch?v=ILjz_PzdtBg"
+        },
+        {
+          "youtubeId": "ZzVO2A5_Zos",
+          "title": "The Freedom Task Chair by Humanscale 🤍 #workfromhome #officesetup",
+          "channel": "Shawna Lynn",
+          "url": "https://www.youtube.com/watch?v=ZzVO2A5_Zos"
+        },
+        {
+          "youtubeId": "ltcM5XgAhHI",
+          "title": "Interior Design and Bob King celebrate Humanscale's iconic Freedom chair",
+          "channel": "Humanscale",
+          "url": "https://www.youtube.com/watch?v=ltcM5XgAhHI"
+        },
+        {
+          "youtubeId": "VOydt-CLPRk",
+          "title": "Humanscale Freedom Headrest Overview",
+          "channel": "Harvey Thompson",
+          "url": "https://www.youtube.com/watch?v=VOydt-CLPRk"
+        },
+        {
+          "youtubeId": "IhJd4HtQBvk",
+          "title": "Humanscale Freedom Headrest Ergonomic Chair Review",
+          "channel": "BTODtv",
+          "url": "https://www.youtube.com/watch?v=IhJd4HtQBvk"
+        },
+        {
+          "youtubeId": "zBxiJ-X_7KY",
+          "title": "Better than Aeron? Meet the Humanscale Freedom",
+          "channel": "Things and Thoughts",
+          "url": "https://www.youtube.com/watch?v=zBxiJ-X_7KY"
+        },
+        {
+          "youtubeId": "t47obm2QDIM",
+          "title": "The Design Story of Freedom",
+          "channel": "Humanscale",
+          "url": "https://www.youtube.com/watch?v=t47obm2QDIM"
+        },
+        {
+          "youtubeId": "gKAVr4WXxVw",
+          "title": "Humanscale Freedom Chair Review The Human Solution Human Office Polska",
+          "channel": "Human Office Polska Sp. z o.o.",
+          "url": "https://www.youtube.com/watch?v=gKAVr4WXxVw"
+        },
+        {
+          "youtubeId": "RJHXIbS9oLE",
+          "title": "Fixing a Worn Office Chair | Humanscale Freedom Headrest Overview",
+          "channel": "SwitchIntoTurbo",
+          "url": "https://www.youtube.com/watch?v=RJHXIbS9oLE"
+        },
+        {
+          "youtubeId": "EuAG5X8eIcE",
+          "title": "S-Tier Chair...IF you know the hidden adjustment! | Humanscale Freedom w/ Headrest",
+          "channel": "Ahnestly",
+          "url": "https://www.youtube.com/watch?v=EuAG5X8eIcE"
+        },
+        {
+          "youtubeId": "r7-0sXhvRPU",
+          "title": "Humanscale Freedom vs Steelcase Amia | Office Chair Tier List",
+          "channel": "moreBTODtv",
+          "url": "https://www.youtube.com/watch?v=r7-0sXhvRPU"
+        },
+        {
+          "youtubeId": "oy-AVSiGFKg",
+          "title": "Humanscale Freedom Ranked l Office Chair Comfort Tier List",
+          "channel": "moreBTODtv",
+          "url": "https://www.youtube.com/watch?v=oy-AVSiGFKg"
+        },
+        {
+          "youtubeId": "R_6lQDVdvrE",
+          "title": "Humanscale Seating in Kvadrat Textiles",
+          "channel": "Humanscale",
+          "url": "https://www.youtube.com/watch?v=R_6lQDVdvrE"
+        },
+        {
+          "youtubeId": "zsc41XZZk6U",
+          "title": "Humanscale's Freedom Task Chair",
+          "channel": "Humanscale",
+          "url": "https://www.youtube.com/watch?v=zsc41XZZk6U"
+        },
+        {
+          "youtubeId": "t2XAdTdlHRo",
+          "title": "i tried a $1500 Chair - Humanscale Freedom",
+          "channel": "Yousuf Vilayat",
+          "url": "https://www.youtube.com/watch?v=t2XAdTdlHRo"
+        },
+        {
+          "youtubeId": "SmKrGrcaYs0",
+          "title": "Humanscale Freedom Chair. Ergonomic and perfectly matches my oak theme desk setup. #ergonomicchairs",
+          "channel": "Enrico Celiz",
+          "url": "https://www.youtube.com/watch?v=SmKrGrcaYs0"
+        },
+        {
+          "youtubeId": "3r_sA5om3M0",
+          "title": "Humanscale Freedom Chair",
+          "channel": "Ergoprise Ergonomics",
+          "url": "https://www.youtube.com/watch?v=3r_sA5om3M0"
+        },
+        {
+          "youtubeId": "DNwYmLF2_NE",
+          "title": "Humanscale properly fitting the freedom headrest for success",
+          "channel": "Harvey Thompson",
+          "url": "https://www.youtube.com/watch?v=DNwYmLF2_NE"
+        }
+      ]
+    }
+  ]
+}

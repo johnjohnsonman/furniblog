@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Sparkles } from "lucide-react"
+import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ChairAI } from "@/components/chair-ai/chair-ai"
@@ -69,6 +70,12 @@ export default async function ChairAIPage({
             style. <span className="font-medium text-premium-text">chA.I.r</span>{" "}
             matches you to the right seat from our chair catalog, and tells you
             why each one fits.
+          </p>
+          <p className="mx-auto mt-5 max-w-xl text-sm text-premium-text-secondary">
+            Need to check seat height, seat depth, and desk clearance?{" "}
+            <Link href="/chair-fit-calculator" className="font-medium text-premium-text underline underline-offset-4">
+              Use the measurement-based Fit Calculator.
+            </Link>
           </p>
         </section>
 

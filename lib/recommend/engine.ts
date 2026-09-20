@@ -125,6 +125,19 @@ export type ProductFeature = {
   material: Material | null
   /** Structured chair_specs (subset), or null. */
   specs: ChairSpecs | null
+  /** Product record freshness for evidence disclosure. */
+  sourceUpdatedAt?: string | null
+  /** Field-level sources, present after the provenance migration is applied. */
+  fitEvidence?: FitEvidence[]
+}
+
+export type FitEvidence = {
+  fieldKey: string
+  evidenceType: string
+  sourceTitle: string
+  notes?: string
+  sourceUrl: string
+  checkedOn: string
 }
 
 export type Affinity = {
@@ -158,6 +171,8 @@ export type Recommendation = {
   fitStatus: FitStatus
   fitConfidence: FitConfidence
   fit: ProductFit
+  sourceUpdatedAt: string | null
+  fitEvidence: FitEvidence[]
 }
 
 export type RecommendationResponse = {
@@ -637,6 +652,8 @@ export function recommend(
       fitStatus: s.fits.physical.status,
       fitConfidence: s.fits.physical.confidence,
       fit: s.fits.physical,
+      sourceUpdatedAt: s.p.sourceUpdatedAt ?? null,
+      fitEvidence: s.p.fitEvidence ?? [],
     }
   })
 }

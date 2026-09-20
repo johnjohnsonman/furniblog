@@ -53,8 +53,16 @@ type ProductRow = {
   rating_design: number | null
   rating_value: number | null
   thumbnail_url: string | null
+  product_images:
+    | Array<{
+        url: string
+        model_status: string | null
+        sort_order: number | null
+      }>
+    | null
   chair_specs: Record<string, unknown> | null
   brands: { name: string } | { name: string }[] | null
+  updated_at: string | null
 }
 
 function num(v: unknown): number | undefined {
@@ -163,13 +171,29 @@ function buildLift(
   return out
 }
 
-export async function loadRecommenderData(): Promise<{
+export type RecommenderData = {
   products: ProductFeature[]
   affinity: Affinity
-}> {
+}
+
+type FitEvidenceRow = {
+  product_id: string
+  field_key: string
+  evidence_type: string
+  source_title: string
+  source_url: string
+  checked_on: string
+  notes: string | null
+}
+
+const RECOMMENDER_CACHE_MS = 5 * 60 * 1000
+let recommenderCache: { value: RecommenderData; expiresAt: number } | null = null
+let recommenderRequest: Promise<RecommenderData> | null = null
+
+async function loadRecommenderDataUncached(): Promise<RecommenderData> {
   const supabase = createPublicServerClient()
 
-  const [{ data: sessions }, { data: products }] = await Promise.all([
+  const [sessionsResult, productsResult, fitEvidenceResult] = await Promise.all([
     supabase
       .from("review_sessions")
       .select("pain, job, sit_hours, reasons, review_rankings(rank, chair_id)")
@@ -178,10 +202,30 @@ export async function loadRecommenderData(): Promise<{
     supabase
       .from("products")
       .select(
-        "id, slug, name, category, chair_type, price_range, price_usd, best_for, pros, cons, rating_overall, rating_comfort, rating_ergonomics, rating_build_quality, rating_design, rating_value, thumbnail_url, chair_specs, brands(name)"
+        "id, slug, name, category, chair_type, price_range, price_usd, best_for, pros, cons, rating_overall, rating_comfort, rating_ergonomics, rating_build_quality, rating_design, rating_value, thumbnail_url, chair_specs, updated_at, brands(name), product_images(url, model_status, sort_order)"
       )
       .limit(2000),
+    supabase
+      .from("product_fit_evidence")
+      .select("product_id, field_key, evidence_type, source_title, source_url, checked_on, notes")
+      .order("checked_on", { ascending: false })
+      .limit(5000),
   ])
+
+  if (productsResult.error) {
+    throw new Error(`Product catalog query failed: ${productsResult.error.message}`)
+  }
+
+  const sessions = sessionsResult.error ? [] : sessionsResult.data
+  const products = productsResult.data
+  const fitEvidenceByProduct = new Map<string, FitEvidenceRow[]>()
+  if (!fitEvidenceResult.error) {
+    for (const row of (fitEvidenceResult.data ?? []) as FitEvidenceRow[]) {
+      const existing = fitEvidenceByProduct.get(row.product_id) ?? []
+      existing.push(row)
+      fitEvidenceByProduct.set(row.product_id, existing)
+    }
+  }
 
   // ---- aggregate review signals ----
   const picks = new Map<string, number>()
@@ -248,6 +292,9 @@ export async function loadRecommenderData(): Promise<{
   const features: ProductFeature[] = ((products ?? []) as ProductRow[]).map((p) => {
     const pros = Array.isArray(p.pros) ? p.pros : []
     const text = `${p.best_for ?? ""} ${pros.join(" ")} ${p.name}`.toLowerCase()
+    const verifiedImage = (p.product_images ?? [])
+      .filter((image) => image.model_status === "verified")
+      .sort((a, b) => (a.sort_order ?? 999) - (b.sort_order ?? 999))[0]?.url
     return {
       id: p.id,
       slug: p.slug,
@@ -263,11 +310,40 @@ export async function loadRecommenderData(): Promise<{
       editorial: editorialScore(p),
       hasDirectBuy: hasDirectBuy(p.slug),
       picks: picks.get(p.id) ?? 0,
-      image: p.thumbnail_url ?? null,
+      image: verifiedImage ?? p.thumbnail_url ?? null,
       material: deriveMaterial(p.chair_type, text),
       specs: extractSpecs(p.chair_specs),
+      sourceUpdatedAt: p.updated_at,
+      fitEvidence: (fitEvidenceByProduct.get(p.id) ?? []).map((row) => ({
+        fieldKey: row.field_key,
+        evidenceType: row.evidence_type,
+        sourceTitle: row.source_title,
+        sourceUrl: row.source_url,
+        checkedOn: row.checked_on,
+        notes: row.notes ?? undefined,
+      })),
     }
   })
 
   return { products: features, affinity }
+}
+
+/**
+ * Catalog and approved-review signals change much less often than calculator
+ * inputs. Keep a short server-process cache so every result transition does
+ * not repeat the same two Supabase reads. Failed reads are never cached.
+ */
+export async function loadRecommenderData(): Promise<RecommenderData> {
+  const now = Date.now()
+  if (recommenderCache && recommenderCache.expiresAt > now) return recommenderCache.value
+  if (recommenderRequest) return recommenderRequest
+
+  recommenderRequest = loadRecommenderDataUncached()
+  try {
+    const value = await recommenderRequest
+    recommenderCache = { value, expiresAt: Date.now() + RECOMMENDER_CACHE_MS }
+    return value
+  } finally {
+    recommenderRequest = null
+  }
 }
