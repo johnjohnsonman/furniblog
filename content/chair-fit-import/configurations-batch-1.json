@@ -1,0 +1,142 @@
+[
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-soji",
+    "configuration_key": "standard-sliding-seat",
+    "label": "US standard Soji with sliding seat",
+    "options": {
+      "seat": "sliding"
+    },
+    "seat_height_min": 41.7,
+    "seat_height_max": 53.3,
+    "seat_depth_min": 41.3,
+    "seat_depth_max": 47.6,
+    "seat_width": 50.8,
+    "weight_capacity": 158.8,
+    "source_title": "Haworth Soji US product dimensions",
+    "source_url": "https://store.haworth.com/products/soji-office-chair",
+    "notes": "Not XL or stool. Source checked 2026-09-20. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-very-task",
+    "configuration_key": "without-forward-tilt",
+    "label": "US Very without forward tilt",
+    "options": {
+      "forward_tilt": false
+    },
+    "seat_height_min": 40.6,
+    "seat_height_max": 53.3,
+    "seat_depth_min": 40.6,
+    "seat_depth_max": 48.3,
+    "seat_width": 48.3,
+    "weight_capacity": 158.8,
+    "source_title": "Haworth Very US product dimensions",
+    "source_url": "https://store.haworth.com/products/very-office-chair",
+    "notes": "US task chair; not conference or stacking. Manufacturer distinguishes 325 lb with tilt and 350 lb without tilt. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-very-task",
+    "configuration_key": "with-forward-tilt",
+    "label": "US Very with forward tilt",
+    "options": {
+      "forward_tilt": true
+    },
+    "seat_height_min": 40.6,
+    "seat_height_max": 53.3,
+    "seat_depth_min": 40.6,
+    "seat_depth_max": 48.3,
+    "seat_width": 48.3,
+    "weight_capacity": 147.4,
+    "source_title": "Haworth Very US product dimensions",
+    "source_url": "https://store.haworth.com/products/very-office-chair",
+    "notes": "US task chair; not conference or stacking. Manufacturer distinguishes 325 lb with tilt and 350 lb without tilt. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-zody-ii",
+    "configuration_key": "standard-without-lumbar",
+    "label": "US Zody standard posture without lumbar",
+    "options": {
+      "posture": "standard",
+      "lumbar": false
+    },
+    "seat_height_min": 40.6,
+    "seat_height_max": 53.3,
+    "seat_depth_min": 44.5,
+    "seat_depth_max": 51.3,
+    "seat_width": 49.5,
+    "source_title": "Haworth current US Zody product dimensions",
+    "source_url": "https://store.haworth.com/products/zody-office-chair",
+    "notes": "DRAFT RESEARCH: dimensions organized by independently published posture/lumbar options; exact purchasable SKU combination and Zody II catalog mapping still require confirmation. Forward tilt is unspecified so capacity is deliberately absent. Do not publish or activate from this seed. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-zody-ii",
+    "configuration_key": "standard-with-lumbar",
+    "label": "US Zody standard posture with lumbar",
+    "options": {
+      "posture": "standard",
+      "lumbar": true
+    },
+    "seat_height_min": 40.6,
+    "seat_height_max": 53.3,
+    "seat_depth_min": 42.7,
+    "seat_depth_max": 49.5,
+    "seat_width": 49.5,
+    "source_title": "Haworth current US Zody product dimensions",
+    "source_url": "https://store.haworth.com/products/zody-office-chair",
+    "notes": "DRAFT RESEARCH: dimensions organized by independently published posture/lumbar options; exact purchasable SKU combination and Zody II catalog mapping still require confirmation. Forward tilt is unspecified so capacity is deliberately absent. Do not publish or activate from this seed. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-zody-ii",
+    "configuration_key": "dual-without-lumbar",
+    "label": "US Zody dual posture without lumbar",
+    "options": {
+      "posture": "dual",
+      "lumbar": false
+    },
+    "seat_height_min": 44.5,
+    "seat_height_max": 62.2,
+    "seat_depth_min": 44.5,
+    "seat_depth_max": 51.3,
+    "seat_width": 49.5,
+    "source_title": "Haworth current US Zody product dimensions",
+    "source_url": "https://store.haworth.com/products/zody-office-chair",
+    "notes": "DRAFT RESEARCH: dimensions organized by independently published posture/lumbar options; exact purchasable SKU combination and Zody II catalog mapping still require confirmation. Forward tilt is unspecified so capacity is deliberately absent. Do not publish or activate from this seed. Arm-floor values unknown."
+  },
+  {
+    "market_code": "US",
+    "status": "draft",
+    "checked_on": "2026-09-20",
+    "product_slug": "haworth-zody-ii",
+    "configuration_key": "dual-with-lumbar",
+    "label": "US Zody dual posture with lumbar",
+    "options": {
+      "posture": "dual",
+      "lumbar": true
+    },
+    "seat_height_min": 44.5,
+    "seat_height_max": 62.2,
+    "seat_depth_min": 42.7,
+    "seat_depth_max": 49.5,
+    "seat_width": 49.5,
+    "source_title": "Haworth current US Zody product dimensions",
+    "source_url": "https://store.haworth.com/products/zody-office-chair",
+    "notes": "DRAFT RESEARCH: dimensions organized by independently published posture/lumbar options; exact purchasable SKU combination and Zody II catalog mapping still require confirmation. Forward tilt is unspecified so capacity is deliberately absent. Do not publish or activate from this seed. Arm-floor values unknown."
+  }
+]
