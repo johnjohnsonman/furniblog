@@ -4,7 +4,7 @@ const { resolve } = require('node:path')
 const vm = require('node:vm')
 
 const source = readFileSync(resolve(__dirname, '../components/analytics/GoogleAnalytics.tsx'), 'utf8')
-const match = source.match(/const bootstrap = `([\s\S]*?)`\n/)
+const match = source.match(/const bootstrap = `([\s\S]*?)`\r?\n/)
 assert(match, 'GA bootstrap script must remain testable')
 
 function boot({ webdriver = false, search = '', stored = null } = {}) {
