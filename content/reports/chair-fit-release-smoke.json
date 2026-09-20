@@ -1,0 +1,55 @@
+{
+  "base": "https://www.chairpedia.com",
+  "checkedAt": "2026-09-20T08:52:15.110Z",
+  "browserTest": false,
+  "checks": [
+    {
+      "route": "/chair-fit-calculator?__analytics=off",
+      "status": 200,
+      "milliseconds": 497,
+      "serverTiming": null
+    },
+    {
+      "route": "/products/steelcase-leap-v2?__analytics=off",
+      "status": 200,
+      "milliseconds": 3045,
+      "serverTiming": null
+    },
+    {
+      "route": "/stores?__analytics=off",
+      "status": 200,
+      "milliseconds": 265,
+      "serverTiming": null
+    },
+    {
+      "route": "/api/chair-fit/configurations?product=haworth-very-task&market=US",
+      "status": 200,
+      "milliseconds": 1192,
+      "serverTiming": null
+    },
+    {
+      "route": "/api/chair-fit/configurations?product=haworth-zody-ii&market=US",
+      "status": 200,
+      "milliseconds": 1085,
+      "serverTiming": null
+    },
+    {
+      "route": "/api/chair-fit/configurations",
+      "status": 200,
+      "milliseconds": 862,
+      "serverTiming": null
+    },
+    {
+      "route": "/api/recommend",
+      "status": 200,
+      "milliseconds": 268,
+      "serverTiming": "catalog;dur=0.4, ranking;dur=4.6, showrooms;dur=10.0, total;dur=15.0"
+    },
+    {
+      "route": "/api/recommend",
+      "status": 200,
+      "milliseconds": 254,
+      "serverTiming": "catalog;dur=0.3, ranking;dur=3.4, showrooms;dur=9.5, total;dur=13.3"
+    }
+  ]
+}
