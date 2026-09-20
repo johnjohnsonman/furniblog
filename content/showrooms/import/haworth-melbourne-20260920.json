@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "haworth-melbourne-showroom",
+    "name": "Haworth Melbourne Showroom",
+    "status": "published",
+    "country_code": "AU",
+    "city": "Melbourne",
+    "address": "75-77 Flinders Lane, Melbourne, Victoria 3000, Australia",
+    "unit": "Level 1",
+    "latitude": -37.8150759,
+    "longitude": 144.9722028,
+    "timezone": "Australia/Melbourne",
+    "phone": "+61 3 8643 6300",
+    "website_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html",
+    "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html",
+    "checked_on": "2026-09-20",
+    "brand_slugs": "haworth",
+    "official_brand_slugs": "haworth",
+    "store_type": "brand_showroom",
+    "visit_notes": "Haworth describes a Test Drive area for task chairs. Contact the showroom before visiting to confirm access, opening hours and the exact chair you want to try. Specific models are not verified.",
+    "transport_notes": "Level 1. Coordinates use the place pin from the Google Maps directions link on Haworth's official page, not the map viewport centre."
+  }
+]

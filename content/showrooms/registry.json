@@ -41030,6 +41030,45 @@
         }
       ],
       "models": []
+    },
+    {
+      "id": "250a15c9-736e-4307-ad50-3150d0efbaa1",
+      "slug": "haworth-melbourne-showroom",
+      "name": "Haworth Melbourne Showroom",
+      "status": "published",
+      "country_code": "AU",
+      "city": "Melbourne",
+      "region": "",
+      "address": "75-77 Flinders Lane, Melbourne, Victoria 3000, Australia",
+      "unit": "Level 1",
+      "latitude": -37.8150759,
+      "longitude": 144.9722028,
+      "timezone": "Australia/Melbourne",
+      "phone": "+61 3 8643 6300",
+      "email": "",
+      "website_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html",
+      "booking_url": "",
+      "store_type": "brand_showroom",
+      "appointment": "unknown",
+      "hours": {
+        "weekly": {},
+        "exceptions": {}
+      },
+      "visit_notes": "Haworth describes a Test Drive area for task chairs. Contact the showroom before visiting to confirm access, opening hours and the exact chair you want to try. Specific models are not verified.",
+      "transport_notes": "Level 1. Coordinates use the place pin from the Google Maps directions link on Haworth's official page, not the map viewport centre.",
+      "photos": [],
+      "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html",
+      "checked_on": "2026-09-20",
+      "brands": [
+        {
+          "brand_id": "585c98d2-0bc3-4cba-872c-ef97f21f245b",
+          "carried": "confirmed",
+          "official": "confirmed",
+          "source_url": "https://www.haworth.com/na/en/spaces/haworth-spaces/melbourne.html",
+          "checked_on": "2026-09-20"
+        }
+      ],
+      "models": []
     }
   ]
 }
