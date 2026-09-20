@@ -33,6 +33,7 @@ import { Button } from "@/components/ui/button"
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Armchair },
+  { href: "/admin/fit-configurations", label: "Fit Configurations", icon: GitCompareArrows },
   { href: "/admin/chairpedia", label: "Chairpedia", icon: BookOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/carousel", label: "IG Carousel", icon: Instagram },
