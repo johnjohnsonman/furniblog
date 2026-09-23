@@ -32,6 +32,7 @@ export function VerifiedComparison({
   const recordA = getPilotProduct(pilot, "a")
   const recordB = getPilotProduct(pilot, "b")
   const sources = getPilotSources(pilot)
+  const productLabel = (product: PublicComparisonProduct) => product.name.toLowerCase().startsWith(product.brand.toLowerCase()) ? product.name : `${product.brand} ${product.name}`
   return (
     <div className="space-y-12">
       <section aria-labelledby="comparison-summary">
@@ -108,7 +109,7 @@ export function VerifiedComparison({
         <h2 id="related-heading" className="font-serif text-2xl font-medium">Related records</h2>
         <div className="mt-4 grid gap-2">
           {[productA, productB].filter((product): product is PublicComparisonProduct => Boolean(product)).map((product) => (
-            <Link key={product.slug} href={`/products/${product.slug}`} className="border-t border-border py-3 text-sm hover:underline">{product.brand} {product.name} product record →</Link>
+            <Link key={product.slug} href={`/products/${product.slug}`} className="border-t border-border py-3 text-sm hover:underline">{productLabel(product)} product record →</Link>
           ))}
           {pilot.relatedComparisonSlugs.map((slug) => (
             <Link key={slug} href={`/compare/${slug}`} className="border-t border-border py-3 text-sm hover:underline">Related verified comparison →</Link>

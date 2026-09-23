@@ -116,8 +116,9 @@ export default async function ComparePage({
   const pageDescription = pilot?.description ?? c.excerpt ?? c.subtitle ?? null
 
   const updatedAt = c.updated_at ?? c.published_at
-  const updatedStr = updatedAt
-    ? new Date(updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
+  const displayUpdatedAt = pilot ? "2026-09-23" : updatedAt
+  const updatedStr = displayUpdatedAt
+    ? new Date(displayUpdatedAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : null
 
   const articleSchema = generateArticleSchema({
@@ -168,7 +169,7 @@ export default async function ComparePage({
 
           {c.hero_image_url && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={c.hero_image_url} alt={c.title} className="w-full rounded-xl mb-8" />
+            <img src={c.hero_image_url} alt={`${pageTitle} product comparison`} className="w-full rounded-xl mb-8" />
           )}
 
           {!pilot && (c.productA || c.productB) && (
@@ -209,11 +210,11 @@ export default async function ComparePage({
             </div>
           )}
 
-          <BuyingGuideRail title="Choose and buy with confidence" />
+          {!pilot && <BuyingGuideRail title="Choose and buy with confidence" />}
           <ContentStandardsNote kind="comparison" />
         </article>
       </main>
-      <Footer />
+      {pilot ? <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground"><p>Chairpedia documents model-specific sources and configuration conditions.</p><div className="mt-3 flex justify-center gap-4"><Link href="/editorial-policy" className="underline underline-offset-4">Editorial policy</Link><Link href="/affiliate-disclosure" className="underline underline-offset-4">Affiliate disclosure</Link></div></footer> : <Footer />}
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
