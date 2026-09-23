@@ -15,5 +15,8 @@ assert.match(robots, /disallow: "\/"/, "preview robots.txt block missing")
 assert.match(page, /!c\.requiresSourceReview && !pilot/, "legacy FAQ must not reach pilot pages")
 assert.doesNotMatch(page, /generateReviewSchema|generateAggregateRatingSchema|generateProductSchema/, "unsupported structured data generator found")
 assert.match(page, /c\.requiresSourceReview \? <section/, "non-pilot safety block missing")
+assert.match(page, /!pilot && <BuyingGuideRail/, "pilot must not render generic commercial guide rail")
+assert.match(page, /pilot \? <footer/, "pilot must use the neutral footer")
+assert.match(page, /alt=\{`\$\{pageTitle\} product comparison`\}/, "pilot image alt must not reuse legacy title")
 
 console.log("comparison preview safety tests passed")
