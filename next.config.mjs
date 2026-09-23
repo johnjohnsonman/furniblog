@@ -18,6 +18,10 @@ const nextConfig = {
       },
     ],
   },
+  async headers() {
+    if (process.env.VERCEL_ENV !== "preview" && process.env.CHAIRPEDIA_PREVIEW !== "true") return []
+    return [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }]
+  },
   async redirects() {
     return [
       // 2026-09-12 hygiene: published posts that had auto-generated slugs.

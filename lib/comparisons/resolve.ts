@@ -2,6 +2,8 @@ import { comparisonMedia } from "./card-media"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { ComparisonProductInput } from "@/lib/comparisons/generate"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
+import { filterChairSpecsByEvidence } from "@/lib/data/product-fit-evidence"
+import { comparisonNeedsSourceReview, neutralComparisonSummary } from "@/lib/comparisons/public-safety"
 
 /** Assemble one product's grounding data for the AI generator (admin/server). */
 export async function loadProductInput(
@@ -20,7 +22,7 @@ export async function loadProductInput(
   // Exclude hidden reviews (P1-3) from the pros/cons that feed comparison pages
   // and the AI generator. NOTE: comparisons already generated store their prose
   // in content_html — regenerate those to drop pros/cons from now-excluded rows.
-  const { data: reviews } = await runPublicReviewQuery((applyFilter) => {
+  const [{ data: reviews }, { data: fitEvidence }] = await Promise.all([runPublicReviewQuery((applyFilter) => {
     let q = supabase
       .from("reviews")
       .select("summary_ko, scores, pros, cons")
@@ -28,7 +30,7 @@ export async function loadProductInput(
       .limit(12)
     if (applyFilter) q = q.eq("excluded", false)
     return q
-  })
+  }), supabase.from("product_fit_evidence").select("field_key").eq("product_id", productId)])
 
   const rows = reviews ?? []
   const ratings = rows
@@ -61,7 +63,10 @@ export async function loadProductInput(
     brand,
     priceLabel,
     category: (p.category as string) ?? "office",
-    specs: (p.chair_specs as Record<string, unknown> | null) ?? null,
+    specs: filterChairSpecsByEvidence(
+      p.chair_specs as Record<string, unknown> | null,
+      new Set((fitEvidence ?? []).map((row) => row.field_key as string))
+    ) ?? null,
     description: (p.description_en as string) || (p.description_ko as string) || "",
     rating,
     reviewCount: rows.length,
@@ -93,6 +98,7 @@ export type PublicComparison = {
   updated_at: string | null
   productA: PublicComparisonProduct | null
   productB: PublicComparisonProduct | null
+  requiresSourceReview: boolean
 }
 
 async function loadPublicProduct(
@@ -132,6 +138,7 @@ export async function getPublicComparison(
     loadPublicProduct(supabase, (data.product_a_id as string | null) ?? null),
     loadPublicProduct(supabase, (data.product_b_id as string | null) ?? null),
   ])
+  const content = (data.content_html as string) ?? ""
 
   return {
     slug: data.slug as string,
@@ -141,7 +148,7 @@ export async function getPublicComparison(
     seo_title: (data.seo_title as string | null) ?? null,
     seo_description: (data.seo_description as string | null) ?? null,
     hero_image_url: (data.hero_image_url as string | null) ?? null,
-    content_html: (data.content_html as string) ?? "",
+    content_html: content,
     tier: (data.tier as string | null) ?? null,
     faq: Array.isArray(data.faq)
       ? (data.faq as { q: string; a: string }[]).filter((f) => f && f.q && f.a)
@@ -150,6 +157,7 @@ export async function getPublicComparison(
     updated_at: (data.updated_at as string | null) ?? null,
     productA,
     productB,
+    requiresSourceReview: comparisonNeedsSourceReview(data.subtitle as string | null, data.excerpt as string | null, data.seo_description as string | null, content),
   }
 }
 
@@ -176,7 +184,7 @@ export async function getComparisonCards(
     slug: c.slug as string,
     title: c.title as string,
     subtitle: (c.subtitle as string | null) ?? null,
-    excerpt: (c.excerpt as string | null) ?? null,
+    excerpt: comparisonNeedsSourceReview(c.excerpt as string | null, c.subtitle as string | null) ? neutralComparisonSummary() : (c.excerpt as string | null) ?? null,
     hero_image_url: (c.hero_image_url as string | null) ?? null,
     tier: (c.tier as string | null) ?? null,
   }))
