@@ -13,6 +13,9 @@ import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { wrapTables } from "@/lib/blog/postprocess"
+import { neutralComparisonSummary } from "@/lib/comparisons/public-safety"
+import { getVerifiedComparisonPilot } from "@/lib/comparisons/verified-pilots"
+import { VerifiedComparison } from "@/components/compare/verified-comparison"
 import {
   generateArticleSchema,
   generateBreadcrumbSchema,
@@ -21,6 +24,10 @@ import {
 } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
+
+function isPreviewEnvironment(): boolean {
+  return process.env.VERCEL_ENV === "preview" || process.env.CHAIRPEDIA_PREVIEW === "true"
+}
 
 export async function generateMetadata({
   params,
@@ -31,17 +38,20 @@ export async function generateMetadata({
   const supabase = createPublicServerClient()
   const c = await getPublicComparison(supabase, slug)
   if (!c) return { title: "Comparison" }
-  const title = (c.seo_title?.trim() || c.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
-  const description = c.seo_description?.trim() || c.excerpt?.trim() || c.subtitle?.trim() || undefined
+  const pilot = getVerifiedComparisonPilot(c.slug)
+  const preview = isPreviewEnvironment()
+  const title = (pilot?.title || c.seo_title?.trim() || c.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
+  const description = pilot?.description || (c.requiresSourceReview ? neutralComparisonSummary(c.productA?.name, c.productB?.name) : c.seo_description?.trim() || c.excerpt?.trim() || c.subtitle?.trim() || undefined)
   return {
     title,
     description,
-    alternates: { canonical: `/compare/${c.slug}` },
+    alternates: preview ? undefined : { canonical: `/compare/${c.slug}` },
+    robots: preview ? { index: false, follow: false, nocache: true } : undefined,
     openGraph: {
       type: "article",
       title,
       description,
-      url: `/compare/${c.slug}`,
+      url: preview ? undefined : `/compare/${c.slug}`,
       images: c.hero_image_url ? [c.hero_image_url] : undefined,
     },
   }
@@ -100,6 +110,10 @@ export default async function ComparePage({
   const supabase = createPublicServerClient()
   const c = await getPublicComparison(supabase, slug)
   if (!c) notFound()
+  const pilot = getVerifiedComparisonPilot(c.slug)
+  const preview = isPreviewEnvironment()
+  const pageTitle = pilot?.title ?? c.title
+  const pageDescription = pilot?.description ?? c.excerpt ?? c.subtitle ?? null
 
   const updatedAt = c.updated_at ?? c.published_at
   const updatedStr = updatedAt
@@ -107,8 +121,8 @@ export default async function ComparePage({
     : null
 
   const articleSchema = generateArticleSchema({
-    headline: c.title,
-    description: c.excerpt ?? c.subtitle ?? null,
+    headline: pageTitle,
+    description: pageDescription,
     path: `/compare/${c.slug}`,
     datePublished: c.published_at,
     dateModified: updatedAt,
@@ -117,7 +131,7 @@ export default async function ComparePage({
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "/" },
     { name: "Compare", url: "/compare" },
-    { name: c.title, url: `/compare/${c.slug}` },
+    { name: pageTitle, url: `/compare/${c.slug}` },
   ])
   const listSchema = generateItemListSchema(
     [c.productA, c.productB]
@@ -128,6 +142,7 @@ export default async function ComparePage({
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
+      {preview && <div className="border-b border-[#b98a4b] bg-[#fff7e8] px-4 py-2 text-center text-xs font-medium uppercase tracking-[.12em] text-[#76501f]">Chairpedia preview · Not for publication</div>}
       <main className="flex-1">
         <article className="mx-auto max-w-3xl px-4 py-10">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
@@ -138,9 +153,9 @@ export default async function ComparePage({
 
           <header className="mb-8">
             <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
-              {c.title}
+              {pageTitle}
             </h1>
-            {c.subtitle && <p className="mt-3 text-lg text-muted-foreground">{c.subtitle}</p>}
+            {pilot ? <p className="mt-3 text-lg text-muted-foreground">{pilot.description}</p> : c.subtitle && !c.requiresSourceReview && <p className="mt-3 text-lg text-muted-foreground">{c.subtitle}</p>}
             <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
               <span>By the{" "}
                 <Link href="/about" className="font-medium text-foreground hover:underline">
@@ -156,7 +171,7 @@ export default async function ComparePage({
             <img src={c.hero_image_url} alt={c.title} className="w-full rounded-xl mb-8" />
           )}
 
-          {(c.productA || c.productB) && (
+          {!pilot && (c.productA || c.productB) && (
             <div className="mb-8 grid gap-3">
               <p className="text-sm text-muted-foreground" data-testid="comparison-affiliate-disclosure">
                 As an Amazon Associate I earn from qualifying purchases. Search links may include other models or accessories; confirm the exact item, seller and condition before buying.
@@ -166,12 +181,9 @@ export default async function ComparePage({
             </div>
           )}
 
-          <div
-            className="chairpedia-body"
-            dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(c.content_html)) }}
-          />
+          {pilot ? <VerifiedComparison pilot={pilot} productA={c.productA} productB={c.productB} /> : c.requiresSourceReview ? <section className="border border-[#171717] bg-[#f5f1e8] p-6" aria-labelledby="source-review-heading"><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#8a5a20]">Source review in progress</p><h2 id="source-review-heading" className="mt-2 font-serif text-2xl">This comparison is being checked against model-specific sources.</h2><p className="mt-3 leading-7 text-muted-foreground">Earlier copy included claims whose exact model, configuration or source could not be confirmed. Chairpedia has withheld those claims while preserving access to both product records.</p></section> : <div className="chairpedia-body" dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(c.content_html)) }} />}
 
-          {c.faq.length > 0 && (
+          {c.faq.length > 0 && !c.requiresSourceReview && !pilot && (
             <section className="mt-12 border-t border-border pt-8">
               <h2 className="font-serif text-2xl font-medium text-foreground">
                 Frequently asked
@@ -187,7 +199,7 @@ export default async function ComparePage({
             </section>
           )}
 
-          {(c.productA || c.productB) && (
+          {!pilot && (c.productA || c.productB) && (
             <div className="mt-12 grid gap-3">
               <p className="text-sm text-muted-foreground">
                 Affiliate links: we may earn a commission from qualifying purchases. Check current delivery, return and warranty terms on Amazon.
@@ -206,7 +218,7 @@ export default async function ComparePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(listSchema) }} />
-      {c.faq.length > 0 && (
+      {c.faq.length > 0 && !c.requiresSourceReview && !pilot && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQSchema(c.faq)) }} />
       )}
     </div>
