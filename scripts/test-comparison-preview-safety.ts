@@ -4,12 +4,14 @@ import { resolve } from "node:path"
 
 const page = readFileSync(resolve("app/compare/[slug]/page.tsx"), "utf8")
 const component = readFileSync(resolve("components/compare/verified-comparison.tsx"), "utf8")
+const publication = readFileSync(resolve("lib/comparisons/publication.ts"), "utf8")
 const robots = readFileSync(resolve("app/robots.ts"), "utf8")
 const nextConfig = readFileSync(resolve("next.config.mjs"), "utf8")
 
-assert.match(page, /VERCEL_ENV === "preview"/, "comparison preview detection missing")
-assert.match(page, /robots: preview \? \{ index: false, follow: false/, "preview metadata noindex missing")
-assert.match(page, /alternates: preview \? undefined/, "preview canonical must be omitted")
+assert.match(publication, /VERCEL_ENV === "preview"/, "comparison preview detection missing")
+assert.match(publication, /robots: preview \? \{ index: false/, "preview metadata noindex missing")
+assert.match(publication, /alternates: preview \? undefined/, "preview canonical must be omitted")
+assert.match(page, /robots: publication\.robots/, "comparison metadata must use the shared publication policy")
 assert.match(page, /Chairpedia preview · Not for publication/, "preview disclosure missing")
 assert.match(nextConfig, /X-Robots-Tag[\s\S]*noindex, nofollow/, "preview response header missing")
 assert.match(robots, /disallow: "\/"/, "preview robots.txt block missing")

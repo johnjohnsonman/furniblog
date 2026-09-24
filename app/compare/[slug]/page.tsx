@@ -16,6 +16,7 @@ import { wrapTables } from "@/lib/blog/postprocess"
 import { neutralComparisonSummary } from "@/lib/comparisons/public-safety"
 import { getVerifiedComparisonPilot } from "@/lib/comparisons/verified-pilots"
 import { VerifiedComparison } from "@/components/compare/verified-comparison"
+import { comparisonPublicationMetadata, isChairpediaPreview } from "@/lib/comparisons/publication"
 import {
   generateArticleSchema,
   generateBreadcrumbSchema,
@@ -24,10 +25,6 @@ import {
 } from "@/lib/seo/schemas"
 
 export const dynamic = "force-dynamic"
-
-function isPreviewEnvironment(): boolean {
-  return process.env.VERCEL_ENV === "preview" || process.env.CHAIRPEDIA_PREVIEW === "true"
-}
 
 export async function generateMetadata({
   params,
@@ -39,19 +36,20 @@ export async function generateMetadata({
   const c = await getPublicComparison(supabase, slug)
   if (!c) return { title: "Comparison" }
   const pilot = getVerifiedComparisonPilot(c.slug)
-  const preview = isPreviewEnvironment()
+  const preview = isChairpediaPreview()
+  const publication = comparisonPublicationMetadata(c.slug, preview)
   const title = (pilot?.title || c.seo_title?.trim() || c.title).replace(/\s*\|\s*(?:Furniblog|Chairpedia)\s*$/i, "")
   const description = pilot?.description || (c.requiresSourceReview ? neutralComparisonSummary(c.productA?.name, c.productB?.name) : c.seo_description?.trim() || c.excerpt?.trim() || c.subtitle?.trim() || undefined)
   return {
     title,
     description,
-    alternates: preview ? undefined : { canonical: `/compare/${c.slug}` },
-    robots: preview ? { index: false, follow: false, nocache: true } : undefined,
+    alternates: publication.alternates,
+    robots: publication.robots,
     openGraph: {
       type: "article",
       title,
       description,
-      url: preview ? undefined : `/compare/${c.slug}`,
+      url: publication.openGraphUrl,
       images: c.hero_image_url ? [c.hero_image_url] : undefined,
     },
   }
@@ -111,7 +109,7 @@ export default async function ComparePage({
   const c = await getPublicComparison(supabase, slug)
   if (!c) notFound()
   const pilot = getVerifiedComparisonPilot(c.slug)
-  const preview = isPreviewEnvironment()
+  const preview = isChairpediaPreview()
   const pageTitle = pilot?.title ?? c.title
   const pageDescription = pilot?.description ?? c.excerpt ?? c.subtitle ?? null
 
