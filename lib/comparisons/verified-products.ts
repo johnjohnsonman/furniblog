@@ -10,6 +10,7 @@ export type VerifiedProductFact = {
 }
 
 export type VerifiedProductRecord = {
+  slug: string
   name: string
   modelScope: string
   market: string | null
@@ -18,7 +19,7 @@ export type VerifiedProductRecord = {
 
 export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord> = {
   aeron: {
-    name: "Herman Miller Aeron", modelScope: "Current Aeron work chair; not Aeron Classic", market: null,
+    slug: "herman-miller-aeron", name: "Herman Miller Aeron", modelScope: "Current Aeron work chair; not Aeron Classic", market: null,
     facts: {
       fit: { value: "Three chair sizes: A, B and C", status: "direct", sourceIds: ["aeron-specs", "aeron-sheet"] },
       seat: { value: "Fixed dimensions differ by chair size", status: "conditional", sourceIds: ["aeron-specs"] },
@@ -28,7 +29,7 @@ export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord
     },
   },
   embody: {
-    name: "Herman Miller Embody", modelScope: "Current Embody work chair", market: "US product configuration where stated",
+    slug: "herman-miller-embody", name: "Herman Miller Embody", modelScope: "Current Embody work chair", market: "US product configuration where stated",
     facts: {
       fit: { value: "Adjustable seat depth", status: "direct", sourceIds: ["embody-guide"] },
       seat: { value: "Adjustable seat depth", status: "direct", sourceIds: ["embody-guide"] },
@@ -37,7 +38,7 @@ export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord
     },
   },
   leap: {
-    name: "Steelcase Leap", modelScope: "Current Leap work chair in the linked specification guide", market: null,
+    slug: "steelcase-leap-v2", name: "Steelcase Leap", modelScope: "Current Leap work chair in the linked specification guide", market: null,
     facts: {
       fit: { value: "Adjustable seat depth within the chair configuration", status: "direct", sourceIds: ["leap-guide"] },
       seat: { value: "Adjustable seat depth", status: "direct", sourceIds: ["leap-guide"] },
@@ -47,7 +48,7 @@ export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord
     },
   },
   gesture: {
-    name: "Steelcase Gesture", modelScope: "Current Gesture office chair", market: null,
+    slug: "steelcase-gesture", name: "Steelcase Gesture", modelScope: "Current Gesture office chair", market: null,
     facts: {
       fit: { value: "Seat-height and seat-depth controls", status: "direct", sourceIds: ["gesture-product"] },
       seat: { value: "Seat-height and seat-depth controls", status: "direct", sourceIds: ["gesture-product"] },
@@ -58,7 +59,7 @@ export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord
     },
   },
   "mirra-2": {
-    name: "Herman Miller Mirra 2", modelScope: "Current Mirra 2 work chair", market: null,
+    slug: "herman-miller-mirra-2", name: "Herman Miller Mirra 2", modelScope: "Current Mirra 2 work chair", market: null,
     facts: {
       fit: { value: "Configuration-dependent adjustments", status: "conditional", sourceIds: ["mirra-specs"] },
       seat: { value: "Fixed-seat or FlexFront configuration", status: "conditional", sourceIds: ["mirra-specs"] },

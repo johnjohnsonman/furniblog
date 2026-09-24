@@ -7,14 +7,9 @@ export type VerifiedComparisonPilot = {
   productA: VerifiedProductKey; productB: VerifiedProductKey
   rows: VerifiedComparisonRow[]
   conditions: { title: string; body: string; sourceIds: VerifiedSourceId[] }[]
+  checkItems: string[]
   sourceIds: VerifiedSourceId[]; relatedComparisonSlugs: string[]
 }
-
-const trialConditions = [
-  { title: "Check the seat in your working posture", body: "Set the documented seat controls with your feet supported, then compare usable depth and pressure at the seat edge.", sourceIds: [] as VerifiedSourceId[] },
-  { title: "Check desk and arm clearance", body: "Set the available arm controls for typing and confirm clearance with your desk on the exact configuration.", sourceIds: [] as VerifiedSourceId[] },
-  { title: "Test the back through its full range", body: "Use the documented back and tilt controls on the exact configuration and compare support while upright and reclining.", sourceIds: [] as VerifiedSourceId[] },
-]
 
 const commonRows: VerifiedComparisonRow[] = [
   { label: "Fit approach", fact: "fit" }, { label: "Seat adjustment", fact: "seat" },
@@ -25,27 +20,29 @@ const commonRows: VerifiedComparisonRow[] = [
 const pilots: VerifiedComparisonPilot[] = [
   {
     slug: "herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn",
-    title: "Herman Miller Aeron vs Embody: Fit and Adjustment Comparison",
-    description: "Compare the documented sizing, seat adjustment and recline controls of the Herman Miller Aeron and Embody.",
-    summary: ["Aeron organizes fit around three chair sizes, while Embody provides adjustable seat depth.", "The useful distinction is size selection versus the seat-depth and BackFit controls you can test on the exact chair."],
-    productA: "aeron", productB: "embody", rows: commonRows,
+    title: "Herman Miller Embody vs Aeron: Seat Depth or Chair Size?",
+    description: "Compare Embody's adjustable seat depth and BackFit controls with Aeron's three-size fit system.",
+    summary: ["Embody lets you adjust usable seat depth on one current chair form. Aeron instead separates the current work chair into sizes A, B and C, with dimensions that change by size.", "Start with the fit system that matches your decision, then test back support and recline on the exact configuration before choosing."],
+    productA: "embody", productB: "aeron", rows: commonRows,
     conditions: [
-      { title: "Examine Aeron first when", body: "Choosing among three chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
-      { title: "Examine Embody first when", body: "Seat-depth and BackFit controls are the main items you want to test.", sourceIds: ["embody-guide"] }, ...trialConditions,
+      { title: "Start with Embody if", body: "Adjustable seat depth and the BackFit control are the main features you need to test.", sourceIds: ["embody-guide"] },
+      { title: "Start with Aeron if", body: "Choosing among three defined chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
     ],
+    checkItems: ["Whether Embody's seat-depth range supports your thighs without pressure at the seat edge", "Which Aeron size places the seat edge, arms and back support correctly for you", "How BackFit and the selected Aeron back-support option feel while upright", "The recline range and arm options installed on each exact chair"],
     sourceIds: ["aeron-specs", "aeron-sheet", "embody-store", "embody-guide"],
     relatedComparisonSlugs: ["herman-miller-aeron-vs-herman-miller-mirra-2-which-should-you-buy-ms9sbrcj", "herman-miller-embody-vs-steelcase-gesture-which-should-you-buy-msb7uv7l"],
   },
   {
     slug: "steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz",
-    title: "Herman Miller Aeron vs Steelcase Leap: Fit and Adjustment Comparison",
-    description: "Compare Aeron's size-based fit system with the Steelcase Leap's documented seat, back and arm adjustments.",
-    summary: ["Aeron separates the current work chair into sizes A, B and C. The linked current Leap guide documents adjustable seat depth, LiveBack, arm adjustments and a variable back stop.", "Use the exact model and configuration rather than either product name as a universal fit result."],
-    productA: "aeron", productB: "leap", rows: commonRows,
+    title: "Steelcase Leap vs Herman Miller Aeron: Adjustable Fit or Three Sizes?",
+    description: "Compare Leap's seat, back and arm adjustments with Aeron's size-based fit system.",
+    summary: ["Leap combines adjustable seat depth, LiveBack and a variable back stop in the documented current work chair. Aeron uses three chair sizes, so selecting A, B or C is part of the fit decision.", "Compare the Leap controls with the dimensions and installed options of the exact Aeron size you are considering."],
+    productA: "leap", productB: "aeron", rows: commonRows,
     conditions: [
-      { title: "Examine Aeron first when", body: "Choosing among defined chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
-      { title: "Examine Leap first when", body: "Seat depth, back stop and multi-direction arm adjustment are the controls you need to compare.", sourceIds: ["leap-guide"] }, ...trialConditions,
+      { title: "Start with Leap if", body: "Seat depth, back stop and multi-direction arm adjustment are the controls you most need to compare.", sourceIds: ["leap-guide"] },
+      { title: "Start with Aeron if", body: "Choosing among defined chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
     ],
+    checkItems: ["Leap seat depth with your back against the LiveBack backrest", "The correct Aeron size before comparing any optional support", "Leap arm movement versus the arm option installed on the Aeron", "How Leap's back stop differs from the selected Aeron tilt configuration"],
     sourceIds: ["aeron-specs", "aeron-sheet", "leap-guide"],
     relatedComparisonSlugs: ["steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es", "herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn"],
   },
@@ -56,9 +53,10 @@ const pilots: VerifiedComparisonPilot[] = [
     summary: ["Both current chairs document adjustable seat depth and back-stop controls. Leap documents LiveBack and multi-direction arm adjustments; Gesture documents 360 arms.", "Optional lumbar support and headrest details are identified as configuration-dependent rather than standard equipment."],
     productA: "leap", productB: "gesture", rows: commonRows,
     conditions: [
-      { title: "Examine Leap first when", body: "LiveBack, lumbar configuration and its documented arm movements are central to the comparison.", sourceIds: ["leap-guide"] },
-      { title: "Examine Gesture first when", body: "The 360 arm system or an optional headrest is a required configuration question.", sourceIds: ["gesture-product"] }, ...trialConditions,
+      { title: "Start with Leap if", body: "LiveBack, lumbar configuration and its documented arm movements are central to the comparison.", sourceIds: ["leap-guide"] },
+      { title: "Start with Gesture if", body: "The 360 arm system or an optional headrest is a required configuration question.", sourceIds: ["gesture-product"] },
     ],
+    checkItems: ["Leap's LiveBack response through your normal sitting positions", "Gesture's 360 arms at your keyboard, mouse and mobile-device positions", "The usable seat-depth range on both chairs", "Whether the exact Gesture includes the optional lumbar support or headrest you expect"],
     sourceIds: ["leap-guide", "gesture-product"],
     relatedComparisonSlugs: ["steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz", "herman-miller-embody-vs-steelcase-gesture-which-should-you-buy-msb7uv7l"],
   },
@@ -69,9 +67,10 @@ const pilots: VerifiedComparisonPilot[] = [
     summary: ["The current Aeron uses sizes A, B and C. Mirra 2 offers configuration-dependent back, arm, tilt and seat choices.", "Confirm the exact order configuration because the model name alone does not establish which options are present."],
     productA: "aeron", productB: "mirra-2", rows: commonRows,
     conditions: [
-      { title: "Examine Aeron first when", body: "The choice among three chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
-      { title: "Examine Mirra 2 first when", body: "Back construction or the FlexFront seat option is a configuration you need to evaluate.", sourceIds: ["mirra-specs"] }, ...trialConditions,
+      { title: "Start with Aeron if", body: "The choice among three chair sizes is the main fit question.", sourceIds: ["aeron-specs"] },
+      { title: "Start with Mirra 2 if", body: "Back construction or the FlexFront seat option is a configuration you need to evaluate.", sourceIds: ["mirra-specs"] },
     ],
+    checkItems: ["Which Aeron size aligns the seat, arms and back support for you", "TriFlex and Butterfly back versions of Mirra 2, if both are available", "The fixed-seat or FlexFront Mirra 2 configuration you would actually order", "The tilt and arm options installed on both exact chairs"],
     sourceIds: ["aeron-specs", "aeron-sheet", "mirra-specs"],
     relatedComparisonSlugs: ["herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn"],
   },
@@ -82,9 +81,10 @@ const pilots: VerifiedComparisonPilot[] = [
     summary: ["Embody documents adjustable seat depth, BackFit and tilt controls. Gesture documents seat-depth, back-stop and tension controls plus 360 arms.", "Gesture lumbar support and headrest are optional configurations; confirm the exact chair rather than assuming those features are included."],
     productA: "embody", productB: "gesture", rows: commonRows,
     conditions: [
-      { title: "Examine Embody first when", body: "BackFit and its seat-depth and tilt controls are the main items you want to test.", sourceIds: ["embody-guide"] },
-      { title: "Examine Gesture first when", body: "360 arms, a headrest option or its back-stop control is central to the configuration.", sourceIds: ["gesture-product"] }, ...trialConditions,
+      { title: "Start with Embody if", body: "BackFit and its seat-depth and tilt controls are the main items you want to test.", sourceIds: ["embody-guide"] },
+      { title: "Start with Gesture if", body: "360 arms, a headrest option or its back-stop control is central to the configuration.", sourceIds: ["gesture-product"] },
     ],
+    checkItems: ["Embody's BackFit response in your upright and reclined postures", "Gesture's 360 arms across the devices you use at your desk", "Seat-depth adjustment and front-edge pressure on both chairs", "Whether the exact Gesture includes its optional lumbar support or headrest"],
     sourceIds: ["embody-store", "embody-guide", "gesture-product"],
     relatedComparisonSlugs: ["herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn", "steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es"],
   },
