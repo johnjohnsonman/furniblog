@@ -5,6 +5,7 @@ require('ts-node').register({ project: path.join(__dirname, 'tsconfig.json'), co
 const registry = require('../content/showrooms/registry.json');
 const { storeSchema } = require('../lib/showrooms/validation.ts');
 const { countryName } = require('../lib/showrooms/locations.ts');
+const { filterStores } = require('../lib/showrooms/domain.ts');
 const { VERIFIED_COMPARISON_PILOT_SLUGS } = require('../lib/comparisons/verified-pilots.ts');
 // Approved deployed baseline: dpl_9SCNiwy7UGJvgfuquZySSkk1w9p3.
 // Change this membership gate only after reviewing an intentional registry update.
@@ -22,4 +23,6 @@ for (const id of ['38c732f5-d8e6-4af5-89f6-0766b1dc9d19', '9c92f900-ce93-4e09-b4
 for (const store of registry.stores) storeSchema.parse(store);
 assert.equal(countryName('HK'), 'Hong Kong', 'Server and browser must use the same country label');
 assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 15);
+const sorted = filterStores(published, {q:'',brand:'',model:'',confirmed:false,appointment:'',type:''});
+assert.deepEqual(sorted.map(s => s.name), published.map(s => s.name).sort(), 'SSR/browser ordering must be independent of host locale');
 console.log('PASS: exact public store membership, city/brand coverage, Lamex drafts, registry schema, stable HK label and 15 comparisons coexist');

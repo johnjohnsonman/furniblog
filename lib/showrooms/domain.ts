@@ -205,7 +205,9 @@ export function filterStores(
             a.models.some(
               (m) => m.product_id === f.model && m.trial === "confirmed",
             ),
-          ) || a.name.localeCompare(b.name),
+          // Avoid host-locale/ICU collation differences between Vercel SSR and
+          // browsers (notably Japanese store names), which break hydration.
+          ) || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0),
     );
 }
 export function contactLinks(s: Store) {
