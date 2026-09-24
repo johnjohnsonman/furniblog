@@ -29,6 +29,11 @@ import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
+import { getProductDecisionGuide } from "@/lib/growth/product-decision-guides"
+import { ProductDecisionGuide } from "@/components/growth/ProductDecisionGuide"
+import { DocumentedProductResearch } from "@/components/chairs/DocumentedProductResearch"
+import { ProductDataConfidence } from "@/components/chairs/ProductDataConfidence"
+import { filterChairSpecsByEvidence, getProductFitEvidence, getProductFitTrustSummary } from "@/lib/data/product-fit-evidence"
 import {
   generateBreadcrumbSchema,
   generateChairSchema,
@@ -119,13 +124,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const slug = product.slug ?? product.id
   const configured = isSupabaseConfigured()
   // Independent public lookups run together; prices remain fresh per request.
-  const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool] = await Promise.all([
+  const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool, fitEvidence, fitTrust] = await Promise.all([
     configured ? getProductReviews(product.id) : Promise.resolve([]),
     configured ? fetchProductVideos(product.id) : Promise.resolve({ videos: [], total: 0, chairId: null }),
     getChairpediaSlug(slug),
     configured ? getProductRelatedBlogPosts(slug, 3) : Promise.resolve([]),
     configured ? getPublishedProductComparisons(slug) : Promise.resolve([]),
     configured ? getProducts({ category: product.category }) : Promise.resolve([]),
+    configured ? getProductFitEvidence(slug) : Promise.resolve([]),
+    configured ? getProductFitTrustSummary(slug) : Promise.resolve({ verifiedConfigurations: 0, markets: [], lastCheckedOn: null }),
   ])
   const { videos: productVideos, total: productVideoTotal, chairId: productVideoChairId } = videoResult
   const chairReviews = configured ? supabaseReviews : getChairReviewsForProduct(product.id)
@@ -153,7 +160,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
     { name: product.name, url: `/products/${product.slug ?? product.id}` },
   ])
 
-  const chairSchema = generateChairSchema(productWithLinks, chairReviews, [])
+  const chairSchema = generateChairSchema({
+    ...productWithLinks,
+    chairSpecs: filterChairSpecsByEvidence(
+      productWithLinks.chairSpecs as Record<string, unknown> | undefined,
+      new Set(fitEvidence.map((row) => row.fieldKey))
+    ),
+  }, chairReviews, [])
+  const decisionGuide = getProductDecisionGuide(slug, product)
+  const hasFitEvidence = fitEvidence.length > 0
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#171717]">
@@ -233,7 +248,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                   <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
 
-                  {product.bestFor && (
+                  {product.bestFor && hasFitEvidence && (
                     <p className="mt-3 text-sm">
                       <span className="text-muted-foreground">Best for: </span>
                       <span className="font-medium text-foreground">{product.bestFor}</span>
@@ -253,7 +268,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              <div className="mt-8 border-t border-[#171717] pt-2"><ProductChairTabs
+              <ProductDecisionGuide productName={product.name} slug={slug} guide={decisionGuide} videoCount={productVideos.length} evidenceCount={new Set(fitEvidence.map(item => item.fieldKey)).size} hasBuyingLink={catalogLinks.length > 0} />
+              <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
+              <DocumentedProductResearch slug={slug} />
+
+              <div id="product-research" className="mt-8 scroll-mt-24 border-t border-[#171717] pt-2"><ProductChairTabs
                 productId={product.id}
                 productName={product.name}
                 catalogLinks={catalogLinks}
@@ -264,9 +283,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <ChairProductOverview
                     product={productWithLinks}
                     similarProducts={similarProducts}
+                    claimsVerified={hasFitEvidence}
                   />
                 }
-                specs={<ChairProductSpecs product={productWithLinks} />}
+                specs={<ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} />}
                 videoCount={productVideos.length}
                 videos={
                   productVideos.length > 0 ? (
@@ -278,7 +298,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
                       reviewCount={reviewCount}
                     />
-                  ) : null
+                  ) : <section className="border border-dashed border-[#a9a298] bg-[#faf8f3] p-6"><h2 className="font-serif text-2xl">Video research pending</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">No product-specific video has passed Chairpedia’s relevance review yet. Use the specifications, comparisons and showroom finder while this section is being researched.</p><Link href={`/stores?model=${encodeURIComponent(slug)}`} className="mt-4 inline-block text-sm font-medium underline underline-offset-4">Find a place to inspect this chair</Link></section>
                 }
               /></div>
             </div>
@@ -292,7 +312,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       <span className="text-muted-foreground">Price Range</span>
                       <span className="font-medium text-foreground">{product.priceRange}</span>
                     </div>
-                    {product.bestFor && (
+                    {product.bestFor && hasFitEvidence && (
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Best For</span>
                         <span className="font-medium text-foreground">{product.bestFor}</span>

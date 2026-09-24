@@ -4,12 +4,10 @@ import { useEffect, useState, useRef } from "react";
 import { contactLinks, hoursState } from "@/lib/showrooms/domain";
 import type { Store } from "@/lib/showrooms/types";
 import { cityKey } from "@/lib/showrooms/locations";
-export function trackStore(action: string, id: string) {
-  if (
-    process.env.NODE_ENV !== "production" ||
-    location.hostname !== "www.chairpedia.com"
-  )
-    return;
+import { trackConversionEvent } from "@/lib/analytics/conversion";
+export function trackStore(action: string, id: string, context?: { country_code: string; city: string }) {
+  trackConversionEvent({ eventName: "showroom_action", entityType: "showroom", entityId: id, placement: action, metadata: context ? { country: context.country_code, city: context.city } : {} });
+  if (process.env.NODE_ENV !== "production" || location.hostname !== "www.chairpedia.com") return;
   const w = window as typeof window & {
     gtag?: (
       command: string,
@@ -17,16 +15,19 @@ export function trackStore(action: string, id: string) {
       params: Record<string, string>,
     ) => void;
   };
-  w.gtag?.("event", "showroom_action", { action, store_id: id });
+  w.gtag?.("event", "showroom_action", {
+    action, store_id: id,
+    ...(context ? { country_code: context.country_code, city: context.city } : {}),
+  });
 }
 export function StoreDetails({ store: s, correctionsEnabled = true }: { store: Store; correctionsEnabled?: boolean }) {
   const tracked = useRef("");
   useEffect(() => {
     if (tracked.current !== s.id) {
       tracked.current = s.id;
-      trackStore("detail_open", s.id);
+      trackStore("detail_open", s.id, s);
     }
-  }, [s.id]);
+  }, [s]);
   const [now, setNow] = useState<Date | null>(null),
     [feedback, setFeedback] = useState(""),
     [sending, setSending] = useState(false);
@@ -61,7 +62,7 @@ export function StoreDetails({ store: s, correctionsEnabled = true }: { store: S
           <a
             key={a.kind}
             href={a.href}
-            onClick={() => trackStore(a.kind, s.id)}
+            onClick={() => trackStore(a.kind, s.id, s)}
             {...(a.href.startsWith("http")
               ? { target: "_blank", rel: "noopener noreferrer" }
               : {})}

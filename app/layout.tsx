@@ -2,7 +2,7 @@ import { NavigationProgress } from "@/components/NavigationProgress"
 import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Playfair_Display, Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+import { PrivateAwareAnalytics as Analytics } from '@/components/analytics/PrivateAwareAnalytics'
 import { PageviewTracker } from '@/components/analytics/PageviewTracker'
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics'
 import { MicrosoftClarity } from '@/components/analytics/MicrosoftClarity'

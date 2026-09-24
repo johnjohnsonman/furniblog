@@ -15,7 +15,8 @@ import { cn } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
 
 const SORT_OPTIONS = [
-  { label: "Best Rated", value: "rating" },
+  { label: "Random", value: "random" },
+  { label: "Brand / Product A–Z", value: "az" },
   { label: "Most Reviews", value: "reviews" },
   { label: "Price ↑", value: "price-low" },
   { label: "Price ↓", value: "price-high" },
@@ -55,7 +56,7 @@ export function ProductsPageContent({
     : "All"
   const [selectedCategory, setSelectedCategory] = useState(resolvedCategory)
   const [selectedBrand, setSelectedBrand] = useState("All")
-  const [sortBy, setSortBy] = useState<string>("rating")
+  const [sortBy, setSortBy] = useState<string>("random")
   const [searchQuery, setSearchQuery] = useState(params.get("search") ?? initialSearch)
 
   const totalChairs = stats.products
@@ -146,9 +147,11 @@ export function ProductsPageContent({
           const db = new Date(b.product.publishedAt ?? 0).getTime()
           return db - da
         })
-      case "rating":
+      case "az":
+        return [...withStats].sort((a, b) => `${a.product.brand} ${a.product.name}`.localeCompare(`${b.product.brand} ${b.product.name}`))
+      case "random":
       default:
-        return [...withStats].sort((a, b) => b.avgScore - a.avgScore)
+        return withStats
     }
   }, [
     products,

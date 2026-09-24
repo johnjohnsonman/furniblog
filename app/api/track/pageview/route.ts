@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, skipped: true })
   }
   // Don't log admin or API traffic.
-  if (path.startsWith("/admin") || path.startsWith("/api")) {
+  if (path.startsWith("/admin") || path.startsWith("/api") || path.startsWith("/chair-fit-report/")) {
     return NextResponse.json({ ok: true, skipped: true })
   }
 

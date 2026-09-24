@@ -26,6 +26,7 @@ import {
   GitCompareArrows,
   Instagram,
   TrendingUp,
+  ClipboardCheck,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -33,6 +34,8 @@ import { Button } from "@/components/ui/button"
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Armchair },
+  { href: "/admin/catalog-quality", label: "Catalog Quality", icon: ClipboardCheck },
+  { href: "/admin/fit-configurations", label: "Fit Configurations", icon: GitCompareArrows },
   { href: "/admin/chairpedia", label: "Chairpedia", icon: BookOpen },
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/carousel", label: "IG Carousel", icon: Instagram },

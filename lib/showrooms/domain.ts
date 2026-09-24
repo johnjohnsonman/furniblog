@@ -1,9 +1,10 @@
 import type { Store, StorePreview, Hours, Period, Catalog } from "./types";
+import { discoveryOrder } from "./discovery-order";
 import { cityKey } from "./locations";
 
 export function resolveStoreModel(value: string, models: Catalog["models"]): string {
   if (!value) return "";
-  return models.find((model) => model.id === value || model.slug === value)?.id ?? "";
+  return models.find(model => model.id === value || model.slug === value)?.id ?? "";
 }
 
 export function httpUrl(value: string) {
@@ -141,7 +142,7 @@ export function filterStores(
       return code;
     }
   };
-  return stores
+  const filtered = stores
     .filter(
       (s) =>
         s.status === "published" &&
@@ -205,10 +206,10 @@ export function filterStores(
             a.models.some(
               (m) => m.product_id === f.model && m.trial === "confirmed",
             ),
-          // Avoid host-locale/ICU collation differences between Vercel SSR and
-          // browsers (notably Japanese store names), which break hydration.
-          ) || (a.name < b.name ? -1 : a.name > b.name ? 1 : 0),
+          ) || a.name.localeCompare(b.name, "en") || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
     );
+  const unfiltered = !q && !f.country && !f.city && !f.brand && !f.model && !f.confirmed && !f.appointment && !f.type && !f.bounds;
+  return unfiltered ? discoveryOrder(filtered) : filtered;
 }
 export function contactLinks(s: Store) {
   return [

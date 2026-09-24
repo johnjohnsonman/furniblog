@@ -42,7 +42,7 @@ export function StatBand({ stats }: { stats: Stat[] }) {
     <section className="border-b border-premium-border bg-white">
       <div className="mx-auto max-w-5xl px-4 py-10">
         <p className="text-center text-xs font-medium uppercase tracking-[0.18em] text-premium-text-tertiary">
-          Two generations in chairs · 26 years in the trade · hands-on, data-driven
+          Source-linked specifications · configuration-aware research · transparent unknowns
         </p>
         <div className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-4">
           {stats.map((s) => (

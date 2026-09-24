@@ -54,7 +54,7 @@ export default function EditorialPolicyPage() {
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Summaries &amp; Sources</h2>
             <p className="text-muted-foreground leading-relaxed">
-              Many review summaries on Chairpedia condense real, publicly available reviews and videos so you can scan them quickly. These summaries are produced with AI assistance and reviewed by our team, and every one links back to its original source so you can read it in full. The opinions in a summary belong to the original author, not to Chairpedia.
+              Review summaries may condense publicly available reviews and videos so you can scan them quickly. AI may assist with drafting. A summary is treated as source-linked only when its original URL is present and accessible; records without a usable original link are labeled as unavailable and are not presented as verified owner reviews. The opinions in a source-linked summary belong to the original author, not to Chairpedia.
             </p>
 
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Updates</h2>

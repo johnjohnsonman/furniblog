@@ -1,11 +1,13 @@
 import type { ProductView } from "@/lib/data/mappers"
 import { ChairHeightGuide } from "./ChairHeightGuide"
+import type { ProductFitEvidence } from "@/lib/data/product-fit-evidence"
 
 interface ChairProductSpecsProps {
   product: ProductView
+  fitEvidence?: ProductFitEvidence[]
 }
 
-export function ChairProductSpecs({ product }: ChairProductSpecsProps) {
+export function ChairProductSpecs({ product, fitEvidence = [] }: ChairProductSpecsProps) {
   return (
     <>
       <section>
@@ -65,7 +67,7 @@ export function ChairProductSpecs({ product }: ChairProductSpecsProps) {
           </section>
         </section>
       </section>
-      <ChairHeightGuide chairSpecs={product.chairSpecs} />
+      <ChairHeightGuide chairSpecs={product.chairSpecs} evidence={fitEvidence} />
     </>
   )
 }

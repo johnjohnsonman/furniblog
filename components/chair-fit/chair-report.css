@@ -1,0 +1,27 @@
+﻿@media print {
+  @page { size: A4; margin: 14mm; }
+  body:has(.fit-passport-page) { background: white !important; color: #1f1d19; }
+  body:has(.fit-passport-page) header,
+  body:has(.fit-passport-page) footer,
+  .fit-passport-page button,
+  .fit-passport-page .print\:hidden { display: none !important; }
+  .fit-passport-page { max-width: none !important; padding: 0 !important; font-size: 10pt; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .fit-passport-page section { break-inside: auto; }
+  .fit-passport-page .report-cover { margin-top: 0; }
+  .fit-passport-page .chair-report-entry { break-before: page; break-inside: auto; margin-top: 0; background: white; border: 0; }
+  .chair-report-entry > .grid { display: block; }
+  .chair-report-entry .report-chair-identity { position: relative; min-height: 120px; padding: 12px 130px 12px 0; border: 0; }
+  .report-chair-identity > .relative { position: absolute; right: 0; top: 0; width: 110px; height: 110px; margin: 0; }
+  .report-chair-identity h3 { font-size: 24px; }
+  .report-chair-identity > p:last-child { display: none; }
+  .chair-report-entry .p-5 { padding: 12px 0; }
+  .chair-report-entry .text-sm { font-size: 10pt; line-height: 1.5; }
+  .chair-report-entry .gap-6 { gap: 18px; }
+  .chair-report-entry .space-y-3 > :not(:last-child) { margin-bottom: 6px; }
+  .report-rails { break-inside: avoid; margin-top: 14px; padding-top: 12px; }
+  .report-print-sources { display: block !important; border-top: 1px solid #c8c1b5; padding-top: 10px; font-size: 8pt; line-height: 1.5; break-inside: avoid; }
+  .report-print-sources a { color: #244f73; text-decoration: underline; overflow-wrap: anywhere; }
+  .report-print-sources h4 { font-weight: 600; margin-bottom: 4px; }
+  .fit-passport-page h2, .fit-passport-page h3, .fit-passport-page h4 { break-after: avoid; }
+  .fit-passport-page li { break-inside: avoid; }
+}

@@ -196,7 +196,7 @@ export async function trackAffiliateClick(
       await fetch("/api/affiliate/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productId, retailer, country }),
+        body: JSON.stringify({ productId, retailer, country, placement, pagePath: window.location.pathname }),
         keepalive: true,
       })
     } catch {

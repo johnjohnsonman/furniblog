@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true, skipped: true })
   }
 
-  let body: { productId?: unknown; retailer?: unknown } | null
+  let body: { productId?: unknown; retailer?: unknown; placement?: unknown; pagePath?: unknown } | null
   try {
     body = await request.json()
   } catch {
@@ -61,12 +61,20 @@ export async function POST(request: NextRequest) {
       request.headers.get("referrer") ??
       null
 
-    const { error } = await supabase.from("affiliate_clicks").insert({
+    const extended = {
       product_id: uuid,
       retailer_name: retailer.toLowerCase().trim(),
       country,
       referrer,
-    })
+      page_path: typeof body?.pagePath === "string" && body.pagePath.startsWith("/") ? body.pagePath.slice(0, 512) : null,
+      placement: typeof body?.placement === "string" ? body.placement.replace(/[^A-Za-z0-9_-]/g, "-").slice(0, 80) : null,
+    }
+    let { error } = await supabase.from("affiliate_clicks").insert(extended)
+    // Migration 057 may be applied after the web deploy; preserve legacy logging meanwhile.
+    if (error && /page_path|placement|schema cache/i.test(error.message)) {
+      const retry = await supabase.from("affiliate_clicks").insert({ product_id: uuid, retailer_name: retailer.toLowerCase().trim(), country, referrer })
+      error = retry.error
+    }
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })

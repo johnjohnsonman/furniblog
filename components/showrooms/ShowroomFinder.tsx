@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
 import type { Store, StorePreview, Catalog } from "@/lib/showrooms/types";
-import { filterStores, resolveStoreModel, type Filters } from "@/lib/showrooms/domain";
+import { filterStores, type Filters } from "@/lib/showrooms/domain";
 import { cityKey, countryName } from "@/lib/showrooms/locations";
 import "./atlas.css";
 import { AtlasHeader } from "./AtlasHeader";
@@ -28,7 +28,9 @@ export function ShowroomFinder({
 }) {
   const query = useSearchParams();
   const queryModel = query.get("model") ?? initialModel;
-  const resolvedModel = resolveStoreModel(queryModel, catalog.models);
+  const resolvedModel = queryModel
+    ? catalog.models.find((m) => m.id === queryModel || m.slug === queryModel)?.id ?? ""
+    : "";
   const resolvedCountry = query.get("country") ?? initialCountry;
   const resolvedCity = query.get("city") ?? initialCity;
   const [f, setF] = useState<Filters>({
@@ -124,7 +126,7 @@ export function ShowroomFinder({
   };
   const activeFilters = [
     ...(f.q ? [{ key: "search", label: f.q, clear: () => change({ q: "" }) }] : []),
-    ...(f.country ? [{ key: "country", label: countryName(f.country) || f.country, clear: () => change({ country: "", city: "", bounds: undefined }) }] : []),
+    ...(f.country ? [{ key: "country", label: new Intl.DisplayNames(["en"], { type: "region" }).of(f.country) || f.country, clear: () => change({ country: "", city: "", bounds: undefined }) }] : []),
     ...(f.city ? [{ key: "city", label: stores.find(s => s.country_code === f.country && cityKey(s) === f.city)?.city || f.city, clear: () => change({ city: "" }) }] : []),
     ...(f.brand ? [{ key: "brand", label: catalog.brands.find(b => b.id === f.brand)?.name || "Brand", clear: () => change({ brand: "", model: "", confirmed: false }) }] : []),
     ...(model ? [{ key: "model", label: model.name, clear: () => change({ model: "", confirmed: false }) }] : []),
@@ -248,7 +250,7 @@ export function ShowroomFinder({
       {results.length === 0 && <div className="atlas-empty-notice" role="status">No stores match these filters. <button onClick={reset}>Clear filters and try again</button></div>}
       <div className="atlas-toolbar">
         <div>
-          <strong>{f.bounds ? "This map area" : f.q || (f.country ? countryName(f.country) : "Worldwide")}</strong>{" "}
+          <strong>{f.bounds ? "This map area" : f.q || (f.country ? new Intl.DisplayNames(["en"], { type: "region" }).of(f.country) : "Worldwide")}</strong>{" "}
           <span>
             {cities.length} cities · {results.length} stores
           </span>

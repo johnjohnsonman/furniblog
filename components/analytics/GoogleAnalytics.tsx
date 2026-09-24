@@ -17,7 +17,7 @@ export function GoogleAnalytics() {
     if(explicit==='on'){try{w.sessionStorage.removeItem('chairpedia_analytics')}catch(e){}}
     var sessionOff=false;
     try{sessionOff=w.sessionStorage.getItem('chairpedia_analytics')==='off'}catch(e){}
-    var disabled=w.navigator.webdriver===true||sessionOff;
+    var disabled=w.navigator.webdriver===true||sessionOff||w.location.pathname.startsWith("/chair-fit-report/");
     w.__chairpediaAnalyticsEnabled=!disabled;
     if(disabled)return;
     w.dataLayer=w.dataLayer||[];

@@ -6,13 +6,14 @@ import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { getComparisonCards } from "@/lib/comparisons/resolve"
 import { orderComparisonCards } from "@/lib/comparisons/editorial-order"
 import { ComparisonsIndex } from "@/components/compare/comparisons-index"
+import { getVerifiedComparisonPilot } from "@/lib/comparisons/verified-pilots"
 
 export const dynamic = "force-dynamic"
 
 const metadata: Metadata = {
   title: "Chair Comparisons — Head-to-Head Matchups",
   description:
-    "Side-by-side office chair comparisons — real specs and reviews to help you pick between two chairs.",
+    "Source-linked chair comparisons and model records. Review status is shown before you open each comparison.",
   alternates: { canonical: "/compare" },
 }
 
@@ -38,7 +39,10 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 export default async function CompareIndexPage({ searchParams }: Props) {
   const page = readPage((await searchParams).page)
   const supabase = createPublicServerClient()
-  const cards = orderComparisonCards(await getComparisonCards(supabase))
+  const cards = orderComparisonCards(await getComparisonCards(supabase)).map(card => {
+    const pilot = getVerifiedComparisonPilot(card.slug)
+    return { ...card, title: pilot?.title ?? card.title, excerpt: pilot?.description ?? (card.requiresSourceReview ? "Source review pending. Product records remain available; this page is not a completed source-linked comparison." : "Read the comparison and check its cited sources and exact configuration before deciding."), subtitle: null, reviewed: Boolean(pilot) }
+  }).sort((a, b) => Number(b.reviewed) - Number(a.reviewed) || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0))
   if (page > Math.max(1, Math.ceil(cards.length / 12))) notFound()
 
   return (
@@ -49,7 +53,7 @@ export default async function CompareIndexPage({ searchParams }: Props) {
           <div className="mx-auto max-w-6xl px-4 py-10">
             <h1 className="font-serif text-3xl font-medium text-foreground">Comparisons</h1>
             <p className="mt-1 text-muted-foreground">
-              Head-to-head matchups — real specs and reviews to settle &ldquo;A vs B&rdquo;.
+              Compare documented fit systems and configuration choices. Source-linked comparisons appear first; other records are marked for source review.
             </p>
           </div>
         </div>

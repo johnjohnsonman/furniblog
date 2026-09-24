@@ -1,3 +1,12 @@
+import {
+  buildFitProfile,
+  evaluateProductFit,
+  type FitConfidence,
+  type FitProfile,
+  type FitStatus,
+  type ProductFit,
+} from "@/lib/recommend/fit"
+
 /**
  * Chair recommendation engine (pure scoring + diversity re-ranking).
  *
@@ -68,18 +77,30 @@ export type ChairSpecs = {
   seatHeightMax?: number
   chairWeightKg?: number
   backrestHeight?: number
+  seatDepthMin?: number
+  seatDepthMax?: number
+  armrestFloorHeightMin?: number
+  armrestFloorHeightMax?: number
 }
 
 export type QuizAnswers = {
   useCase?: UseCase
+  maxPriceUsd?: number
+  keyboardTray?: boolean
+  posture?: "upright" | "move" | "recline"
   budget?: Budget
-  sitHours?: SitHours
+  sitHours?: SitHours | "under4" | "4to6" | "6to8" | "over8"
   pain?: string[]
   style?: Style
   material?: Material
   priorities?: Priority[]
   heightCm?: number
   weightKg?: number
+  deskHeightCm?: number
+  armrestsUnderDesk?: boolean
+  countryCode?: string
+  latitude?: number
+  longitude?: number
   seed?: number
 }
 
@@ -107,6 +128,19 @@ export type ProductFeature = {
   material: Material | null
   /** Structured chair_specs (subset), or null. */
   specs: ChairSpecs | null
+  /** Product record freshness for evidence disclosure. */
+  sourceUpdatedAt?: string | null
+  /** Field-level sources, present after the provenance migration is applied. */
+  fitEvidence?: FitEvidence[]
+}
+
+export type FitEvidence = {
+  fieldKey: string
+  evidenceType: string
+  sourceTitle: string
+  notes?: string
+  sourceUrl: string
+  checkedOn: string
 }
 
 export type Affinity = {
@@ -126,6 +160,7 @@ export type RecTag =
   | "new-noteworthy"
 
 export type Recommendation = {
+  id: string
   slug: string
   name: string
   brand: string | null
@@ -136,6 +171,16 @@ export type Recommendation = {
   why: string[]
   tag: RecTag | null
   picks: number
+  fitStatus: FitStatus
+  fitConfidence: FitConfidence
+  fit: ProductFit
+  sourceUpdatedAt: string | null
+  fitEvidence: FitEvidence[]
+}
+
+export type RecommendationResponse = {
+  profile: FitProfile
+  results: Recommendation[]
 }
 
 // ---- weights (tunable) ----
@@ -319,6 +364,7 @@ type Fits = {
   weight: number
   quality: number
   reviewDriven: boolean
+  physical: ProductFit
 }
 
 function scoreProduct(
@@ -327,6 +373,7 @@ function scoreProduct(
   aff: Affinity
 ): { score: number; fits: Fits } {
   const text = `${p.bestFor} ${p.pros.join(" ")} ${p.chairType ?? ""} ${p.name}`.toLowerCase()
+  const physical = evaluateProductFit(a, p.specs)
 
   // use
   let use = 1
@@ -372,7 +419,7 @@ function scoreProduct(
 
   // sitting hours
   let sit = 0.5
-  if (a.sitHours === "over6") {
+  if (a.sitHours === "over6" || a.sitHours === "6to8" || a.sitHours === "over8") {
     const lift = aff.liftSit["over6"]?.[p.id] ?? 1
     sit =
       0.5 * liftScore(lift) +
@@ -452,6 +499,15 @@ function scoreProduct(
     W.style * style +
     W.quality * quality
 
+  if (a.posture) {
+    const posturePriority: Priority = a.posture === "upright" ? "posture" : a.posture === "recline" ? "recline" : "tilt"
+    if (satisfiesPriority(posturePriority, p, text)) score += 0.6
+  }
+
+  // Physical fit is the primary differentiator of the calculator. Limited
+  // data stays neutral rather than receiving a fabricated advantage.
+  score += 3.1 * (physical.confidence === "limited" ? 0.5 : physical.score / 100)
+
   // light rotation so near-ties vary per visit / similar users
   score += (seeded(p.id, a.seed ?? 1) - 0.5) * JITTER
 
@@ -471,6 +527,7 @@ function scoreProduct(
       weight,
       quality,
       reviewDriven,
+      physical,
     },
   }
 }
@@ -497,7 +554,7 @@ function buildWhy(p: ProductFeature, a: QuizAnswers, f: Fits): string[] {
   if (a.weightKg && a.weightKg >= 100 && f.weight >= 1) why.push("Big & tall ready")
   if (a.heightCm && f.height >= 1 && p.specs?.recommendedHeightMin != null)
     why.push("Sized to fit you")
-  if (a.sitHours === "over6" && f.sit >= 0.4) why.push("Built for long hours")
+  if (["over6", "6to8", "over8"].includes(a.sitHours ?? "") && f.sit >= 0.4) why.push("Built for long hours")
   if (a.budget && f.budget >= 1) why.push("Within your budget")
   if (f.reviewDriven) why.push("A favorite among reviewers like you")
   else if (p.editorial != null && p.picks < 5) why.push("Showroom-tested pick")
@@ -533,8 +590,13 @@ export function recommend(
         (p) => !p.priceRange || TIER[p.priceRange] <= TIER[answers.budget!]
       )
     : products
+  const safeEligible = eligible.filter((p) => {
+    if (answers.maxPriceUsd != null && p.priceUsd != null && p.priceUsd > answers.maxPriceUsd) return false
+    const capacity = p.specs?.weightCapacityKg
+    return !answers.weightKg || capacity == null || capacity >= answers.weightKg
+  })
 
-  const scored = eligible
+  const scored = safeEligible
     .map((p) => ({ p, ...scoreProduct(p, answers, affinity) }))
     .sort((x, y) => y.score - x.score)
 
@@ -585,6 +647,7 @@ export function recommend(
   return selected.map((s, i) => {
     const match = Math.round(70 + 29 * (s.score / maxScore))
     return {
+      id: s.p.id,
       slug: s.p.slug,
       name: s.p.name,
       brand: s.p.brand,
@@ -595,6 +658,23 @@ export function recommend(
       why: buildWhy(s.p, answers, s.fits),
       tag: tagFor(s.p, i === 0, s.p.editorial != null && s.p.picks < 5),
       picks: s.p.picks,
+      fitStatus: s.fits.physical.status,
+      fitConfidence: s.fits.physical.confidence,
+      fit: s.fits.physical,
+      sourceUpdatedAt: s.p.sourceUpdatedAt ?? null,
+      fitEvidence: s.p.fitEvidence ?? [],
     }
   })
+}
+
+export function recommendWithProfile(
+  products: ProductFeature[],
+  affinity: Affinity,
+  answers: QuizAnswers,
+  topN = 5,
+): RecommendationResponse {
+  return {
+    profile: buildFitProfile(answers),
+    results: recommend(products, affinity, answers, topN),
+  }
 }

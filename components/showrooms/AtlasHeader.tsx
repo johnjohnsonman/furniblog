@@ -1,7 +1,5 @@
-import { HeaderClient } from "@/components/header-client";
+﻿import { Header } from "@/components/header";
 
 export function AtlasHeader() {
-  // Store routes already enforce SHOWROOMS_ENABLED on the server. Do not read
-  // its private environment variable again inside the finder client boundary.
-  return <HeaderClient showStores />;
+  return <Header />;
 }

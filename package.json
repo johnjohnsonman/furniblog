@@ -41,7 +41,15 @@
     "expand:revenue-comparisons-wave2": "node scripts/expand-revenue-comparisons-wave2.cjs",
     "test:revenue-expansion-wave2-live": "node scripts/test-revenue-expansion-wave2-live.cjs",
     "test:paapi": "ts-node --project scripts/tsconfig.json scripts/test-paapi.ts",
-    "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts"
+    "test:pipeline": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-pipeline.ts",
+    "test:chair-fit": "ts-node -r tsconfig-paths/register --project scripts/tsconfig.json scripts/test-chair-fit-engine.ts",
+    "test:fit-quarantine": "ts-node --project scripts/tsconfig.json scripts/test-fit-quarantine-migration.ts",
+    "test:fit-restoration-wave1": "ts-node --project scripts/tsconfig.json scripts/test-fit-restoration-wave-1.ts",
+    "audit:chair-fit-coverage": "node scripts/audit-chair-fit-coverage.cjs",
+    "audit:fit-evidence-sources": "node scripts/check-fit-evidence-sources.cjs",
+    "audit:fit-configurations": "node scripts/audit-fit-configuration-coverage.cjs",
+    "import:showrooms": "node scripts/import-showrooms-bulk.cjs",
+    "build:chair-fit-sql": "node scripts/build-chair-fit-evidence-sql.cjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.96.0",

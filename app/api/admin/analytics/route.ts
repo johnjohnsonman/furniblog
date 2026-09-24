@@ -7,6 +7,8 @@ type ClickRow = {
   retailer_name: string
   country: string | null
   clicked_at: string
+  page_path?: string | null
+  placement?: string | null
   products?: { slug: string; name: string } | { slug: string; name: string }[] | null
 }
 
@@ -30,15 +32,19 @@ export async function GET(request: NextRequest) {
   const startOfMonth = new Date(now)
   startOfMonth.setDate(now.getDate() - 30)
 
-  const [clicksRes, trafficRes] = await Promise.all([
+  const [extendedClicks, trafficRes, eventsRes] = await Promise.all([
     supabase
       .from("affiliate_clicks")
-      .select("product_id, retailer_name, country, clicked_at, products(slug, name)")
+      .select("product_id, retailer_name, country, clicked_at, page_path, placement, products(slug, name)")
       .gte("clicked_at", startOfMonth.toISOString())
       .order("clicked_at", { ascending: false }),
     supabase.rpc("get_traffic_stats"),
+    supabase.from("conversion_events").select("event_name, page_path, product_slug, placement, created_at").gte("created_at", startOfMonth.toISOString()),
   ])
 
+  const clicksRes = extendedClicks.error && /page_path|placement|schema cache/i.test(extendedClicks.error.message)
+    ? await supabase.from("affiliate_clicks").select("product_id, retailer_name, country, clicked_at, products(slug, name)").gte("clicked_at", startOfMonth.toISOString()).order("clicked_at", { ascending: false })
+    : extendedClicks
   const { data, error } = clicksRes
 
   if (error) {
@@ -59,6 +65,8 @@ export async function GET(request: NextRequest) {
   >()
   const retailerCounts = new Map<string, number>()
   const countryCounts = new Map<string, number>()
+  const placementCounts = new Map<string, number>()
+  const pageCounts = new Map<string, number>()
 
   for (const row of rows) {
     const product = Array.isArray(row.products)
@@ -79,11 +87,18 @@ export async function GET(request: NextRequest) {
 
     const country = row.country ?? "Other"
     countryCounts.set(country, (countryCounts.get(country) ?? 0) + 1)
+    const placement = row.placement ?? "Unattributed"
+    placementCounts.set(placement, (placementCounts.get(placement) ?? 0) + 1)
+    const page = row.page_path ?? "Unattributed"
+    pageCounts.set(page, (pageCounts.get(page) ?? 0) + 1)
   }
 
   const topProducts = [...productCounts.values()]
     .sort((a, b) => b.count - a.count)
     .slice(0, 10)
+
+  const eventCounts = new Map<string, number>()
+  for (const row of eventsRes.data ?? []) eventCounts.set(row.event_name, (eventCounts.get(row.event_name) ?? 0) + 1)
 
   return NextResponse.json({
     today: countSince(startOfDay),
@@ -92,6 +107,16 @@ export async function GET(request: NextRequest) {
     topProducts,
     byRetailer: Object.fromEntries(retailerCounts),
     byCountry: Object.fromEntries(countryCounts),
+    byPlacement: Object.fromEntries(placementCounts),
+    byPage: Object.fromEntries([...pageCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 10)),
+    funnel: {
+      started: eventCounts.get("chair_finder_started") ?? 0,
+      completed: eventCounts.get("chair_finder_completed") ?? 0,
+      resultOpened: eventCounts.get("chair_finder_result_opened") ?? 0,
+      showroomOpened: eventCounts.get("chair_finder_showroom_opened") ?? 0,
+      showroomActions: eventCounts.get("showroom_action") ?? 0,
+      available: !eventsRes.error,
+    },
     visitors,
   })
 }

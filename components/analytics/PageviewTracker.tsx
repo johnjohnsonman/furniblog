@@ -11,7 +11,7 @@ export function PageviewTracker() {
 
   useEffect(() => {
     if (!pathname) return
-    if (pathname.startsWith("/admin")) return
+    if (pathname.startsWith("/admin") || pathname.startsWith("/chair-fit-report/")) return
     if (navigator.webdriver || window.__chairpediaAnalyticsEnabled === false) return
     if (last.current === pathname) return
     last.current = pathname

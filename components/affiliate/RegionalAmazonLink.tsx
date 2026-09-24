@@ -17,7 +17,7 @@ export function RegionalAmazonLink({ href, name, productId, className }: {
   const destination = resolveAmazonDestination(buildAffiliateUrl(href, "amazon", "US", pageSubtag(usePathname())), name, country)
   const trackingCountry = destination.country as AffiliateCountry
   return <a href={destination.url} target="_blank" rel={`${destination.affiliate ? "sponsored " : ""}nofollow noopener noreferrer`} className={className}
-    onClick={() => { void trackAffiliateClick(productId, "amazon", trackingCountry) }}>
+    onClick={() => { void trackAffiliateClick(productId, "amazon", trackingCountry, "regional_amazon_link") }}>
     {destination.search ? `Search on ${destination.label}` : `View on ${destination.label}`} <ExternalLink className="inline-block h-3 w-3 shrink-0" />
   </a>
 }

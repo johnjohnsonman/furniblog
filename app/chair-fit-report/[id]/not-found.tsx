@@ -1,0 +1,2 @@
+﻿import Link from "next/link"
+export default function ReportNotFound(){return <main className="mx-auto max-w-3xl px-5 py-20"><p className="font-serif text-2xl">Chairpedia</p><h1 className="mt-8 font-serif text-4xl">This shared report is unavailable.</h1><p className="mt-4 leading-7">The link may have expired, been turned off, or been copied incorrectly.</p><Link href="/chair-fit-calculator" className="mt-6 inline-block bg-[#244f73] px-5 py-3 text-white">Create my own chair report</Link></main>}

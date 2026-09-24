@@ -1,8 +1,6 @@
 import Link from "next/link"
-import { showroomsEnabled } from "@/lib/navigation/showrooms"
 
 export function Footer() {
-  const showStores = showroomsEnabled()
   return (
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-6xl px-4 py-12 lg:px-8">
@@ -21,8 +19,8 @@ export function Footer() {
               Products
             </h3>
             <ul className="space-y-2 text-sm">
-              {showStores && <li><Link href="/stores/locations" className="text-foreground hover:text-muted-foreground transition-colors">Stores by Country &amp; City</Link></li>}
-              {showStores && <li><Link href="/stores" className="text-foreground hover:text-muted-foreground transition-colors">Find Chair Stores</Link></li>}
+              <li><Link href="/stores/locations" className="text-foreground hover:text-muted-foreground transition-colors">Stores by Country &amp; City</Link></li>
+              <li><Link href="/stores" className="text-foreground hover:text-muted-foreground transition-colors">Find Chair Stores</Link></li>
               <li>
                 <Link href="/products?category=office" className="text-foreground hover:text-muted-foreground transition-colors">
                   Office Chairs

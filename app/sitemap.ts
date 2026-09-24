@@ -45,6 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url("/blog", undefined, "daily", 0.7),
     url("/compare", undefined, "weekly", 0.7),
     url("/chair", undefined, "weekly", 0.6),
+    url("/chair-fit-calculator", undefined, "weekly", 0.8),
     url("/reviews", undefined, "daily", 0.9),
     url("/videos", undefined, "daily", 0.8),
     url("/news", undefined, "daily", 0.8),

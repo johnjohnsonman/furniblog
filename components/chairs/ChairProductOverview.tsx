@@ -7,11 +7,13 @@ import { RegionalAmazonLink } from "@/components/affiliate/RegionalAmazonLink"
 interface ChairProductOverviewProps {
   product: ProductView
   similarProducts: ProductView[]
+  claimsVerified?: boolean
 }
 
 export function ChairProductOverview({
   product,
   similarProducts,
+  claimsVerified = true,
 }: ChairProductOverviewProps) {
   return (
     <>
@@ -38,9 +40,10 @@ export function ChairProductOverview({
         </section>
       )}
 
-      {(product.pros?.length || product.cons?.length) ? (
+      {claimsVerified && (product.pros?.length || product.cons?.length) ? (
         <section className="mt-10 border-t border-[#171717] pt-8">
-          <h2 className="mb-6 font-serif text-3xl font-medium text-foreground">Pros &amp; cons</h2>
+          <h2 className="mb-2 font-serif text-3xl font-medium text-foreground">Recorded strengths &amp; limitations</h2>
+          <p className="mb-6 max-w-3xl text-sm leading-6 text-muted-foreground">Editorial summary for comparison. Confirm configuration-dependent features and judge comfort in person.</p>
           <div className="grid grid-cols-1 gap-px border border-[#171717] bg-[#171717] md:grid-cols-2">
             {product.pros && product.pros.length > 0 && (
               <div className="bg-[#e7f4e9] p-5">

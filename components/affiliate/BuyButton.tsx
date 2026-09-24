@@ -41,6 +41,7 @@ interface BuyButtonProps {
   country?: AffiliateCountry
   className?: string
   fullWidth?: boolean
+  placement?: string
 }
 
 export function BuyButton({
@@ -51,6 +52,7 @@ export function BuyButton({
   country: countryProp,
   className,
   fullWidth = false,
+  placement = "product_buy_button",
 }: BuyButtonProps) {
   const [country, setCountry] = useState<AffiliateCountry>(countryProp ?? "US")
 
@@ -67,8 +69,8 @@ export function BuyButton({
   const href = amazon?.url || original
 
   const handleClick = useCallback(() => {
-    void trackAffiliateClick(productId, retailer, country)
-  }, [productId, retailer, country])
+    void trackAffiliateClick(productId, retailer, country, placement)
+  }, [productId, retailer, country, placement])
 
   return (
     <a

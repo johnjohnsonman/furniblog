@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import type { PriceRow } from "@/lib/affiliate/price-rows"
 import { BuyButton } from "./BuyButton"
 
@@ -29,9 +30,11 @@ export function PriceCompareTable({
 }: PriceCompareTableProps) {
   if (rows.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground py-6 text-center">
-        No retailers listed yet.
-      </p>
+      <div className="border border-dashed border-border p-6">
+        <h3 className="font-medium">No verified retailer link yet</h3>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">Chairpedia has not confirmed a product-specific retailer destination for this exact model. We do not label a generic storefront as a verified listing.</p>
+        <div className="mt-4 flex flex-wrap gap-3"><Link href={`/stores?model=${encodeURIComponent(productId)}`} className="min-h-11 border border-border px-4 py-2.5 text-sm font-medium">Find a showroom</Link><Link href={`/compare?chair=${encodeURIComponent(productId)}`} className="min-h-11 border border-border px-4 py-2.5 text-sm font-medium">Compare alternatives</Link></div>
+      </div>
     )
   }
 

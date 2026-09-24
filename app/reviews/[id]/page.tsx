@@ -121,7 +121,8 @@ export default async function ReviewDetailPage(props: {
   const brand = brandName(product.brands)
   const pros = (review.pros ?? []).filter(Boolean)
   const cons = (review.cons ?? []).filter(Boolean)
-  const date = review.source === "chairpark" ? null : formatDate(review.created_at)
+  const hasOriginalSource = Boolean(review.source_url?.trim())
+  const date = review.source === "chairpark" || !hasOriginalSource ? null : formatDate(review.created_at)
   const profile: string[] = []
   if (review.reviewer_height_cm) profile.push(`${review.reviewer_height_cm} cm`)
   if (review.reviewer_weight_kg) profile.push(`${review.reviewer_weight_kg} kg`)
@@ -177,6 +178,8 @@ export default async function ReviewDetailPage(props: {
 
         {notes && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{notes.sourceNote}</p>}
 
+        {!hasOriginalSource && review.source !== "chairpark" && <div className="mt-6 border border-[#b58a45] bg-[#fff8e8] p-4 text-sm leading-6"><strong>Original source unavailable.</strong> This archived summary cannot currently be checked against its original post. It is not treated as a verified owner review.</div>}
+
         {/* Summary (links out to the original below) */}
         {review.summary_ko?.trim() ? (
           <p className="mt-6 text-lg leading-relaxed text-foreground">
@@ -197,7 +200,7 @@ export default async function ReviewDetailPage(props: {
           </div>
         )}
 
-        {(pros.length > 0 || cons.length > 0) && (
+        {hasOriginalSource && (pros.length > 0 || cons.length > 0) && (
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {pros.length > 0 && (
               <div>

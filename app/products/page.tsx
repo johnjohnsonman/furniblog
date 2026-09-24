@@ -4,10 +4,11 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductsPageContent } from "./products-content"
 import { Suspense } from "react"
+import { randomOrder } from "@/lib/random-order"
 
 // Query-string filtering keeps this route dynamic; catalog reads use a short
 // shared cache so navigation does not wait on repeated database round trips.
-export const revalidate = 60
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Office & Ergonomic Chairs Database",
@@ -36,7 +37,7 @@ export default async function ProductsPage() {
       <Header />
       <Suspense fallback={<main className="min-h-[60vh]" aria-label="Loading chair catalog" />}>
       <ProductsPageContent
-        products={products}
+        products={randomOrder(products)}
         brands={brands}
         reviewCounts={reviewCounts}
         stats={stats}

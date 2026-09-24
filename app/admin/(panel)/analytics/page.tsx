@@ -23,6 +23,9 @@ type AnalyticsData = {
   topProducts: { slug: string; name: string; count: number }[]
   byRetailer: Record<string, number>
   byCountry: Record<string, number>
+  byPlacement: Record<string, number>
+  byPage: Record<string, number>
+  funnel: { started: number; completed: number; resultOpened: number; showroomOpened: number; showroomActions: number; available: boolean }
   visitors: TrafficStats | null
 }
 
@@ -70,6 +73,11 @@ export default function AdminAnalyticsPage() {
 
       {data && (
         <>
+          <h2 className="text-lg font-medium mb-2">Conversion funnel <span className="text-xs font-normal text-muted-foreground">last 30 days</span></h2>
+          <p className="text-xs text-muted-foreground mb-4">Intent events only. Affiliate clicks are not confirmed orders or revenue.</p>
+          {data.funnel.available ? <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-10">
+            {[["Finder starts", data.funnel.started], ["Finder completes", data.funnel.completed], ["Chair opens", data.funnel.resultOpened], ["Store opens", data.funnel.showroomOpened], ["Store actions", data.funnel.showroomActions]].map(([label, value]) => <div key={String(label)} className="p-4 bg-card rounded-xl border border-border"><p className="text-2xl font-semibold">{value}</p><p className="text-xs text-muted-foreground mt-1">{label}</p></div>)}
+          </div> : <p className="text-sm text-muted-foreground mb-10">Run migration 057 to begin recording the conversion funnel.</p>}
           {/* ---- Site traffic (first-party pageviews) ---- */}
           <h2 className="text-lg font-medium mb-4">Site traffic</h2>
           {data.visitors ? (
@@ -227,6 +235,9 @@ export default function AdminAnalyticsPage() {
                   ))}
               </ul>
             </section>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-10">
+            {[{ title: "Affiliate clicks by placement", rows: data.byPlacement }, { title: "Affiliate clicks by page", rows: data.byPage }].map(section => <section key={section.title}><h2 className="text-lg font-medium mb-4">{section.title}</h2><ul className="space-y-2 text-sm">{Object.entries(section.rows).sort(([,a],[,b]) => b-a).map(([name,count]) => <li key={name} className="flex justify-between gap-3 py-2 border-b border-border"><span className="truncate font-mono text-xs">{name}</span><span className="font-medium">{count}</span></li>)}</ul></section>)}
           </div>
           {data.visitors && <section className="mt-10">
             <h2 className="text-lg font-medium mb-2">Country affiliate funnel (30-day clicks / 7-day visits)</h2>

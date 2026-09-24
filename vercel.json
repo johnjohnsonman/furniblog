@@ -1,5 +1,12 @@
 {
   "crons": [
-    { "path": "/api/cron/collect?window=morning", "schedule": "0 21 * * *" }
+    {
+      "path": "/api/cron/collect?window=morning",
+      "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/cron/report-cleanup",
+      "schedule": "30 21 * * *"
+    }
   ]
 }

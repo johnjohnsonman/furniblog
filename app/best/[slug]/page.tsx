@@ -17,15 +17,16 @@ export async function generateMetadata({ params }: BestListPageProps): Promise<M
   const { slug } = await params
   const list = await getResolvedBestList(slug)
   if (!list) return {}
+  const safeTitle = slug === "best-for-back-pain" ? "Chairs to Consider for Back Comfort" : list.title
   const description =
     list.intro?.trim() ||
     `${list.title}: compare catalog details, options and purchase links before choosing a chair.`
   return {
-    title: list.title,
+    title: safeTitle,
     description,
     alternates: { canonical: `/best/${slug}` },
     openGraph: {
-      title: list.title,
+      title: safeTitle,
       description,
       url: `/best/${slug}`,
       images: list.heroImage ? [list.heroImage] : undefined,
@@ -39,6 +40,8 @@ export default async function BestListPage({ params }: BestListPageProps) {
   if (!list) notFound()
 
   const related = (await getBestListCards()).filter((l) => l.slug !== slug).slice(0, 3)
+  const healthClaimList = slug === "best-for-back-pain"
+  const displayTitle = healthClaimList ? "Chairs to Consider for Back Comfort" : list.title
 
   return (
     <div className="flex min-h-screen flex-col bg-premium-bg">
@@ -53,16 +56,16 @@ export default async function BestListPage({ params }: BestListPageProps) {
               <ChevronRight className="h-3 w-3" />
               <Link href="/best" className="hover:text-foreground">Best Lists</Link>
               <ChevronRight className="h-3 w-3" />
-              <span className="text-foreground">{list.title}</span>
+              <span className="text-foreground">{displayTitle}</span>
             </div>
           </div>
         </div>
 
         {/* Header */}
         <div className="mx-auto max-w-5xl px-4 py-10">
-          <h1 className="font-serif text-3xl font-medium text-foreground lg:text-4xl">{list.title}</h1>
+          <h1 className="font-serif text-3xl font-medium text-foreground lg:text-4xl">{displayTitle}</h1>
           <p className="mt-3 max-w-2xl leading-relaxed text-muted-foreground">
-            {list.intro?.trim() ||
+            {healthClaimList ? "A neutral research shortlist for comparing adjustability, support options and trial availability. Chairpedia does not claim that a chair treats or improves pain." : list.intro?.trim() ||
               `Compare the options in ${list.title.toLowerCase()} against your space, preferences and purchase terms.`}
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
@@ -108,9 +111,7 @@ export default async function BestListPage({ params }: BestListPageProps) {
               <div key={p.slug} id={`chair-${p.slug}`} data-buying-product={p.slug} className="scroll-mt-24 overflow-hidden rounded-lg border border-border bg-card">
                 <div className="flex flex-col gap-6 p-6 lg:flex-row lg:gap-8 lg:p-8">
                   <div className="flex gap-4 lg:flex-col lg:items-center">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-foreground font-bold text-background">
-                      {index + 1}
-                    </div>
+                    {!healthClaimList && <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-foreground font-bold text-background">{index + 1}</div>}
                     <div className="h-32 w-32 shrink-0 overflow-hidden rounded-lg bg-premium-cream lg:h-44 lg:w-44">
                       {p.image && (
                         // eslint-disable-next-line @next/next/no-img-element
@@ -142,14 +143,14 @@ export default async function BestListPage({ params }: BestListPageProps) {
                     {p.description && (
                       <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.description}</p>
                     )}
-                    {p.bestFor && (
+                    {p.bestFor && !healthClaimList && (
                       <p className="mt-2 text-sm">
                         <span className="text-muted-foreground">Best for: </span>
                         <span className="font-medium text-foreground">{p.bestFor}</span>
                       </p>
                     )}
 
-                    {(p.pros.length > 0 || p.cons.length > 0) && (
+                    {!healthClaimList && (p.pros.length > 0 || p.cons.length > 0) && (
                       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {p.pros.length > 0 && (
                           <div>

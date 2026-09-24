@@ -3,6 +3,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
 import { ChairpediaLanding, type ChairpediaCard } from "@/components/chairpedia/chairpedia-landing"
+import { randomOrder } from "@/lib/random-order"
 
 export const dynamic = "force-dynamic"
 
@@ -82,13 +83,10 @@ async function getEntries(): Promise<ChairpediaCard[]> {
 }
 
 export default async function ChairpediaIndexPage() {
-  const entries = await getEntries()
-  // Editor-pool random: pick a featured entry server-side (force-dynamic = new each visit).
+  const entries = randomOrder(await getEntries())
   const pool = entries.filter((e) => e.featured)
   const source = pool.length ? pool : entries
-  const featuredSlug = source.length
-    ? source[Math.floor(Math.random() * source.length)].slug
-    : null
+  const featuredSlug = source[0]?.slug ?? null
 
   return (
     <div className="min-h-screen flex flex-col bg-white">

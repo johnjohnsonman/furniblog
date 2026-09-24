@@ -179,6 +179,7 @@ export type ComparisonCard = {
   excerpt: string | null
   hero_image_url: string | null
   tier: string | null
+  requiresSourceReview?: boolean
 }
 
 export async function getComparisonCards(
@@ -186,12 +187,13 @@ export async function getComparisonCards(
 ): Promise<ComparisonCard[]> {
   const { data } = await supabase
     .from("comparisons")
-    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at, product_a_id, product_b_id")
+    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at, product_a_id, product_b_id, content_html, seo_description")
     .eq("status", "published")
     .order("featured", { ascending: false })
     .order("published_at", { ascending: false, nullsFirst: false })
     .limit(200)
   return (await comparisonMedia(supabase, data ?? [])).map((c) => ({
+    requiresSourceReview: comparisonNeedsSourceReview(c.subtitle as string | null, c.excerpt as string | null, c.seo_description as string | null, c.content_html as string | null),
     slug: c.slug as string,
     title: c.title as string,
     subtitle: (c.subtitle as string | null) ?? null,

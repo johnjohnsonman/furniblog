@@ -11,6 +11,8 @@ export type ComparisonCard = {
   subtitle: string | null
   excerpt: string | null
   hero_image_url: string | null
+  requiresSourceReview?: boolean
+  reviewed?: boolean
   tier: string | null
 }
 
@@ -41,6 +43,7 @@ function Card({ c }: { c: ComparisonCard }) {
             {TIER_LABEL[c.tier] ?? c.tier}
           </span>
         )}
+        <p className="mt-2 text-xs font-semibold">{c.reviewed ? "Source-linked comparison" : c.requiresSourceReview ? "Source review pending" : "Comparison article"}</p>
         <h2 className="mt-1.5 font-serif text-xl font-medium leading-snug text-foreground transition-colors group-hover:text-foreground/80">
           {c.title}
         </h2>
