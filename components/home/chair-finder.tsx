@@ -1,166 +1,80 @@
 "use client"
 
-import NextImage, { type ImageProps } from "next/image"
+import Image from "next/image"
 import Link from "next/link"
-import type { Product } from "@/types/product"
-import { ArrowLeft, ArrowRight, Check, GitCompareArrows, X } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
+import { ArrowLeft, ArrowRight, Check, Plus, X } from "lucide-react"
+import { filterHomeProducts, moveHomeSelection, toggleHomeComparison, type HomeProduct } from "@/lib/home/catalog"
+import styles from "./homepage.module.css"
 
-export type FinderProduct = {
-  id: string
-  name: string
-  brand: string
-  brandId: string
-  category: string
-  categoryLabel: string
-  priceUsd?: number
-  price: string
-  image: string
-  rating: number
-  chairSpecs?: Product["chairSpecs"]
-  bestFor?: string
-}
-
-const STORAGE_KEY = "chairpedia-home-compare"
-const Image = (props: ImageProps) => <NextImage {...props} unoptimized />
-
-function trackHomeAction(action: string, product?: FinderProduct) {
-  const win = window as typeof window & { dataLayer?: Record<string, unknown>[] }
-  win.dataLayer = win.dataLayer || []
-  win.dataLayer.push({ event: "home_finder_action", action, product_id: product?.id, product_name: product?.name, brand: product?.brand })
-}
-
-export function ChairFinder({ products }: { products: FinderProduct[] }) {
+type Comparison = { slug: string; title: string; a: string; b: string }
+export function ChairFinder({ products, total, comparisons }: { products: HomeProduct[]; total: number; comparisons: Comparison[] }) {
   const [category, setCategory] = useState("all")
   const [brand, setBrand] = useState("all")
-  const [priceBand, setPriceBand] = useState("all")
-  const [activeId, setActiveId] = useState(products[0]?.id ?? "")
-  const [compare, setCompare] = useState<string[]>([])
-  const [dockOpen, setDockOpen] = useState(false)
-  const [storageLoaded, setStorageLoaded] = useState(false)
+  const [activeSlug, setActiveSlug] = useState(products[0]?.slug ?? "")
+  const [selected, setSelected] = useState<string[]>([])
+  const [failed, setFailed] = useState<string[]>([])
+  const available = useMemo(() => products.filter(product => !failed.includes(product.slug)), [products, failed])
+  const matches = useMemo(() => filterHomeProducts(available, category, brand), [available, category, brand])
+  const active = matches.find(product => product.slug === activeSlug) ?? matches[0]
+  const index = active ? matches.indexOf(active) : 0
+  const start = Math.floor(index / 6) * 6
+  const brands = [...new Map(available.map(product => [product.brandSlug, product.brand])).entries()].sort((a,b) => a[1].localeCompare(b[1]))
+  const categories = [...new Map(available.map(product => [product.category, product.categoryLabel])).entries()]
+  const selectedProducts = selected.flatMap(slug => available.filter(product => product.slug === slug))
+  const pair = selectedProducts.length === 2 ? comparisons.find(item => selected.includes(item.a) && selected.includes(item.b)) : null
+  const related = selectedProducts.length === 1 ? comparisons.filter(item => item.a === selected[0] || item.b === selected[0]).slice(0, 3) : []
+  const reset = () => { setCategory("all"); setBrand("all"); setActiveSlug(products[0]?.slug ?? "") }
+  const fail = (slug: string) => setFailed(current => current.includes(slug) ? current : [...current, slug])
 
-  useEffect(() => {
-    try { const saved: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); if (Array.isArray(saved)) setCompare([...new Set(saved.filter((id): id is string => typeof id === "string" && products.some(p => p.id === id)))].slice(0, 3)) } catch {}
-    setStorageLoaded(true)
-  }, [products])
-  useEffect(() => { if (storageLoaded) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(compare)) } catch {} } }, [compare, storageLoaded])
-
-  const brands = useMemo(() => [...new Set(products.map((p) => p.brand))].sort(), [products])
-  const categories = useMemo(() => [...new Map(products.map((p) => [p.category, p.categoryLabel])).entries()], [products])
-  const matches = useMemo(() => products.filter((p) => {
-    const priceMatches = (() => {
-      if (priceBand === "all") return true
-      if (priceBand === "unavailable") return p.priceUsd == null
-      if (p.priceUsd == null) return false
-      if (priceBand === "under-300") return p.priceUsd < 300
-      if (priceBand === "300-500") return p.priceUsd >= 300 && p.priceUsd < 500
-      if (priceBand === "500-1000") return p.priceUsd >= 500 && p.priceUsd < 1000
-      if (priceBand === "1000-1500") return p.priceUsd >= 1000 && p.priceUsd < 1500
-      if (priceBand === "1500-plus") return p.priceUsd >= 1500
-      return false
-    })()
-    return (category === "all" || p.category === category) &&
-      (brand === "all" || p.brand === brand) &&
-      priceMatches
-  }).sort((a, b) => (b.rating || 0) - (a.rating || 0)), [products, category, brand, priceBand])
-
-  const active = matches.find((p) => p.id === activeId) ?? matches[0]
-  const activeIndex = Math.max(0, matches.findIndex((p) => p.id === active?.id))
-  const move = (step: number) => {
-    if (!matches.length) return
-    setActiveId(matches[(activeIndex + step + matches.length) % matches.length].id)
-  }
-  const toggleCompare = (id: string) => {
-    if (!compare.includes(id) && compare.length >= 3) { setDockOpen(true); return }
-    setDockOpen(true)
-    const product = products.find((p) => p.id === id)
-    trackHomeAction(compare.includes(id) ? "compare_remove" : "compare_add", product)
-    setCompare((current) => current.includes(id) ? current.filter((item) => item !== id) : current.length < 3 ? [...current, id] : current)
-  }
-  const compared = compare.map((id) => products.find((p) => p.id === id)).filter(Boolean) as FinderProduct[]
-
-  return (
-    <section className="border-b border-[#171717] bg-white">
-      <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
-        <div className="border-[#171717] px-4 py-5 sm:py-10 lg:border-r lg:px-8 lg:py-14">
-          <p className="text-[11px] font-bold uppercase tracking-[.14em] text-[#52606d]">Chairpedia - Chair research &amp; comparison</p>
-          <h1 className="mt-3 max-w-2xl font-serif text-3xl leading-[1.08] sm:text-5xl lg:text-6xl">Find your chair with Chairpedia</h1>
-          <p className="mt-4 max-w-xl text-sm leading-6 text-[#555]">Set your conditions. The shortlist and featured chair update instantly, using fields available in our catalog.</p>
-
-          <div className="mt-5 sm:mt-9 border-l-4 border-[#3157e8] bg-[#eef2ff] p-4">
-            <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Your conditions</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-base sm:text-lg font-semibold">
-              <span>Show me</span>
-              <select aria-label="Chair category" value={category} onChange={(e) => setCategory(e.target.value)} className="min-w-36 border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
-                <option value="all">any chair</option>{categories.map(([id, label]) => <option key={id} value={id}>{label}</option>)}
-              </select>
-              <span>priced</span>
-              <select aria-label="Price range" value={priceBand} onChange={(e) => setPriceBand(e.target.value)} className="border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
-                <option value="all">at any price</option>
-                <option value="under-300">under $300</option>
-                <option value="300-500">$300–$499</option>
-                <option value="500-1000">$500–$999</option>
-                <option value="1000-1500">$1,000–$1,499</option>
-                <option value="1500-plus">$1,500+</option>
-                <option value="unavailable">price unavailable</option>
-              </select>
-              <span>from</span>
-              <select aria-label="Chair brand" value={brand} onChange={(e) => setBrand(e.target.value)} className="min-w-36 border-b-2 border-[#3157e8] bg-transparent px-2 py-1">
-                <option value="all">any brand</option>{brands.map((item) => <option key={item}>{item}</option>)}
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-7 flex items-center justify-between border-b border-[#171717] pb-2 text-xs">
-            <strong>{matches.length} chairs match</strong><Link href="/products" className="text-[#3157e8] underline underline-offset-4">Browse all chairs</Link>
-          </div>
-          <div className="max-h-[220px] overflow-auto lg:max-h-none divide-y divide-[#d8d8d8]">
-            {matches.slice(0, 6).map((p, index) => (
-              <button key={p.id} onClick={() => setActiveId(p.id)} className={`grid w-full grid-cols-[28px_46px_1fr_auto] items-center gap-3 px-2 py-3 text-left transition-all hover:bg-[#f2f5ff] ${active?.id === p.id ? "border-l-4 border-[#3157e8] bg-[#eef2ff]" : "border-l-4 border-transparent"}`}>
-                <span className="text-xs text-[#777]">{index + 1}</span><Image src={p.image} alt="" width={46} height={46} className="h-11 w-11 object-contain" />
-                <span className="min-w-0"><strong className="block truncate text-sm">{p.name}</strong><span className="block truncate text-xs text-[#777]">{p.categoryLabel}{p.bestFor ? ` · ${p.bestFor}` : ""}</span></span>
-                <span className="text-right text-xs font-semibold">{p.price}</span>
-              </button>
-            ))}
-            {matches.length === 0 && <p className="py-8 text-sm text-[#666]">No chairs match all three conditions. Adjust a filter to widen the shortlist.</p>}
+  return <section className={styles.finder} aria-label="Find a chair">
+    <div className={styles.finderGrid}>
+      <div className={styles.finderIntro}>
+        <p className={styles.eyebrow}>Chair research, made clearer</p>
+        <h1>Find your chair{" "}<br />with Chairpedia</h1>
+        <p className={styles.lede}>Start with the chair, then explore the details. Compare models, understand the options and make a shortlist of your own.</p>
+        <div className={styles.filters}>
+          <p className={styles.eyebrow}>Your conditions</p>
+          <div className={styles.filterFields}>
+            <label>Chair type<select aria-label="Chair type" value={category} onChange={event => setCategory(event.target.value)}><option value="all">Any chair type</option>{categories.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
+            <label>Brand<select aria-label="Brand" value={brand} onChange={event => setBrand(event.target.value)}><option value="all">Any brand</option>{brands.map(([id, name]) => <option key={id} value={id}>{name}</option>)}</select></label>
           </div>
         </div>
-
-        {active && <div key={active.id} className="animate-[finder-in_.32s_ease-out] bg-[#f5f1e8]">
-          <div className="relative flex aspect-[4/3] items-center justify-center border-b border-[#171717] bg-[#eaf3ff] p-10 lg:aspect-auto lg:min-h-[490px]">
-            <span className="absolute left-5 top-5 bg-[#f0bf3a] px-2 py-1 text-[10px] font-bold uppercase">Selected chair</span>
-            <div className="absolute right-5 top-5 flex gap-2"><button aria-label="Previous chair" onClick={() => move(-1)} className="border border-[#171717] bg-white p-2"><ArrowLeft size={17} /></button><button aria-label="Next chair" onClick={() => move(1)} className="border border-[#171717] bg-white p-2"><ArrowRight size={17} /></button></div>
-            <Image src={active.image} alt={active.name} width={620} height={620} priority className="h-full max-h-[390px] w-full object-contain" />
-          </div>
-          <div className="bg-white p-5">
-            <p className="text-[10px] font-bold uppercase tracking-[.12em] text-[#53606a]">{active.brand} · {active.categoryLabel}</p>
-            <h2 className="mt-1 font-serif text-3xl">{active.name}</h2>
-            <div className="mt-4 grid grid-cols-2 border border-[#171717] text-xs"><div className="p-3"><span className="block text-[#777]">Reference price (USD)</span><strong>{active.price}</strong></div><div className="border-l border-[#171717] p-3"><span className="block text-[#777]">Best for</span><strong>{active.bestFor || "See full specifications"}</strong></div></div>
-            <div className="mt-3 grid grid-cols-2 gap-2"><Link href={`/products/${active.id}`} className="flex items-center justify-center bg-[#171717] px-3 py-3 text-sm font-bold text-white">View chair details</Link><button onClick={() => toggleCompare(active.id)} className="flex items-center justify-center gap-2 border border-[#3157e8] px-3 py-3 text-sm font-bold text-[#3157e8]">{compare.includes(active.id) ? <Check size={16} /> : <GitCompareArrows size={16} />} {compare.includes(active.id) ? "Added" : compare.length >= 3 ? "Compare full" : "Add to compare"}</button></div>
-          </div>
-        </div>}
-        {!active && <div className="flex min-h-[420px] flex-col items-center justify-center bg-[#fff0c7] p-8 text-center"><p className="font-serif text-3xl">No exact matches</p><p className="mt-2 max-w-sm text-sm text-[#666]">Try a broader category, price range, or brand.</p><button onClick={() => { setCategory("all"); setPriceBand("all"); setBrand("all") }} className="mt-5 border border-[#171717] bg-white px-4 py-2 text-sm font-bold">Reset filters</button></div>}
       </div>
-
-      {compared.length > 0 && <div className="sticky bottom-0 z-40 border-y border-[#171717] bg-white shadow-[0_-8px_30px_rgba(0,0,0,.1)]">
-        <div className="mx-auto max-w-7xl px-4 py-3"><button className="flex w-full items-center justify-between text-xs font-bold uppercase tracking-[.12em]" onClick={() => setDockOpen(!dockOpen)}><span>Compare · {compared.length}/3</span><span>{dockOpen ? "Collapse" : "Expand"}</span></button>
-          {dockOpen && <div className="mt-3 max-h-[55vh] overflow-auto">
-            <p className="mb-2 text-xs text-[#666]">Choose up to three chairs. Prices are reference USD values; confirm the configuration and current price with the seller.</p>
-            <table className="w-full min-w-[540px] border-collapse text-left text-xs">
-              <caption className="sr-only">Chair specifications comparison</caption>
-              <thead><tr><th className="border p-2">Specification</th>{compared.map(p => <th key={p.id} className="border p-2"><div className="flex items-center gap-2"><Image src={p.image} alt="" width={44} height={44} className="h-11 w-11 object-contain" /><Link href={`/products/${p.id}`} className="underline">{p.name}</Link><button aria-label={`Remove ${p.name}`} onClick={() => toggleCompare(p.id)}><X size={16} /></button></div></th>)}</tr></thead>
-              <tbody>{[
-                ["Reference price (USD)", (p: FinderProduct) => p.price],
-                ["Category", (p: FinderProduct) => p.categoryLabel],
-                ["Seat height (cm)", (p: FinderProduct) => p.chairSpecs?.seatHeightMin != null && p.chairSpecs?.seatHeightMax != null ? `${p.chairSpecs.seatHeightMin}–${p.chairSpecs.seatHeightMax}` : "Not listed"],
-                ["Armrests", (p: FinderProduct) => p.chairSpecs?.armrestType ?? "Not listed"],
-                ["Weight capacity (kg)", (p: FinderProduct) => p.chairSpecs?.weightCapacityKg ?? "Not listed"],
-                ["Warranty (years)", (p: FinderProduct) => p.chairSpecs?.warrantyYears ?? "Not listed"],
-              ].map(([label, value]) => <tr key={String(label)}><th scope="row" className="border p-2">{String(label)}</th>{compared.map(p => <td key={p.id} className="border p-2">{(value as (p: FinderProduct) => string | number)(p)}</td>)}</tr>)}</tbody>
-            </table>
-          </div>}
+      <div className={styles.results}>
+        <div className={styles.resultsHeading}><p role="status"><strong>{matches.length}</strong> chairs to explore</p><button onClick={reset}>Reset filters</button></div>
+        <div className={styles.productList}>
+          {matches.slice(start, start + 6).map((product, offset) => <button key={product.slug} aria-pressed={active?.slug === product.slug} onClick={() => setActiveSlug(product.slug)} className={styles.productRow}>
+            <span className={styles.rowNumber}>{String(start + offset + 1).padStart(2, "0")}</span>
+            <Image unoptimized src={product.image} alt="" width={52} height={52} onError={() => fail(product.slug)} />
+            <span><strong>{product.name}</strong><small>{product.categoryLabel}</small></span><ArrowRight size={16} aria-hidden="true" />
+          </button>)}
+          {!matches.length && <div className={styles.empty}><p>No chairs match these filters.</p><button className={styles.secondaryButton} onClick={reset}>Reset filters</button></div>}
+        </div>
+        <Link href="/products" className={styles.browseAll}>Browse all {total} chairs <ArrowRight size={17} aria-hidden="true" /></Link>
+      </div>
+      {active && <div className={styles.selected} data-selected-product={active.slug}>
+        <div className={styles.selectedImage}>
+          <span className={styles.selectedLabel}>Selected chair</span>
+          <div className={styles.arrows}><button aria-label="Previous chair" disabled={matches.length < 2} onClick={() => setActiveSlug(moveHomeSelection(matches, active.slug, -1))}><ArrowLeft size={18} /></button><button aria-label="Next chair" disabled={matches.length < 2} onClick={() => setActiveSlug(moveHomeSelection(matches, active.slug, 1))}><ArrowRight size={18} /></button></div>
+          <Image unoptimized src={active.image} alt={active.name} width={620} height={620} priority onError={() => fail(active.slug)} />
+        </div>
+        <div className={styles.selectedInfo}>
+          <p className={styles.eyebrow}>{active.brand} · {active.categoryLabel}</p>
+          <h2>{active.name}</h2>
+          {active.fact ? <p className={styles.productFact}>{active.fact.value} <a href={active.fact.href} target="_blank" rel="noopener noreferrer">Official source <span className={styles.srOnly}>(opens in a new tab)</span>↗</a></p> : <p className={styles.productFact}>Explore this model and check the exact configuration with the manufacturer or seller.</p>}
+          {active.scope && <p className={styles.scope}>{active.scope}.</p>}
+          {active.note && <p className={styles.configuration}>{active.note}</p>}
+          <div className={styles.actions}><Link className={styles.primaryButton} href={`/products/${active.slug}`}>View chair details <ArrowRight size={16} aria-hidden="true" /></Link><button className={styles.secondaryButton} aria-pressed={selected.includes(active.slug)} onClick={() => setSelected(current => toggleHomeComparison(current, active.slug))}>{selected.includes(active.slug) ? <Check size={16} /> : <Plus size={16} />} {selected.includes(active.slug) ? "Added to compare" : "Add to compare"}</button></div>
         </div>
       </div>}
-    </section>
-  )
+    </div>
+    {selectedProducts.length > 0 && <div className={styles.compareTray} aria-label="Comparison shortlist">
+      <div><h2>Compare your shortlist</h2><p>Choose two chairs to find a published comparison. Adding a third replaces the first.</p></div>
+      <ul>{selectedProducts.map(product => <li key={product.slug}>{product.name}<button aria-label={`Remove ${product.name} from comparison`} onClick={() => setSelected(current => current.filter(slug => slug !== product.slug))}><X size={16} /></button></li>)}</ul>
+      {pair && <Link className={styles.primaryButton} href={`/compare/${pair.slug}`}>Read this comparison <ArrowRight size={16} /></Link>}
+      {selectedProducts.length === 2 && !pair && <p>No verified comparison is available for this pair yet. <Link href="/compare">Browse published comparisons</Link>.</p>}
+      {related.length > 0 && <div className={styles.related}><p>Published comparisons for {selectedProducts[0].name}</p>{related.map(item => <Link key={item.slug} href={`/compare/${item.slug}`}>{item.title} <ArrowRight size={16} aria-hidden="true" /></Link>)}</div>}
+    </div>}
+  </section>
 }

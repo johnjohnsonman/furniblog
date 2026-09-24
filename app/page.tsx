@@ -1,63 +1,68 @@
-import NextImage, { type ImageProps } from "next/image"
+import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, Play } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ChairFinder } from "@/components/home/chair-finder"
-import { bestLists, brands } from "@/lib/data"
-import { CHAIR_CATEGORIES, countByChairCategory } from "@/lib/chair-categories"
-import { getProducts } from "@/lib/supabase/queries"
-import { getHomeChairpedia, getLatestNews, getLatestReviews, getLatestVideos } from "@/lib/home/feeds"
+import { getHomePageData } from "@/lib/home/page-data"
 import { generateOrganizationSchema, generateWebsiteSchema } from "@/lib/seo/schemas"
+import styles from "@/components/home/homepage.module.css"
 
 export const dynamic = "force-dynamic"
-export const metadata = { title: { absolute: "Chairpedia | Chair Comparisons & Buying Guides" }, alternates: { canonical: "/" } }
+const title = "Chairpedia | Chair Comparisons & Buying Guides"
+const description = "Find your chair with Chairpedia. Explore chair models, compare documented features and read guides to generations, configurations and buying decisions."
+export const metadata: Metadata = {
+  title: { absolute: title }, description, alternates: { canonical: "https://www.chairpedia.com/" },
+  openGraph: { type: "website", title, description, url: "https://www.chairpedia.com/", images: [{ url: "/opengraph-image", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", title, description, images: ["/opengraph-image"] },
+}
 
-const guides = [
-  ["What a return actually costs", "/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"],
-  ["How to read an Amazon listing", "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it"],
-  ["Best chairs under $300", "/blog/best-office-chairs-under-300-verified-picks"],
-  ["Aeron Classic vs Remastered", "/blog/herman-miller-aeron-classic-vs-remastered-identification-guide"],
-  ["Used Leap: V1 vs V2", "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection"],
-  ["Will it fit my desk?", "/blog/office-chair-desk-fit-guide-seat-height-and-armrest-clearance"],
-] as const
-
-const Image = (props: ImageProps) => <NextImage {...props} unoptimized />
-
-function Head({ children, href }: { children: React.ReactNode; href: string }) {
-  return <div className="mb-6 flex items-end justify-between"><h2 className="font-serif text-3xl sm:text-4xl">{children}</h2><Link href={href} className="flex items-center gap-1 text-xs font-bold text-[#3157e8]">View all <ArrowRight size={14} /></Link></div>
+function SectionHead({ title: heading, href, linkText = "View all" }: { title: string; href: string; linkText?: string }) {
+  return <div className={styles.sectionHead}><h2>{heading}</h2><Link href={href}>{linkText} <ArrowRight size={15} aria-hidden="true" /></Link></div>
 }
 
 export default async function HomePage() {
-  const [products, chairpedia, reviews, videos, news] = await Promise.all([getProducts(), getHomeChairpedia(4), getLatestReviews(3), getLatestVideos(5), getLatestNews(4)])
-  const finderProducts = products.map((p) => ({ id: p.id, name: p.name, brand: p.brand, brandId: p.brandId, category: p.category, categoryLabel: p.categoryLabel, priceUsd: p.priceUsd, price: p.price, image: p.image, rating: p.rating, bestFor: p.bestFor, chairSpecs: p.chairSpecs }))
-  const counts = countByChairCategory(products)
-  return <div className="min-h-screen bg-white text-[#171717]">
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]) }} />
-    <Header /><main><ChairFinder products={finderProducts} />
-      <section aria-label="About Chairpedia and site navigation" className="border-b border-border">
-        <div className="mx-auto max-w-6xl px-4 py-7 lg:px-8">
-          <h2 className="font-serif text-xl">Chairpedia: research before you buy</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">Compare chair specifications, read buying guides, and explore customer experiences and source-linked review summaries. Formerly Furniblog, Chairpedia helps you understand fit, features, and buying trade-offs.</p>
-          <nav aria-label="Start your chair research" className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm underline underline-offset-4">
-            <Link href="/products">Browse chairs</Link><Link href="/compare">Compare models</Link><Link href="/chairpedia">Read chair guides</Link><Link href="/reviews">Explore reviews</Link><Link href="/editorial-policy">How we research</Link><Link href="/about">About Chairpedia</Link>
-          </nav>
+  const data = await getHomePageData()
+  const [feature, ...guides] = data.guides
+  const topBrands = [...data.brands].sort((a,b) => b.count - a.count || a.name.localeCompare(b.name)).slice(0, 7)
+  const locations = [...data.locations].sort((a,b) => b.count - a.count).slice(0, 4)
+  return <div className={styles.home}>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([generateOrganizationSchema(), generateWebsiteSchema()]).replace(/</g, "\\u003c") }} />
+    <Header />
+    <main>
+      <ChairFinder products={data.products} total={data.total} comparisons={data.comparisons} />
+      <section className={styles.intro} aria-labelledby="research-title"><div className={styles.container}>
+        <h2 id="research-title">Chairpedia: research before you buy</h2>
+        <p>Get to know the chair behind the model name. We connect specifications to sources, distinguish generations and configurations, and keep regional differences in view. Where a detail is unknown, we leave it open for you to confirm.</p>
+        <nav aria-label="Start your chair research" className={styles.researchLinks}><Link href="/products">Browse chairs</Link><Link href="/compare">Compare models</Link><Link href="/chairpedia">Read chair guides</Link><Link href="/reviews">Explore reviews</Link><Link href="/editorial-policy">How we research</Link><Link href="/about">About Chairpedia</Link></nav>
+      </div></section>
+      {locations.length > 0 && <section className={styles.stores} aria-labelledby="stores-title"><div className={styles.container}>
+        <h2 id="stores-title">Try a chair near you</h2><p>Find a showroom, check the models on display and contact the store before travelling.</p>
+        <div className={styles.locationGrid}>{locations.map(location => <div key={location.href}><Link href={location.href}><strong>{location.name}</strong><small>{location.count} stores</small></Link><div className={styles.cities}>{location.cities.map(city => <Link key={city.href} href={city.href}>{city.name}</Link>)}</div></div>)}</div>
+        <nav aria-label="More showroom locations" className={styles.researchLinks}><Link href="/stores">Explore the showroom map</Link><Link href="/stores/locations">All countries and cities</Link></nav>
+      </div></section>}
+      {feature && <section className={styles.feature} aria-labelledby="feature-title"><div className={`${styles.container} ${styles.featureGrid}`}>
+        <div className={styles.featureImage}><Image unoptimized src={feature.product.image} alt={feature.product.name} width={600} height={600} /></div>
+        <div className={styles.featureCopy}><p className={styles.eyebrow}>From Chairpedia · A closer look</p><h2 id="feature-title">{feature.title}</h2><p>{feature.description}</p><Link href={`/chairpedia/${feature.slug}`} className={styles.primaryButton}>Read the guide <ArrowRight size={16} aria-hidden="true" /></Link></div>
+      </div></section>}
+      {guides.length > 0 && <section className={styles.section}><div className={styles.container}>
+        <SectionHead title="Explore chair guides" href="/chairpedia" />
+        <div className={styles.guideGrid}>{guides.map(guide => <Link key={guide.slug} href={`/chairpedia/${guide.slug}`} className={styles.guideCard}><div className={styles.guideImage}><Image unoptimized src={guide.product.image} alt={guide.product.name} width={420} height={420} /></div><p className={styles.eyebrow}>{guide.product.brand}</p><h3>{guide.title}</h3><p>{guide.description}</p></Link>)}</div>
+      </div></section>}
+      {/* Reviews, videos and news need individually reviewed source and media provenance.
+          No placeholders or unscreened random feeds are substituted for those sections. */}
+      {data.buying.length > 0 && <section className={styles.section}><div className={styles.container}>
+        <SectionHead title="Buying guides" href="/blog" /><div className={styles.buyingGrid}>{data.buying.map(guide => <Link key={guide.slug} href={`/blog/${guide.slug}`}>{guide.title}<ArrowRight size={18} aria-hidden="true" /></Link>)}</div>
+      </div></section>}
+      <section className={`${styles.section} ${styles.database}`}><div className={styles.container}>
+        <SectionHead title="Browse the chair database" href="/products" linkText={`${data.total} chairs`} />
+        <div className={styles.databaseGrid}>
+          <div><h3>Categories</h3>{data.categories.map(category => <Link key={category.id} href={`/products?category=${encodeURIComponent(category.id)}`}>{category.name}<span>{category.count}</span></Link>)}</div>
+          <div><h3>Research collections</h3><Link href="/compare">Model comparisons <ArrowRight size={14} aria-hidden="true" /></Link><Link href="/chairpedia">Chair guides <ArrowRight size={14} aria-hidden="true" /></Link><Link href="/blog">Buying and identification guides <ArrowRight size={14} aria-hidden="true" /></Link><Link href="/editorial-policy">How we research <ArrowRight size={14} aria-hidden="true" /></Link></div>
+          <div><h3>Brands</h3>{topBrands.map(brand => <Link key={brand.slug} href={`/brands/${encodeURIComponent(brand.slug)}`}>{brand.name}<span>{brand.count}</span></Link>)}<Link href="/brands">All chair brands <ArrowRight size={14} aria-hidden="true" /></Link></div>
         </div>
-      </section>
-
-      <section className="border-b border-[#171717] px-5 py-7"><div className="mx-auto max-w-7xl"><h2 className="font-serif text-2xl">Try a chair near you</h2><p className="mt-2 text-sm text-[#666]">Find chair stores, check visit arrangements and contact a showroom before you travel.</p><nav aria-label="Chair store locations" className="mt-4 flex flex-wrap gap-x-6 gap-y-3 text-sm underline"><Link href="/stores">World map</Link><Link href="/stores/locations/japan">Japan</Link><Link href="/stores/locations/united-states">United States</Link><Link href="/stores/locations/united-kingdom">United Kingdom</Link><Link href="/stores/locations/germany">Germany</Link><Link href="/stores/locations">All countries and cities</Link></nav></div></section>
-      {chairpedia[0] && <section className="border-b border-[#171717] bg-[#cdeff0]"><Link href={`/chairpedia/${chairpedia[0].slug}`} className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]"><div className="relative aspect-[16/10] overflow-hidden border-[#171717] lg:border-r"><Image src={chairpedia[0].heroImage} alt={chairpedia[0].title} fill sizes="(min-width:1024px) 55vw,100vw" className="object-cover transition-transform duration-700 hover:scale-[1.025]" /></div><div className="flex flex-col justify-center p-7 lg:p-12"><p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#17676b]">From Chairpedia</p><h2 className="mt-3 font-serif text-3xl sm:text-5xl">{chairpedia[0].title}</h2><p className="mt-4 max-w-xl text-sm leading-6">{chairpedia[0].excerpt}</p><span className="mt-6 flex items-center gap-2 text-sm font-bold">Read the deep dive <ArrowRight size={16} /></span></div></Link></section>}
-
-      {chairpedia.length > 1 && <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/chairpedia">Explore chair guides</Head><div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-3">{chairpedia.slice(1,4).map((item) => <Link key={item.slug} href={`/chairpedia/${item.slug}`} className="group bg-white p-4"><div className="relative aspect-[16/9] overflow-hidden bg-[#eef2ff]"><Image src={item.heroImage} alt="" fill className="object-cover transition-transform duration-500 group-hover:scale-105" /></div><p className="mt-4 text-[10px] font-bold uppercase text-[#3157e8]">Chairpedia</p><h3 className="mt-1 font-serif text-xl">{item.title}</h3><p className="mt-2 line-clamp-2 text-xs leading-5 text-[#666]">{item.excerpt}</p></Link>)}</div></div></section>}
-
-      <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/reviews">Review highlights</Head><div className="grid gap-px border border-[#171717] bg-[#171717] md:grid-cols-3">{reviews.map((r, i) => <Link key={r.id} href={`/reviews/${r.id}`} className={`group p-5 ${i === 2 ? "bg-[#fff0c7]" : "bg-white"}`}><div className={r.productImage ? "relative aspect-[16/10] bg-[#eef2ff]" : "hidden"}>{r.productImage && <Image src={r.productImage} alt={r.productName} fill className="object-contain p-5 transition-transform duration-500 group-hover:scale-105" />}</div><p className="mt-4 text-[10px] font-bold uppercase text-[#3157e8]">{r.brandName || "Review"}</p><h3 className="mt-1 font-serif text-xl">{r.productName}</h3><p className="mt-2 line-clamp-3 text-sm leading-6">{r.summary}</p></Link>)}</div></div></section>
-
-      <section className="border-b border-[#171717] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/blog">Buying guides</Head><div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2 lg:grid-cols-3">{guides.map(([title, href]) => <Link key={href} href={href} className="flex min-h-24 items-center justify-between bg-white p-5 font-semibold transition-colors hover:bg-[#fff0c7]">{title}<ArrowRight size={16} /></Link>)}</div></div></section>
-
-      <section className="border-b border-[#171717] bg-[#171717] py-12 text-white"><div className="mx-auto max-w-7xl px-5"><Head href="/videos">New videos</Head><div className="flex snap-x gap-3 overflow-x-auto pb-2">{videos.map((v) => <a key={v.id} href={`https://www.youtube.com/watch?v=${v.youtubeId}`} target="_blank" rel="noopener noreferrer" className="group w-[260px] shrink-0 snap-start"><div className="relative aspect-video overflow-hidden bg-[#292929]">{v.thumbnailUrl && <Image src={v.thumbnailUrl} alt={v.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />}<span className="absolute bottom-3 left-3 bg-[#f0bf3a] p-2 text-black"><Play size={15} fill="currentColor" /></span></div><p className="mt-2 line-clamp-2 text-sm font-semibold">{v.title}</p></a>)}</div></div></section>
-
-      <section className="border-b border-[#171717] bg-[#f5f1e8] py-14"><div className="mx-auto max-w-7xl px-5"><Head href="/products">Browse the chair database</Head><div className="grid gap-8 md:grid-cols-3"><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Categories</h3>{CHAIR_CATEGORIES.filter((c) => counts[c.id]).slice(0,7).map((c) => <Link key={c.id} href={`/products?category=${c.id}`} className="flex justify-between border-b border-[#c8c1b5] py-2 text-sm"><span>{c.label}</span><span>{counts[c.id]}</span></Link>)}</div><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Best lists</h3>{bestLists.slice(0,6).map((l) => <Link key={l.id} href={`/best/${l.id}`} className="block border-b border-[#c8c1b5] py-2 text-sm">{l.title}</Link>)}</div><div><h3 className="mb-3 text-xs font-bold uppercase tracking-wider">Brands</h3>{brands.slice(0,7).map((b) => <Link key={b.id} href={`/brands/${b.id}`} className="block border-b border-[#c8c1b5] py-2 text-sm">{b.name}</Link>)}</div></div></div></section>
-
-      {news.length > 0 && <section className="py-10"><div className="mx-auto max-w-7xl px-5"><h2 className="mb-3 text-xs font-bold uppercase tracking-wider">Latest news</h2>{news.map((n) => <Link key={n.id} href={`/news/${n.slug}`} className="flex items-center justify-between border-t border-[#ccc] py-3 text-sm hover:text-[#3157e8]"><span>{n.title}</span><ArrowRight size={14} /></Link>)}</div></section>}
-    </main><Footer /></div>
+      </div></section>
+    </main><Footer />
+  </div>
 }
