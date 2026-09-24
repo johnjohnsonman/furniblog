@@ -34,7 +34,7 @@ async function main() {
   }
   assert.equal(isChairpediaPreview({ VERCEL_ENV: "production" }), false)
   assert.equal(isChairpediaPreview({ VERCEL_ENV: "preview" }), true)
-  assert.deepEqual(Object.keys(COMPARISON_VISUALS).sort(), ["herman-miller-aeron", "herman-miller-embody", "herman-miller-mirra-2", "steelcase-gesture", "steelcase-leap-v2"], "pilot visual registry must cover exactly five products")
+  assert.deepEqual(Object.keys(COMPARISON_VISUALS).sort(), ["herman-miller-aeron", "herman-miller-cosm-high-back", "herman-miller-embody", "herman-miller-mirra-2", "herman-miller-sayl", "humanscale-freedom", "steelcase-gesture", "steelcase-leap-v2"], "pilot visual registry must cover exactly eight products")
   for (const visual of Object.values(COMPARISON_VISUALS)) {
     assert.ok(visual.alt && visual.rightsBasis && visual.checkedOn && visual.modelScope, `visual metadata incomplete: ${visual.productName}`)
   }

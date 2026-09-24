@@ -57,8 +57,8 @@ export function VerifiedComparison({ pilot, productA, productB }: { pilot: Verif
     <section aria-labelledby="at-a-glance">
       <h2 id="at-a-glance" className="font-serif text-2xl font-medium">Differences at a glance</h2>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">Option-dependent features are marked &quot;Selected configurations.&quot;</p>
-      <div className="mt-5 hidden overflow-x-auto border border-border sm:block" tabIndex={0} aria-label="Scrollable chair comparison table" data-testid="desktop-comparison-table">
-        <table className="w-full min-w-[640px] border-collapse text-left text-sm"><thead><tr className="border-b border-border bg-[#f5f1e8]"><th scope="col" className="sticky left-0 z-20 w-1/4 bg-[#f5f1e8] p-4 font-medium">Comparison item</th><th scope="col" className="bg-[#f5f1e8] p-4 font-medium">{recordA.name}</th><th scope="col" className="bg-[#f5f1e8] p-4 font-medium">{recordB.name}</th></tr></thead>
+      <div className="mt-5 hidden overflow-x-auto border border-border sm:block" tabIndex={0} data-testid="desktop-comparison-table">
+        <table aria-labelledby="at-a-glance" className="w-full min-w-[640px] border-collapse text-left text-sm"><thead><tr className="border-b border-border bg-[#f5f1e8]"><th scope="col" className="sticky left-0 z-20 w-1/4 bg-[#f5f1e8] p-4 font-medium">Comparison item</th><th scope="col" className="bg-[#f5f1e8] p-4 font-medium">{recordA.name}</th><th scope="col" className="bg-[#f5f1e8] p-4 font-medium">{recordB.name}</th></tr></thead>
           <tbody>{rows.map((row) => <tr key={row.label} className="border-b border-border last:border-b-0"><th scope="row" className="sticky left-0 z-10 bg-white p-4 align-top font-medium">{row.label}</th><td className="p-4 align-top leading-6"><FactValue fact={getVerifiedFact(pilot.productA, row.fact)} pilot={pilot} /></td><td className="p-4 align-top leading-6"><FactValue fact={getVerifiedFact(pilot.productB, row.fact)} pilot={pilot} /></td></tr>)}</tbody>
         </table>
       </div>

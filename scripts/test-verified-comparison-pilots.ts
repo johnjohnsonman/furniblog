@@ -6,10 +6,16 @@ import {
 } from "../lib/comparisons/verified-pilots"
 import { getVerifiedFact, VERIFIED_PRODUCTS } from "../lib/comparisons/verified-products"
 
-assert.equal(VERIFIED_COMPARISON_PILOT_SLUGS.length, 9, "verified comparison set must contain the five pilots and four approved expansion pages")
-assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 9, "verified comparison slugs must be unique")
+assert.equal(VERIFIED_COMPARISON_PILOT_SLUGS.length, 15, "verified comparison set must contain the nine existing and six batch-two pages")
+assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 15, "verified comparison slugs must be unique")
 
 const approvedExpansionOrder = new Map([
+  ["herman-miller-cosm-high-back-vs-steelcase-gesture-which-should-you-buy-ms8cz38y", ["cosm-high", "gesture"]],
+  ["steelcase-leap-v2-vs-herman-miller-cosm-high-back-which-should-you-buy-mssd4uxq", ["leap", "cosm-high"]],
+  ["herman-miller-sayl-vs-steelcase-gesture-which-should-you-buy-msid1zj6", ["sayl", "gesture"]],
+  ["steelcase-leap-v2-vs-herman-miller-sayl-which-should-you-buy-mt9id44p", ["leap", "sayl"]],
+  ["humanscale-freedom-vs-steelcase-gesture-which-should-you-buy-ms6xi78h", ["freedom", "gesture"]],
+  ["steelcase-leap-v2-vs-humanscale-freedom-which-should-you-buy-msgxmbd7", ["leap", "freedom"]],
   ["herman-miller-aeron-vs-steelcase-gesture-which-should-you-buy-ms42k2uo", ["aeron", "gesture"]],
   ["steelcase-leap-v2-vs-herman-miller-embody-which-should-you-buy-mstsjr00", ["leap", "embody"]],
   ["steelcase-leap-v2-vs-herman-miller-mirra-2-which-should-you-buy-mt0xr0o4", ["leap", "mirra-2"]],
@@ -39,8 +45,14 @@ for (const slug of VERIFIED_COMPARISON_PILOT_SLUGS) {
   assert.ok(sources.length >= 2, `official sources missing: ${slug}`)
 
   for (const source of sources) {
-    assert.match(source.url, /^https:\/\/(?:www\.|store\.)?(?:hermanmiller|steelcase)\.com\//, `non-manufacturer source: ${source.url}`)
+    assert.match(source.url, /^https:\/\/(?:www\.|store\.|apac\.)?(?:hermanmiller|steelcase|humanscale)\.com\//, `non-manufacturer source: ${source.url}`)
     assert.match(source.checkedOn, /^\d{4}-\d{2}-\d{2}$/, `invalid check date: ${source.id}`)
+  }
+
+  assert.equal(pilot.conditions.length, 2, `one condition per product required: ${slug}`)
+  for (const condition of pilot.conditions) {
+    assert.ok(condition.sourceIds.length > 0, `unsourced selection condition: ${slug}`)
+    for (const id of condition.sourceIds) assert.ok(sources.some(s => s.id === id), `missing condition source ${id}: ${slug}`)
   }
 
   for (const row of pilot.rows) {

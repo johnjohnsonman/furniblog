@@ -1,4 +1,6 @@
 import { comparisonMedia } from "./card-media"
+import { getVerifiedComparisonPilot } from "./verified-pilots"
+import { isVerifiedComparisonImage } from "./product-visuals"
 import type { SupabaseClient } from "@supabase/supabase-js"
 import type { ComparisonProductInput } from "@/lib/comparisons/generate"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
@@ -104,12 +106,13 @@ export type PublicComparison = {
 
 async function loadPublicProduct(
   supabase: SupabaseClient,
-  productId: string | null
+  productId: string | null,
+  verified = false
 ): Promise<PublicComparisonProduct | null> {
   if (!productId) return null
   const { data } = await supabase
     .from("products")
-    .select("slug, name, thumbnail_url, brands(name), product_images(url, sort_order, is_thumbnail, alt, rights, model_status)")
+    .select("slug, name, thumbnail_url, brands(name), product_images(id, url, sort_order, is_thumbnail, alt, rights, model_status)")
     .eq("id", productId)
     .maybeSingle()
   if (!data) return null
@@ -117,7 +120,7 @@ async function loadPublicProduct(
     (Array.isArray(data.brands) ? data.brands[0]?.name : (data.brands as { name?: string } | null)?.name) ?? ""
   const images = Array.isArray(data.product_images)
     ? [...data.product_images]
-        .filter((image) => image.model_status !== "candidate" && image.rights !== "candidate")
+        .filter((image) => verified ? isVerifiedComparisonImage(data.slug, image) : image.model_status !== "candidate" && image.rights !== "candidate")
         .sort((a, b) => Number(Boolean(b.is_thumbnail)) - Number(Boolean(a.is_thumbnail)) || a.sort_order - b.sort_order)
     : []
   const primaryImage = images[0]
@@ -125,7 +128,7 @@ async function loadPublicProduct(
     slug: data.slug as string,
     name: data.name as string,
     brand,
-    image: (primaryImage?.url as string | undefined) ?? (data.thumbnail_url as string | null) ?? null,
+    image: (primaryImage?.url as string | undefined) ?? (verified ? null : (data.thumbnail_url as string | null)) ?? null,
     imageAlt: (primaryImage?.alt as string | null | undefined) ?? null,
   }
 }
@@ -143,8 +146,8 @@ export async function getPublicComparison(
   if (!data) return null
 
   const [productA, productB] = await Promise.all([
-    loadPublicProduct(supabase, (data.product_a_id as string | null) ?? null),
-    loadPublicProduct(supabase, (data.product_b_id as string | null) ?? null),
+    loadPublicProduct(supabase, (data.product_a_id as string | null) ?? null, Boolean(getVerifiedComparisonPilot(slug))),
+    loadPublicProduct(supabase, (data.product_b_id as string | null) ?? null, Boolean(getVerifiedComparisonPilot(slug))),
   ])
   const content = (data.content_html as string) ?? ""
 
