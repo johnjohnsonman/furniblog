@@ -167,7 +167,7 @@ export default async function ComparePage({
             </div>
           </header>
 
-          {c.hero_image_url && (
+          {c.hero_image_url && !pilot && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={c.hero_image_url} alt={`${pageTitle} product comparison`} className="w-full rounded-xl mb-8" />
           )}

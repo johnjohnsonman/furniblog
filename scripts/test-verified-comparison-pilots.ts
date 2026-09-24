@@ -11,12 +11,19 @@ assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 5, "pilot slugs must
 
 const titles = new Set<string>()
 const descriptions = new Set<string>()
+const summaries = new Set<string>()
+const productSlugs = new Set(Object.values(VERIFIED_PRODUCTS).map((record) => record.slug))
+
+assert.equal(productSlugs.size, Object.keys(VERIFIED_PRODUCTS).length, "verified product slugs must be unique")
 
 for (const slug of VERIFIED_COMPARISON_PILOT_SLUGS) {
   const pilot = getVerifiedComparisonPilot(slug)
   assert.ok(pilot, `missing pilot: ${slug}`)
   assert.ok(!/which should you buy|winner|best choice|most comfortable/i.test(pilot.title), `unsafe title: ${slug}`)
   assert.ok(!/which should you buy|winner|best choice|most comfortable/i.test(pilot.description), `unsafe description: ${slug}`)
+  assert.ok(pilot.summary.length >= 1 && pilot.summary.length <= 2, `summary must stay concise: ${slug}`)
+  assert.ok(pilot.checkItems.length >= 4, `in-person checklist incomplete: ${slug}`)
+  assert.equal(new Set(pilot.checkItems).size, pilot.checkItems.length, `duplicate in-person checklist item: ${slug}`)
   assert.ok(pilot.rows.some((row) => !getVerifiedFact(pilot.productA, row.fact) || !getVerifiedFact(pilot.productB, row.fact)), `unverified-field state missing: ${slug}`)
   const sources = getPilotSources(pilot)
   assert.ok(sources.length >= 2, `official sources missing: ${slug}`)
@@ -36,8 +43,15 @@ for (const slug of VERIFIED_COMPARISON_PILOT_SLUGS) {
 
   assert.ok(!titles.has(pilot.title), `duplicate title: ${pilot.title}`)
   assert.ok(!descriptions.has(pilot.description), `duplicate description: ${pilot.description}`)
+  const summary = pilot.summary.join(" ")
+  assert.ok(!summaries.has(summary), `duplicate summary: ${slug}`)
+  for (const relatedSlug of pilot.relatedComparisonSlugs) {
+    assert.notEqual(relatedSlug, slug, `self-referencing related comparison: ${slug}`)
+    assert.ok(VERIFIED_COMPARISON_PILOT_SLUGS.includes(relatedSlug), `unknown related comparison: ${relatedSlug}`)
+  }
   titles.add(pilot.title)
   descriptions.add(pilot.description)
+  summaries.add(summary)
 }
 
 assert.equal(getVerifiedComparisonPilot("not-a-pilot"), null, "non-pilot pages must use the existing safety path")
