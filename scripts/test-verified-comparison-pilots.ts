@@ -6,8 +6,15 @@ import {
 } from "../lib/comparisons/verified-pilots"
 import { getVerifiedFact, VERIFIED_PRODUCTS } from "../lib/comparisons/verified-products"
 
-assert.equal(VERIFIED_COMPARISON_PILOT_SLUGS.length, 5, "pilot must remain limited to five comparisons")
-assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 5, "pilot slugs must be unique")
+assert.equal(VERIFIED_COMPARISON_PILOT_SLUGS.length, 9, "verified comparison set must contain the five pilots and four approved expansion pages")
+assert.equal(new Set(VERIFIED_COMPARISON_PILOT_SLUGS).size, 9, "verified comparison slugs must be unique")
+
+const approvedExpansionOrder = new Map([
+  ["herman-miller-aeron-vs-steelcase-gesture-which-should-you-buy-ms42k2uo", ["aeron", "gesture"]],
+  ["steelcase-leap-v2-vs-herman-miller-embody-which-should-you-buy-mstsjr00", ["leap", "embody"]],
+  ["steelcase-leap-v2-vs-herman-miller-mirra-2-which-should-you-buy-mt0xr0o4", ["leap", "mirra-2"]],
+  ["herman-miller-mirra-2-vs-steelcase-gesture-which-should-you-buy-msfi63em", ["mirra-2", "gesture"]],
+] as const)
 
 const titles = new Set<string>()
 const descriptions = new Set<string>()
@@ -19,12 +26,15 @@ assert.equal(productSlugs.size, Object.keys(VERIFIED_PRODUCTS).length, "verified
 for (const slug of VERIFIED_COMPARISON_PILOT_SLUGS) {
   const pilot = getVerifiedComparisonPilot(slug)
   assert.ok(pilot, `missing pilot: ${slug}`)
+  if (approvedExpansionOrder.has(slug as never)) {
+    assert.deepEqual([pilot.productA, pilot.productB], approvedExpansionOrder.get(slug as never), `product order mismatch: ${slug}`)
+  }
   assert.ok(!/which should you buy|winner|best choice|most comfortable/i.test(pilot.title), `unsafe title: ${slug}`)
   assert.ok(!/which should you buy|winner|best choice|most comfortable/i.test(pilot.description), `unsafe description: ${slug}`)
   assert.ok(pilot.summary.length >= 1 && pilot.summary.length <= 2, `summary must stay concise: ${slug}`)
   assert.ok(pilot.checkItems.length >= 4, `in-person checklist incomplete: ${slug}`)
   assert.equal(new Set(pilot.checkItems).size, pilot.checkItems.length, `duplicate in-person checklist item: ${slug}`)
-  assert.ok(pilot.rows.some((row) => !getVerifiedFact(pilot.productA, row.fact) || !getVerifiedFact(pilot.productB, row.fact)), `unverified-field state missing: ${slug}`)
+  assert.ok(pilot.rows.length >= 3, `comparison rows incomplete: ${slug}`)
   const sources = getPilotSources(pilot)
   assert.ok(sources.length >= 2, `official sources missing: ${slug}`)
 

@@ -10,10 +10,11 @@ export type ComparisonVisualProfile = {
   rightsBasis: string
   objectPosition: string
   scale: number
+  configurationNote?: string
 }
 
 /**
- * Shared presentation and provenance notes for the five verified comparison pilots.
+ * Shared presentation and provenance notes for verified comparison pages.
  * The image URL remains canonical in `product_images`; `imageRecord` identifies the
  * row selected by the public comparison resolver without duplicating that URL here.
  */
@@ -65,10 +66,11 @@ export const COMPARISON_VISUALS: Record<string, ComparisonVisualProfile> = {
     manufacturer: "Steelcase",
     checkedOn: "2026-09-24",
     modelScope: "Current Leap work chair",
-    alt: "Steelcase Leap office chair, front three-quarter view",
+    alt: "Steelcase Leap office chair with headrest, front three-quarter view",
     rightsBasis: "Existing Chairpedia asset retained under owner policy",
     objectPosition: "center bottom",
     scale: 1.03,
+    configurationNote: "Image shows a headrest-equipped configuration; the headrest is optional on eligible work-chair models.",
   },
   "steelcase-gesture": {
     productName: "Steelcase Gesture",
@@ -82,6 +84,7 @@ export const COMPARISON_VISUALS: Record<string, ComparisonVisualProfile> = {
     rightsBasis: "Existing Chairpedia asset retained under owner policy",
     objectPosition: "center bottom",
     scale: 1.08,
+    configurationNote: "Image shows a headrest-equipped configuration; Steelcase lists the integrated headrest as optional.",
   },
 }
 

@@ -22,7 +22,7 @@ assert.match(page, /!pilot && <BuyingGuideRail/, "pilot must not render generic 
 assert.match(page, /pilot \? <footer/, "pilot must use the neutral footer")
 assert.match(page, /c\.hero_image_url && !pilot/, "pilot must not render legacy comparison artwork")
 assert.match(component, /data-testid="mobile-comparison-cards"/, "mobile comparison layout missing")
-assert.match(component, /Available on selected configurations/, "consumer-facing option wording missing")
+assert.match(component, /Selected configurations/, "consumer-facing option wording missing")
 assert.doesNotMatch(component, /Verification pending|By configuration/, "admin-facing status wording remains")
 
 console.log("comparison preview safety tests passed")

@@ -88,6 +88,62 @@ const pilots: VerifiedComparisonPilot[] = [
     sourceIds: ["embody-store", "embody-guide", "gesture-product"],
     relatedComparisonSlugs: ["herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn", "steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es"],
   },
+  {
+    slug: "herman-miller-aeron-vs-steelcase-gesture-which-should-you-buy-ms42k2uo",
+    title: "Herman Miller Aeron vs Steelcase Gesture: Chair Size or Adjustable Seat?",
+    description: "Compare Aeron's three-size fit system with Gesture's adjustable seat, 360 arms and configuration options.",
+    summary: ["Aeron asks you to choose among three chair sizes, with seat dimensions that change by size. Gesture uses seat-height and seat-depth controls within one current office-chair design.", "After resolving that fit difference, compare the installed arm, back-support and tilt options on the exact chairs available to you."],
+    productA: "aeron", productB: "gesture", rows: commonRows,
+    conditions: [
+      { title: "Start with Aeron if", body: "Selecting among sizes A, B and C is the first fit decision you need to resolve.", sourceIds: ["aeron-specs", "aeron-sheet"] },
+      { title: "Start with Gesture if", body: "Seat-depth adjustment or the 360 arm system is the feature set you most need to test.", sourceIds: ["gesture-product"] },
+    ],
+    checkItems: ["Which Aeron size places the seat edge, arms and back support correctly for you", "Gesture seat depth with your back against the backrest", "The arm option installed on Aeron versus Gesture's 360 arms", "Whether the exact Gesture includes the optional headrest or additional lumbar support shown or described"],
+    sourceIds: ["aeron-specs", "aeron-sheet", "gesture-product"],
+    relatedComparisonSlugs: ["steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz", "herman-miller-aeron-vs-herman-miller-mirra-2-which-should-you-buy-ms9sbrcj"],
+  },
+  {
+    slug: "steelcase-leap-v2-vs-herman-miller-embody-which-should-you-buy-mstsjr00",
+    title: "Steelcase Leap vs Herman Miller Embody: Back Controls and Seat Depth",
+    description: "Compare Leap's LiveBack and variable back stop with Embody's BackFit, seat-depth and tilt controls.",
+    summary: ["Both chairs document adjustable seat depth, but their back controls differ. Leap pairs LiveBack with lower-back firmness and a variable back stop; Embody documents BackFit plus tilt tension and a tilt limiter on applicable models.", "Test the seat edge and back response together because the official controls describe adjustment methods, not how either chair will feel to a particular person."],
+    productA: "leap", productB: "embody", rows: commonRows,
+    conditions: [
+      { title: "Start with Leap if", body: "LiveBack, lower-back firmness and a variable back stop are the controls you want to evaluate first.", sourceIds: ["leap-guide"] },
+      { title: "Start with Embody if", body: "BackFit and the seat-depth handles are the adjustment approach you most want to test.", sourceIds: ["embody-guide"] },
+    ],
+    checkItems: ["Seat depth and front-edge pressure on both chairs", "Leap's LiveBack and lower-back firmness through your normal sitting positions", "Embody's BackFit response in upright and reclined positions", "Whether the exact Leap configuration includes the arm, lumbar or headrest options you expect"],
+    sourceIds: ["leap-guide", "embody-store", "embody-guide"],
+    relatedComparisonSlugs: ["herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn", "steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es"],
+  },
+  {
+    slug: "steelcase-leap-v2-vs-herman-miller-mirra-2-which-should-you-buy-mt0xr0o4",
+    title: "Steelcase Leap vs Herman Miller Mirra 2: Standard Controls or Selected Options?",
+    description: "Compare Leap's documented seat and back controls with Mirra 2's configuration-dependent seat, back, arm and tilt choices.",
+    summary: ["Leap documents adjustable seat depth, LiveBack and a variable back stop for the current work chair. Mirra 2 separates several decisions by configuration, including fixed or FlexFront seat, TriFlex or Butterfly back, arms and tilt options.", "Confirm the exact Mirra 2 specification before comparing it with Leap, then test the selected seat edge, back and recline controls in person."],
+    productA: "leap", productB: "mirra-2", rows: commonRows,
+    conditions: [
+      { title: "Start with Leap if", body: "A documented seat-depth control, LiveBack and variable back stop are your main comparison points.", sourceIds: ["leap-guide"] },
+      { title: "Start with Mirra 2 if", body: "Choosing the seat edge and back construction is central to the configuration you are considering.", sourceIds: ["mirra-specs"] },
+    ],
+    checkItems: ["Leap seat depth with your back positioned against LiveBack", "The fixed or FlexFront seat on the exact Mirra 2", "TriFlex and Butterfly back versions if both are available", "The arm, lumbar, headrest and tilt options actually installed on the two chairs"],
+    sourceIds: ["leap-guide", "mirra-specs"],
+    relatedComparisonSlugs: ["steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz", "herman-miller-aeron-vs-herman-miller-mirra-2-which-should-you-buy-ms9sbrcj"],
+  },
+  {
+    slug: "herman-miller-mirra-2-vs-steelcase-gesture-which-should-you-buy-msfi63em",
+    title: "Herman Miller Mirra 2 vs Steelcase Gesture: Configuration or 360 Arms?",
+    description: "Compare Mirra 2's configurable seat and back choices with Gesture's seat controls, 360 arms and optional support features.",
+    summary: ["Mirra 2 offers alternative seat, back, arm and tilt configurations, so its exact order specification matters. Gesture documents seat-height and seat-depth controls, a variable back stop and 360 arms, with an integrated headrest and extra lumbar support listed as options.", "Use the official feature lists to identify the configuration, then compare the seat edge, back construction and arm movement on the actual chairs."],
+    productA: "mirra-2", productB: "gesture", rows: commonRows,
+    conditions: [
+      { title: "Start with Mirra 2 if", body: "The FlexFront seat choice or TriFlex versus Butterfly back is the configuration question you need to settle.", sourceIds: ["mirra-specs"] },
+      { title: "Start with Gesture if", body: "Seat-depth adjustment and 360 arm movement are the controls you most need to compare.", sourceIds: ["gesture-product"] },
+    ],
+    checkItems: ["The exact Mirra 2 seat, back, arm and tilt configuration", "Gesture's seat depth and variable back stop through your working positions", "Mirra 2 arm movement versus Gesture's 360 arms", "Whether the Gesture shown includes its optional headrest or adjustable lumbar support"],
+    sourceIds: ["mirra-specs", "gesture-product"],
+    relatedComparisonSlugs: ["herman-miller-aeron-vs-herman-miller-mirra-2-which-should-you-buy-ms9sbrcj", "herman-miller-embody-vs-steelcase-gesture-which-should-you-buy-msb7uv7l"],
+  },
 ]
 
 const pilotBySlug = new Map(pilots.map((pilot) => [pilot.slug, pilot]))

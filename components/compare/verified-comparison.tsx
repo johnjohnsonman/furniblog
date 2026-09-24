@@ -29,8 +29,10 @@ function ProductImage({ record, product, compact = false }: { record: VerifiedPr
 }
 
 function ProductVisual({ record, product }: { record: VerifiedProductRecord; product: PublicComparisonProduct | null }) {
+  const visual = getComparisonVisual(record.slug)
   return <Link href={`/products/${record.slug}`} className="group border border-border bg-[#f5f1e8] p-3 transition-colors hover:border-[#8c867c] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#315b8a] sm:p-4">
     <ProductImage record={record} product={product} />
+    {visual?.configurationNote && <p className="mt-2 text-xs leading-5 text-muted-foreground">{visual.configurationNote}</p>}
     <p className="mt-3 font-serif text-base group-hover:underline sm:text-lg">{record.name}</p>
     <p className="mt-1 hidden text-xs leading-5 text-muted-foreground sm:block">{record.modelScope}</p>
   </Link>
