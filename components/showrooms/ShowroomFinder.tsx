@@ -6,7 +6,7 @@ import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
 import type { Store, StorePreview, Catalog } from "@/lib/showrooms/types";
 import { filterStores, resolveStoreModel, type Filters } from "@/lib/showrooms/domain";
-import { cityKey } from "@/lib/showrooms/locations";
+import { cityKey, countryName } from "@/lib/showrooms/locations";
 import "./atlas.css";
 import { AtlasHeader } from "./AtlasHeader";
 export function ShowroomFinder({
@@ -122,6 +122,16 @@ export function ShowroomFinder({
     });
     setSelected("");
   };
+  const activeFilters = [
+    ...(f.q ? [{ key: "search", label: f.q, clear: () => change({ q: "" }) }] : []),
+    ...(f.country ? [{ key: "country", label: countryName(f.country) || f.country, clear: () => change({ country: "", city: "", bounds: undefined }) }] : []),
+    ...(f.city ? [{ key: "city", label: stores.find(s => s.country_code === f.country && cityKey(s) === f.city)?.city || f.city, clear: () => change({ city: "" }) }] : []),
+    ...(f.brand ? [{ key: "brand", label: catalog.brands.find(b => b.id === f.brand)?.name || "Brand", clear: () => change({ brand: "", model: "", confirmed: false }) }] : []),
+    ...(model ? [{ key: "model", label: model.name, clear: () => change({ model: "", confirmed: false }) }] : []),
+    ...(f.appointment ? [{ key: "visit", label: f.appointment === "walk_in" ? "Walk-in" : f.appointment === "required" ? "Appointment required" : "Unconfirmed visit", clear: () => change({ appointment: "" }) }] : []),
+    ...(f.confirmed ? [{ key: "confirmed", label: "Confirmed model trials", clear: () => change({ confirmed: false }) }] : []),
+    ...(f.bounds ? [{ key: "area", label: "Map area", clear: () => change({ bounds: undefined }) }] : []),
+  ];
   const cities = Array.from(
     new Set(results.map((s) => `${s.city}, ${s.country_code}`)),
   );
@@ -150,7 +160,7 @@ export function ShowroomFinder({
             setCommand((c) => ({ id: c.id + 1, kind: "fit" }));
           }}>
             <option value="">All countries</option>
-            {Array.from(new Set(stores.map(s => s.country_code))).sort().map(code => <option key={code} value={code}>{new Intl.DisplayNames(["en"], { type: "region" }).of(code)}</option>)}
+            {Array.from(new Set(stores.map(s => s.country_code))).sort().map(code => <option key={code} value={code}>{countryName(code)}</option>)}
           </select>
         </label>
         <label className="atlas-searchbox">
@@ -163,12 +173,12 @@ export function ShowroomFinder({
             onChange={(e) => change({ q: e.target.value, city: "", bounds: undefined })}
           />
         </label>
-        <button className="atlas-filter-toggle" aria-expanded={filters} onClick={() => setFilters(!filters)}>
+        <button className="atlas-filter-toggle" aria-controls="store-filter-panel" aria-expanded={filters} onClick={() => setFilters(!filters)}>
           Filters {filters ? "−" : "+"}
         </button>
       </div>
       {filters && (
-        <section className="atlas-filters" onKeyDown={(e) => { if(e.key === "Escape") setFilters(false); }} aria-label="Store filters">
+        <section id="store-filter-panel" className="atlas-filters" onKeyDown={(e) => { if(e.key === "Escape") setFilters(false); }} aria-label="Store filters">
           <label>
             Brand
             <select
@@ -231,9 +241,14 @@ export function ShowroomFinder({
           <button onClick={() => setFilters(false)}>Done</button>
         </section>
       )}
+      {activeFilters.length > 0 && <div className="atlas-selected-filters" aria-label="Selected filters">
+        {activeFilters.map(item => <button key={item.key} onClick={item.clear} aria-label={`Remove ${item.label} filter`}>{item.label}<span aria-hidden="true">&times;</span></button>)}
+        <button className="atlas-clear-all" onClick={reset}>Clear all</button>
+      </div>}
+      {results.length === 0 && <div className="atlas-empty-notice" role="status">No stores match these filters. <button onClick={reset}>Clear filters and try again</button></div>}
       <div className="atlas-toolbar">
         <div>
-          <strong>{f.bounds ? "This map area" : f.q || (f.country ? new Intl.DisplayNames(["en"], { type: "region" }).of(f.country) : "Worldwide")}</strong>{" "}
+          <strong>{f.bounds ? "This map area" : f.q || (f.country ? countryName(f.country) : "Worldwide")}</strong>{" "}
           <span>
             {cities.length} cities · {results.length} stores
           </span>

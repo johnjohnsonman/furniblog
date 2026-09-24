@@ -55,7 +55,7 @@ export function HeaderClient({ showStores }: { showStores: boolean }) {
   )
 
   return (
-    <header className="sticky top-0 z-50 bg-background border-b border-border">
+    <header data-site-header className="sticky top-0 z-50 bg-background border-b border-border">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 h-14">
         <Link
           href="/"

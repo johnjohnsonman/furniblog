@@ -1,3 +1,4 @@
+import { Header } from "@/components/header";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
@@ -53,10 +54,7 @@ export default async function TrialPageRoute({ params }: Props) {
 
   return <main className="store-locations">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
-    <header className="location-header">
-      <Link href="/" className="location-logo">Chairpedia</Link>
-      <Link href="/stores">Explore the map →</Link>
-    </header>
+    <Header />
     <div className="location-wrap">
       <nav className="location-crumbs" aria-label="Breadcrumb">
         <Link href="/stores">Find stores</Link> / <Link href={countryPath(page.countryCode)}>{page.countryName}</Link> / <span>{page.productName}</span>

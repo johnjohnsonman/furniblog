@@ -1,13 +1,19 @@
 import type { Store, StorePreview } from "./types";
 
-export const locationSlug = (s: string) => s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+export const locationSlug = (s: string) => {
+  const normalized = s.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const latin = normalized.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  // Stable ASCII keys also avoid non-ASCII cache-tag headers in the hosting adapter.
+  const native = s.normalize("NFKC").replace(/[^\p{L}\p{N}]+/gu, "-").replace(/^-|-$/g, "");
+  return latin || (native ? `city-${Array.from(native).map(c => c.codePointAt(0)!.toString(16)).join("-")}` : "");
+};
 const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
 const countryNameOverrides: Record<string, string> = { HK: "Hong Kong" };
 export const countryName = (code: string) => countryNameOverrides[code] || countryNames.of(code) || code;
 export const countryPath = (code: string) => `/stores/locations/${locationSlug(countryName(code))}`;
-// Include the US state so cities with the same name never merge.
-export const cityKey = (s: Store | StorePreview) => locationSlug(s.city + (s.country_code === "US" ? ` ${s.region}` : ""));
-export const cityLabel = (s: Store | StorePreview) => s.city + (s.country_code === "US" && s.region ? `, ${s.region}` : "");
+// Include US states and Japanese prefectures to distinguish same-name cities.
+export const cityKey = (s: Store | StorePreview) => locationSlug(s.city + (s.country_code === "US" || (s.country_code === "JP" && s.region && /[\u3040-\u30ff\u3400-\u9fff]/.test(s.city)) ? ` ${s.region}` : ""));
+export const cityLabel = (s: Store | StorePreview) => s.city + ((s.country_code === "US" || s.country_code === "JP") && s.region ? `, ${s.region}` : "");
 export const cityPath = (s: Store | StorePreview) => `${countryPath(s.country_code)}/${cityKey(s)}`;
 export function locationGroups(stores: Store[]) {
   const live = stores.filter(s => s.status === "published");

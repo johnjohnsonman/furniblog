@@ -1,28 +1,7 @@
-import Link from "next/link";
-
-const links = [
-  ["Find Stores", "/stores"],
-  ["Chairs", "/products"],
-  ["chA.I.r", "/chair"],
-  ["Guides", "/chairpedia"],
-  ["Blog", "/blog"],
-  ["Brands", "/brands"],
-  ["Reviews", "/reviews"],
-  ["News", "/news"],
-  ["Videos", "/videos"],
-] as const;
+import { HeaderClient } from "@/components/header-client";
 
 export function AtlasHeader() {
-  return (
-    <header className="atlas-header">
-      <Link href="/" className="atlas-wordmark">Chairpedia</Link>
-      <nav className="atlas-main-nav" aria-label="Main navigation">
-        {links.map(([label, href]) => (
-          <Link key={href} href={href} aria-current={href === "/stores" ? "page" : undefined}>
-            {label}
-          </Link>
-        ))}
-      </nav>
-    </header>
-  );
+  // Store routes already enforce SHOWROOMS_ENABLED on the server. Do not read
+  // its private environment variable again inside the finder client boundary.
+  return <HeaderClient showStores />;
 }

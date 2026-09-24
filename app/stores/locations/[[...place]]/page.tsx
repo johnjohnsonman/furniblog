@@ -1,3 +1,4 @@
+import { Header } from "@/components/header";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { cache } from "react";
@@ -45,6 +46,8 @@ const load = cache(async () => {
   return { stores, groups: locationGroups(stores) };
 });
 async function resolve(place: string[] = []) {
+  // Normalize encoded catch-all segments from direct requests as well as client navigation.
+  try { place = place.map(segment => decodeURIComponent(segment)); } catch { notFound(); }
   const data = await load();
   if (place.length > 2) notFound();
   const country = place.length ? data.groups.find(g => g.path.endsWith(`/` + place[0])) : undefined;
@@ -84,7 +87,7 @@ export default async function LocationsPage({ params }: Props) {
   ] };
   return <main className="store-locations">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g,"\\u003c") }} />
-    <header className="location-header"><Link href="/" className="location-logo">Chairpedia</Link><Link href="/stores">Explore the map ↗</Link></header>
+    <Header />
     <div className="location-wrap">
       <nav aria-label="Breadcrumb" className="location-crumbs">{crumbs.map((c,i) => <span key={c.path}>{i > 0 && " / "}<Link href={c.path} aria-current={i === crumbs.length-1 ? "page" : undefined}>{c.name}</Link></span>)}</nav>
       <section className="location-hero"><p className="location-eyebrow">FIND YOUR CHAIR. PLAN YOUR VISIT.</p><h1>{r.name ? `Chair stores in ${r.name}` : "A better chair starts with a visit."}</h1><p>{r.name ? `Explore ${r.stores.length} listed chair stores in ${r.name}. Compare the addresses and visit arrangements below, then contact your shortlist to check the exact chair you want to try.` : `Explore ${r.stores.length} chair stores across ${r.groups.length} countries. Start with a country, discover local showrooms and plan where to try your next chair.`}</p><Link className="location-cta" href={mapHref}>{r.name ? "View these stores on the map" : "Open the world map"} ↗</Link></section>

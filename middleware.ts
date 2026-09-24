@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { locationSlug } from "./lib/showrooms/locations"
 
 // Top-level routes that belong to the new (English) Furniblog site.
 const KNOWN_ROUTES = new Set([
@@ -86,6 +87,18 @@ function isLegacyGone(pathname: string): boolean {
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  // Redirect native-script city URLs before the page cache builds response headers.
+  const locationParts = pathname.split("/").filter(Boolean)
+  if (locationParts.length === 4 && locationParts[0] === "stores" && locationParts[1] === "locations") {
+    try {
+      const city = decodeURIComponent(locationParts[3])
+      if (/[^\x00-\x7F]/.test(city)) {
+        const destination = request.nextUrl.clone()
+        destination.pathname = `/stores/locations/${locationParts[2]}/${locationSlug(city)}`
+        return NextResponse.redirect(destination, 308)
+      }
+    } catch { /* malformed paths continue to the normal route handler */ }
+  }
 
   // Retired standalone money page — its chairs are now regular products.
   if (pathname === "/amazon-picks") {

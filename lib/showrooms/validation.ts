@@ -60,7 +60,15 @@ export const storeSchema = z
         "Invalid phone",
       ),
     email: z.string().email().or(z.literal("")),
-    website_url: url,
+    website_url: url.refine((value) => {
+      if (!value) return true;
+      try {
+        const target = new URL(value);
+        const path = decodeURIComponent(target.pathname);
+        const file = /\.(?:pdf|docx?|xlsx?|pptx?|zip|rar|jpe?g|png|gif|webp|svg)(?:$|\/)/i;
+        return !file.test(path) && ![...target.searchParams.values()].some(v => file.test(v));
+      } catch { return false; }
+    }, "Official website must be a web page, not a document or image. Put evidence documents in source_url."),
     booking_url: url,
     store_type: z.enum(["brand_showroom", "retailer", "refurbisher"]),
     appointment: z.enum(["required", "walk_in", "unknown"]),

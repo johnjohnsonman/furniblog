@@ -9,7 +9,8 @@ import {
   storePreview,
 } from "@/lib/showrooms/server";
 import { ShowroomFinder } from "@/components/showrooms/ShowroomFinder";
-export const revalidate = 300;
+import { randomOrder } from "@/lib/random-order";
+export const dynamic = "force-dynamic";
 export function generateMetadata(): Metadata {
   return {
     title: "Find a Showroom: Try Chairs Near You",
@@ -31,7 +32,7 @@ export default async function StoresPage() {
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@type": "CollectionPage", "@id": SITE_URL + "/stores#page", url: SITE_URL + "/stores", name: "Worldwide chair store map", inLanguage: "en", description: "Find chair stores by country, city, brand and model. Confirm visit arrangements with the store.", mainEntity: { "@type": "ItemList", name: "Chair stores by country and city", url: SITE_URL + "/stores/locations" } }).replace(/</g, "\\u003c") }} />
     <Suspense fallback={<div className="atlas-map-status">Loading chair stores…</div>}>
     <ShowroomFinder
-      stores={result.stores.map((s) => storePreview(enrichStore(s, catalog)))}
+      stores={randomOrder(result.stores.map((s) => storePreview(enrichStore(s, catalog))))}
       catalog={catalog}
       unavailable={result.unavailable}
       correctionsEnabled={process.env.SHOWROOM_DATA_SOURCE !== "registry"}

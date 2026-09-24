@@ -1,3 +1,4 @@
+import { Header } from "@/components/header";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,7 +50,7 @@ export default async function StoreGuide({params}:{params:Promise<{slug:string}>
   ];
   const path=`/stores/guides/${slug}`;
   const schema={"@context":"https://schema.org","@graph":[{"@type":"Article",headline:guide.title,description:guide.description,url:SITE_URL+path,inLanguage:"en",author:{"@type":"Organization",name:"Chairpedia"},mainEntityOfPage:SITE_URL+path},{"@type":"ItemList",numberOfItems:selected.length,itemListElement:selected.map((s,i)=>({"@type":"ListItem",position:i+1,name:s.name,url:`${SITE_URL}/stores/${s.slug}`}))},{"@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))}]};
-  return <main className="store-locations"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,"\\u003c")}}/><header className="location-header"><Link href="/" className="location-logo">Chairpedia</Link><Link href="/stores">Explore the map →</Link></header><div className="location-wrap">
+  return <main className="store-locations"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,"\\u003c")}}/><Header /><div className="location-wrap">
     <nav className="location-crumbs" aria-label="Breadcrumb"><Link href="/">Chairpedia</Link> / <Link href="/stores">Find stores</Link> / <Link href="/stores/locations/singapore">Singapore</Link> / <span>{guide.title}</span></nav>
     <section className="location-hero"><p className="location-eyebrow">SINGAPORE CHAIR SHOPPING GUIDE</p><h1>{guide.heading}</h1><p>{guide.intro}</p><Link className="location-cta" href="/stores?country=SG">Open the Singapore store map →</Link></section>
     <section className="location-advice"><h2>Plan a useful chair trial</h2><p>Start with two or three chairs that match your desk height, body size and budget. Ask the showroom whether the headrest, armrests and upholstery on display match the version sold online. Bring your desk measurements and spend time typing, reclining and returning upright.</p><p>Compare the full delivered cost, return terms and warranty support after the trial. A cheaper listing can represent a different configuration, seller or warranty route.</p></section>
