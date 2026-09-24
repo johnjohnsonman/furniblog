@@ -1,5 +1,10 @@
-import type { Store, StorePreview, Hours, Period } from "./types";
+import type { Store, StorePreview, Hours, Period, Catalog } from "./types";
 import { cityKey } from "./locations";
+
+export function resolveStoreModel(value: string, models: Catalog["models"]): string {
+  if (!value) return "";
+  return models.find((model) => model.id === value || model.slug === value)?.id ?? "";
+}
 
 export function httpUrl(value: string) {
   try {

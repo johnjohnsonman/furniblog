@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AtlasMap, type MapCommand } from "./AtlasMap";
 import { StoreDetails } from "./StoreDetails";
 import type { Store, StorePreview, Catalog } from "@/lib/showrooms/types";
-import { filterStores, type Filters } from "@/lib/showrooms/domain";
+import { filterStores, resolveStoreModel, type Filters } from "@/lib/showrooms/domain";
 import { cityKey } from "@/lib/showrooms/locations";
 import "./atlas.css";
 import { AtlasHeader } from "./AtlasHeader";
@@ -28,7 +28,7 @@ export function ShowroomFinder({
 }) {
   const query = useSearchParams();
   const queryModel = query.get("model") ?? initialModel;
-  const resolvedModel = catalog.models.find((m) => m.id === queryModel || m.slug === queryModel)?.id ?? "";
+  const resolvedModel = resolveStoreModel(queryModel, catalog.models);
   const resolvedCountry = query.get("country") ?? initialCountry;
   const resolvedCity = query.get("city") ?? initialCity;
   const [f, setF] = useState<Filters>({
