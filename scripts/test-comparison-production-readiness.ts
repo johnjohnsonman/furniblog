@@ -8,10 +8,11 @@ process.env.VERCEL_ENV = "production"
 delete process.env.CHAIRPEDIA_PREVIEW
 
 async function main() {
-  const [{ default: robots }, { VERIFIED_COMPARISON_PILOT_SLUGS, getVerifiedComparisonPilot }, { comparisonPublicationMetadata, isChairpediaPreview }] = await Promise.all([
+  const [{ default: robots }, { VERIFIED_COMPARISON_PILOT_SLUGS, getVerifiedComparisonPilot }, { comparisonPublicationMetadata, isChairpediaPreview }, { COMPARISON_VISUALS }] = await Promise.all([
     import("../app/robots"),
     import("../lib/comparisons/verified-pilots"),
     import("../lib/comparisons/publication"),
+    import("../lib/comparisons/product-visuals"),
   ])
 
   const titles = new Set<string>()
@@ -33,6 +34,10 @@ async function main() {
   }
   assert.equal(isChairpediaPreview({ VERCEL_ENV: "production" }), false)
   assert.equal(isChairpediaPreview({ VERCEL_ENV: "preview" }), true)
+  assert.deepEqual(Object.keys(COMPARISON_VISUALS).sort(), ["herman-miller-aeron", "herman-miller-embody", "herman-miller-mirra-2", "steelcase-gesture", "steelcase-leap-v2"], "pilot visual registry must cover exactly five products")
+  for (const visual of Object.values(COMPARISON_VISUALS)) {
+    assert.ok(visual.alt && visual.rightsBasis && visual.checkedOn && visual.modelScope, `visual metadata incomplete: ${visual.productName}`)
+  }
 
   const robotsResult = robots()
   assert.deepEqual(robotsResult.rules, { userAgent: "*", allow: "/", disallow: ["/admin", "/api"] })
@@ -45,7 +50,7 @@ async function main() {
   assert.match(nextConfig, /VERCEL_ENV !== "preview"[\s\S]*return \[\]/, "production X-Robots-Tag condition missing")
   assert.doesNotMatch(page, /generateProductSchema|generateReviewSchema|generateAggregateRatingSchema/, "unsafe schema generator found")
   assert.match(page, /c\.faq\.length > 0 && !c\.requiresSourceReview && !pilot/, "pilot FAQ schema guard missing")
-  assert.match(component, /alt=\{`\$\{record\.name\} product view`\}/, "product-specific image alt missing")
+  assert.match(component, /product\.imageAlt \|\| visual\?\.alt \|\| `\$\{record\.name\} product view`/, "product-specific image alt fallback missing")
   assert.doesNotMatch(component, /rel="[^"]*nofollow/, "manufacturer sources unexpectedly nofollowed")
   assert.match(sitemapSource, /from\("comparisons"\)[\s\S]*\.eq\("status", "published"\)/, "published comparison sitemap query missing")
 

@@ -81,6 +81,7 @@ export type PublicComparisonProduct = {
   name: string
   brand: string
   image: string | null
+  imageAlt: string | null
 }
 
 export type PublicComparison = {
@@ -108,17 +109,24 @@ async function loadPublicProduct(
   if (!productId) return null
   const { data } = await supabase
     .from("products")
-    .select("slug, name, thumbnail_url, brands(name)")
+    .select("slug, name, thumbnail_url, brands(name), product_images(url, sort_order, is_thumbnail, alt, rights, model_status)")
     .eq("id", productId)
     .maybeSingle()
   if (!data) return null
   const brand =
     (Array.isArray(data.brands) ? data.brands[0]?.name : (data.brands as { name?: string } | null)?.name) ?? ""
+  const images = Array.isArray(data.product_images)
+    ? [...data.product_images]
+        .filter((image) => image.model_status !== "candidate" && image.rights !== "candidate")
+        .sort((a, b) => Number(Boolean(b.is_thumbnail)) - Number(Boolean(a.is_thumbnail)) || a.sort_order - b.sort_order)
+    : []
+  const primaryImage = images[0]
   return {
     slug: data.slug as string,
     name: data.name as string,
     brand,
-    image: (data.thumbnail_url as string | null) ?? null,
+    image: (primaryImage?.url as string | undefined) ?? (data.thumbnail_url as string | null) ?? null,
+    imageAlt: (primaryImage?.alt as string | null | undefined) ?? null,
   }
 }
 
