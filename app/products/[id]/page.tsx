@@ -34,7 +34,7 @@ import { ProductDecisionGuide } from "@/components/growth/ProductDecisionGuide"
 import { DocumentedProductResearch } from "@/components/chairs/DocumentedProductResearch"
 import { ProductDataConfidence } from "@/components/chairs/ProductDataConfidence"
 import { ProductContentHub } from "@/components/products/ProductContentHub"
-import { getProductContentHub } from "@/lib/products/content-hubs"
+import { formatPriceRange, getProductContentHub } from "@/lib/products/content-hubs"
 import { filterChairSpecsByEvidence, getProductFitEvidence, getProductFitTrustSummary } from "@/lib/data/product-fit-evidence"
 import {
   generateBreadcrumbSchema,
@@ -126,6 +126,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const slug = product.slug ?? product.id
   const contentHub = getProductContentHub(slug)
+  const hubPriceLabel = contentHub?.priceRange ? formatPriceRange(contentHub.priceRange) : null
+  const hubPriceParts = hubPriceLabel ? (() => {
+    const [amount, ...rest] = hubPriceLabel.split(" · ")
+    return { amount, note: rest.join(" · ") }
+  })() : null
   const configured = isSupabaseConfigured()
   // Independent public lookups run together; prices remain fresh per request.
   const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool, fitEvidence, fitTrust] = await Promise.all([
@@ -142,6 +147,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const chairReviews = configured ? supabaseReviews : getChairReviewsForProduct(product.id)
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
+  const hasDirectAmazon = Boolean(buyUrls.amazonUrl?.includes("/dp/"))
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = configured
     ? similarPool.filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
@@ -230,20 +236,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   {contentHub && <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{contentHub.heroFacts.map((fact) => <li key={fact} className="border-l-2 border-[#3157e8] pl-3">{fact}</li>)}</ul>}
 
                   <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
-                    {!contentHub && reviewCount > 0 && <span>
-                      {reviewCount.toLocaleString()}{" "}
-                      {reviewCount === 1 ? "published review summary" : "published review summaries"}
+                    {reviewCount > 0 && <span>
+                      Summarized from {reviewCount.toLocaleString()}{" "}
+                      {reviewCount === 1 ? "review" : "reviews"} worldwide
                     </span>}
                     {productVideos.length > 0 && (
                       <>
-                        {!contentHub && reviewCount > 0 && <span>·</span>}
+                        {reviewCount > 0 && <span>·</span>}
                         <span>
                           {productVideos.length}{" "}
                           {productVideos.length === 1 ? "video" : "videos"}
                         </span>
                       </>
                     )}
-                    {((!contentHub && reviewCount > 0) || productVideos.length > 0) && <span>·</span>}
+                    {(reviewCount > 0 || productVideos.length > 0) && <span>·</span>}
                     <Link
                       href={`/reviews/new?product=${slug}`}
                       className="font-medium text-foreground underline-offset-4 hover:underline"
@@ -252,7 +258,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </Link>
                   </div>
 
-                  {contentHub ? <p className="mt-6 text-sm font-semibold text-foreground">Price varies by market and configuration. Check the official product page and the exact seller listing.</p> : <p className="mt-6 text-3xl font-semibold text-foreground">{product.price}</p>}
+                  {contentHub?.priceRange ? (
+                    <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+                      <div>
+                        <p className="text-2xl font-semibold text-foreground sm:text-3xl">{hubPriceParts?.amount}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {hubPriceParts?.note} ·{" "}
+                          <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{contentHub.priceRange.source}</a>
+                        </p>
+                      </div>
+                      {hasDirectAmazon ? (
+                        <SmartBuyLink variant="inline" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl} amazonLabel="Check current price" placement="product-price-range" />
+                      ) : (
+                        <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">Check current price ↗</a>
+                      )}
+                    </div>
+                  ) : contentHub ? (
+                    <p className="mt-6 text-sm font-semibold text-foreground">Price varies by market and configuration. Check the official product page and the exact seller listing.</p>
+                  ) : (
+                    <p className="mt-6 text-3xl font-semibold text-foreground">{product.price}</p>
+                  )}
 
                   <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
 
@@ -288,10 +313,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 catalogLinks={catalogLinks}
                 reviews={chairReviews}
                 reviewCount={reviewCount}
-                defaultPrice={contentHub ? undefined : product.price}
+                defaultPrice={contentHub ? hubPriceParts?.amount : product.price}
                 overview={
                   <ChairProductOverview
-                    product={contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks}
+                    product={contentHub ? { ...productWithLinks, price: hubPriceParts?.amount ?? "Check current configuration" } : productWithLinks}
                     similarProducts={similarProducts}
                     claimsVerified={hasFitEvidence}
                   />

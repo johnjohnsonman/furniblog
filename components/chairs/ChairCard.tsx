@@ -88,8 +88,8 @@ export function ChairCard({ product, reviewCount }: ChairCardProps) {
         <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-premium-text-secondary">
           {hasReviews ? (
             <span>
-              {displayCount.toLocaleString()}{" "}
-              {displayCount === 1 ? "review" : "reviews"}
+              Summarized from {displayCount.toLocaleString()}{" "}
+              {displayCount === 1 ? "review" : "reviews"} worldwide
             </span>
           ) : (
             <span className="text-premium-text-tertiary">

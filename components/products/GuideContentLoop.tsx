@@ -6,7 +6,7 @@ export function GuideContentLoop({ slug }: { slug: string }) {
   if (!relation) return null
   const hub = getProductContentHub(relation.productSlug)
   if (!hub) return null
-  const title = relation.productSlug === "herman-miller-aeron" ? "Herman Miller Aeron" : relation.productSlug === "herman-miller-embody-gaming" ? "Embody Gaming" : "Herman Miller Embody"
+  const title = hub.shortName
   const next = [...hub.guides, ...hub.comparisons].filter((item) => item.href.split("/").pop() !== slug).slice(0, 4)
   return <aside className="mt-12 border border-[#171717] bg-[#f5f1e8] p-6" aria-label={`Continue researching ${title}`}>
     <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">{relation.intent} · content path</p>

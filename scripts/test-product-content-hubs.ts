@@ -1,11 +1,18 @@
 import assert from "node:assert/strict"
-import { guideProductRelations, productContentHubs } from "../lib/products/content-hubs"
+import { formatPriceRange, guideProductRelations, productContentHubs } from "../lib/products/content-hubs"
 
 const required = ["herman-miller-aeron", "herman-miller-embody", "herman-miller-embody-gaming"]
 for (const slug of required) {
   const hub = productContentHubs[slug]
   assert.ok(hub, `${slug}: hub missing`)
   assert.ok(hub.heroFacts.length >= 3, `${slug}: too few hero facts`)
+  assert.ok(hub.shortName.length > 0, `${slug}: shortName missing`)
+  if (hub.priceRange) {
+    const r = hub.priceRange
+    assert.ok(r.minUsd > 0 && r.minUsd <= r.maxUsd, `${slug}: invalid price range`)
+    assert.ok(r.sourceUrl.startsWith("https://") && r.source.length > 0, `${slug}: price range needs a source`)
+    assert.match(r.checkedOn, /^\d{4}-\d{2}-\d{2}$/, `${slug}: price range needs a checked date`)
+  }
   assert.ok(hub.buyingChecks.length >= 3 && hub.buyingChecks.length <= 5, `${slug}: buying checks must stay focused`)
   assert.ok(hub.guides.length <= 5, `${slug}: guide rail is too broad`)
   assert.ok(hub.comparisons.length <= 6, `${slug}: comparison rail is too broad`)
@@ -19,5 +26,8 @@ assert.equal(productContentHubs["herman-miller-aeron"].versions.length, 0, "Do n
 assert.ok(productContentHubs["herman-miller-embody"].versions.some((item) => item.href === "/products/herman-miller-embody-gaming"))
 assert.ok(productContentHubs["herman-miller-embody-gaming"].versions.some((item) => item.href === "/products/herman-miller-embody"))
 assert.ok(Object.keys(guideProductRelations).length >= 7)
+
+assert.equal(formatPriceRange(productContentHubs["herman-miller-aeron"].priceRange!), "$2,045 – $2,730 · varies by configuration · as of Sep 2026")
+assert.equal(formatPriceRange({ minUsd: 900, maxUsd: 1200, source: "Retailers", sourceUrl: "https://example.com", checkedOn: "2026-09-25", approximate: true }), "approx. $900 – $1,200 · varies by configuration · as of Sep 2026")
 
 console.log("product content hub tests passed")
