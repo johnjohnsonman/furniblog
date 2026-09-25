@@ -16,6 +16,9 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
         year: "numeric",
         month: "short",
         day: "numeric",
+        // Server-rendered now (crawlable feed): pin the zone so server and
+        // browser print the same date and hydration matches.
+        timeZone: "UTC",
       })
     : null
   if (dateStr) metaParts.push(dateStr)
