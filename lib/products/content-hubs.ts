@@ -26,6 +26,8 @@ export type ProductContentHub = {
   shortName: string
   edition: string
   priceRange?: PriceRange
+  /** Not sold on Amazon: buy buttons go to the price source instead of an Amazon search. */
+  notOnAmazon?: boolean
   heroFacts: string[]
   sourceNote: string
   buyingChecks: ContentHubLink[]
@@ -127,6 +129,7 @@ export const productContentHubs: Record<string, ProductContentHub> = {
   },
   "herman-miller-embody-gaming": {
     shortName: "Embody Gaming",
+    notOnAmazon: true,
     edition: "Logitech G gaming edition of the Embody",
     heroFacts: ["Embody platform", "Adjustable seat depth", "BackFit adjustment", "Gaming-specific foam and styling"],
     priceRange: { minUsd: 2395, maxUsd: 2395, source: "US Herman Miller Store", sourceUrl: "https://store.hermanmiller.com/gaming-chairs/embody-gaming-chair/2517590.html?lang=en_US", checkedOn: "2026-09-25" },
@@ -160,6 +163,18 @@ export function getProductContentHub(slug: string) {
 }
 
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`
+
+/**
+ * Sourced display price for hub products ("$2,045 – $2,730"), or null.
+ * Only the label changes: numeric price_usd stays as-is so sorting, budget
+ * filters and recommendations for other products are unaffected.
+ */
+export function hubDisplayPrice(slug?: string | null): string | null {
+  const range = slug ? productContentHubs[slug]?.priceRange : undefined
+  if (!range) return null
+  const amount = range.minUsd === range.maxUsd ? usd(range.minUsd) : `${usd(range.minUsd)} – ${usd(range.maxUsd)}`
+  return range.approximate ? `approx. ${amount}` : amount
+}
 
 /** "$2,045 – $2,730 · varies by configuration · as of Sep 2026" */
 export function formatPriceRange(range: PriceRange) {

@@ -148,6 +148,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
   const hasDirectAmazon = Boolean(buyUrls.amazonUrl?.includes("/dp/"))
+  // Hub products not sold on Amazon would otherwise fall back to an unrelated
+  // Amazon search; send them to the sourced official store instead.
+  const hubOfficialStoreUrl = contentHub?.notOnAmazon && contentHub.priceRange ? contentHub.priceRange.sourceUrl : null
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = configured
     ? similarPool.filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
@@ -267,7 +270,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                           <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{contentHub.priceRange.source}</a>
                         </p>
                       </div>
-                      {hasDirectAmazon ? (
+                      {hasDirectAmazon && !contentHub.notOnAmazon ? (
                         <SmartBuyLink variant="inline" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl} amazonLabel="Check current price" placement="product-price-range" />
                       ) : (
                         <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">Check current price ↗</a>
@@ -367,17 +370,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="border border-[#171717] bg-[#fff0c7] p-5 shadow-[6px_6px_0_#171717]">
                   <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#7a5a00]">Buying options</p>
                   <h3 className="mb-4 mt-1 font-serif text-2xl text-foreground">Where to buy</h3>
-                  <SmartBuyLink
-                    variant="block"
-                    productId={slug}
-                    name={product.name}
-                    amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-                    placement="product-sidebar"
-                    showDisclaimer
-                  />
+                  {hubOfficialStoreUrl ? (
+                    <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+                  ) : (
+                    <SmartBuyLink
+                      variant="block"
+                      productId={slug}
+                      name={product.name}
+                      amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                      placement="product-sidebar"
+                      showDisclaimer
+                    />
+                  )}
                   <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    Amazon returns are typically 30 days of delivery but set per listing — check
-                    before ordering.{" "}
+                    {hubOfficialStoreUrl ? "Not sold on Amazon. Warranty, shipping and returns follow the official store's terms — check before ordering." : "Amazon returns are typically 30 days of delivery but set per listing — check before ordering."}{" "}
                     <Link
                       href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"
                       className="underline underline-offset-2"
@@ -392,13 +398,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#171717] bg-white p-3 shadow-[0_-8px_24px_rgba(0,0,0,.12)] lg:hidden">
-            <SmartBuyLink
-              variant="block"
-              productId={slug}
-              name={product.name}
-              amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-              placement="product-mobile-sticky"
-            />
+            {hubOfficialStoreUrl ? (
+              <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+            ) : (
+              <SmartBuyLink
+                variant="block"
+                productId={slug}
+                name={product.name}
+                amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                placement="product-mobile-sticky"
+              />
+            )}
           </div>
 
           <ProductComparisonRail productName={product.name} comparisons={productComparisons} />

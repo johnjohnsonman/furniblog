@@ -5,6 +5,7 @@ import type { ProductCardView } from "@/lib/data/mappers"
 import { getChairCategoryLabel, isChairCategory } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
 import { formatProductPrice } from "@/lib/pricing"
+import { hubDisplayPrice } from "@/lib/products/content-hubs"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 type ReviewCountStats = { count: number; avgScore: number }
 
@@ -84,7 +85,7 @@ async function loadCatalogCards(): Promise<ProductCardView[]> {
     const image = resolveProductImageUrl(source, category)
     return { id: row.slug, name: row.name, brand: brand?.name ?? "", brandId: brand?.slug ?? "",
       category, categoryLabel: getChairCategoryLabel(category), priceUsd: row.price_usd ?? undefined,
-      price: formatProductPrice(row.price_usd), image, images: [image],
+      price: hubDisplayPrice(row.slug) ?? formatProductPrice(row.price_usd), image, images: [image],
       rating: Number(row.rating_overall ?? 0), reviewCount: row.review_count ?? 0, publishedAt: row.created_at }
   })
 }

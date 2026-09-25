@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { formatPriceRange, guideProductRelations, productContentHubs } from "../lib/products/content-hubs"
+import { formatPriceRange, guideProductRelations, hubDisplayPrice, productContentHubs } from "../lib/products/content-hubs"
 
 const required = ["herman-miller-aeron", "herman-miller-embody", "herman-miller-embody-gaming"]
 for (const slug of required) {
@@ -29,5 +29,13 @@ assert.ok(Object.keys(guideProductRelations).length >= 7)
 
 assert.equal(formatPriceRange(productContentHubs["herman-miller-aeron"].priceRange!), "$2,045 – $2,730 · varies by configuration · as of Sep 2026")
 assert.equal(formatPriceRange({ minUsd: 900, maxUsd: 1200, source: "Retailers", sourceUrl: "https://example.com", checkedOn: "2026-09-25", approximate: true }), "approx. $900 – $1,200 · varies by configuration · as of Sep 2026")
+
+assert.equal(hubDisplayPrice("herman-miller-aeron"), "$2,045 – $2,730")
+assert.equal(hubDisplayPrice("herman-miller-embody-gaming"), "$2,395")
+assert.equal(hubDisplayPrice("steelcase-leap-v2"), null, "non-hub products keep their catalog price")
+assert.equal(hubDisplayPrice(undefined), null)
+for (const [slug, hub] of Object.entries(productContentHubs)) {
+  if (hub.notOnAmazon) assert.ok(hub.priceRange?.sourceUrl, `${slug}: notOnAmazon needs a store URL to send buyers to`)
+}
 
 console.log("product content hub tests passed")
