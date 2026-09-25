@@ -33,6 +33,8 @@ import { getProductDecisionGuide } from "@/lib/growth/product-decision-guides"
 import { ProductDecisionGuide } from "@/components/growth/ProductDecisionGuide"
 import { DocumentedProductResearch } from "@/components/chairs/DocumentedProductResearch"
 import { ProductDataConfidence } from "@/components/chairs/ProductDataConfidence"
+import { ProductContentHub } from "@/components/products/ProductContentHub"
+import { formatPriceRange, getProductContentHub } from "@/lib/products/content-hubs"
 import { filterChairSpecsByEvidence, getProductFitEvidence, getProductFitTrustSummary } from "@/lib/data/product-fit-evidence"
 import {
   generateBreadcrumbSchema,
@@ -99,14 +101,15 @@ export async function generateMetadata({
     }
   }
 
+  const hub = getProductContentHub(product.slug ?? product.id)
   return {
-    title: `${product.name}: Specs, Reviews & Where to Buy`,
-    description: `Compare ${product.name} specifications, fit, reviews, alternatives and current buying options. Check the exact model, seller, warranty and returns before ordering.`,
+    title: hub ? `${product.name}: Versions, Fit & Buying Checks` : `${product.name}: Specs, Reviews & Where to Buy`,
+    description: hub ? `Research ${product.name} versions, fit checks, official sources, direct comparisons and buying guides.` : `Compare ${product.name} specifications, fit, reviews, alternatives and current buying options. Check the exact model, seller, warranty and returns before ordering.`,
     alternates: { canonical: `/products/${product.slug ?? product.id}` },
     openGraph: {
       type: "website",
-      title: `${product.name}: Specs, Reviews & Where to Buy`,
-      description: `Research ${product.name} specifications, fit, alternatives and current buying options.`,
+      title: hub ? `${product.name}: Versions, Fit & Buying Checks` : `${product.name}: Specs, Reviews & Where to Buy`,
+      description: hub ? `Research ${product.name} versions, fit checks, official sources and direct comparisons.` : `Research ${product.name} specifications, fit, alternatives and current buying options.`,
       url: `/products/${product.slug ?? product.id}`,
       images: product.image ? [product.image] : undefined,
     },
@@ -122,6 +125,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   const slug = product.slug ?? product.id
+  const contentHub = getProductContentHub(slug)
+  const hubPriceLabel = contentHub?.priceRange ? formatPriceRange(contentHub.priceRange) : null
+  const hubPriceParts = hubPriceLabel ? (() => {
+    const [amount, ...rest] = hubPriceLabel.split(" · ")
+    return { amount, note: rest.join(" · ") }
+  })() : null
   const configured = isSupabaseConfigured()
   // Independent public lookups run together; prices remain fresh per request.
   const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool, fitEvidence, fitTrust] = await Promise.all([
@@ -138,6 +147,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const chairReviews = configured ? supabaseReviews : getChairReviewsForProduct(product.id)
   const catalogLinks = getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
+  const hasDirectAmazon = Boolean(buyUrls.amazonUrl?.includes("/dp/"))
+  // Hub products not sold on Amazon would otherwise fall back to an unrelated
+  // Amazon search; send them to the sourced official store instead.
+  const hubOfficialStoreUrl = contentHub?.notOnAmazon && contentHub.priceRange ? contentHub.priceRange.sourceUrl : null
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = configured
     ? similarPool.filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
@@ -221,30 +234,53 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                   <h1 className="mt-3 font-serif text-4xl font-medium leading-[1.02] text-foreground sm:text-5xl">{product.name}</h1>
 
-                  <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
-                    <span>
-                      {reviewCount.toLocaleString()}{" "}
-                      {reviewCount === 1 ? "review" : "reviews"}
-                    </span>
+                  {contentHub && <p className="mt-3 text-sm font-semibold text-[#3157e8]">{contentHub.edition}</p>}
+
+                  {contentHub && <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{contentHub.heroFacts.map((fact) => <li key={fact} className="border-l-2 border-[#3157e8] pl-3">{fact}</li>)}</ul>}
+
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-3 text-sm text-muted-foreground">
+                    {reviewCount > 0 && <span>
+                      Summarized from {reviewCount.toLocaleString()}{" "}
+                      {reviewCount === 1 ? "review" : "reviews"} worldwide
+                    </span>}
                     {productVideos.length > 0 && (
                       <>
-                        <span>·</span>
-                        <span>
+                        {reviewCount > 0 && <span>·</span>}
+                        <span className="whitespace-nowrap">
                           {productVideos.length}{" "}
                           {productVideos.length === 1 ? "video" : "videos"}
                         </span>
                       </>
                     )}
-                    <span>·</span>
+                    {(reviewCount > 0 || productVideos.length > 0) && <span>·</span>}
                     <Link
                       href={`/reviews/new?product=${slug}`}
-                      className="font-medium text-foreground underline-offset-4 hover:underline"
+                      className="whitespace-nowrap font-medium text-foreground underline-offset-4 hover:underline"
                     >
                       Write a review
                     </Link>
                   </div>
 
-                  <p className="mt-6 text-3xl font-semibold text-foreground">{product.price}</p>
+                  {contentHub?.priceRange ? (
+                    <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+                      <div>
+                        <p className="text-2xl font-semibold text-foreground sm:text-3xl">{hubPriceParts?.amount}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {hubPriceParts?.note} ·{" "}
+                          <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{contentHub.priceRange.source}</a>
+                        </p>
+                      </div>
+                      {hasDirectAmazon && !contentHub.notOnAmazon ? (
+                        <SmartBuyLink variant="inline" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl} amazonLabel="Check current price" placement="product-price-range" />
+                      ) : (
+                        <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">Check current price ↗</a>
+                      )}
+                    </div>
+                  ) : contentHub ? (
+                    <p className="mt-6 text-sm font-semibold text-foreground">Price varies by market and configuration. Check the official product page and the exact seller listing.</p>
+                  ) : (
+                    <p className="mt-6 text-3xl font-semibold text-foreground">{product.price}</p>
+                  )}
 
                   <p className="mt-4 text-sm leading-6 text-muted-foreground">{product.description}</p>
 
@@ -268,6 +304,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
+              {contentHub && <ProductContentHub hub={contentHub} productName={product.name} />}
+
               <ProductDecisionGuide productName={product.name} slug={slug} guide={decisionGuide} videoCount={productVideos.length} evidenceCount={new Set(fitEvidence.map(item => item.fieldKey)).size} hasBuyingLink={catalogLinks.length > 0} />
               <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
               <DocumentedProductResearch slug={slug} />
@@ -278,10 +316,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 catalogLinks={catalogLinks}
                 reviews={chairReviews}
                 reviewCount={reviewCount}
-                defaultPrice={product.price}
+                defaultPrice={contentHub ? hubPriceParts?.amount : product.price}
                 overview={
                   <ChairProductOverview
-                    product={productWithLinks}
+                    product={contentHub ? { ...productWithLinks, price: hubPriceParts?.amount ?? "Check current configuration" } : productWithLinks}
                     similarProducts={similarProducts}
                     claimsVerified={hasFitEvidence}
                   />
@@ -332,17 +370,20 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="border border-[#171717] bg-[#fff0c7] p-5 shadow-[6px_6px_0_#171717]">
                   <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#7a5a00]">Buying options</p>
                   <h3 className="mb-4 mt-1 font-serif text-2xl text-foreground">Where to buy</h3>
-                  <SmartBuyLink
-                    variant="block"
-                    productId={slug}
-                    name={product.name}
-                    amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-                    placement="product-sidebar"
-                    showDisclaimer
-                  />
+                  {hubOfficialStoreUrl ? (
+                    <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+                  ) : (
+                    <SmartBuyLink
+                      variant="block"
+                      productId={slug}
+                      name={product.name}
+                      amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                      placement="product-sidebar"
+                      showDisclaimer
+                    />
+                  )}
                   <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    Amazon returns are typically 30 days of delivery but set per listing — check
-                    before ordering.{" "}
+                    {hubOfficialStoreUrl ? "Not sold on Amazon. Warranty, shipping and returns follow the official store's terms — check before ordering." : "Amazon returns are typically 30 days of delivery but set per listing — check before ordering."}{" "}
                     <Link
                       href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"
                       className="underline underline-offset-2"
@@ -357,13 +398,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#171717] bg-white p-3 shadow-[0_-8px_24px_rgba(0,0,0,.12)] lg:hidden">
-            <SmartBuyLink
-              variant="block"
-              productId={slug}
-              name={product.name}
-              amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
-              placement="product-mobile-sticky"
-            />
+            {hubOfficialStoreUrl ? (
+              <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+            ) : (
+              <SmartBuyLink
+                variant="block"
+                productId={slug}
+                name={product.name}
+                amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                placement="product-mobile-sticky"
+              />
+            )}
           </div>
 
           <ProductComparisonRail productName={product.name} comparisons={productComparisons} />

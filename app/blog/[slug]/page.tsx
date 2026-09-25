@@ -22,6 +22,7 @@ import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
+import { GuideContentLoop } from "@/components/products/GuideContentLoop"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 
 export const dynamic = "force-dynamic"
@@ -231,6 +232,7 @@ export default async function BlogPostPage({
             <ProductComparisonRail productName={buying.name} comparisons={productComparisons} />
           )}
           <BuyingGuideRail category={post.category} />
+          <GuideContentLoop slug={post.slug} />
           <ContentStandardsNote kind="guide" />
         </article>
       </main>
