@@ -28,6 +28,7 @@
 
 - DB 가격·리뷰 수·Best for·치수·이미지는 출처 확인 전 사실이나 schema로 승격하지 않습니다.
 - 존재 확인이 안 된 내부 URL로 링크하지 않습니다.
+- DB 수정 전 백업은 저장소 밖 C:\Users\p\Desktop\park\chairpedia-backups\ 에 날짜_작업명 폴더로 저장합니다.
 
 ## 보고 방식
 

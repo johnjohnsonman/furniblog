@@ -4,20 +4,33 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ProductsPageContent } from "./products-content"
 import { Suspense } from "react"
-import { randomOrder } from "@/lib/random-order"
+import { orderCatalogForListing, PRODUCTS_PAGE_SIZE } from "@/lib/products/listing-order"
 
 // Query-string filtering keeps this route dynamic; catalog reads use a short
 // shared cache so navigation does not wait on repeated database round trips.
 export const dynamic = "force-dynamic"
 
-export const metadata: Metadata = {
-  title: "Office & Ergonomic Chairs Database",
-  description:
-    "Browse premium office, gaming and ergonomic chairs — specs, real reviews, videos and prices, all in one place.",
-  alternates: { canonical: "/products" },
+type ProductsPageProps = { searchParams: Promise<{ page?: string | string[] }> }
+
+function requestedPage(value: string | string[] | undefined): number {
+  const n = Number(Array.isArray(value) ? value[0] : value)
+  return Number.isInteger(n) && n > 1 ? n : 1
 }
 
-export default async function ProductsPage() {
+export async function generateMetadata({ searchParams }: ProductsPageProps): Promise<Metadata> {
+  const page = requestedPage((await searchParams).page)
+  // Each listing page canonicalizes to itself so crawlers can reach every chair.
+  const canonical = page > 1 ? `/products?page=${page}` : "/products"
+  return {
+    title: page > 1 ? `Office & Ergonomic Chairs Database — Page ${page}` : "Office & Ergonomic Chairs Database",
+    description:
+      "Browse premium office, gaming and ergonomic chairs — specs, real reviews, videos and prices, all in one place.",
+    alternates: { canonical },
+  }
+}
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const initialPage = requestedPage((await searchParams).page)
   const [products, reviewCounts] = await Promise.all([
     getCatalogCards(),
     getCatalogReviewCounts(),
@@ -37,7 +50,9 @@ export default async function ProductsPage() {
       <Header />
       <Suspense fallback={<main className="min-h-[60vh]" aria-label="Loading chair catalog" />}>
       <ProductsPageContent
-        products={randomOrder(products)}
+        products={orderCatalogForListing(products, reviewCounts)}
+        initialPage={initialPage}
+        pageSize={PRODUCTS_PAGE_SIZE}
         brands={brands}
         reviewCounts={reviewCounts}
         stats={stats}

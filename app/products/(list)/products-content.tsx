@@ -13,11 +13,12 @@ import { PRODUCT_LIST_CATEGORIES } from "@/lib/chair-categories"
 import { ChairCard } from "@/components/chairs/ChairCard"
 import { cn } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
+import { PRODUCTS_PAGE_SIZE, productsPageHref } from "@/lib/products/listing-order"
 
 const SORT_OPTIONS = [
-  { label: "Random", value: "random" },
-  { label: "Brand / Product A–Z", value: "az" },
   { label: "Most Reviews", value: "reviews" },
+  { label: "Brand / Product A–Z", value: "az" },
+  { label: "Random", value: "random" },
   { label: "Price ↑", value: "price-low" },
   { label: "Price ↓", value: "price-high" },
   { label: "Newest", value: "newest" },
@@ -31,6 +32,16 @@ export type ProductsPageContentProps = {
   categoryCounts: CategoryCountMap
   initialCategory?: string
   initialSearch?: string
+  /** Page requested via ?page=N (server-rendered so crawlers see that page). */
+  initialPage?: number
+  pageSize?: number
+}
+
+/** Stable pseudo-random rank for the visitor-chosen "Random" sort. */
+function seededRank(id: string, seed: number): number {
+  let h = seed | 0
+  for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 2654435761)
+  return (h >>> 0) / 4294967296
 }
 
 function resolvePriceUsd(product: ProductCardView): number | null {
@@ -48,6 +59,8 @@ export function ProductsPageContent({
   categoryCounts,
   initialCategory = "All",
   initialSearch = "",
+  initialPage = 1,
+  pageSize = PRODUCTS_PAGE_SIZE,
 }: ProductsPageContentProps) {
   const params = useSearchParams()
   const requestedCategory = params.get("category") ?? initialCategory
@@ -56,7 +69,10 @@ export function ProductsPageContent({
     : "All"
   const [selectedCategory, setSelectedCategory] = useState(resolvedCategory)
   const [selectedBrand, setSelectedBrand] = useState("All")
-  const [sortBy, setSortBy] = useState<string>("random")
+  // Default order comes from the server (most reviewed, then brand/name).
+  const [sortBy, setSortBy] = useState<string>("reviews")
+  // Random is only an explicit visitor choice; reshuffled each time it is picked.
+  const [shuffleSeed, setShuffleSeed] = useState(0)
   const [searchQuery, setSearchQuery] = useState(params.get("search") ?? initialSearch)
 
   const totalChairs = stats.products
@@ -149,7 +165,9 @@ export function ProductsPageContent({
         })
       case "az":
         return [...withStats].sort((a, b) => `${a.product.brand} ${a.product.name}`.localeCompare(`${b.product.brand} ${b.product.name}`))
-      case "random":
+      case "random": {
+        return [...withStats].sort((a, b) => seededRank(a.product.id, shuffleSeed) - seededRank(b.product.id, shuffleSeed))
+      }
       default:
         return withStats
     }
@@ -161,17 +179,30 @@ export function ProductsPageContent({
     selectedBrand,
     sortBy,
     searchQuery,
+    shuffleSeed,
   ])
 
-  // Pagination over the filtered/sorted list.
-  const PAGE_SIZE = 12
-  const [page, setPage] = useState(1)
+  // Pagination over the filtered/sorted list. The page lives in ?page=N so each
+  // page is a real, crawlable URL; clicks update the URL without a server trip.
+  const PAGE_SIZE = pageSize
+  const [page, setPage] = useState(initialPage)
   const gridTopRef = useRef<HTMLDivElement>(null)
+  const urlPage = Number(params.get("page")) || 1
 
-  // Reset to page 1 whenever filters/sort/search change.
+  // Follow back/forward navigation between listing pages.
   useEffect(() => {
+    setPage(urlPage)
+  }, [urlPage])
+
+  // Reset to page 1 whenever filters/sort/search change (not on first render).
+  const filtersKey = [selectedCategory, selectedBrand, sortBy, searchQuery, shuffleSeed].join("|")
+  const lastFiltersKey = useRef(filtersKey)
+  useEffect(() => {
+    if (lastFiltersKey.current === filtersKey) return
+    lastFiltersKey.current = filtersKey
     setPage(1)
-  }, [selectedCategory, selectedBrand, sortBy, searchQuery])
+    if (params.get("page")) window.history.replaceState(null, "", productsPageHref(1, params))
+  }, [filtersKey, params])
 
   const totalPages = Math.max(1, Math.ceil(filteredProducts.length / PAGE_SIZE))
   const currentPage = Math.min(page, totalPages)
@@ -183,7 +214,9 @@ export function ProductsPageContent({
   const lastShown = Math.min(currentPage * PAGE_SIZE, filteredProducts.length)
 
   function goToPage(p: number) {
-    setPage(Math.min(Math.max(1, p), totalPages))
+    const next = Math.min(Math.max(1, p), totalPages)
+    setPage(next)
+    window.history.pushState(null, "", productsPageHref(next, params))
     gridTopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
@@ -260,7 +293,10 @@ export function ProductsPageContent({
             <div className="relative flex-1 sm:flex-none">
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value === "random") setShuffleSeed(Date.now())
+                  setSortBy(e.target.value)
+                }}
                 className="w-full appearance-none rounded-sm border border-premium-border bg-white min-h-11 py-2 pl-3 pr-9 text-base sm:text-sm text-premium-text focus:outline-none focus:ring-1 focus:ring-premium-accent sm:w-auto"
                 aria-label="Sort"
               >
@@ -298,6 +334,7 @@ export function ProductsPageContent({
                 current={currentPage}
                 total={totalPages}
                 onGo={goToPage}
+                hrefFor={(p) => productsPageHref(p, params)}
               />
             )}
           </>
@@ -328,56 +365,61 @@ function Pager({
   current,
   total,
   onGo,
+  hrefFor,
 }: {
   current: number
   total: number
   onGo: (p: number) => void
+  hrefFor: (p: number) => string
 }) {
-  // Compact window of page numbers around the current page.
+  // Compact window of page numbers around the current page. Real links so
+  // crawlers can reach every listing page; clicks stay client-side.
   const wanted = new Set([1, total, current - 1, current, current + 1])
   const pages = [...wanted].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b)
+  const go = (p: number) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return
+    e.preventDefault()
+    onGo(p)
+  }
+  const arrow = "grid h-11 w-11 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover"
 
   return (
     <nav className="mt-12 flex items-center justify-center gap-1.5" aria-label="Pagination">
-      <button
-        type="button"
-        onClick={() => onGo(current - 1)}
-        disabled={current === 1}
-        aria-label="Previous page"
-        className="grid h-11 w-11 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
-      >
-        <ChevronLeft className="h-4 w-4" />
-      </button>
+      {current > 1 ? (
+        <a href={hrefFor(current - 1)} onClick={go(current - 1)} rel="prev" aria-label="Previous page" className={arrow}>
+          <ChevronLeft className="h-4 w-4" />
+        </a>
+      ) : (
+        <span aria-hidden="true" className={cn(arrow, "opacity-40")}><ChevronLeft className="h-4 w-4" /></span>
+      )}
       {pages.map((p, i) => {
         const gap = i > 0 && p - pages[i - 1] > 1
         return (
           <span key={p} className="flex items-center">
             {gap && <span className="px-1 text-premium-text-tertiary">…</span>}
-            <button
-              type="button"
-              onClick={() => onGo(p)}
+            <a
+              href={hrefFor(p)}
+              onClick={go(p)}
               aria-current={p === current ? "page" : undefined}
               className={cn(
-                "h-11 min-w-11 rounded-md px-3 text-sm font-medium transition-colors",
+                "grid h-11 min-w-11 place-items-center rounded-md px-3 text-sm font-medium transition-colors",
                 p === current
                   ? "bg-premium-accent text-white"
                   : "border border-premium-border bg-white text-premium-text hover:border-premium-border-hover"
               )}
             >
               {p}
-            </button>
+            </a>
           </span>
         )
       })}
-      <button
-        type="button"
-        onClick={() => onGo(current + 1)}
-        disabled={current === total}
-        aria-label="Next page"
-        className="grid h-11 w-11 place-items-center rounded-md border border-premium-border bg-white text-premium-text transition-colors hover:border-premium-border-hover disabled:opacity-40"
-      >
-        <ChevronRight className="h-4 w-4" />
-      </button>
+      {current < total ? (
+        <a href={hrefFor(current + 1)} onClick={go(current + 1)} rel="next" aria-label="Next page" className={arrow}>
+          <ChevronRight className="h-4 w-4" />
+        </a>
+      ) : (
+        <span aria-hidden="true" className={cn(arrow, "opacity-40")}><ChevronRight className="h-4 w-4" /></span>
+      )}
     </nav>
   )
 }

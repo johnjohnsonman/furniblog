@@ -97,8 +97,10 @@ export async function generateMetadata({
   const product = await resolveProduct(id)
 
   if (!product) {
+    // The 404 response already carries Next's noindex; drop the layout default.
     return {
       title: "Product Not Found",
+      robots: null,
     }
   }
 
