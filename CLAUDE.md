@@ -8,6 +8,7 @@
 - 루트 체크아웃(`C:\Users\p\Desktop\park\furniblog`의 `main`)은 오래되고 미커밋 변경이 많습니다. **루트에서 checkout·pull·reset·배포하지 않습니다.** 작업은 `origin/main` 기준 worktree(`.worktrees/<이름>`)에서 합니다.
 - 새 작업 전에 기존 worktree와 WIP 브랜치(`git worktree list`, `git branch -a`)를 확인하고, 이미 구현된 기능을 중복으로 만들지 않습니다.
 - Production 배포와 `main` 머지는 대표님이 명시적으로 승인한 범위에서만 합니다.
+- 규칙 문서(CLAUDE.md·AGENTS.md)를 main에 합친 뒤에는 루트 폴더의 같은 파일도 main 내용으로 덮어써서 갱신합니다.
 
 ## 진행 방식
 
