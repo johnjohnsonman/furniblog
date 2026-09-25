@@ -25,6 +25,7 @@ import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
+import { GuideContentLoop } from "@/components/products/GuideContentLoop"
 
 export const dynamic = "force-dynamic"
 
@@ -211,6 +212,7 @@ export default async function ChairpediaEntryPage({
               />
             )}
             <BuyingGuideRail />
+            <GuideContentLoop slug={entry.slug} />
             <ContentStandardsNote kind="guide" />
           </article>
         ) : (
@@ -334,6 +336,7 @@ export default async function ChairpediaEntryPage({
             />
           )}
           <BuyingGuideRail />
+          <GuideContentLoop slug={entry.slug} />
           <ContentStandardsNote kind="guide" />
         </article>
         )}
