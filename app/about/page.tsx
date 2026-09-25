@@ -9,7 +9,7 @@ import { SITE_URL } from "@/lib/site-config"
 
 export const metadata: Metadata = {
   title: "About Chairpedia: Meet Leo",
-  description: "Chairpedia is run by Leo, a businessperson and chair collector who owns and rotates through the chairs he writes about. Real prices with sources, owner reviews summarized, and the differences that matter.",
+  description: "Chairpedia is run by Leo, a businessperson and chair collector. Manufacturer specs, real prices with sources, owner reviews from around the world summarized, and the differences that matter.",
   alternates: { canonical: "/about" },
 }
 
@@ -63,7 +63,7 @@ export default function AboutPage() {
               Where most people see &ldquo;an office chair,&rdquo; Leo sees tilt mechanisms, seat-depth ranges, mesh tension, and the difference between a chair that supports you and one that merely holds you up. Over the years he has sat in, adjusted, lived with, and argued about more chairs than he can count, from <Brands />, and many more, from design icons to chairs that are rarely sold outside their home markets.
             </p>
             <p>
-              He doesn&rsquo;t just test chairs. He owns them. His collection has grown well past what any reasonable person needs, and he rotates through it, switching his daily work chair every so often to see how each one holds up over weeks, not minutes. When he tells you how a chair feels after hour six, or after month three, it is because he has actually been there.
+              His collection has grown well past what any reasonable person needs, and that obsession is what drives Chairpedia: collecting what manufacturers and owners around the world actually say, and making it easy to compare.
             </p>
           </section>
 
