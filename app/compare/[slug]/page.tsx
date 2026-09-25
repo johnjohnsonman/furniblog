@@ -114,7 +114,7 @@ export default async function ComparePage({
   const pageDescription = pilot?.description ?? c.excerpt ?? c.subtitle ?? null
 
   const updatedAt = c.updated_at ?? c.published_at
-  const displayUpdatedAt = pilot ? "2026-09-23" : updatedAt
+  const displayUpdatedAt = pilot ? "2026-09-25" : updatedAt
   const updatedStr = displayUpdatedAt
     ? new Date(displayUpdatedAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })
     : null
@@ -124,7 +124,7 @@ export default async function ComparePage({
     description: pageDescription,
     path: `/compare/${c.slug}`,
     datePublished: c.published_at,
-    dateModified: updatedAt,
+    dateModified: pilot ? "2026-09-25" : updatedAt,
     image: c.hero_image_url,
   })
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -143,14 +143,14 @@ export default async function ComparePage({
       <Header />
       {preview && <div className="border-b border-[#b98a4b] bg-[#fff7e8] px-4 py-2 text-center text-xs font-medium uppercase tracking-[.12em] text-[#76501f]">Chairpedia preview · Not for publication</div>}
       <main className="flex-1">
-        <article className="mx-auto max-w-3xl px-4 py-10">
+        <article className={pilot ? "mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10" : "mx-auto max-w-3xl px-4 py-10"}>
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
             <Link href="/" className="hover:text-foreground">Home</Link>
             <ChevronRight className="h-3 w-3" />
             <Link href="/compare" className="hover:text-foreground">Compare</Link>
           </nav>
 
-          <header className="mb-8">
+          <header className="mb-6 max-w-4xl">
             <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
               {pageTitle}
             </h1>
@@ -209,7 +209,7 @@ export default async function ComparePage({
           )}
 
           {!pilot && <BuyingGuideRail title="Choose and buy with confidence" />}
-          <ContentStandardsNote kind="comparison" />
+          {!pilot && <ContentStandardsNote kind="comparison" />}
         </article>
       </main>
       {pilot ? <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground"><p>Chairpedia documents model-specific sources and configuration conditions.</p><div className="mt-3 flex justify-center gap-4"><Link href="/editorial-policy" className="underline underline-offset-4">Editorial policy</Link><Link href="/affiliate-disclosure" className="underline underline-offset-4">Affiliate disclosure</Link></div></footer> : <Footer />}

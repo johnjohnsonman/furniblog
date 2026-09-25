@@ -96,6 +96,7 @@ export const VERIFIED_PRODUCTS: Record<VerifiedProductKey, VerifiedProductRecord
       seat: { value: "Adjustable seat depth", status: "direct", sourceIds: ["embody-guide"] },
       back: { value: "BackFit adjustment is available on some models", status: "conditional", sourceIds: ["embody-guide"] },
       recline: { value: "Tilt tension and tilt limiter are available on some models", status: "conditional", sourceIds: ["embody-guide"] },
+      arms: { value: "Arm height and width adjustments described in the adjustment guide; confirm the installed arms", status: "conditional", sourceIds: ["embody-guide"] },
     },
   },
   leap: {
