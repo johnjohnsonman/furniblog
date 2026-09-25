@@ -1,4 +1,5 @@
 import type { ProductView } from "@/lib/data/mappers"
+import { SITE_AUTHOR_SCHEMA } from "@/lib/seo/author"
 import type { Review } from "@/types/review"
 import type { AffiliateLink } from "@/types/affiliate-link"
 
@@ -38,10 +39,8 @@ export function generateArticleSchema(params: {
     ...(params.datePublished ? { datePublished: params.datePublished } : {}),
     ...(params.dateModified ? { dateModified: params.dateModified } : {}),
     ...(params.image ? { image: publicSiteUrl(params.image) } : {}),
-    author: {
-      "@type": "Organization",
-      name: params.authorName ?? "Chairpedia",
-    },
+    // Editorial articles are by Leo; syndicated items (news, collected reviews) keep their source as author.
+    author: params.authorName ? { "@type": "Organization", name: params.authorName } : SITE_AUTHOR_SCHEMA,
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,

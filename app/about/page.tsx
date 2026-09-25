@@ -4,21 +4,95 @@ import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { generateOrganizationSchema } from "@/lib/seo/schemas"
+import { SITE_AUTHOR_SCHEMA } from "@/lib/seo/author"
+import { SITE_URL } from "@/lib/site-config"
 
-export const metadata: Metadata = { title: "About Chairpedia", description: "Chairpedia documents chairs using source-linked specifications, clearly labeled editorial research and transparent corrections.", alternates: { canonical: "/about" } }
+export const metadata: Metadata = {
+  title: "About Chairpedia: Meet Leo",
+  description: "Chairpedia is run by Leo, a businessperson and chair collector who owns and rotates through the chairs he writes about. Real prices with sources, owner reviews summarized, and the differences that matter.",
+  alternates: { canonical: "/about" },
+}
+
+const BRANDS = ["Herman Miller", "Knoll", "Steelcase", "Humanscale", "Haworth", "Vitra", "Wilkhahn", "Walter Knoll", "Okamura", "Itoki", "Kokuyo", "SIHOO"]
+
+function Brands() {
+  return (
+    <>
+      {BRANDS.map((b, i) => (
+        <span key={b}>
+          <strong className="font-semibold text-foreground">{b}</strong>
+          {i < BRANDS.length - 1 ? ", " : ""}
+        </span>
+      ))}
+    </>
+  )
+}
 
 export default function AboutPage() {
-  const orgSchema = { ...generateOrganizationSchema(), "@context": "https://schema.org", "@type": "Organization", name: "Chairpedia", url: "https://www.chairpedia.com", description: "A chair reference database that separates manufacturer specifications, editorial research and owner reports.", knowsAbout: ["Office chairs", "Ergonomic seating", "Designer furniture", "Chair research"] }
-  return <div className="flex min-h-screen flex-col"><Header />
-    <main className="flex-1">
-      <div className="border-b border-border"><div className="mx-auto max-w-3xl px-4 py-3"><div className="flex items-center gap-2 text-sm text-muted-foreground"><Link href="/" className="hover:text-foreground">Home</Link><ChevronRight className="h-3 w-3"/><span className="text-foreground">About</span></div></div></div>
-      <section className="border-b border-border bg-card"><div className="mx-auto max-w-3xl px-4 py-16 sm:py-20"><p className="text-xs font-medium uppercase tracking-[.18em] text-muted-foreground">Chairpedia</p><h1 className="mt-4 font-serif text-4xl leading-tight">Chair research grounded in identifiable sources.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">Chairpedia is building a global reference for chair models, configurations, specifications, comparisons and places to try them.</p></div></section>
-      <div className="mx-auto max-w-3xl space-y-12 px-4 py-12 text-[17px] leading-8 text-muted-foreground">
-        <section><h2 className="font-serif text-2xl text-foreground">What we publish</h2><p className="mt-4">Product records identify the chair, brand and available configuration data. Source-linked fields point to manufacturer documentation or another identifiable source. Comparisons and guides are editorial research and should state when an exact model, market or option still needs confirmation.</p></section>
-        <section><h2 className="font-serif text-2xl text-foreground">How evidence is labeled</h2><p className="mt-4">Manufacturer facts, external owner reports, offline experience records and Chairpedia editorial judgments are different forms of evidence. We do not treat a link as proof unless it supports the exact claim and configuration. Unknown values remain unknown.</p></section>
-        <section><h2 className="font-serif text-2xl text-foreground">Commercial relationships</h2><p className="mt-4">Chairpedia may earn a commission from qualifying purchases through affiliate links. A commercial link does not turn a seller listing into a verified specification or affect the order of factual evidence. Seller, condition, configuration, price, warranty and return terms must be checked at the destination.</p></section>
-        <section><h2 className="font-serif text-2xl text-foreground">Corrections and accountability</h2><p className="mt-4">We preserve publication context, correct unsupported claims and show when verification is incomplete. To report an error or provide a better source, use the contact page.</p><div className="mt-6 flex gap-3"><Link href="/editorial-policy" className="border border-border px-5 py-3 text-sm font-semibold text-foreground">Editorial policy</Link><Link href="/contact" className="bg-foreground px-5 py-3 text-sm font-semibold text-background">Report a correction</Link></div></section>
-      </div>
-    </main><Footer /><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(orgSchema)}}/>
-  </div>
+  const schema = [
+    { ...generateOrganizationSchema(), "@context": "https://schema.org", "@type": "Organization", name: "Chairpedia", url: SITE_URL },
+    { "@context": "https://schema.org", "@type": "AboutPage", url: `${SITE_URL}/about`, name: "Meet Leo", mainEntity: SITE_AUTHOR_SCHEMA },
+  ]
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">
+        <div className="border-b border-border">
+          <div className="mx-auto max-w-3xl px-4 py-3">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Link href="/" className="hover:text-foreground">Home</Link>
+              <ChevronRight className="h-3 w-3" />
+              <span className="text-foreground">About</span>
+            </div>
+          </div>
+        </div>
+
+        <section className="border-b border-border bg-card">
+          <div className="mx-auto max-w-3xl px-4 py-16 sm:py-20">
+            <p className="text-xs font-medium uppercase tracking-[.18em] text-muted-foreground">About Chairpedia</p>
+            <h1 className="mt-4 font-serif text-4xl leading-tight">Meet Leo</h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">
+              Leo is a businessperson and a chair collector, and by his own admission, a little obsessed.
+            </p>
+          </div>
+        </section>
+
+        <div className="mx-auto max-w-3xl space-y-12 px-4 py-12 text-[17px] leading-8 text-muted-foreground">
+          <section className="space-y-6">
+            <p>
+              Where most people see &ldquo;an office chair,&rdquo; Leo sees tilt mechanisms, seat-depth ranges, mesh tension, and the difference between a chair that supports you and one that merely holds you up. Over the years he has sat in, adjusted, lived with, and argued about more chairs than he can count, from <Brands />, and many more, from design icons to chairs that are rarely sold outside their home markets.
+            </p>
+            <p>
+              He doesn&rsquo;t just test chairs. He owns them. His collection has grown well past what any reasonable person needs, and he rotates through it, switching his daily work chair every so often to see how each one holds up over weeks, not minutes. Right now, the <strong className="font-semibold text-foreground">Kokuyo</strong> Ing Cloud is in the rotation. When he tells you how a chair feels after hour six, or after month three, it is because he has actually been there.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="font-serif text-2xl text-foreground">Why Chairpedia exists</h2>
+            <p className="mt-4">
+              Buying a great chair is expensive, and most information online is thin: recycled spec sheets, outdated prices, and reviews written by people who never sat in the chair. Chairpedia is Leo&rsquo;s answer to that. Every page aims to do three things:
+            </p>
+            <ul className="mt-4 list-disc space-y-3 pl-6">
+              <li><strong className="font-semibold text-foreground">Show real prices with sources.</strong> We list official prices with the date we checked them, and show local-currency prices for chairs sold only outside the US.</li>
+              <li><strong className="font-semibold text-foreground">Summarize what owners say worldwide.</strong> We collect and condense published reviews so you don&rsquo;t have to read hundreds of them.</li>
+              <li><strong className="font-semibold text-foreground">Explain the differences that actually matter.</strong> Versions, sizes, and the details that decide whether a chair fits your body and your work.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-serif text-2xl text-foreground">Disclosure</h2>
+            <p className="mt-4">
+              Leo works in the office furniture industry. Chairpedia may earn a commission when you buy through some links, at no extra cost to you. Neither affects what we write: if a chair has a flaw, we will tell you.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/editorial-policy" className="border border-border px-5 py-3 text-sm font-semibold text-foreground">Editorial policy</Link>
+              <Link href="/affiliate-disclosure" className="border border-border px-5 py-3 text-sm font-semibold text-foreground">Affiliate disclosure</Link>
+            </div>
+          </section>
+        </div>
+      </main>
+      <Footer />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    </div>
+  )
 }

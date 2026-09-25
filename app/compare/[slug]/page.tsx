@@ -1,4 +1,5 @@
 import { getPurchaseDecision, getPurchaseGuideLinks } from "@/lib/growth/purchase-decisions"
+import { Byline } from "@/components/editorial/Byline"
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import type { Metadata } from "next"
 import Link from "next/link"
@@ -156,11 +157,7 @@ export default async function ComparePage({
             </h1>
             {pilot ? <p className="mt-3 text-lg text-muted-foreground">{pilot.description}</p> : c.subtitle && !c.requiresSourceReview && <p className="mt-3 text-lg text-muted-foreground">{c.subtitle}</p>}
             <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-              <span>By the{" "}
-                <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Chairpedia Editorial Team
-                </Link>
-              </span>
+              <Byline />
               {updatedStr && <span>· Updated {updatedStr}</span>}
             </div>
           </header>

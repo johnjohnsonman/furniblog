@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Byline } from "@/components/editorial/Byline"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import type { RichReview, DataTier } from "@/lib/chairpedia/rich-types"
 import type { ProductImages } from "@/lib/amazon/paapi"
@@ -99,12 +100,7 @@ export function RichReview({
       </div>
 
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
-        <span>
-          By the{" "}
-          <Link href="/about" className="font-medium text-foreground hover:underline">
-            Chairpedia Editorial Team
-          </Link>
-        </span>
+        <Byline />
         {updatedStr && <span>· Updated {updatedStr}</span>}
         <span className="inline-flex items-center gap-1.5">
           ·

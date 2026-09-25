@@ -145,7 +145,8 @@ export function getProductContentHub(slug: string) {
   return productContentHubs[slug]
 }
 
-export const guideProductRelations: Record<string, { productSlug: string; intent: GuideIntent }> = {
+/** Guides that loop back to a product page. productName is used when the product has no hub yet. */
+export const guideProductRelations: Record<string, { productSlug: string; intent: GuideIntent; productName?: string }> = {
   "herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c": { productSlug: "herman-miller-aeron", intent: "Choose" },
   "herman-miller-aeron-classic-vs-remastered-identification-guide": { productSlug: "herman-miller-aeron", intent: "Identify" },
   "how-to-use-the-herman-miller-aeron-a-complete-control-guide": { productSlug: "herman-miller-aeron", intent: "Adjust" },
@@ -153,4 +154,5 @@ export const guideProductRelations: Record<string, { productSlug: string; intent
   "herman-miller-aeron-chair-review": { productSlug: "herman-miller-aeron", intent: "Buy" },
   "herman-miller-embody-chair": { productSlug: "herman-miller-embody", intent: "Buy" },
   "herman-miller-embody-gaming-chair": { productSlug: "herman-miller-embody-gaming", intent: "Identify" },
+  "kokuyo-ing-cloud-review-the-3-000-chair-that-moves-with-you": { productSlug: "kokuyo-ing-cloud", intent: "Buy", productName: "Kokuyo ing Cloud" },
 }

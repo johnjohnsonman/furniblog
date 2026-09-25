@@ -1,4 +1,5 @@
 import { cache } from "react"
+import { Byline } from "@/components/editorial/Byline"
 import { englishImageDescriptions } from "@/lib/public-english"
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
@@ -242,11 +243,7 @@ export default async function ChairpediaEntryPage({
               </div>
             )}
             <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-              <span>By the{" "}
-                <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Chairpedia Editorial Team
-                </Link>
-              </span>
+              <Byline />
               {sources.length > 0 && <span>· Researched against {sources.length} sources</span>}
               {updatedStr && <span>· Updated {updatedStr}</span>}
             </div>

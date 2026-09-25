@@ -1,11 +1,11 @@
 type Row = { id: string; created_at: string | null }
-type Result = { data: Row[] | null; error: { message: string } | null }
+type Result<T> = { data: T[] | null; error: { message: string } | null }
 
 // Keyset pagination avoids REST row caps and offset shifts during collection.
-export async function loadReviewSitemapPages(
-  fetchPage: (after: string | null, size: number) => PromiseLike<Result>
-): Promise<Row[]> {
-  const rows: Row[] = []
+export async function loadReviewSitemapPages<T extends Row = Row>(
+  fetchPage: (after: string | null, size: number) => PromiseLike<Result<T>>
+): Promise<T[]> {
+  const rows: T[] = []
   let after: string | null = null
   for (let page = 0; page < 100; page++) {
     const result = await fetchPage(after, 500)

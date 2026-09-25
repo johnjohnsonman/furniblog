@@ -3,6 +3,7 @@ import { loadReviewSitemapPages } from "@/lib/reviews/sitemap-pages"
 import { isNewsSearchable } from "@/lib/seo/search-visibility"
 import { bestLists } from "@/lib/data"
 import { SITE_URL } from "@/lib/site-config"
+import { isThinReview, isThinTrialPage, storeSearchPolicy, thinCityPaths } from "@/lib/seo/thin-pages"
 
 /** Sitemap sections, listed in the sitemap index in this order. */
 export const SITEMAP_SECTIONS = ["products", "chairpedia", "compare", "brands", "blog", "other", "stores", "reviews"] as const
@@ -125,28 +126,31 @@ async function stores(): Promise<SitemapEntry[]> {
   const { locationPages } = await import("@/lib/showrooms/locations")
   const { trialPages } = await import("@/lib/showrooms/trial-pages")
   entries.push(url("/stores/locations", undefined, "weekly", 0.7))
-  for (const path of locationPages(result.stores)) entries.push(url(path, undefined, "weekly", 0.7))
+  // Thin pages stay public but are left out of the sitemap (see lib/seo/thin-pages.ts).
+  const thinCities = thinCityPaths(result.stores)
+  for (const path of locationPages(result.stores)) if (!thinCities.has(path)) entries.push(url(path, undefined, "weekly", 0.7))
   const catalog = await getStoreCatalog()
-  for (const page of trialPages(result.stores.map(store => enrichStore(store, catalog)))) entries.push(url(page.path, undefined, "weekly", 0.7))
+  for (const page of trialPages(result.stores.map(store => enrichStore(store, catalog)))) if (!isThinTrialPage(page)) entries.push(url(page.path, undefined, "weekly", 0.7))
   entries.push(url("/stores", undefined, "weekly", 0.7))
-  for (const store of result.stores) entries.push(url(`/stores/${store.slug}`, toDate(store.updated_at), "weekly", 0.6))
+  for (const store of result.stores) if (storeSearchPolicy(result.stores, store.slug) === "index") entries.push(url(`/stores/${store.slug}`, toDate(store.updated_at), "weekly", 0.6))
   return entries
 }
 
 async function reviews(): Promise<SitemapEntry[]> {
   if (!isConfigured()) return []
   const db = createPublicServerClient()
-  const rows = await loadReviewSitemapPages((after, size) => {
+  type ReviewRow = { id: string; created_at: string | null; summary_ko: string | null; pros: unknown; cons: unknown }
+  const rows = await loadReviewSitemapPages<ReviewRow>((after, size) => {
     // Search-visibility policy: only reviews with a recorded original source
     // earn a sitemap entry (their pages are noindexed otherwise).
-    let q = db.from("reviews").select("id, created_at").eq("excluded", false).not("source_url", "is", null).order("id").limit(size)
+    let q = db.from("reviews").select("id, created_at, summary_ko, pros, cons").eq("excluded", false).not("source_url", "is", null).order("id").limit(size)
     if (after) q = q.gt("id", after)
     return q
   }).catch((error) => {
     console.error("Review sitemap query failed:", error instanceof Error ? error.message : "Unknown error")
     return []
   })
-  return rows.filter(r => r.id).map(r => url(`/reviews/${r.id}`, toDate(r.created_at), "monthly", 0.6))
+  return rows.filter(r => r.id && !isThinReview(r)).map(r => url(`/reviews/${r.id}`, toDate(r.created_at), "monthly", 0.6))
 }
 
 const LOADERS: Record<SitemapSection, () => Promise<SitemapEntry[]>> = { products, chairpedia, compare, brands, blog, other, stores, reviews }

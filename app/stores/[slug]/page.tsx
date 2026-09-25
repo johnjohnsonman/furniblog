@@ -10,6 +10,7 @@ import {
 import { StoreDetails } from "@/components/showrooms/StoreDetails";
 import "@/components/showrooms/atlas.css";
 import { SITE_URL } from "@/lib/site-config";
+import { storeSearchPolicy } from "@/lib/seo/thin-pages";
 import { countryPath, countryName } from "@/lib/showrooms/locations";
 import { AtlasHeader } from "@/components/showrooms/AtlasHeader";
 export const revalidate = 300;
@@ -33,6 +34,8 @@ export async function generateMetadata({
     description: `Visit information for ${s.name} in ${s.city}: brands, chairs to try, address and contact details. Confirm model availability before travelling.`,
     alternates: { canonical: `/stores/${s.slug}` },
     openGraph: { title: `${s.name} | Chairpedia`, url: `/stores/${s.slug}` },
+    // Dealer-directory template pages stay visible but are kept out of search.
+    ...(storeSearchPolicy((await getPublicStores()).stores, s.slug) === "noindex" ? { robots: { index: false, follow: true } } : {}),
   };
 }
 export default async function StorePage({

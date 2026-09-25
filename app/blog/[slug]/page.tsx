@@ -1,4 +1,5 @@
 import { rewriteOwnedSiteLinks } from "@/lib/blog/site-links"
+import { Byline } from "@/components/editorial/Byline"
 import { PurchaseDecisionCard } from "@/components/growth/PurchaseDecisionCard"
 import { getProductImageBundle } from "@/lib/supabase/queries"
 import { enrichBlogPosts } from "@/lib/blog/media-server"
@@ -23,6 +24,7 @@ import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { GuideContentLoop } from "@/components/products/GuideContentLoop"
+import { getLeoNote } from "@/lib/blog/leo-notes"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 
 export const dynamic = "force-dynamic"
@@ -113,6 +115,7 @@ export default async function BlogPostPage({
   const post = await getPost(slug)
   if (!post) notFound()
   const buying = getBlogBuyingNotes(post.slug)
+  const leoNote = getLeoNote(post.slug)
   const reading = prepareArticleReading(wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(post.content_html), pageSubtag(`/blog/${post.slug}`))))
   const productComparisons = buying
     ? await getPublishedProductComparisons(buying.productId)
@@ -159,11 +162,7 @@ export default async function BlogPostPage({
               <p className="mt-3 text-lg text-muted-foreground">{post.subtitle}</p>
             )}
             <p className="mt-3 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-              <span>By the{" "}
-                <Link href="/about" className="font-medium text-foreground hover:underline">
-                  Chairpedia Editorial Team
-                </Link>
-              </span>
+              <Byline />
               <span>·</span>
               {post.published_at && (
                 <span>
@@ -172,6 +171,11 @@ export default async function BlogPostPage({
                     month: "long",
                     day: "numeric",
                   })}
+                </span>
+              )}
+              {post.published_at && post.updated_at && Date.parse(post.updated_at) - Date.parse(post.published_at) > 7 * 86_400_000 && (
+                <span>
+                  · Updated {new Date(post.updated_at).toLocaleDateString("en-US", { year: "numeric", month: "short" })}
                 </span>
               )}
               {post.published_at && <span>·</span>}
@@ -200,6 +204,13 @@ export default async function BlogPostPage({
             className="chairpedia-body article-reading"
             dangerouslySetInnerHTML={{ __html: reading.html }}
           />
+
+          {leoNote && (
+            <section aria-labelledby="leo-note-heading" className="mt-10 border-t border-border pt-6">
+              <h2 id="leo-note-heading" className="font-serif text-2xl">{leoNote.title}</h2>
+              <div className="chairpedia-body article-reading mt-4" dangerouslySetInnerHTML={{ __html: leoNote.html }} />
+            </section>
+          )}
 
           {buying && (
             <section aria-labelledby="blog-buying-heading" data-testid="blog-buying" className="mt-10 space-y-4 border-t border-border pt-6">

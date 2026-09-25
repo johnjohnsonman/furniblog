@@ -1,4 +1,5 @@
 import { Header } from "@/components/header";
+import { SITE_AUTHOR_SCHEMA } from "@/lib/seo/author"
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -49,7 +50,7 @@ export default async function StoreGuide({params}:{params:Promise<{slug:string}>
     {q:"What should I test in an ergonomic chair?",a:"Check seat height, seat depth, lumbar support, recline resistance, armrest clearance and comfort while typing. Sit for long enough to notice pressure points."},
   ];
   const path=`/stores/guides/${slug}`;
-  const schema={"@context":"https://schema.org","@graph":[{"@type":"Article",headline:guide.title,description:guide.description,url:SITE_URL+path,inLanguage:"en",author:{"@type":"Organization",name:"Chairpedia"},mainEntityOfPage:SITE_URL+path},{"@type":"ItemList",numberOfItems:selected.length,itemListElement:selected.map((s,i)=>({"@type":"ListItem",position:i+1,name:s.name,url:`${SITE_URL}/stores/${s.slug}`}))},{"@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))}]};
+  const schema={"@context":"https://schema.org","@graph":[{"@type":"Article",headline:guide.title,description:guide.description,url:SITE_URL+path,inLanguage:"en",author:SITE_AUTHOR_SCHEMA,mainEntityOfPage:SITE_URL+path},{"@type":"ItemList",numberOfItems:selected.length,itemListElement:selected.map((s,i)=>({"@type":"ListItem",position:i+1,name:s.name,url:`${SITE_URL}/stores/${s.slug}`}))},{"@type":"FAQPage",mainEntity:faq.map(x=>({"@type":"Question",name:x.q,acceptedAnswer:{"@type":"Answer",text:x.a}}))}]};
   return <main className="store-locations"><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(schema).replace(/</g,"\\u003c")}}/><Header /><div className="location-wrap">
     <nav className="location-crumbs" aria-label="Breadcrumb"><Link href="/">Chairpedia</Link> / <Link href="/stores">Find stores</Link> / <Link href="/stores/locations/singapore">Singapore</Link> / <span>{guide.title}</span></nav>
     <section className="location-hero"><p className="location-eyebrow">SINGAPORE CHAIR SHOPPING GUIDE</p><h1>{guide.heading}</h1><p>{guide.intro}</p><Link className="location-cta" href="/stores?country=SG">Open the Singapore store map →</Link></section>

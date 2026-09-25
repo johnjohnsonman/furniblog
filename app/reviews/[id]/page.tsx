@@ -137,7 +137,7 @@ export default async function ReviewDetailPage(props: {
       path: `/reviews/${review.id}`,
       datePublished: review.source === "chairpark" ? null : review.created_at,
       image: product.thumbnail_url,
-      authorName: notes ? "Chairpedia Editorial Team" : sourceLabel(review.source),
+      authorName: notes ? undefined : sourceLabel(review.source),
     }),
     generateBreadcrumbSchema([
       { name: "Reviews", url: "/reviews" },
