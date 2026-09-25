@@ -3,7 +3,7 @@ import Image from "next/image"
 import type { ProductContentHub as Hub } from "@/lib/products/content-hubs"
 
 function LinkCards({ items }: { items: Hub["guides"] }) {
-  return <div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2">
+  return <div className="grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2">
     {items.map((item) => <Link key={item.href + item.label} href={item.href} className="group bg-white p-5 transition-colors hover:bg-[#f5f1e8]">
       {item.intent && <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">{item.intent}</p>}
       <h3 className="mt-1 font-serif text-xl">{item.label}</h3>
@@ -24,7 +24,7 @@ export function ProductContentHub({ hub, productName }: { hub: Hub; productName:
 
     {hub.versions.length > 0 && <section aria-labelledby="other-versions">
       <h2 id="other-versions" className="font-serif text-3xl">Other versions</h2>
-      <div className="mt-5 grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2">
+      <div className="mt-5 grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2">
         {hub.versions.map((item) => <Link key={item.href} href={item.href} className="group grid bg-white sm:grid-cols-[160px_1fr]">
           {item.image && <div className="bg-[#f5f1e8] p-3"><Image src={item.image} alt={item.imageAlt ?? item.label} width={1080} height={1080} sizes="160px" className="aspect-square h-full w-full object-contain" /></div>}
           <div className="p-5"><h3 className="font-serif text-xl">{item.label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p><span className="mt-4 inline-block text-sm font-semibold underline underline-offset-4">View version →</span></div>
@@ -35,9 +35,9 @@ export function ProductContentHub({ hub, productName }: { hub: Hub; productName:
     {hub.quickComparison && <section aria-labelledby="variant-comparison">
       <h2 id="variant-comparison" className="font-serif text-3xl">{hub.quickComparison.title}</h2>
       <div className="mt-5 overflow-x-auto border border-[#171717]" tabIndex={0} aria-label={`${productName} version comparison`}>
-        <table className="w-full min-w-[620px] border-collapse text-left text-sm">
-          <thead><tr className="bg-[#f5f1e8]"><th className="p-4">Check</th><th className="p-4">{hub.quickComparison.columns[0]}</th><th className="p-4">{hub.quickComparison.columns[1]}</th></tr></thead>
-          <tbody>{hub.quickComparison.rows.map(([key, a, b]) => <tr key={key} className="border-t border-[#171717]"><th className="p-4 font-semibold">{key}</th><td className="p-4">{a}</td><td className="p-4">{b}</td></tr>)}</tbody>
+        <table className="w-full border-collapse text-left text-xs sm:min-w-[620px] sm:text-sm">
+          <thead><tr className="bg-[#f5f1e8]"><th className="p-3 sm:p-4">Check</th><th className="p-3 sm:p-4">{hub.quickComparison.columns[0]}</th><th className="p-3 sm:p-4">{hub.quickComparison.columns[1]}</th></tr></thead>
+          <tbody>{hub.quickComparison.rows.map(([key, a, b]) => <tr key={key} className="border-t border-[#171717]"><th className="p-3 font-semibold sm:p-4">{key}</th><td className="p-3 sm:p-4">{a}</td><td className="p-3 sm:p-4">{b}</td></tr>)}</tbody>
         </table>
       </div>
       <Link href={hub.quickComparison.href} className="mt-4 inline-block text-sm font-semibold underline underline-offset-4">Read the full version guide →</Link>

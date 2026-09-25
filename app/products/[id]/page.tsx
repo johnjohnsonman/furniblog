@@ -235,7 +235,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
                   {contentHub && <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{contentHub.heroFacts.map((fact) => <li key={fact} className="border-l-2 border-[#3157e8] pl-3">{fact}</li>)}</ul>}
 
-                  <div className="flex items-center gap-2 mt-3 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-3 text-sm text-muted-foreground">
                     {reviewCount > 0 && <span>
                       Summarized from {reviewCount.toLocaleString()}{" "}
                       {reviewCount === 1 ? "review" : "reviews"} worldwide
@@ -243,7 +243,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     {productVideos.length > 0 && (
                       <>
                         {reviewCount > 0 && <span>·</span>}
-                        <span>
+                        <span className="whitespace-nowrap">
                           {productVideos.length}{" "}
                           {productVideos.length === 1 ? "video" : "videos"}
                         </span>
@@ -252,7 +252,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     {(reviewCount > 0 || productVideos.length > 0) && <span>·</span>}
                     <Link
                       href={`/reviews/new?product=${slug}`}
-                      className="font-medium text-foreground underline-offset-4 hover:underline"
+                      className="whitespace-nowrap font-medium text-foreground underline-offset-4 hover:underline"
                     >
                       Write a review
                     </Link>

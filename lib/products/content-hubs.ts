@@ -127,7 +127,7 @@ export const productContentHubs: Record<string, ProductContentHub> = {
   },
   "herman-miller-embody-gaming": {
     shortName: "Embody Gaming",
-    edition: "Herman Miller x Logitech G Embody Gaming Chair",
+    edition: "Logitech G gaming edition of the Embody",
     heroFacts: ["Embody platform", "Adjustable seat depth", "BackFit adjustment", "Gaming-specific foam and styling"],
     priceRange: { minUsd: 2395, maxUsd: 2395, source: "US Herman Miller Store", sourceUrl: "https://store.hermanmiller.com/gaming-chairs/embody-gaming-chair/2517590.html?lang=en_US", checkedOn: "2026-09-25" },
     sourceNote: "This page covers the Logitech G Gaming edition. Standard Embody is linked as a related version.",

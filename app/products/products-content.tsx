@@ -200,7 +200,7 @@ export function ProductsPageContent({
           <p className="mt-4 text-sm text-premium-text-tertiary">
             {stats.products.toLocaleString()} chairs ·{" "}
             {stats.brands.toLocaleString()} brands ·{" "}
-            {stats.reviews.toLocaleString()} reviews
+            summarized from {stats.reviews.toLocaleString()} reviews worldwide
           </p>
         </div>
       </section>
