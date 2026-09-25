@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react"
 import { PriceCompareTable } from "./PriceCompareTable"
 import {
   buildPriceRowsFromCatalog,
-  sortCatalogLinksForCountry,
 } from "@/lib/affiliate/catalog-price-rows"
 import type { CatalogAffiliateLink } from "@/lib/data/affiliate-links"
 import type { AffiliateCountry } from "@/lib/affiliate/links"
@@ -36,31 +35,22 @@ export function WhereToBuySection({
     setCountry(readCountryCookie())
   }, [])
 
-  // Coupang removed site-wide: the curated Coupang links were generic partner
-  // landings (no itemId) that dead-ended on the homepage. Drop them here too.
-  // Also hide amazon.co.jp rows outside Japan — a US/KR visitor shouldn't be
+  // Hide amazon.co.jp rows outside Japan — a US/KR visitor shouldn't be
   // sent to the Japan marketplace (and the US tag earns nothing there).
   const buyableLinks = useMemo(
     () =>
       catalogLinks.filter(
         (l) =>
-          !l.retailer.toLowerCase().includes("coupang") &&
-          !l.url.includes("coupang.com") &&
           !(country !== "JP" && l.url.includes("amazon.co.jp"))
       ),
     [catalogLinks, country]
   )
 
-  const sortedLinks = useMemo(
-    () => sortCatalogLinksForCountry(buyableLinks, country),
-    [buyableLinks, country]
-  )
-
   const priceRows = useMemo(
-    () => buildPriceRowsFromCatalog(sortedLinks).map(row => country === "SG" && row.channel === "amazon"
+    () => buildPriceRowsFromCatalog(buyableLinks).map(row => country === "SG" && row.channel === "amazon"
       ? { ...row, retailer: "Amazon.sg", priceDisplay: "Check on Amazon.sg", shipping: "Check delivery at retailer" }
       : row),
-    [sortedLinks, country]
+    [buyableLinks, country]
   )
 
   return (

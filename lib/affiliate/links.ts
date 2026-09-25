@@ -18,66 +18,13 @@ export type AffiliateCountry =
 const RETAILER_ALIASES: Record<string, string> = {
   amazon: "amazon",
   "amazon.com": "amazon",
-  coupang: "coupang",
-  "coupang.com": "coupang",
-  "link.coupang.com": "coupang",
   official: "official",
-  naver: "naver",
-  "shopping.naver": "naver",
-  naver_shopping: "naver",
   rakuten: "rakuten",
 }
 
 function normalizeRetailer(retailer: string): string {
   const key = retailer.toLowerCase().trim()
   return RETAILER_ALIASES[key] ?? key
-}
-
-export function getCoupangPartnerId(): string | undefined {
-  return process.env.NEXT_PUBLIC_COUPANG_PARTNER_ID?.trim() || undefined
-}
-
-/**
- * Coupang Partners deep link:
- * https://link.coupang.com/a/{PARTNER_ID}?itemId=XXX&vendorItemId=XXX
- */
-export function buildCoupangAffiliateUrl(baseUrl?: string): string {
-  const partnerId = getCoupangPartnerId()
-  if (!partnerId) {
-    return baseUrl ?? "https://www.coupang.com/"
-  }
-
-  const affiliate = new URL(`https://link.coupang.com/a/${partnerId}`)
-
-  if (!baseUrl) {
-    return affiliate.toString()
-  }
-
-  try {
-    const source = new URL(baseUrl)
-
-    if (source.hostname === "link.coupang.com") {
-      const pathMatch = source.pathname.match(/^\/a\/([^/]+)/)
-      if (pathMatch && pathMatch[1] !== partnerId) {
-        source.pathname = `/a/${partnerId}`
-      }
-      source.searchParams.forEach((value, key) => {
-        if (key === "itemId" || key === "vendorItemId") {
-          affiliate.searchParams.set(key, value)
-        }
-      })
-      return affiliate.toString()
-    }
-
-    const itemId = source.searchParams.get("itemId")
-    const vendorItemId = source.searchParams.get("vendorItemId")
-    if (itemId) affiliate.searchParams.set("itemId", itemId)
-    if (vendorItemId) affiliate.searchParams.set("vendorItemId", vendorItemId)
-
-    return affiliate.toString()
-  } catch {
-    return affiliate.toString()
-  }
 }
 
 /**
@@ -116,9 +63,6 @@ export function buildAffiliateUrl(
 ): string {
   const r = normalizeRetailer(retailer)
 
-  if (r === "coupang") {
-    return buildCoupangAffiliateUrl(baseUrl)
-  }
 
   let url: URL
   try {

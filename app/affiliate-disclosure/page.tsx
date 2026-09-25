@@ -43,7 +43,6 @@ export default function AffiliateDisclosurePage() {
             <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
               <li>Amazon Associates Program</li>
               <li>Direct manufacturer partnerships (Herman Miller, Steelcase, etc.)</li>
-              <li>Regional retailers (Coupang, Naver Shopping, Rakuten)</li>
             </ul>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Editorial Independence</h2>

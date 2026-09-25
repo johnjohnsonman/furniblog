@@ -105,12 +105,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       isOfficial: false,
       priceUsd: 1395,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 1890000,
-    },
   ],
   "herman-miller-aeron-c": [
     {
@@ -124,12 +118,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.com/s?k=herman+miller+aeron+size+c",
       isOfficial: false,
       priceUsd: 1535,
-    },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 2290000,
     },
   ],
   "herman-miller-embody": [
@@ -187,12 +175,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       isOfficial: false,
       priceUsd: 545,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 890000,
-    },
   ],
   "herman-miller-lino": [
     {
@@ -220,12 +202,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.com/dp/B073G1K465",
       isOfficial: false,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 1890000,
-    },
   ],
   "steelcase-gesture": [
     {
@@ -239,12 +215,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.com/dp/B08KL9JMVB",
       isOfficial: false,
       priceUsd: 1199,
-    },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 2100000,
     },
   ],
   "steelcase-think-v2": [
@@ -301,12 +271,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.co.jp/s?k=okamura+sylphy",
       isOfficial: false,
       priceUsd: 1050,
-    },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 1200000,
     },
   ],
   "okamura-portone": [
@@ -397,12 +361,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       isOfficial: false,
       priceUsd: 1395,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 1650000,
-    },
   ],
   "hag-capisco-puls": [
     {
@@ -453,12 +411,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       isOfficial: false,
       priceUsd: 350,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 450000,
-    },
   ],
   "kokuyo-ing-cloud": [
     {
@@ -473,12 +425,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       isOfficial: false,
       priceUsd: 550,
     },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 680000,
-    },
   ],
   "itoki-act2": [
     {
@@ -492,12 +438,6 @@ export const AFFILIATE_LINKS_DATA: Record<
       url: "https://www.amazon.co.jp/s?k=itoki+act2",
       isOfficial: false,
       priceUsd: 800,
-    },
-    {
-      retailer: "Coupang",
-      url: "https://link.coupang.com/a/AF1321768",
-      isOfficial: false,
-      priceKrw: 980000,
     },
   ],
   "vitra-id-chair-concept": [

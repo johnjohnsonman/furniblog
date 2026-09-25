@@ -52,8 +52,6 @@ export function toProductView(product: Product) {
     },
     officialUrl: getAffiliateUrl(product, "official"),
     amazonUrl: getAffiliateUrl(product, "amazon"),
-    coupangUrl: getAffiliateUrl(product, "coupang"),
-    naverUrl: getAffiliateUrl(product, "naver"),
     rakutenUrl: getAffiliateUrl(product, "rakuten"),
     chairparkUrl: getAffiliateUrl(product, "chairpark"),
   }

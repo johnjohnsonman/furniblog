@@ -107,8 +107,8 @@ export function Footer() {
             © {new Date().getFullYear()} Chairpedia. All rights reserved.
           </p>
           <p className="text-xs text-muted-foreground leading-relaxed max-w-xl">
-            Chairpedia participates in the Amazon Associates and Coupang Partners
-            affiliate programs. We may earn a commission on qualifying purchases at
+            Chairpedia participates in the Amazon Associates
+            affiliate program. We may earn a commission on qualifying purchases at
             no extra cost to you.
           </p>
         </div>

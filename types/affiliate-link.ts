@@ -1,8 +1,6 @@
 export type AffiliateChannel =
   | "official"
   | "amazon"
-  | "coupang"
-  | "naver"
   | "rakuten"
   | "chairpark"
 

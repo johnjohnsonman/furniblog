@@ -13,8 +13,6 @@ export interface PriceRow {
 const RETAILER_SHIPPING: Record<string, string> = {
   official: "Free (brand policy)",
   amazon: "Free shipping eligible",
-  coupang: "Rocket delivery available",
-  naver: "Varies by seller",
   rakuten: "International shipping",
   chairpark: "In-store visit",
 }

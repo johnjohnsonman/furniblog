@@ -12,17 +12,15 @@ import {
   type AffiliateCountry,
 } from "@/lib/affiliate/links"
 
-type BuyButtonVariant = "amazon" | "coupang" | "official"
+type BuyButtonVariant = "amazon" | "official"
 
 const VARIANT_STYLES: Record<BuyButtonVariant, string> = {
   amazon: "bg-foreground hover:bg-foreground/90 text-background",
-  coupang: "bg-[#C0392B] hover:bg-[#a93226] text-white",
   official: "border border-border bg-background hover:bg-muted text-foreground",
 }
 
 const VARIANT_LABELS: Record<BuyButtonVariant, string> = {
   amazon: "View details & price",
-  coupang: "Check price on Coupang",
   official: "Visit official store",
 }
 
@@ -98,9 +96,7 @@ interface BuyButtonGroupProps {
   className?: string
 }
 
-// Amazon-only. Coupang was removed: every curated Coupang link was a generic
-// partner landing (no itemId), so it dead-ended on the Coupang homepage, and
-// this is a global English site monetized through Amazon (Earn Globally).
+// Amazon-only: this is a global English site monetized through Amazon (Earn Globally).
 export function BuyButtonGroup({
   productId,
   amazonUrl,

@@ -50,14 +50,9 @@ const IMG = {
     "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&h=800&fit=crop",
 }
 
-/** Coupang Partners base link — itemId/vendorItemId appended via buildCoupangAffiliateUrl */
-const COUPANG_AFFILIATE_BASE = "https://link.coupang.com/a/AF1321768"
-
 const AFFILIATE_LABELS: Record<AffiliateChannel, string> = {
   official: "Official Store",
   amazon: "Amazon",
-  coupang: "Coupang",
-  naver: "Naver Shopping",
   rakuten: "Rakuten",
   chairpark: "Try at Chairpark",
 }
@@ -118,8 +113,6 @@ export const products: Product[] = [
       official:
         "https://www.hermanmiller.com/products/seating/office-chairs/aeron-chairs/",
       amazon: "https://www.amazon.com/dp/B01N0XP5FA",
-      coupang: COUPANG_AFFILIATE_BASE,
-      naver: "https://search.shopping.naver.com/",
       chairpark: "https://www.chairpark.com/shop/aerongraphite",
     }),
     overview:
@@ -190,7 +183,6 @@ export const products: Product[] = [
       official:
         "https://www.hermanmiller.com/products/seating/office-chairs/embody-chairs/",
       amazon: "https://www.amazon.com/dp/B01DGM7ZGI",
-      coupang: COUPANG_AFFILIATE_BASE,
       chairpark: "https://www.chairpark.com/shop/Embody",
     }),
     reviewSummary:
@@ -237,7 +229,6 @@ export const products: Product[] = [
       official:
         "https://www.hermanmiller.com/products/seating/office-chairs/sayl-chairs/",
       amazon: "https://www.amazon.com/dp/B0047DJ5I2",
-      coupang: COUPANG_AFFILIATE_BASE,
     }),
     reviewSummary:
       "A smart way to get Herman Miller design language without flagship pricing.",
@@ -326,7 +317,6 @@ export const products: Product[] = [
     affiliateLinks: affiliateLinks({
       official: "https://www.steelcase.com/products/office-chairs/leap/",
       amazon: "https://www.amazon.com/dp/B006H1QYBA",
-      coupang: COUPANG_AFFILIATE_BASE,
       chairpark: "https://www.chairpark.com/shop/leapv2",
     }),
     reviewSummary:
@@ -369,7 +359,6 @@ export const products: Product[] = [
     affiliateLinks: affiliateLinks({
       official: "https://www.steelcase.com/products/office-chairs/gesture/",
       amazon: "https://www.amazon.com/dp/B016OIF2KA",
-      coupang: COUPANG_AFFILIATE_BASE,
       chairpark: "https://www.chairpark.com/shop/gesture",
     }),
     reviewSummary:
@@ -457,7 +446,6 @@ export const products: Product[] = [
     tryAtChairpark: true,
     affiliateLinks: affiliateLinks({
       official: "https://www.okamura.jp/contessa/",
-      coupang: COUPANG_AFFILIATE_BASE,
       rakuten: "https://www.rakuten.co.jp/",
       chairpark: "https://www.chairpark.com/shop/contessa2",
     }),
@@ -503,7 +491,6 @@ export const products: Product[] = [
     tryAtChairpark: true,
     affiliateLinks: affiliateLinks({
       official: "https://www.okamura.jp/sylphy/",
-      coupang: COUPANG_AFFILIATE_BASE,
       rakuten: "https://www.rakuten.co.jp/",
       chairpark: "https://www.chairpark.com/shop/sylphy",
     }),
@@ -594,8 +581,6 @@ export const products: Product[] = [
     tryAtChairpark: true,
     affiliateLinks: affiliateLinks({
       official: "https://www.kokuyo.co.jp/",
-      coupang: COUPANG_AFFILIATE_BASE,
-      naver: "https://search.shopping.naver.com/",
       chairpark: "https://www.chairpark.com/shop/ing",
     }),
     reviewSummary:
@@ -641,8 +626,6 @@ export const products: Product[] = [
     tryAtChairpark: true,
     affiliateLinks: affiliateLinks({
       official: "https://www.kokuyo.co.jp/",
-      coupang: COUPANG_AFFILIATE_BASE,
-      naver: "https://search.shopping.naver.com/",
       chairpark: "https://www.chairpark.com/shop/ingcloud",
     }),
     reviewSummary:

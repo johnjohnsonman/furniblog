@@ -15,9 +15,8 @@ interface PriceCompareTableProps {
 
 function buyVariantForChannel(
   channel: PriceRow["channel"]
-): "amazon" | "coupang" | "official" | null {
+): "amazon" | "official" | null {
   if (channel === "amazon") return "amazon"
-  if (channel === "coupang") return "coupang"
   if (channel === "official") return "official"
   return null
 }

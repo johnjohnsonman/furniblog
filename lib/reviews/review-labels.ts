@@ -65,7 +65,6 @@ export const SOURCE_FILTER_OPTIONS: {
   label: string
 }[] = [
   { id: "all", label: "All" },
-  { id: "chairpark", label: "Chairpark ⭐" },
   { id: "reddit", label: "Reddit" },
   { id: "youtube", label: "YouTube" },
   { id: "dcinside", label: "DC Inside" },

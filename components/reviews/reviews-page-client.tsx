@@ -31,7 +31,6 @@ const CATEGORY_PILLS = [
 
 const SOURCE_OPTIONS = [
   { label: "All Sources", value: "all" },
-  { label: "Chairpark", value: "chairpark" },
   { label: "Reddit", value: "reddit" },
   { label: "YouTube", value: "youtube" },
   { label: "DC Inside", value: "dcinside" },
