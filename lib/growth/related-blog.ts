@@ -49,11 +49,18 @@ export function guideIntent(slug: string): string {
   return "Before you buy"
 }
 
+/** Posts about specific Korean showrooms are not suggested on product pages. */
+const LOCAL_SHOWROOM_POST = /chair-?park|seoul|korea|gangnam|cheongdam|daechi|hannam|ilsan|mapo/i
+
+export function isLocalShowroomPost(post: Pick<RelatedBlogPost, "slug" | "title">): boolean {
+  return LOCAL_SHOWROOM_POST.test(post.slug) || LOCAL_SHOWROOM_POST.test(post.title ?? "")
+}
+
 /** Rank relevant published candidates; freshness only breaks relevance ties. */
 export function selectRelatedBlogPosts(posts: RelatedBlogPost[], productSlug: string, chairpediaSlugs: string[], limit = 3): RelatedBlogPost[] {
   if (!productSlug || limit <= 0) return []
   const preferred = Object.prototype.hasOwnProperty.call(priorities, productSlug) ? priorities[productSlug] : []
-  const unique = [...new Map(posts.map(post => [post.slug, post])).values()]
+  const unique = [...new Map(posts.filter(post => !isLocalShowroomPost(post)).map(post => [post.slug, post])).values()]
   return unique.map(post => {
     const priority = preferred.indexOf(post.slug)
     const direct = (post.productSlugs ?? linkedProductSlugs(post.content_html)).includes(productSlug)

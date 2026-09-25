@@ -91,6 +91,11 @@ export const priceProvenance: Record<string, PriceProvenance> = {
     scope: "chair only, with or without headrest",
     sourceLabel: "KOKUYO Workstyle Shop (Japan)", sourceUrl: "https://workstyle.kokuyo.co.jp/shop/c/c1165/", checkedOn: CHECKED,
   },
+  "kokuyo-ing": {
+    priceType: "converted", localCurrency: "JPY", localMin: 119790, localMax: 183150, localTaxIncluded: true, ...ECB,
+    scope: "original ing, standard back to headrest with polished aluminum base",
+    sourceLabel: "KOKUYO Workstyle Shop (Japan)", sourceUrl: "https://workstyle.kokuyo.co.jp/shop/c/c1111_ssp/", checkedOn: CHECKED,
+  },
   "itoki-act2": {
     priceType: "converted", localCurrency: "JPY", localMin: 132240, localMax: 132240, localTaxIncluded: true, ...ECB,
     scope: "official launch price, from",

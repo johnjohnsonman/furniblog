@@ -44,7 +44,6 @@ export default function AffiliateDisclosurePage() {
               <li>Amazon Associates Program</li>
               <li>Direct manufacturer partnerships (Herman Miller, Steelcase, etc.)</li>
               <li>Regional retailers (Coupang, Naver Shopping, Rakuten)</li>
-              <li>Chairpark Korea</li>
             </ul>
             
             <h2 className="font-serif text-xl font-medium text-foreground mt-8 mb-4">Editorial Independence</h2>
