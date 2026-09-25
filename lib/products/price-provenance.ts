@@ -117,17 +117,19 @@ function asOf(isoDate: string) {
   return new Date(Date.UTC(year, month - 1, 1)).toLocaleString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })
 }
 
-/** Short label for cards and tables, e.g. "$1,499 – $2,667" or "≈ $1,420". */
+/**
+ * Main label for cards and tables, e.g. "$1,499 – $2,667". Converted prices lead
+ * with the official local price ("¥246,180 – ¥266,860"); the USD estimate is
+ * the secondary label.
+ */
 export function formatPriceAmount(p: PriceProvenance): string {
   switch (p.priceType) {
     case "on_request":
       return "Price on request"
     case "sale":
       return range(p.saleMinUsd!, p.saleMaxUsd!)
-    case "converted": {
-      const min = round10(p.localMin! / p.fxRate!), max = round10(p.localMax! / p.fxRate!)
-      return `≈ ${range(min, max)}`
-    }
+    case "converted":
+      return range(p.localMin!, p.localMax!, yen)
     default:
       if (p.variants?.length) return p.variants.map((v) => `${v.label} ${usd(v.regularMinUsd)}–${usd(v.regularMaxUsd).slice(1)}`).join(" · ")
       return range(p.regularMinUsd!, p.regularMaxUsd!)
@@ -146,8 +148,7 @@ export function formatPriceNote(p: PriceProvenance): string {
       parts.push(`sale price · list ${range(p.regularMinUsd!, p.regularMaxUsd!)}`)
       break
     case "converted":
-      parts.push(`Japan retail ${range(p.localMin!, p.localMax!, yen)} (${p.localTaxIncluded ? "tax incl." : "excl. tax"}) at ¥${p.fxRate}/$`)
-      break
+      return [formatPriceSecondary(p)!, `Japan retail, ${p.localTaxIncluded ? "tax incl." : "excl. tax"}`, ...parts, `as of ${asOf(p.checkedOn)}`].join(" · ")
     default:
       parts.push(p.variants?.length ? "varies by material and configuration" : p.regularMinUsd === p.regularMaxUsd ? "listed price" : "varies by configuration")
   }
@@ -155,8 +156,20 @@ export function formatPriceNote(p: PriceProvenance): string {
   return parts.join(" · ")
 }
 
+/** Small USD reference under a local-currency price ("≈ $1,550 – $1,680"), else null. */
+export function formatPriceSecondary(p: PriceProvenance): string | null {
+  if (p.priceType !== "converted") return null
+  return `≈ ${range(round10(p.localMin! / p.fxRate!), round10(p.localMax! / p.fxRate!))}`
+}
+
 /** Display label for product cards, or null when the catalog price should be used. */
 export function displayPrice(slug?: string | null): string | null {
   const p = getPriceProvenance(slug)
   return p ? formatPriceAmount(p) : null
+}
+
+/** Secondary card label (USD estimate for converted prices), or null. */
+export function displayPriceSecondary(slug?: string | null): string | null {
+  const p = getPriceProvenance(slug)
+  return p ? formatPriceSecondary(p) : null
 }

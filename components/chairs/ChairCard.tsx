@@ -5,6 +5,7 @@ import type { ChairCategory } from "@/types/product"
 import { ChairProductImage } from "./ChairProductImage"
 import { stripBrandPrefix } from "@/lib/product-name"
 import { cn } from "@/lib/utils"
+import { displayPriceSecondary } from "@/lib/products/price-provenance"
 
 const PLACEHOLDER_BG: Partial<Record<ChairCategory, string>> = {
   office: "#F0F0EB",
@@ -32,6 +33,7 @@ export function ChairCard({ product, reviewCount }: ChairCardProps) {
   const isDarkPlaceholder =
     product.category === "gaming" || product.category === "executive"
 
+  const priceSecondary = displayPriceSecondary(product.id)
   const priceDisplay =
     product.price && product.price !== "—"
       ? product.price
@@ -101,7 +103,10 @@ export function ChairCard({ product, reviewCount }: ChairCardProps) {
         <div className="mt-4 border-t border-premium-border" />
 
         <div className="mt-4 flex items-end justify-between gap-3">
-          <p className="text-lg font-medium text-premium-text">{priceDisplay}</p>
+          <div className="min-w-0">
+            <p className="text-lg font-medium text-premium-text">{priceDisplay}</p>
+            {priceSecondary && <p className="text-xs text-premium-text-tertiary">{priceSecondary}</p>}
+          </div>
           <Link
             href={`/products/${product.id}`}
             className="shrink-0 text-[13px] font-medium text-premium-accent transition-colors hover:underline"

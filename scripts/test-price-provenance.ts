@@ -1,5 +1,5 @@
 import assert from "node:assert/strict"
-import { displayPrice, formatPriceAmount, formatPriceNote, priceProvenance, type PriceProvenance } from "../lib/products/price-provenance"
+import { displayPrice, displayPriceSecondary, formatPriceAmount, formatPriceNote, formatPriceSecondary, priceProvenance, type PriceProvenance } from "../lib/products/price-provenance"
 
 // Every entry carries a source and a checked date; numbers match their type.
 for (const [slug, p] of Object.entries(priceProvenance)) {
@@ -27,17 +27,23 @@ assert.equal(displayPrice("knoll-barcelona-chair"), "Fabric $5,550–7,170 · Le
 assert.equal(displayPrice("nouhaus-ergo3d"), "$299.99")
 assert.equal(formatPriceNote(priceProvenance["nouhaus-ergo3d"]), "sale price · list $499.99 · as of Sep 2026")
 assert.equal(formatPriceNote(priceProvenance["knoll-womb-chair"]), "Standard size, chair only · varies by configuration · as of Sep 2026")
-assert.equal(displayPrice("okamura-contessa-ii"), "≈ $1,540 – $2,470")
-assert.equal(displayPrice("kokuyo-ing-cloud"), "≈ $1,550 – $1,680")
-assert.equal(displayPrice("itoki-act2"), "≈ $830")
-assert.equal(formatPriceNote(priceProvenance["itoki-act2"]), "official launch price, from · Japan retail ¥132,240 (tax incl.) at ¥158.85/$ · as of Sep 2026")
+// Converted prices lead with the official local price; USD is the small reference.
+assert.equal(displayPrice("okamura-contessa-ii"), "¥244,310 – ¥391,820")
+assert.equal(displayPriceSecondary("okamura-contessa-ii"), "≈ $1,540 – $2,470")
+assert.equal(displayPrice("kokuyo-ing-cloud"), "¥246,180 – ¥266,860")
+assert.equal(displayPriceSecondary("kokuyo-ing-cloud"), "≈ $1,550 – $1,680")
+assert.equal(displayPrice("itoki-act2"), "¥132,240")
+assert.equal(displayPriceSecondary("itoki-act2"), "≈ $830")
+assert.equal(formatPriceNote(priceProvenance["kokuyo-ing-cloud"]), "≈ $1,550 – $1,680 · Japan retail, tax incl. · chair only, with or without headrest · as of Sep 2026")
+assert.equal(displayPriceSecondary("steelcase-leap-v2"), null, "USD prices have no secondary label")
 assert.equal(displayPrice("wilkhahn-on"), "Price on request")
 assert.equal(Object.keys(priceProvenance).length, 18, "3 hubs + 15 selected products")
 assert.equal(displayPrice("steelcase-series-1"), null, "products without provenance keep their catalog price")
 assert.equal(displayPrice(undefined), null)
 
 const converted: PriceProvenance = { priceType: "converted", localCurrency: "JPY", localMin: 158850, localMax: 238275, localTaxIncluded: true, fxRate: 158.85, fxSource: "ECB", fxDate: "2026-09-24", sourceLabel: "Maker JP", checkedOn: "2026-09-25" }
-assert.equal(formatPriceAmount(converted), "≈ $1,000 – $1,500")
-assert.equal(formatPriceNote(converted), "Japan retail ¥158,850 – ¥238,275 (tax incl.) at ¥158.85/$ · as of Sep 2026")
+assert.equal(formatPriceAmount(converted), "¥158,850 – ¥238,275")
+assert.equal(formatPriceSecondary(converted), "≈ $1,000 – $1,500")
+assert.equal(formatPriceNote(converted), "≈ $1,000 – $1,500 · Japan retail, tax incl. · as of Sep 2026")
 
 console.log("price provenance tests passed")

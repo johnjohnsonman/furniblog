@@ -3,6 +3,13 @@ import { Check, X } from "lucide-react"
 import type { ProductView } from "@/lib/data/mappers"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { RegionalAmazonLink } from "@/components/affiliate/RegionalAmazonLink"
+import { displayPriceSecondary } from "@/lib/products/price-provenance"
+
+/** Small USD reference under a local-currency price in the comparison table. */
+function PriceSecondary({ slug }: { slug: string }) {
+  const text = displayPriceSecondary(slug)
+  return text ? <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{text}</span> : null
+}
 
 interface ChairProductOverviewProps {
   product: ProductView
@@ -123,7 +130,7 @@ export function ChairProductOverview({
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-center font-medium text-sm">{product.price}</td>
+                  <td className="py-3 px-3 text-center font-medium text-sm">{product.price}<PriceSecondary slug={product.id} /></td>
                   <td className="py-3 px-3 text-right text-xs text-muted-foreground">Current</td>
                 </tr>
                 {similarProducts.map((p) => {
@@ -145,7 +152,7 @@ export function ChairProductOverview({
                           </div>
                         </Link>
                       </td>
-                      <td className="py-3 px-3 text-center font-medium text-sm">{p.price}</td>
+                      <td className="py-3 px-3 text-center font-medium text-sm">{p.price}<PriceSecondary slug={p.id} /></td>
                       <td className="py-3 px-3 text-right">
                         {p.amazonUrl && (
                           <RegionalAmazonLink
