@@ -16,8 +16,10 @@ import {
   getProductReviews,
   isSupabaseConfigured,
 } from "@/lib/supabase/queries"
-import { ProductChairTabs } from "@/components/chairs/ProductChairTabs"
-import { ProductReviewLinks } from "@/components/products/ProductReviewLinks"
+import { ProductJumpNav, type JumpNavItem } from "@/components/products/ProductJumpNav"
+import { ProductSection } from "@/components/products/ProductSection"
+import { ProductReviewsSection } from "@/components/products/ProductReviewsSection"
+import { WhereToBuySection } from "@/components/affiliate/WhereToBuySection"
 import { getOfficialChannel } from "@/lib/products/official-channels"
 import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
@@ -28,14 +30,13 @@ import { ProductVideosSection } from "@/components/videos/product-videos-section
 import { fetchProductVideos } from "@/lib/videos/product-videos"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
-import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 import { getProductDecisionGuide } from "@/lib/growth/product-decision-guides"
 import { ProductDecisionGuide } from "@/components/growth/ProductDecisionGuide"
-import { DocumentedProductResearch } from "@/components/chairs/DocumentedProductResearch"
+import { DocumentedProductResearch, documentedComparisonLinks } from "@/components/chairs/DocumentedProductResearch"
 import { ProductDataConfidence } from "@/components/chairs/ProductDataConfidence"
-import { ProductContentHub } from "@/components/products/ProductContentHub"
+import { HubKeyFacts, HubVersions, LinkCards, hubGuideGroups, hubHasVersions } from "@/components/products/ProductContentHub"
 import { getProductContentHub } from "@/lib/products/content-hubs"
 import { formatPriceAmount, formatPriceNote, getPriceProvenance } from "@/lib/products/price-provenance"
 import { filterChairSpecsByEvidence, getProductFitEvidence, getProductFitTrustSummary } from "@/lib/data/product-fit-evidence"
@@ -192,6 +193,33 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const decisionGuide = getProductDecisionGuide(slug, product)
   const hasFitEvidence = fitEvidence.length > 0
 
+  // One-page layout: every section is server-rendered; the jump menu lists only
+  // sections that have content. Each guide/comparison/source URL appears once.
+  const hubGuides = contentHub ? hubGuideGroups(contentHub) : null
+  const blogGuides = relatedBlog.filter((b) => !hubGuides?.hrefs.has(`/blog/${b.slug}`))
+  const hasVersions = contentHub ? hubHasVersions(contentHub) : false
+  const hasGuides = Boolean(hubGuides && hubGuides.steps.length + hubGuides.more.length > 0) || blogGuides.length > 0
+  const uniqueByHref = <T extends { href: string }>(items: T[]) => items.filter((item, i) => items.findIndex((x) => x.href === item.href) === i)
+  const compareLinks = uniqueByHref([
+    ...(contentHub?.comparisons ?? []).map((c) => ({ href: c.href, label: c.label, description: c.description })),
+    ...documentedComparisonLinks(slug).map((c) => ({ ...c, description: "Source-linked comparison" })),
+    ...productComparisons.map((c) => ({ href: `/compare/${c.slug}`, label: c.title, description: "Side-by-side comparison" })),
+  ]).slice(0, 6)
+  const officialSources = uniqueByHref([
+    ...(contentHub?.officialSources ?? []),
+    ...(priceInfo?.sourceUrl ? [{ href: priceInfo.sourceUrl, label: priceInfo.sourceLabel, description: `Price source, checked ${priceInfo.checkedOn}.` }] : []),
+  ])
+  const overviewProduct = priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks
+  const navItems: JumpNavItem[] = [
+    { id: "overview", label: "Overview" },
+    ...(hasVersions ? [{ id: "versions", label: "Versions" }] : []),
+    ...(hasGuides ? [{ id: "guides", label: "Guides" }] : []),
+    { id: "specs", label: "Specs" },
+    ...(productVideos.length > 0 ? [{ id: "videos", label: "Videos" }] : []),
+    ...(chairReviews.length > 0 ? [{ id: "reviews", label: "Reviews" }] : []),
+    { id: "buy", label: "Where to buy" },
+  ]
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#171717]">
       <script
@@ -210,7 +238,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <Header />
 
       <main className="flex-1">
-        {process.env.SHOWROOMS_ENABLED === "true" && <div className="mx-auto max-w-7xl px-5 py-3"><Link href={`/stores?model=${encodeURIComponent(product.id)}`} className="text-sm underline">Find a showroom to try {product.name} ↗</Link></div>}
         <div className="border-b border-[#171717] bg-[#f5f1e8]">
           <div className="mx-auto max-w-7xl px-5 py-3">
             <div className="flex items-center gap-2 text-xs text-[#66707a]">
@@ -244,8 +271,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <h1 className="mt-3 font-serif text-4xl font-medium leading-[1.02] text-foreground sm:text-5xl">{product.name}</h1>
 
                   {contentHub && <p className="mt-3 text-sm font-semibold text-[#3157e8]">{contentHub.edition}</p>}
-
-                  {contentHub && <ul className="mt-5 grid gap-2 text-sm sm:grid-cols-2">{contentHub.heroFacts.map((fact) => <li key={fact} className="border-l-2 border-[#3157e8] pl-3">{fact}</li>)}</ul>}
 
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-3 text-sm text-muted-foreground">
                     {reviewCount > 0 && <span>
@@ -316,44 +341,114 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {contentHub && <ProductContentHub hub={contentHub} productName={product.name} />}
+              <ProductJumpNav items={navItems} />
 
-              <ProductDecisionGuide productName={product.name} slug={slug} guide={decisionGuide} videoCount={productVideos.length} evidenceCount={new Set(fitEvidence.map(item => item.fieldKey)).size} hasBuyingLink={catalogLinks.length > 0} />
-              <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
-              <DocumentedProductResearch slug={slug} />
+              <ProductSection id="overview" eyebrow="Overview">
+                <div className="space-y-8">
+                  {contentHub && <HubKeyFacts hub={contentHub} />}
+                  <ProductDecisionGuide productName={product.name} slug={slug} guide={decisionGuide} videoCount={productVideos.length} evidenceCount={new Set(fitEvidence.map(item => item.fieldKey)).size} hasBuyingLink={catalogLinks.length > 0} />
+                  <ChairProductOverview part="main" product={overviewProduct} similarProducts={similarProducts} claimsVerified={hasFitEvidence} />
+                </div>
+              </ProductSection>
 
-              <div id="product-research" className="mt-8 scroll-mt-24 border-t border-[#171717] pt-2"><ProductChairTabs
-                productId={product.id}
-                productName={product.name}
-                catalogLinks={catalogLinks}
-                reviews={chairReviews}
-                reviewCount={reviewCount}
-                defaultPrice={priceParts?.amount ?? (contentHub ? undefined : product.price)}
-                overview={
-                  <>
-                    <ChairProductOverview
-                      product={priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks}
-                      similarProducts={similarProducts}
-                      claimsVerified={hasFitEvidence}
-                    />
-                    <ProductReviewLinks reviews={chairReviews} productName={product.name} />
-                  </>
-                }
-                specs={<ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} officialSource={priceInfo?.sourceUrl ? { url: priceInfo.sourceUrl, label: priceInfo.sourceLabel } : null} />}
-                videoCount={productVideos.length}
-                videos={
-                  productVideos.length > 0 ? (
-                    <ProductVideosSection
-                      videos={productVideos}
-                      total={productVideoTotal}
-                      chairName={product.name}
-                      chairId={productVideoChairId ?? product.id}
-                      amazonUrl={officialChannel ? null : buyUrls.amazonUrl ?? product.amazonUrl}
-                      reviewCount={reviewCount}
-                    />
-                  ) : undefined
-                }
-              /></div>
+              {contentHub && hasVersions && (
+                <ProductSection id="versions" eyebrow="Versions">
+                  <HubVersions hub={contentHub} productName={product.name} />
+                </ProductSection>
+              )}
+
+              {hasGuides && (
+                <ProductSection id="guides" eyebrow="Guides" title={`Guides for ${contentHub?.shortName ?? product.name}`}>
+                  <div className="space-y-8">
+                    {hubGuides && hubGuides.steps.length > 0 && <div><h3 className="font-serif text-2xl">Choose the right {contentHub?.shortName ?? product.name}</h3><div className="mt-4"><LinkCards items={hubGuides.steps} /></div></div>}
+                    {hubGuides && hubGuides.more.length > 0 && <div><h3 className="font-serif text-2xl">{hubGuides.steps.length > 0 ? "More guides" : "Before you buy"}</h3><div className="mt-4"><LinkCards items={hubGuides.more} /></div></div>}
+                    {blogGuides.length > 0 && (
+                      <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                        {blogGuides.map((b) => (
+                          <Link key={b.slug} href={`/blog/${b.slug}`} className="group flex flex-col overflow-hidden border border-[#171717] bg-white transition-transform hover:-translate-y-1">
+                            <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
+                              {b.hero_image_url ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={b.hero_image_url} alt={b.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]" />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">Chairpedia</div>
+                              )}
+                            </div>
+                            <div className="p-4">
+                              <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{guideIntent(b.slug)}</p>
+                              <h3 className="font-serif text-base font-medium leading-snug text-foreground transition-colors group-hover:text-foreground/80">{b.title}</h3>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </ProductSection>
+              )}
+
+              <ProductSection id="specs" eyebrow="Specs">
+                <ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} officialSource={null} />
+                <DocumentedProductResearch slug={slug} inSpecs />
+                <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
+                {officialSources.length > 0 && (
+                  <div className="mt-8 border border-[#171717] bg-[#f5f1e8] p-6">
+                    <h3 className="font-serif text-2xl">Sources</h3>
+                    <p className="mt-2 text-sm leading-6 text-muted-foreground">Official pages used for the product, option and price details on this page. Current price, stock and the delivered configuration still need checking with the seller.</p>
+                    <ul className="mt-4 space-y-3">{officialSources.map((source) => <li key={source.href}><a href={source.href} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-4">{source.label} ↗</a><span className="ml-2 text-sm text-muted-foreground">{source.description}</span></li>)}</ul>
+                  </div>
+                )}
+              </ProductSection>
+
+              {productVideos.length > 0 && (
+                <ProductSection id="videos" eyebrow="Videos">
+                  <ProductVideosSection
+                    videos={productVideos}
+                    total={productVideoTotal}
+                    chairName={product.name}
+                    chairId={productVideoChairId ?? product.id}
+                    amazonUrl={officialChannel ? null : buyUrls.amazonUrl ?? product.amazonUrl}
+                    reviewCount={reviewCount}
+                    initialVisible={2}
+                  />
+                </ProductSection>
+              )}
+
+              {chairReviews.length > 0 && (
+                <ProductSection id="reviews" eyebrow="Reviews" title={`${product.name} owner reviews`}>
+                  <ProductReviewsSection reviews={chairReviews} productId={product.id} productSlug={slug} productName={product.name} />
+                </ProductSection>
+              )}
+
+              <ProductSection id="buy" eyebrow="Buying options" title="Where to buy">
+                <div className="border border-[#171717] bg-[#fff0c7] p-5">
+                  {priceInfo && priceParts && (
+                    <p className="mb-4 text-sm">
+                      <span className="text-lg font-semibold">{priceParts.amount}</span>
+                      <span className="ml-2 text-xs text-muted-foreground">{priceParts.note} · {priceInfo.sourceLabel}</span>
+                    </p>
+                  )}
+                  <div className="max-w-md">
+                    {officialChannel ? (
+                      <a href={officialChannel.url} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">{officialChannel.label} ↗</a>
+                    ) : (
+                      <SmartBuyLink variant="block" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl} placement="product-buy-section" showDisclaimer />
+                    )}
+                  </div>
+                  <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                    {officialChannel ? officialChannel.note : "Amazon returns are typically 30 days of delivery but set per listing — check before ordering."}{" "}
+                    <Link href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon" className="underline underline-offset-2">What returns cost across stores →</Link>
+                  </p>
+                  <p className="mt-3 text-sm"><Link href={`/stores?model=${encodeURIComponent(slug)}`} className="font-semibold underline underline-offset-4">Find places to try {product.name}</Link></p>
+                </div>
+                {catalogLinks.length > 1 && <div className="mt-6"><WhereToBuySection productId={product.id} productName={product.name} catalogLinks={catalogLinks} defaultPrice={priceParts?.amount ?? (contentHub ? undefined : product.price)} /></div>}
+              </ProductSection>
+
+              {(compareLinks.length > 0 || similarProducts.length > 0) && (
+                <ProductSection id="compare" eyebrow="Compare" title={`Compare ${product.name}`}>
+                  {compareLinks.length > 0 && <LinkCards items={compareLinks} />}
+                  <ChairProductOverview part="similar" product={overviewProduct} similarProducts={similarProducts} />
+                </ProductSection>
+              )}
             </div>
 
             <div className="hidden lg:block">
@@ -426,62 +521,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             )}
           </div>
 
-          <ProductComparisonRail productName={product.name} comparisons={productComparisons} />
-
           <BuyingGuideRail category={product.category} priceUsd={product.priceUsd} />
           <ContentStandardsNote kind="catalog" />
 
           <div className="h-20 lg:hidden" />
         </div>
 
-        {relatedBlog.length > 0 && (
-          <section data-testid="related-blog" className="border-t border-[#171717] bg-[#f5f1e8]">
-            <div className="mx-auto max-w-7xl px-5 py-14">
-              <div className="mb-5 flex items-baseline justify-between">
-                <h2 className="font-serif text-xl font-medium text-foreground">
-                  Guides for {product.name}
-                </h2>
-                <Link
-                  href="/blog"
-                  className="text-sm font-medium text-premium-accent transition-opacity hover:opacity-80"
-                >
-                  All posts →
-                </Link>
-              </div>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                {relatedBlog.map((b) => (
-                  <Link
-                    key={b.slug}
-                    href={`/blog/${b.slug}`}
-                    className="group flex flex-col overflow-hidden border border-[#171717] bg-white transition-transform hover:-translate-y-1"
-                  >
-                    <div className="aspect-[16/10] w-full overflow-hidden bg-muted">
-                      {b.hero_image_url ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={b.hero_image_url}
-                          alt={b.title}
-                          loading="lazy"
-                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center text-xs text-muted-foreground">
-                          Chairpedia
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-4">
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{guideIntent(b.slug)}</p>
-                      <h3 className="font-serif text-base font-medium leading-snug text-foreground transition-colors group-hover:text-foreground/80">
-                        {b.title}
-                      </h3>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
       </main>
 
       <Footer />

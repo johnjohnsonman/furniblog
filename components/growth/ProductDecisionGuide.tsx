@@ -21,8 +21,8 @@ export function ProductDecisionGuide({ productName, slug, guide, videoCount, evi
       </div>
     </div>
     <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-[#171717] px-6 py-4 text-sm font-medium">
-      {videoCount > 0 && <a href="#product-research" className="underline underline-offset-4">{`Watch ${videoCount} owner and expert videos`}</a>}
-      <Link href={`/stores?model=${encodeURIComponent(slug)}`} className="inline-flex items-center gap-1 underline underline-offset-4"><MapPin className="h-4 w-4" /> Find places to try it</Link>
+      {videoCount > 0 && <a href="#videos" className="underline underline-offset-4">{`Watch ${videoCount} owner and expert videos`}</a>}
+      <a href="#buy" className="inline-flex items-center gap-1 underline underline-offset-4"><MapPin className="h-4 w-4" /> Where to buy or try it</a>
       <Link href={`/compare?chair=${encodeURIComponent(slug)}`} className="underline underline-offset-4">Compare alternatives</Link>
     </div>
   </section>

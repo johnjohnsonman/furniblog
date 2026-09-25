@@ -3,7 +3,15 @@ import { VERIFIED_PRODUCTS } from "@/lib/comparisons/verified-products"
 import { VERIFIED_COMPARISON_PILOT_SLUGS, getVerifiedComparisonPilot } from "@/lib/comparisons/verified-pilots"
 import { VERIFIED_COMPARISON_SOURCES } from "@/lib/comparisons/verified-sources"
 
-export function DocumentedProductResearch({ slug }: { slug: string }) {
+/** Source-linked comparison pages for this product (verified pilots). */
+export function documentedComparisonLinks(slug: string): Array<{ href: string; label: string }> {
+  return VERIFIED_COMPARISON_PILOT_SLUGS.map(getVerifiedComparisonPilot)
+    .filter(p => p && (VERIFIED_PRODUCTS[p.productA].slug === slug || VERIFIED_PRODUCTS[p.productB].slug === slug))
+    .map(p => ({ href: `/compare/${p!.slug}`, label: p!.title }))
+}
+
+/** In the Specs section: facts and their official documents only; comparisons live in Compare. */
+export function DocumentedProductResearch({ slug, inSpecs = false }: { slug: string; inSpecs?: boolean }) {
   const record = Object.values(VERIFIED_PRODUCTS).find(p => p.slug === slug)
   if (!record && slug !== "kokuyo-ing-cloud") return null
   if (!record) return <section className="mt-8 border border-border p-5" aria-labelledby="documented-research-title">
@@ -18,11 +26,11 @@ export function DocumentedProductResearch({ slug }: { slug: string }) {
   return <section className="mt-8 border border-border p-5" aria-labelledby="documented-research-title">
     <h2 id="documented-research-title" className="font-serif text-2xl">Documented model and configuration checks</h2>
     <p className="mt-3 leading-7">{record.modelScope}. {record.market}.</p>
-    {slug === "herman-miller-aeron" && <p className="mt-3 leading-7">Identify Classic or Remastered before using current specifications, then select size A, B or C. The size, cylinder, arm, back-support and tilt options must match the chair being offered. A single set of dimensions cannot describe all Aeron configurations.</p>}
+    {!inSpecs && slug === "herman-miller-aeron" && <p className="mt-3 leading-7">Identify Classic or Remastered before using current specifications, then select size A, B or C. The size, cylinder, arm, back-support and tilt options must match the chair being offered. A single set of dimensions cannot describe all Aeron configurations.</p>}
     <dl className="mt-4 space-y-4">{Object.entries(record.facts).map(([key, fact]) => fact && <div key={key}><dt className="font-semibold capitalize">{key}</dt><dd className="mt-1 leading-7">{fact.value} <span>{fact.sourceIds.map(id => <a key={id} className="inline-flex min-h-11 items-center px-2 text-sm underline" href={VERIFIED_COMPARISON_SOURCES[id].url}>{VERIFIED_COMPARISON_SOURCES[id].title}</a>)}</span></dd></div>)}</dl>
     <p className="mt-4 text-sm leading-6 text-muted-foreground">These official documents support the configuration checks above. Confirm measurements for the exact configuration you are buying.</p>
-    <h3 className="mt-5 font-semibold">Source-linked comparisons</h3>
-    <ul>{comparisons.map(p => p && <li key={p.slug}><Link className="inline-flex min-h-11 items-center underline" href={`/compare/${p.slug}`}>{p.title}</Link></li>)}</ul>
-    {slug === "herman-miller-aeron" && <p><Link className="inline-flex min-h-11 items-center underline" href="/blog/herman-miller-aeron-classic-vs-remastered-identification-guide">Classic vs Remastered: identify the actual chair</Link></p>}
+    {!inSpecs && <><h3 className="mt-5 font-semibold">Source-linked comparisons</h3>
+    <ul>{comparisons.map(p => p && <li key={p.slug}><Link className="inline-flex min-h-11 items-center underline" href={`/compare/${p.slug}`}>{p.title}</Link></li>)}</ul></>}
+    {!inSpecs && slug === "herman-miller-aeron" && <p><Link className="inline-flex min-h-11 items-center underline" href="/blog/herman-miller-aeron-classic-vs-remastered-identification-guide">Classic vs Remastered: identify the actual chair</Link></p>}
   </section>
 }

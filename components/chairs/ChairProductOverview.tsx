@@ -15,18 +15,23 @@ interface ChairProductOverviewProps {
   product: ProductView
   similarProducts: ProductView[]
   claimsVerified?: boolean
+  /** "main": what to know + strengths; "similar": the similar-chairs table only. */
+  part?: "all" | "main" | "similar"
 }
 
 export function ChairProductOverview({
   product,
   similarProducts,
   claimsVerified = true,
+  part = "all",
 }: ChairProductOverviewProps) {
+  const main = part !== "similar"
+  const similar = part !== "main"
   // Skip "What to know" when it would repeat the hero description word for word.
   const showOverview = Boolean(product.overview?.trim()) && product.overview?.trim() !== product.description?.trim()
   return (
     <>
-      {(showOverview || product.designer) && (
+      {main && (showOverview || product.designer) && (
         <section>
           {showOverview && <>
             <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Product overview</p>
@@ -51,7 +56,7 @@ export function ChairProductOverview({
         </section>
       )}
 
-      {claimsVerified && (product.pros?.length || product.cons?.length) ? (
+      {main && claimsVerified && (product.pros?.length || product.cons?.length) ? (
         <section className="mt-10 border-t border-[#171717] pt-8">
           <h2 className="mb-2 font-serif text-3xl font-medium text-foreground">Recorded strengths &amp; limitations</h2>
           <p className="mb-6 max-w-3xl text-sm leading-6 text-muted-foreground">Editorial summary for comparison. Confirm configuration-dependent features and judge comfort in person.</p>
@@ -90,7 +95,7 @@ export function ChairProductOverview({
         </section>
       ) : null}
 
-      {product.reviewSummary && (
+      {main && product.reviewSummary && (
         <section className="mt-10 pt-8 border-t border-border">
           <h2 className="font-serif text-xl font-medium text-foreground mb-4">Review Summary</h2>
           <div className="p-5 bg-muted/30 rounded-lg border border-border">
@@ -99,8 +104,8 @@ export function ChairProductOverview({
         </section>
       )}
 
-      {similarProducts.length > 0 && (
-        <section className="mt-10 pt-8 border-t border-border">
+      {similar && similarProducts.length > 0 && (
+        <section className={part === "similar" ? "mt-8" : "mt-10 pt-8 border-t border-border"}>
           <div className="mb-6">
             <h2 className="font-serif text-xl font-medium text-foreground">Similar chairs</h2>
           </div>

@@ -11,13 +11,13 @@ const LIMIT = 10
  * pages are reachable from the first HTML (the Reviews tab only renders on click).
  * Order is fixed: sourced, non-thin summaries first, then newest, then id.
  */
-export function pickReviewLinks(reviews: Review[]): Review[] {
+export function pickReviewLinks(reviews: Review[], limit = LIMIT): Review[] {
   const rank = (r: Review) =>
     r.sourceUrl && !isThinReview({ id: r.id, summary_ko: r.summary, pros: r.pros, cons: r.cons }) ? 0 : 1
   return [...reviews]
     .filter((r) => r.summary?.trim())
     .sort((a, b) => rank(a) - rank(b) || (b.createdAt ?? "").localeCompare(a.createdAt ?? "") || a.id.localeCompare(b.id))
-    .slice(0, LIMIT)
+    .slice(0, limit)
 }
 
 function snippet(text: string, max = 120): string {
