@@ -15,6 +15,7 @@ import {
   generateArticleSchema,
   generateBreadcrumbSchema,
 } from "@/lib/seo/schemas"
+import { formatReviewMonth } from "@/lib/reviews/format-date"
 
 export const dynamic = "force-dynamic"
 
@@ -66,14 +67,7 @@ function sourceLabel(source: string | null): string {
 }
 
 function formatDate(value: string | null): string {
-  if (!value) return ""
-  const d = new Date(value)
-  if (Number.isNaN(d.getTime())) return ""
-  return d.toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })
+  return formatReviewMonth(value) ?? ""
 }
 
 async function getReview(id: string): Promise<ReviewDetailRow | null> {

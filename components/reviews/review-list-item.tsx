@@ -1,6 +1,7 @@
 import Link from "next/link"
 import type { ReviewFeedItem } from "@/lib/reviews/feed-types"
 import { SourceBadge } from "./source-badge"
+import { formatReviewMonth } from "@/lib/reviews/format-date"
 
 type ReviewListItemProps = {
   review: ReviewFeedItem
@@ -12,14 +13,7 @@ export function ReviewListItem({ review }: ReviewListItemProps) {
 
   const metaParts: string[] = []
   const dateStr = review.source !== "chairpark" && review.createdAt
-    ? new Date(review.createdAt).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        // Server-rendered now (crawlable feed): pin the zone so server and
-        // browser print the same date and hydration matches.
-        timeZone: "UTC",
-      })
+    ? formatReviewMonth(review.createdAt)
     : null
   if (dateStr) metaParts.push(dateStr)
   if (review.reviewerHeightCm) metaParts.push(`${review.reviewerHeightCm}cm`)

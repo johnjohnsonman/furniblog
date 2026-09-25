@@ -92,7 +92,8 @@ export function middleware(request: NextRequest) {
   if (locationParts.length === 4 && locationParts[0] === "stores" && locationParts[1] === "locations") {
     try {
       const city = decodeURIComponent(locationParts[3])
-      if (/[^\x00-\x7F]/.test(city)) {
+      // Any non-ASCII code unit (the same set as [^\x00-\x7F], written without control characters).
+      if (/[\u0080-￿]/.test(city)) {
         const destination = request.nextUrl.clone()
         destination.pathname = `/stores/locations/${locationParts[2]}/${locationSlug(city)}`
         return NextResponse.redirect(destination, 308)

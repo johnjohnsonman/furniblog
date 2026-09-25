@@ -14,6 +14,7 @@ import {
   getBackIssueSentiment,
   reviewHasBackMention,
 } from "@/lib/reviews/back-issue-utils"
+import { formatReviewMonth } from "@/lib/reviews/format-date"
 
 interface ReviewCardProps {
   review: Review
@@ -55,13 +56,9 @@ export function ReviewCard({
   return (
     <article className="p-5 bg-card rounded-lg border border-border">
       <header className="flex flex-wrap items-center gap-2 mb-3">
-        {review.source !== "chairpark" && review.createdAt && !Number.isNaN(new Date(review.createdAt).getTime()) && (
+        {review.source !== "chairpark" && formatReviewMonth(review.createdAt) && (
           <span className="text-xs text-muted-foreground">
-            {new Date(review.createdAt).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
+            {formatReviewMonth(review.createdAt)}
           </span>
         )}
         <SourceBadge source={review.source} variant="compact" />
