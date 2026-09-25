@@ -9,7 +9,7 @@ const COPY: Record<ContentKind, { label: string; text: string }> = {
   },
   guide: {
     label: "Research basis",
-    text: "This guide synthesizes documented specifications, retailer information and published sources. It is not a hands-on Chairpedia test unless the article explicitly says otherwise.",
+    text: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so.",
   },
   comparison: {
     label: "Comparison basis",
