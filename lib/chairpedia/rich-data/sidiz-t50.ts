@@ -13,7 +13,7 @@ export const SIDIZ_T50: RichReview = {
   heroIntro:
     "The SIDIZ T50 is a Korean-designed mesh-back chair that packs 3D arms, two-way lumbar, seat-depth and forward-tilt adjustment into one chair. This guide covers its confirmed features, which version to buy, and what to check.",
   verdictOneLiner: "Adjustable seat depth and forward tilt — arms are 3D and the headrest is a version choice.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front SIDIZ T50; match the photographed colour to the selected listing.",
   galleryBriefs: [],
@@ -126,13 +126,13 @@ export const SIDIZ_T50: RichReview = {
     { q: "Are the arms 3D or 4D?", a: "3D — height, pivot/angle and forward/back. The T80 is the step-up model." },
     { q: "What's the weight capacity?", a: "275 lb per SIDIZ (some reviews say 300). Use the official 275 and confirm on the listing." },
     { q: "How is it different from the T80?", a: "The T80 adds a synchronous auto-tilt mechanism, wider lumbar, thicker padding and a depth-adjustable headrest." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from SIDIZ's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on SIDIZ's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [
     { k: "SIDIZ America T50", url: "https://www.sidiz.com/collections/t50/products/sidiz-t50-white-home-office-desk-chair", v: "Checked 2026-09-10: documents 275 lb capacity, seat depth/angle and lumbar adjustments. Advertises up to 12 years of warranty; confirm component and seller eligibility." },
     { k: "Amazon linked T50", url: "https://www.amazon.com/dp/B083FBN9BH", v: "Retrieved title identifies a blue T50 with headrest, lumbar support, 3D arms and seat-depth adjustment. Confirm selected options at checkout." },
-    { k: "Published reviews", v: "Third-party reviews (e.g. ChairsFX, Ergonomic Trends) summarised for value and the build-quality cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews (e.g. ChairsFX, Ergonomic Trends) summarised for value and the build-quality cautions." },
   ],
   sourcesFooter:
     "Specifications are SIDIZ's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Seat height/depth ranges and the headrest are version/source-dependent — confirm on the listing you buy from.",

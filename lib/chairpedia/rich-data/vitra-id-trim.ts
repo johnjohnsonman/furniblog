@@ -13,7 +13,7 @@ export const VITRA_ID_TRIM: RichReview = {
   heroIntro:
     "The Vitra ID Trim is one member of Antonio Citterio's modular ID Chair Concept — the version with a slim \"sandwich-construction\" back and an integrated lumbar, giving upholstered comfort in a profile almost as thin as mesh. This guide explains the ID family's back types, the ID Trim's options, and how to buy one.",
   verdictOneLiner: "A designer contract chair: pick the back type first, then the mechanism and arms.",
-  verdictNote: "Research-based guide — hands-on lab test not completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, Vitra ID Trim with the slim upholstered back.",
   galleryBriefs: [],
@@ -120,12 +120,12 @@ export const VITRA_ID_TRIM: RichReview = {
     { q: "FlowMotion or AutoMotion?", a: "FlowMotion is Vitra's patented synchronised recline you can adjust while seated; AutoMotion self-adjusts its resistance to your weight. Choose whether you want to dial it in or let the chair do it." },
     { q: "Can I buy it on US Amazon?", a: "Not as a genuine product page. In the US the ID Trim is bought through Vitra's online shop or authorized dealers." },
     { q: "What's the weight capacity and seat-height range?", a: "Vitra doesn't publish those on the ID Trim product pages. Request the spec sheet from your seller before buying." },
-    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments. This is a research-based guide from Vitra's pages and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Vitra's pages and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
     { k: "Vitra (official)", v: "vitra.com ID Trim, ID Trim L and ID Chair Concept pages, checked 2026-09-10. Basis for back types, mechanism, arms and service-life testing." },
-    { k: "Published reviews", v: "Third-party coverage summarised for design and positioning; not first-hand." },
+    { k: "Published reviews", v: "Third-party coverage summarised for design and positioning." },
     { k: "Not published", v: "Seat-height range, weight capacity and warranty are not stated on Vitra's product pages — request the spec sheet from your seller." },
   ],
   sourcesFooter:

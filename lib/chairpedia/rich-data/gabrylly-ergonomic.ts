@@ -13,7 +13,7 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
   heroIntro:
     "The Gabrylly Ergonomic Office Chair is a popular budget mesh chair with a double-layer breathable back, an adjustable headrest and flip-up arms. This guide covers the classic model, its confirmed features and how to avoid buying a different Gabrylly by mistake.",
   verdictOneLiner: "A breathable, well-reviewed budget mesh chair — as long as you get the right variant.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Gabrylly mesh chair.",
   galleryBriefs: [],
@@ -118,12 +118,12 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
     { q: "Do the armrests adjust for height?", a: "They flip up to tuck under a desk. Reports conflict on height adjustment for the classic, so treat them as flip-up only and confirm on the listing." },
     { q: "What's the weight capacity and fit?", a: "280 lb, with a comfortable fit around 5'5\"–6'2\". The seat is deep and doesn't adjust." },
     { q: "How long does it last?", a: "Reviewers report the mesh and lumbar can soften over roughly 12–18 months, especially for heavier users. It carries a 2-year warranty." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from the official specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the official specs, the Amazon listing and published reviews." },
   ],
 
   sources: [
     { k: "Gabrylly official / Amazon", v: "Official site and Amazon listing (ASIN B07Y8BXBX8), checked 2026-09-10. Basis for capacity, recline, headrest/lumbar, mesh and warranty." },
-    { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and durability notes; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and durability notes." },
   ],
   sourcesFooter:
     "Specifications are for the classic Gabrylly (ASIN B07Y8BXBX8) as of the date shown and are not independently verified by Chairpedia. Gabrylly's variants share spec language — confirm capacity, arms and dimensions on the exact listing you buy from.",

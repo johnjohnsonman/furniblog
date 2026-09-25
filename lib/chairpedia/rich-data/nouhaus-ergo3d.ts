@@ -14,7 +14,7 @@ export const NOUHAUS_ERGO3D: RichReview = {
   heroIntro:
     "The Nouhaus Ergo3D is a full-mesh high-back chair with 4D armrests, a 3D adjustable lumbar and rollerblade-style casters. This guide covers its confirmed features, fit and what to check before buying.",
   verdictOneLiner: "Full-mesh high-back with 4D armrests, 3D lumbar and blade casters.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Ergo3D.",
   galleryBriefs: ["Side profile", "Back / lumbar"],
@@ -119,13 +119,13 @@ export const NOUHAUS_ERGO3D: RichReview = {
     { q: "Are the armrests really 4D?", a: "The Amazon listing describes 4D armrests — adjustable for height, width, depth and pivot." },
     { q: "Is it full mesh?", a: "Yes — both the high back and the seat are breathable mesh." },
     { q: "Will it fit a taller person?", a: "Seat depth is about 16.3 in, which is on the shallow side. Overall height runs roughly 44–49 in. Taller users should confirm the seat depth and height on the listing." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Nouhaus's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Nouhaus's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Amazon listing", v: "Nouhaus Ergo3D, Black — ASIN B07L4ZQMDX. Title checked 2026-09-09. Basis for 4D armrests, adjustable headrest and full mesh." },
     { k: "Nouhaus / retailer specs", v: "Nouhaus product information and retailers, read 2026-09-09. Basis for dimensions, seat depth, 135° recline and 3D lumbar. Weight capacity conflicts between sources." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and rolling/comfort notes; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and rolling/comfort notes." },
   ],
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },

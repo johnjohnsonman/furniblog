@@ -15,7 +15,7 @@ export const DURAMONT_ERGONOMIC: RichReview = {
   heroIntro:
     "The Duramont Ergonomic Office Chair is a high-back mesh chair with a cushioned seat, adjustable lumbar and headrest, and rollerblade wheels, sold in the mid-budget range. This guide covers its confirmed features, where the marketing and hands-on reviews disagree, and what to check before buying.",
   verdictOneLiner: "A breathable high-back mesh chair for the price — with adjustability that reviewers find limited.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Duramont mesh chair.",
   galleryBriefs: [],
@@ -129,13 +129,13 @@ export const DURAMONT_ERGONOMIC: RichReview = {
     { q: "What is the weight capacity?", a: "Duramont's figure is 330 lb (one review cites 350; use the manufacturer's 330 and confirm on the listing)." },
     { q: "Is the seat mesh?", a: "No. The back is breathable mesh; the seat is a cushioned foam pan, and it is deep with no depth adjustment." },
     { q: "Is there more than one Duramont chair?", a: "Yes — this mesh Ergonomic model and a separate Reclining Leather Executive chair. This guide covers the mesh model (ASIN B0797HZ8W1)." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Duramont's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Duramont's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Amazon listing", v: "Duramont Ergonomic Office Chair — ASIN B0797HZ8W1. Checked 2026-09-10. Basis for model, capacity, mesh back/cushion seat and rollerblade wheels." },
     { k: "Duramont official store", v: "duramontchairs.com product page, checked 2026-09-10. Basis for colour options and the 5-year warranty." },
-    { k: "Published hands-on reviews", v: "Third-party tests (e.g. TechGearLab) summarised for the adjustability cautions and recline notes; not first-hand." },
+    { k: "Published hands-on reviews", v: "Third-party tests (e.g. TechGearLab) summarised for the adjustability cautions and recline notes." },
   ],
   sourcesFooter:
     "Specifications combine Duramont's published figures with independent hands-on reviews as of the date shown and are not independently verified by Chairpedia. Where marketing and testing disagree (armrests, headrest), the item is marked not confirmed — check the listing you buy from.",

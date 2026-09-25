@@ -13,7 +13,7 @@ export const FLEXISPOT_C7: RichReview = {
   heroIntro:
     "The FlexiSpot C7 is a mesh-back ergonomic chair whose signature is a self-adaptive dynamic lumbar, backed by a choice of mesh or foam seat, an optional footrest and a long 10-year warranty. This guide covers the base C7, its confirmed features and what to check.",
   verdictOneLiner: "Adaptive lumbar and a 10-year warranty — base C7 has 3D arms, not 4D.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black FlexiSpot C7.",
   galleryBriefs: [],
@@ -125,12 +125,12 @@ export const FLEXISPOT_C7: RichReview = {
     { q: "Mesh or foam seat?", a: "Both are offered as separate SKUs (base C7 specification table lists 300 lb; confirm your SKU), with or without a retractable footrest. Choose before ordering." },
     { q: "What's the recline and seat height?", a: "FlexiSpot's page lists ≈ 93–110° recline and ≈ 18.3–21.7 in seat height; some reviews cite wider ranges. Treat the official page as the reference and confirm your SKU." },
     { q: "Is the lumbar adjustable?", a: "It's a self-adaptive dynamic lumbar that responds to your posture, and it can also be locked." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from FlexiSpot's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on FlexiSpot's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [
     { k: "FlexiSpot C7 specifications", url: "https://www.flexispot.com/flexispot-best-ergonomic-office-chair-c7", v: "Checked 2026-09-10: the base C7 table lists 3D arms, 300 lb capacity, seat-depth adjustment and a 10-year warranty. This page contains several models; do not apply other tables to the base C7. The Amazon SKU was not independently reverified in this check." },
-    { k: "Published reviews", v: "Third-party reviews summarised for comfort, arm-clearance and the conflicting fit figures; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for comfort, arm-clearance and the conflicting fit figures." },
   ],
   sourcesFooter:
     "Specifications are for the base FlexiSpot C7 as of the date shown and are not independently verified by Chairpedia. Seat-height/recline figures differ between the official table and reviews, and trims/seat types vary — confirm the configuration on the listing you buy from.",

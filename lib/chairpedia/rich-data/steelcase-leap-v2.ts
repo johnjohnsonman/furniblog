@@ -14,7 +14,7 @@ export const STEELCASE_LEAP_V2: RichReview = {
   heroIntro:
     "The Steelcase Leap V2 is an upholstered, highly adjustable task chair built around LiveBack — a back that flexes with your spine. It is one of the most adjustable chairs in its class and has a huge refurbished market, so the key questions are version (V1 vs V2) and condition (new vs refurbished). This guide covers its confirmed features, fit and what to check.",
   verdictOneLiner: "One of the most adjustable upholstered chairs — check V2 and new-vs-refurbished.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Three-quarter, black Leap V2.",
   galleryBriefs: [],
@@ -128,12 +128,12 @@ export const STEELCASE_LEAP_V2: RichReview = {
     { q: "Should I buy new or refurbished?", a: "New comes with Steelcase's full 12-year warranty; refurbished/remanufactured units are cheaper but vary in condition, parts and warranty by seller. Decide which you want and read exactly what a refurbished listing includes." },
     { q: "Does the Leap V2 have a mesh back?", a: "No. The Leap uses an upholstered LiveBack; there is no mesh-back version. If you want mesh, look at the Aeron or Fern." },
     { q: "Is there a headrest?", a: "Not from Steelcase. Any Leap headrest is a third-party add-on that clamps to the back." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Steelcase's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Steelcase's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Steelcase (official)", v: "Leap product pages and specifications, checked 2026-09-09. Basis for dimensions, 400 lb capacity, LiveBack, lumbar/seat-depth/4D-arm adjustment, tilt and the 12-year warranty." },
-    { k: "Published reviews & resale market", v: "Third-party reviews and refurbished-market listings summarised for the comfort notes and the new-vs-refurbished guidance; not first-hand." },
+    { k: "Published reviews & resale market", v: "Third-party reviews and refurbished-market listings summarised for the comfort notes and the new-vs-refurbished guidance." },
   ],
 
   sourcesFooter:

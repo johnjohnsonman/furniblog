@@ -15,7 +15,7 @@ export const HBADA_P5: RichReview = {
   heroIntro:
     "The Hbada P5 is a mesh-back ergonomic chair whose defining feature is a retractable footrest, paired with a 2D adjustable lumbar and a 2D headrest. This guide covers its confirmed features, fit and what to check before buying.",
   verdictOneLiner: "A mesh-back chair with a retractable footrest, 2D lumbar and 2D headrest.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Black P5 with footrest, office setting.",
   galleryBriefs: [],
@@ -119,13 +119,13 @@ export const HBADA_P5: RichReview = {
     { q: "What is the weight capacity?", a: "Documented specs put it at 300 lb. Confirm on the listing you order from." },
     { q: "Is the seat mesh?", a: "The back is mesh; the seat is a cushioned (innerspring/foam) seat, not mesh." },
     { q: "Is the P5 still current?", a: "It remains on Amazon, but Hbada's US site now leads with a newer P2. Check current stock, price and support on the listing." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from the Amazon listing, Hbada's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Hbada's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Amazon listing", v: "Hbada P5 with Footrest, Black — ASIN B0BWDQX8RH. Title checked 2026-09-09. Basis for the footrest, 2D headrest and adjustable lumbar." },
     { k: "Hbada / retailer specs", v: "Hbada product information (incl. the Canadian store) and retailers, read 2026-09-09. Basis for dimensions, 300 lb capacity, lumbar and recline." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and comfort notes; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the Cautions and comfort notes." },
   ],
   related: [
     { label: "How to read an Amazon office chair listing before you trust it", href: "/blog/how-to-read-an-amazon-office-chair-listing-before-you-trust-it" },

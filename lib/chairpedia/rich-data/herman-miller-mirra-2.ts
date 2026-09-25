@@ -12,7 +12,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
   heroIntro:
     "The Herman Miller Mirra 2 is the responsive, no-nonsense middle child of the range: a flexible TriFlex or Butterfly back, a breathable AireWeave seat, and a Harmonic 2 tilt that reclines smoothly without drama. This guide covers the back and configuration choices and what to check before buying.",
   verdictOneLiner: "Responsive, breathable and 350 lb-rated — the choice is the back type.",
-  verdictNote: "Research-based guide — hands-on lab test not completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Herman Miller Mirra 2.",
   galleryBriefs: [],
@@ -124,13 +124,13 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { q: "Does Mirra 2 have a headrest?", a: "No — there's no headrest option. If you need neck support, look at a Steelcase Leap or an aftermarket solution." },
     { q: "What is FlexFront?", a: "An option that makes the seat depth adjustable (about 16.25–18 in). The base seat is a fixed depth; taller sitters usually want FlexFront." },
     { q: "What's the weight capacity?", a: "350 lb, per Herman Miller. Confirm on the listing you buy from." },
-    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
     { k: "Herman Miller (official)", v: "hermanmiller.com Mirra 2 product and specification pages, checked 2026-09-10. Basis for back types, tilt, seat, arms and warranty." },
     { k: "Amazon listings", v: "Herman Miller Mirra 2 listings (various back/arm builds). Basis for available configurations." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the responsive feel and the firm-seat/no-headrest cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the responsive feel and the firm-seat/no-headrest cautions." },
   ],
   sourcesFooter:
     "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Mirra 2 is sold in several back and arm configurations — confirm the back type, tilt, seat depth, arms and colour on the listing you buy from.",

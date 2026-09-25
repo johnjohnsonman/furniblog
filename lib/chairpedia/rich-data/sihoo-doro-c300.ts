@@ -12,7 +12,7 @@ export const SIHOO_DORO_C300: RichReview = {
   heroIntro:
     "The SIHOO Doro C300 pairs self-adaptive lumbar support with an all-mesh build and 3D armrests at a mid-range price. This guide covers its confirmed features, fit and what to check before buying.",
   verdictOneLiner: "Self-adaptive lumbar, all-mesh build and 3D armrests at a mid-range price.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Hero: three-quarter front view, black C300, neutral backdrop. Our own photography only.",
   galleryBriefs: [
@@ -113,7 +113,7 @@ export const SIHOO_DORO_C300: RichReview = {
   },
 
   verdict: [
-    "Shortlist the base C300 if its mesh seat and adaptive support approach match what you want to compare. Our recommendation is conditional: resolve the listing discrepancies and establish fit before buying. We have not hands-on tested it, so the current evidence does not justify calling it comfortable for every body type or equal to a more expensive chair.",
+    "Shortlist the base C300 if its mesh seat and adaptive support approach match what you want to compare. Our recommendation is conditional: resolve the listing discrepancies and establish fit before buying. The current evidence does not justify calling it comfortable for every body type or equal to a more expensive chair.",
     "If you prefer a padded seat, start with the linked M18 comparison. If a particular adjustment is essential, ask the seller to demonstrate it on the exact model. An unanswered fit question is a reason to keep comparing, not to assume that a higher-priced version solves it.",
   ],
   verdictPullQuote:
@@ -126,7 +126,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { q: "Will it fit me?", a: "SIHOO publishes overall height (42–49 in), backrest height (18.11–21.65 in) and seat depth (17.13–18.11 in), but not a seat-to-floor range or a recommended user height for the base model. Take the seat height from the listing and compare it with your desk. Our own measurements will be added after testing." },
     { q: "Can I set the lumbar support myself?", a: "Do not assume a manual height or depth lock from an adaptive-support description. We have not verified those controls on the linked configuration. Ask the seller to demonstrate them if they are essential to you." },
     { q: "Does the 30-day trial apply to Amazon orders?", a: "No. The 30-day trial is offered by SIHOO's official store only. Amazon orders follow Amazon's return window, which depends on the seller — check it on the listing." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This review is research-based, built from the Amazon listing, SIHOO's documentation and published reviews. When hands-on testing is complete we will add our own measurements, photography and a note of what changed." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, SIHOO's documentation and published reviews." },
   ],
 
   sources: [

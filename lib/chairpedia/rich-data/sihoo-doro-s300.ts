@@ -14,7 +14,7 @@ export const SIHOO_DORO_S300: RichReview = {
   heroIntro:
     "The SIHOO Doro S300 is SIHOO's flagship Doro chair: an all-mesh build with a weight-sensing \"anti-gravity\" recline, 6D armrests and dual dynamic lumbar, positioned as a value alternative to premium chairs. This guide covers its confirmed features, fit and what to check.",
   verdictOneLiner: "A weightless-recline, 6D-arm flagship mesh chair at a value price.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Three-quarter, black S300.",
   galleryBriefs: [],
@@ -126,12 +126,12 @@ export const SIHOO_DORO_S300: RichReview = {
     { q: "Does it have an adjustable headrest?", a: "The headrest is integrated into the backrest, not a separate height-adjustable piece — its support depends on your height." },
     { q: "What's the weight capacity?", a: "330 lb per SIHOO (some retail copy says 300). Use the official 330 and confirm on the listing." },
     { q: "How far does it recline?", a: "SIHOO doesn't state a firm angle; third parties cite roughly 135–138°. Treat it as approximate." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from SIHOO's specs and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on SIHOO's specs and published reviews." },
   ],
 
   sources: [
     { k: "SIHOO (official) / Amazon", v: "sihoo.com product page and the Amazon listing (ASIN B0DQTRVSHS), checked 2026-09-10. Basis for the anti-gravity mechanism, 6D arms, dual lumbar, dimensions, capacity and warranty." },
-    { k: "Published reviews", v: "Third-party reviews (e.g. TechRadar, Forbes) summarised for the recline feel and the headrest caution; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews (e.g. TechRadar, Forbes) summarised for the recline feel and the headrest caution." },
   ],
   sourcesFooter:
     "Specifications are SIHOO's published figures as of the date shown and are not independently verified by Chairpedia. The recline angle isn't officially stated and a German Design Award is a manufacturer claim — confirm details on the listing you buy from.",

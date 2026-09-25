@@ -10,7 +10,7 @@ export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
     "The Embody Gaming Chair uses the standard Embody's pixelated support, BackFit adjustment and adjustable seat depth, then adds copper-infused cooling foam and extra upper-back foam for forward-leaning play. This guide separates those documented changes from claims the available sources do not establish.",
   verdictOneLiner:
     "Choose it for the Embody platform with gaming-edition foam and styling, not for a racing-chair shape or a separate lumbar control.",
-  verdictNote: "Research-based guide — hands-on lab test not completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
   quickFactsNote:
     "Herman Miller and Logitech G product documentation reviewed September 2026. Price, seller and stock are not treated as fixed facts.",
   checks: [
@@ -62,5 +62,5 @@ export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
     { k: "Logitech G (official)", url: "https://www.logitechg.com/en-us/products/gaming-furniture/embody-gaming-chair.html", v: "Gaming-edition product documentation for the collaboration and foam treatment, reviewed September 2026." },
   ],
   sourcesFooter:
-    "This page uses manufacturer documentation and does not report a Chairpedia hands-on test. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
+    "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
 }

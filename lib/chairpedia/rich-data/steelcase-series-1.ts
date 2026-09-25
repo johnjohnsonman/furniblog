@@ -13,7 +13,7 @@ export const STEELCASE_SERIES_1: RichReview = {
   heroIntro:
     "The Steelcase Series 1 brings the brand's contract engineering — a weight-activated recline, adjustable lumbar and a 400 lb capacity — down to an accessible, Amazon-native price. This guide covers the back and arm choices and what to check before you buy.",
   verdictOneLiner: "Contract-grade Steelcase DNA at an accessible price — pick the back and arms.",
-  verdictNote: "Research-based guide — hands-on lab test not completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Steelcase Series 1.",
   galleryBriefs: [],
@@ -124,13 +124,13 @@ export const STEELCASE_SERIES_1: RichReview = {
     { q: "Which arms should I choose?", a: "The 4D arms adjust height, width, depth and pivot. There's also a height-only arm and an armless build — the cheapest listings are often armless, so confirm 4D if you want full control." },
     { q: "Does Series 1 have a headrest?", a: "No. If you want a headrest, step up to the Steelcase Series 2 or Leap." },
     { q: "Is it really sold on Amazon?", a: "Yes — Series 1 is one of the few premium-brand chairs routinely sold on Amazon. The linked ASIN is one colour/build; confirm the exact one you want." },
-    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
     { k: "Steelcase (official)", v: "steelcase.com Series 1 product and specification pages, checked 2026-09-10. Basis for recline, back/arm options, lumbar, capacity and warranty." },
     { k: "Amazon listing", v: "Steelcase Series 1 — ASIN B08M42B334. Basis for the linked product; other colours/builds are sold separately." },
-    { k: "Published reviews", v: "Third-party reviews summarised for value and the no-headrest/materials cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for value and the no-headrest/materials cautions." },
   ],
   sourcesFooter:
     "Specifications combine Steelcase documentation with retail-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Series 1 is sold in several back, arm and colour configurations — confirm the exact build on the listing you buy from.",

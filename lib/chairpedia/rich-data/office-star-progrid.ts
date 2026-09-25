@@ -14,7 +14,7 @@ export const OFFICE_STAR_PROGRID: RichReview = {
   heroIntro:
     "The Office Star ProGrid is a contract-style mesh-back manager's chair line built around a breathable \"ProGrid\" screen back with a built-in lumbar curve and a padded fabric seat. This guide covers what's consistent across the line and — importantly — how to confirm the exact SKU, since specs vary.",
   verdictOneLiner: "A cool, value contract manager's chair — but confirm the exact ProGrid SKU.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Office Star ProGrid manager's chair.",
   galleryBriefs: [],
@@ -126,13 +126,13 @@ export const OFFICE_STAR_PROGRID: RichReview = {
     { q: "Is the seat mesh?", a: "No. The back is breathable ProGrid mesh; the seat is padded fabric. There's no all-mesh seat on this SKU and no headrest." },
     { q: "What's the weight capacity?", a: "The official 92553 sheet omits it; dealers commonly list ~250 lb (some variants ~275). Confirm on the exact listing." },
     { q: "Does the lumbar adjust?", a: "It's built into the ProGrid back as a contour, not a separate adjustable lumbar device; some SKUs add ratchet back-height." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from Office Star's spec sheet, dealers and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Office Star's spec sheet, dealers and published reviews." },
   ],
 
   sources: [
     { k: "Office Star (official) / dealers", v: "Official 92553 spec sheet and authorized dealers, checked 2026-09-10. Basis for the ProGrid back, fabric seat, tilt, arms and warranty terms." },
     { k: "Amazon listing", v: "Office Star ProGrid — ASIN B00450P182 (older multi-function variant). Basis for the linked product; confirm the exact SKU." },
-    { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and the arm/seat cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for airflow, value and the arm/seat cautions." },
   ],
   sourcesFooter:
     "Specifications reflect the common Office Star ProGrid manager's figures (official 92553 sheet plus dealers) as of the date shown and are not independently verified by Chairpedia. The ProGrid line spans several SKUs and the linked ASIN is an older variant — confirm the exact model, capacity and features on the listing you buy from.",

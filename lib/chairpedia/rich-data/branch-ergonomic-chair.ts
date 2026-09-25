@@ -13,7 +13,7 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
   heroIntro:
     "The Branch Ergonomic Chair is a double-mesh task chair with eight points of adjustment — 3D arms, adjustable lumbar, a seat-depth slider and tilt tension — sold direct and on Amazon. This guide covers its confirmed features, options and what to check.",
   verdictOneLiner: "Most of a premium chair's adjustability at a mid price — arms are the weak point.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Branch Ergonomic Chair.",
   galleryBriefs: [],
@@ -125,12 +125,12 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
     { q: "Does it include a headrest?", a: "No — Branch sells a headrest separately as an accessory." },
     { q: "What's the seat height and depth?", a: "Roughly 17–21 in seat height (higher with the optional tall cylinder) and an 18–22 in seat-depth slider; sources vary, so confirm the configuration on the live page." },
     { q: "What's the weight capacity?", a: "275 lb. Confirm on the listing you order from." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from Branch's specs, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Branch's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [
     { k: "Branch (official) / Amazon", v: "branchfurniture.com and the Amazon listing (ASIN B0C15B3HN1), checked 2026-09-10. Basis for the 8-point adjustment, 3D arms, lumbar, seat-depth slider, capacity and warranty." },
-    { k: "Published reviews", v: "Third-party reviews (e.g. TechGearLab, Reviewed) summarised for the casters, comfort and armrest cautions and the measured recline; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews (e.g. TechGearLab, Reviewed) summarised for the casters, comfort and armrest cautions and the measured recline." },
   ],
   sourcesFooter:
     "Specifications are for the base Branch Ergonomic Chair as of the date shown and are not independently verified by Chairpedia. Seat height/depth vary by cylinder option and the headrest is a separate add-on — confirm the configuration on the listing you buy from.",

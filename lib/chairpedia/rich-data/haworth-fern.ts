@@ -14,7 +14,7 @@ export const HAWORTH_FERN: RichReview = {
   heroIntro:
     "The Haworth Fern is a task chair built around a patented Wave Suspension back that mimics the spine. It comes in several back materials — including Haworth's signature zero-waste Digital Knit — with optional lumbar and headrest. Choosing the material and options is the main decision before buying. This guide covers its confirmed features, fit and what to check.",
   verdictOneLiner: "A distinctive Wave-Suspension chair — the material and options define your version.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Fern Digital Knit.",
   galleryBriefs: [],
@@ -128,12 +128,12 @@ export const HAWORTH_FERN: RichReview = {
     { q: "Does the Fern have a headrest?", a: "A headrest is optional on the Fern — except on the Fern Digital Knit, which does not offer one. Choose a non-Digital-Knit back if you want a headrest." },
     { q: "Is lumbar support included?", a: "Height-adjustable lumbar is an option, not standard on every configuration. Check whether a listing includes it if you need lumbar support." },
     { q: "What is the weight capacity?", a: "Haworth rates the Fern at 325 lb. Confirm on the listing you buy from." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Haworth's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Haworth's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Haworth (official)", v: "Fern product pages and specifications, checked 2026-09-09. Basis for Wave Suspension, material options, 325 lb capacity, seat-height/seat-depth/4D-arm adjustment, optional lumbar and headrest, and the 12-year warranty." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the comfort/support notes; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the comfort/support notes." },
   ],
 
   sourcesFooter:

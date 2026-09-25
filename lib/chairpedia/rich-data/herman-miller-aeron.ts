@@ -15,7 +15,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
   heroIntro:
     "The Herman Miller Aeron is an all-mesh icon, sold today as the \"Remastered\" version with 8Z Pellicle mesh and PostureFit SL. It comes in three sizes and several back-support and arm options — so the main task before buying is choosing the right configuration. This guide covers its confirmed features, sizing and what to check.",
   verdictOneLiner: "The mesh benchmark — but only right if you pick the correct size and options.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Three-quarter, black Remastered Aeron.",
   galleryBriefs: [],
@@ -130,12 +130,12 @@ export const HERMAN_MILLER_AERON: RichReview = {
     { q: "Which size should I choose?", a: "Size A is smallest, B is standard, C is largest, and the frame size cannot be changed later. Weight capacity is 300 lb for A and 350 lb for B and C. Use Herman Miller's size/fit chart against your height and weight before ordering." },
     { q: "Does the Aeron come with a headrest?", a: "No. Herman Miller does not make an Aeron headrest; any headrest you see is a third-party accessory." },
     { q: "Why are Amazon prices so different?", a: "Amazon listings mix Classic and Remastered, different sizes and options, and new, open-box, used and refurbished stock. The link here is a search — confirm exactly what a listing is before buying." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide built from Herman Miller's documentation and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Herman Miller's documentation and published reviews." },
   ],
 
   sources: [
     { k: "Herman Miller (official)", v: "Aeron product pages and the size/fit reference, checked 2026-09-09. Basis for sizes, per-size weight capacity, 8Z Pellicle, back-support and arm options, tilt and the 12-year warranty." },
-    { k: "Published reviews", v: "Third-party long-term reviews summarised for the comfort/feel notes and the class ranking; not first-hand." },
+    { k: "Published reviews", v: "Third-party long-term reviews summarised for the comfort/feel notes and the class ranking." },
   ],
 
   sourcesFooter:

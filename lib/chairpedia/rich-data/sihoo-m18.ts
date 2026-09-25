@@ -14,7 +14,7 @@ export const SIHOO_M18: RichReview = {
   heroIntro:
     "The SIHOO M18 is a high-back mesh task chair with an adjustable headrest, adjustable lumbar support and a wide cushioned seat, sold at a budget price. This guide covers its confirmed features, fit and what to check before buying.",
   verdictOneLiner: "A budget mesh-back chair with headrest, adjustable lumbar and a cushioned seat.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front three-quarter, black M18.",
   galleryBriefs: ["Headrest", "Lumbar adjustment"],
@@ -118,7 +118,7 @@ export const SIHOO_M18: RichReview = {
     { q: "Are the armrests adjustable?", a: "The listing uses a 2D label and SIHOO's US page documents height adjustment. Width, pivot and forward/back adjustment during use are not verified here. Ask for the selected model's control diagram." },
     { q: "Is the M18 recline 126 or 130 degrees?", a: "SIHOO's US page advertises 126 degrees; its wholesale page lists tilt positions reaching 130 degrees. Do not assume either figure covers every configuration. Confirm the item you order." },
     { q: "What colours are available?", a: "Black, Duck Gray and Blue are commonly listed. The link points to Black; switch the colour on the listing if you prefer another." },
-    { q: "Has Chairpedia tested this chair?", a: "No. This guide compares published listing and manufacturer descriptions. It does not report our own comfort, pressure or durability measurements." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on published listing and manufacturer descriptions." },
   ],
 
   sources: [

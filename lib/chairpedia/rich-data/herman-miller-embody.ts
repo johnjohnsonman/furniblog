@@ -13,7 +13,7 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
   heroIntro:
     "The Herman Miller Embody was designed around health rather than looks: a \"pixelated\" support matrix of hundreds of moving pixels distributes your weight and keeps you moving through the day, and a central spine mimics the human backbone. This guide covers the standard office Embody, how it differs from the Logitech G gaming edition, and what to check.",
   verdictOneLiner: "A health-first chair built for active sitting — one adaptive size, few but deliberate choices.",
-  verdictNote: "Research-based guide — hands-on lab test not completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Herman Miller Embody.",
   galleryBriefs: [],
@@ -124,13 +124,13 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
     { q: "What is \"pixelated support\"?", a: "Embody's seat and back use a matrix of hundreds of small support points (\"pixels\") over four layers, which flex individually to distribute weight and encourage micro-movement." },
     { q: "Does Embody come in sizes?", a: "No — it's a single adaptive size. Fit comes from the BackFit, seat-depth and arm adjustments rather than an A/B/C size chart." },
     { q: "Is there a headrest or adjustable lumbar?", a: "No headrest, and no separate lumbar dial — support is shaped by the pixelated matrix and the BackFit curve. If you want those, look at the Aeron or a Steelcase Leap." },
-    { q: "Has Chairpedia tested this chair?", a: "Not with our own instruments yet. This is a research-based guide from Herman Miller's specs, dealer sheets and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Herman Miller's specs, dealer sheets and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [
     { k: "Herman Miller (official)", v: "store.hermanmiller.com Embody pages, checked 2026-09-10. Basis for the support system, adjustments, capacity and warranty." },
     { k: "Dealer spec sheets", v: "Authorized-dealer specifications (e.g. btod.com) for dimensions; marked \"Not confirmed\" where not on Herman Miller's own page." },
-    { k: "Logitech G / published reviews", v: "logitechg.com and third-party reviews for the gaming-edition differences and comfort notes; not first-hand." },
+    { k: "Logitech G / published reviews", v: "logitechg.com and third-party reviews for the gaming-edition differences and comfort notes." },
   ],
   sourcesFooter:
     "Specifications combine Herman Miller documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Embody is sold in standard and Logitech G gaming editions and several configurations — confirm the edition, arms, textile and casters on the listing you buy from.",

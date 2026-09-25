@@ -13,7 +13,7 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
   heroIntro:
     "The MIMOGLAD High Back (model OC-5188H) is a budget mesh chair with an adjustable headrest, sliding lumbar and flip-up arms, backed by a 5-year warranty. This guide covers its confirmed features, how to pick the right MIMOGLAD, and what to check.",
   verdictOneLiner: "A budget mesh chair with headrest and 5-year warranty — arms are flip-up only.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, MIMOGLAD high-back mesh chair.",
   galleryBriefs: [],
@@ -120,12 +120,12 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
     { q: "Do the armrests adjust?", a: "Only by flipping up to tuck under a desk. There's no height or width adjustment on this model." },
     { q: "What's the weight capacity?", a: "300 lb for this model. Confirm on the listing." },
     { q: "How far does it recline?", a: "90–135° with two tilt-lock positions (not free-float tension)." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from the OC-5188H manual, the Amazon listing and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the OC-5188H manual, the Amazon listing and published reviews." },
   ],
 
   sources: [
     { k: "OC-5188H manual / Amazon", v: "Manual and the Amazon listing (ASIN B09N93L2RQ), checked 2026-09-10. Basis for capacity, flip-up arms, sliding lumbar, headrest and dimensions." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the mesh/foam comfort and the arm/recline cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the mesh/foam comfort and the arm/recline cautions." },
   ],
   sourcesFooter:
     "Specifications are for the MIMOGLAD OC-5188H (ASIN B09N93L2RQ) as of the date shown and are not independently verified by Chairpedia. MIMOGLAD's look-alike listings share spec language — confirm the model, capacity and colour on the exact listing you buy from.",

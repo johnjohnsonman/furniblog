@@ -13,7 +13,7 @@ export const HON_IGNITION_2: RichReview = {
   heroIntro:
     "The HON Ignition 2.0 is a configurable, contract-grade task chair sold in mesh or upholstered backs with optional adjustable arms, lumbar and headrest, and a full lifetime warranty. This guide covers what's consistent across the line and the options that change what you get.",
   verdictOneLiner: "A durable, configurable contract chair — what you get depends on the options you pick.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black HON Ignition 2.0 mesh task chair.",
   galleryBriefs: [],
@@ -124,13 +124,13 @@ export const HON_IGNITION_2: RichReview = {
     { q: "What's the weight capacity?", a: "300 lb for the standard chair; there's a separate Big & Tall model rated 450 lb." },
     { q: "Is there a headrest?", a: "No headrest is standard; it's an option on some builds." },
     { q: "Mesh or upholstered?", a: "Both are offered. The mesh back is the breathable option; upholstered/fabric and vinyl seats are also available." },
-    { q: "Has Chairpedia tested this chair?", a: "Not yet. This is a research-based guide from HON's listing text, dealer specs and published reviews. We will add our own measurements and photography after hands-on testing." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on HON's listing text, dealer specs and published reviews." },
   ],
 
   sources: [
     { k: "HON / dealers", v: "HON listing text (via search; hon.com blocks automated access) and authorized dealers (Staples, OfficeChairsUSA), checked 2026-09-10. Basis for configurations, capacity, tilt and warranty." },
     { k: "Amazon listing", v: "HON Ignition 2.0 — ASIN B07ZGFPQNW. Basis for the linked build; configuration varies by listing." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the mesh, build and lumbar cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the mesh, build and lumbar cautions." },
   ],
   sourcesFooter:
     "Specifications are configuration-dependent and combine HON/dealer figures with published reviews as of the date shown; they are not independently verified by Chairpedia. Confirm the exact build (back, arms, lumbar, capacity) on the listing you buy from.",

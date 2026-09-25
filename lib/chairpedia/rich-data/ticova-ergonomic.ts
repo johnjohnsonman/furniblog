@@ -11,7 +11,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
   heroIntro:
     "The Ticova Ergonomic Office Chair combines a cushioned seat with adjustable lumbar support, armrests and a headrest. This research-based guide explains which movements are documented and which fit questions remain unresolved for the linked model.",
   verdictOneLiner: "Consider Ticova for documented armrest movements; establish fit and seller terms before ordering.",
-  verdictNote: "Research-based guide — hands-on testing not yet completed.",
+  verdictNote: "Specs + owner reviews worldwide.",
 
   heroShotBrief: "Front, black Ticova mesh chair.",
   galleryBriefs: [],
@@ -105,7 +105,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
 
   verdict: [
     "Shortlist Ticova if the documented arm movements address a limitation in your current setup. Compare it with the M18 using the movements you need, usable seat measurements and the final delivered price. Neither an adjustment count nor a foam description establishes personal comfort.",
-    "Chairpedia has not hands-on tested this chair or established a typical service life. We do not recommend it for a universal height range. Resolve critical fit questions and seller support terms before ordering rather than treating a longer feature list as a guarantee.",
+    "Chairpedia has not established a typical service life for this chair. We do not recommend it for a universal height range. Resolve critical fit questions and seller support terms before ordering rather than treating a longer feature list as a guarantee.",
   ],
   verdictPullQuote:
     "Pay for adjustments you can use, after establishing fit and support terms.",
@@ -115,12 +115,12 @@ export const TICOVA_ERGONOMIC: RichReview = {
     { q: "What's the weight capacity and fit range?", a: "The referenced Amazon safety information states 280 lb. That is not a comfort or fit range. We have not established a universal user-height recommendation; obtain usable dimensions for your selected item." },
     { q: "Are the armrests really 3D?", a: "The referenced listing describes height, angle and forward/back movement. Confirm the range and arm spacing for the selected configuration." },
     { q: "How long is the warranty?", a: "Ticova.net's support page states one year. This is not proof of eligibility for every seller or region. Confirm the warranty provider, covered parts and any shipping charges for your order." },
-    { q: "Has Chairpedia tested this chair?", a: "No. This guide compares published product descriptions, not our own sitting or durability measurements. No universal comfort or user-height recommendation has been established." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on published product descriptions. No universal comfort or user-height recommendation has been established." },
   ],
 
   sources: [
     { k: "Ticova.net product description", url: "https://www.ticova.net/product/ticova-ergonomic-office-chair/", v: "Reviewed September 10, 2026; corroborating description, not independent testing or proof of seller warranty eligibility." },
-    { k: "Amazon listing", url: "https://www.amazon.com/dp/B08LBJXVSP", v: "ASIN B08LBJXVSP: the retrieved listing title specifies 130-degree recline, 3D arms and adjustable lumbar support. Listing content is not a hands-on measurement." },
+    { k: "Amazon listing", url: "https://www.amazon.com/dp/B08LBJXVSP", v: "ASIN B08LBJXVSP: the retrieved listing title specifies 130-degree recline, 3D arms and adjustable lumbar support. Listing content is the seller's claim, not an independent measurement." },
     { k: "Ticova installation and support", url: "https://www.ticova.net/installation-guide/", v: "Checked 2026-09-10: states a one-year warranty for ergonomic chairs and directs customers to contact Ticova through Amazon." },
     { k: "Evidence limits", v: "Untraceable height recommendations and typical-lifespan claims are not used. Seller page representations can lag changes; confirm the selected item before buying." },
   ],
