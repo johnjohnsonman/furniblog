@@ -9,24 +9,11 @@ export type ContentHubLink = {
   imageAlt?: string
 }
 
-export type PriceRange = {
-  minUsd: number
-  maxUsd: number
-  /** Short label for where the range was read, e.g. "US Herman Miller Store". */
-  source: string
-  sourceUrl: string
-  /** ISO date the range was read from the source. */
-  checkedOn: string
-  /** True when estimated from retailer listings rather than the official store. */
-  approximate?: boolean
-}
-
 export type ProductContentHub = {
   /** Display name used by hub links and guide loops. */
   shortName: string
   edition: string
-  priceRange?: PriceRange
-  /** Not sold on Amazon: buy buttons go to the price source instead of an Amazon search. */
+  /** Not sold on Amazon: buy buttons go to the price source (price-provenance) instead of an Amazon search. */
   notOnAmazon?: boolean
   heroFacts: string[]
   sourceNote: string
@@ -60,8 +47,6 @@ export const productContentHubs: Record<string, ProductContentHub> = {
     shortName: "Herman Miller Aeron",
     edition: "Current Remastered Aeron; used listings may be Classic",
     heroFacts: ["Three fixed frame sizes", "8Z Pellicle suspension", "Configuration-dependent back support", "No factory headrest"],
-    // Lowest and highest configuration prices listed on the US store page.
-    priceRange: { minUsd: 2045, maxUsd: 2730, source: "US Herman Miller Store", sourceUrl: "https://store.hermanmiller.com/office-chairs-aeron/aeron-chair/2195348.html?lang=en_US", checkedOn: "2026-09-25" },
     sourceNote: "Facts below describe the current US Remastered Aeron unless a link explicitly discusses the discontinued Classic.",
     buyingChecks: [
       { label: "Choose A, B or C first", href: "/blog/herman-miller-aeron-size-guide-how-to-choose-between-a-b-and-c", description: "The frame size is fixed, so use Herman Miller's height-and-weight chart and inspect the size marks.", intent: "Choose" },
@@ -100,7 +85,6 @@ export const productContentHubs: Record<string, ProductContentHub> = {
     shortName: "Herman Miller Embody",
     edition: "Standard office Embody",
     heroFacts: ["One adaptive frame size", "Adjustable seat depth", "BackFit adjustment", "Standard and Gaming editions are separate products"],
-    priceRange: { minUsd: 2340, maxUsd: 2705, source: "US Herman Miller Store", sourceUrl: "https://store.hermanmiller.com/office-chairs-ergonomic-chairs/embody-chair/4737.html?lang=en_US", checkedOn: "2026-09-25" },
     sourceNote: "This page covers the standard office Embody. It does not silently substitute the Logitech G Gaming edition.",
     buyingChecks: [
       { label: "Set seat depth and BackFit", href: "/chairpedia/herman-miller-embody-chair", description: "Fit comes from these adjustments rather than an A/B/C frame choice.", intent: "Adjust" },
@@ -132,7 +116,6 @@ export const productContentHubs: Record<string, ProductContentHub> = {
     notOnAmazon: true,
     edition: "Logitech G gaming edition of the Embody",
     heroFacts: ["Embody platform", "Adjustable seat depth", "BackFit adjustment", "Gaming-specific foam and styling"],
-    priceRange: { minUsd: 2395, maxUsd: 2395, source: "US Herman Miller Store", sourceUrl: "https://store.hermanmiller.com/gaming-chairs/embody-gaming-chair/2517590.html?lang=en_US", checkedOn: "2026-09-25" },
     sourceNote: "This page covers the Logitech G Gaming edition. Standard Embody is linked as a related version.",
     buyingChecks: [
       { label: "Confirm the exact edition", href: "/chairpedia/herman-miller-embody-gaming-chair", description: "Ask for the product label and photos instead of inferring the edition from a dark colorway.", intent: "Identify" },
@@ -160,29 +143,6 @@ export const productContentHubs: Record<string, ProductContentHub> = {
 
 export function getProductContentHub(slug: string) {
   return productContentHubs[slug]
-}
-
-const usd = (n: number) => `$${n.toLocaleString("en-US")}`
-
-/**
- * Sourced display price for hub products ("$2,045 – $2,730"), or null.
- * Only the label changes: numeric price_usd stays as-is so sorting, budget
- * filters and recommendations for other products are unaffected.
- */
-export function hubDisplayPrice(slug?: string | null): string | null {
-  const range = slug ? productContentHubs[slug]?.priceRange : undefined
-  if (!range) return null
-  const amount = range.minUsd === range.maxUsd ? usd(range.minUsd) : `${usd(range.minUsd)} – ${usd(range.maxUsd)}`
-  return range.approximate ? `approx. ${amount}` : amount
-}
-
-/** "$2,045 – $2,730 · varies by configuration · as of Sep 2026" */
-export function formatPriceRange(range: PriceRange) {
-  const amount = range.minUsd === range.maxUsd ? usd(range.minUsd) : `${usd(range.minUsd)} – ${usd(range.maxUsd)}`
-  const [year, month] = range.checkedOn.split("-").map(Number)
-  const asOf = new Date(Date.UTC(year, month - 1, 1)).toLocaleString("en-US", { month: "short", year: "numeric", timeZone: "UTC" })
-  const note = range.minUsd === range.maxUsd ? "listed price" : "varies by configuration"
-  return `${range.approximate ? "approx. " : ""}${amount} · ${note} · as of ${asOf}`
 }
 
 export const guideProductRelations: Record<string, { productSlug: string; intent: GuideIntent }> = {

@@ -4,7 +4,7 @@ import type { Designer } from "@/types/designer"
 import { getChairCategoryLabel } from "@/lib/chair-categories"
 import { resolveProductImageUrl } from "@/lib/chair-placeholder-images"
 import { formatProductPrice, resolvePriceUsd } from "@/lib/pricing"
-import { hubDisplayPrice } from "@/lib/products/content-hubs"
+import { displayPrice } from "@/lib/products/price-provenance"
 
 export function getAffiliateUrl(
   product: Product,
@@ -40,7 +40,7 @@ export function toProductView(product: Product) {
     reviewCount: product.reviewCount ?? 0,
     description: product.summary,
     overview: product.overview ?? product.summary,
-    price: hubDisplayPrice(product.slug) ?? formatProductPrice(priceUsd),
+    price: displayPrice(product.slug) ?? formatProductPrice(priceUsd),
     year: product.launchYear,
     scores: {
       comfort: product.ratingComfort,

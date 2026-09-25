@@ -34,7 +34,8 @@ import { ProductDecisionGuide } from "@/components/growth/ProductDecisionGuide"
 import { DocumentedProductResearch } from "@/components/chairs/DocumentedProductResearch"
 import { ProductDataConfidence } from "@/components/chairs/ProductDataConfidence"
 import { ProductContentHub } from "@/components/products/ProductContentHub"
-import { formatPriceRange, getProductContentHub } from "@/lib/products/content-hubs"
+import { getProductContentHub } from "@/lib/products/content-hubs"
+import { formatPriceAmount, formatPriceNote, getPriceProvenance } from "@/lib/products/price-provenance"
 import { filterChairSpecsByEvidence, getProductFitEvidence, getProductFitTrustSummary } from "@/lib/data/product-fit-evidence"
 import {
   generateBreadcrumbSchema,
@@ -126,11 +127,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const slug = product.slug ?? product.id
   const contentHub = getProductContentHub(slug)
-  const hubPriceLabel = contentHub?.priceRange ? formatPriceRange(contentHub.priceRange) : null
-  const hubPriceParts = hubPriceLabel ? (() => {
-    const [amount, ...rest] = hubPriceLabel.split(" · ")
-    return { amount, note: rest.join(" · ") }
-  })() : null
+  const priceInfo = getPriceProvenance(slug)
+  const priceParts = priceInfo ? { amount: formatPriceAmount(priceInfo), note: formatPriceNote(priceInfo) } : null
   const configured = isSupabaseConfigured()
   // Independent public lookups run together; prices remain fresh per request.
   const [supabaseReviews, videoResult, chairpediaSlug, relatedBlog, productComparisons, similarPool, fitEvidence, fitTrust] = await Promise.all([
@@ -150,7 +148,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const hasDirectAmazon = Boolean(buyUrls.amazonUrl?.includes("/dp/"))
   // Hub products not sold on Amazon would otherwise fall back to an unrelated
   // Amazon search; send them to the sourced official store instead.
-  const hubOfficialStoreUrl = contentHub?.notOnAmazon && contentHub.priceRange ? contentHub.priceRange.sourceUrl : null
+  const hubOfficialStoreUrl = contentHub?.notOnAmazon && priceInfo?.sourceUrl ? priceInfo.sourceUrl : null
+  // "Check current price" target: official store for non-Amazon hubs, the tracked
+  // Amazon link when there is a direct listing, otherwise the price source page.
+  // Converted (≈) prices point at a foreign store, so they get no button here.
+  const priceActionUrl = hubOfficialStoreUrl ?? (priceInfo && priceInfo.priceType !== "converted" ? priceInfo.sourceUrl : undefined)
   const productWithLinks = { ...product, affiliateLinks: product.affiliateLinks ?? [] }
   const similarProducts = configured
     ? similarPool.filter(p => p.id !== product.id).sort((a, b) => Math.abs((a.priceUsd ?? Infinity) - (product.priceUsd ?? 0)) - Math.abs((b.priceUsd ?? Infinity) - (product.priceUsd ?? 0))).slice(0, 3)
@@ -261,20 +263,23 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     </Link>
                   </div>
 
-                  {contentHub?.priceRange ? (
+                  {priceInfo && priceParts ? (
                     <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
                       <div>
-                        <p className="text-2xl font-semibold text-foreground sm:text-3xl">{hubPriceParts?.amount}</p>
+                        <p className={priceInfo.variants?.length ? "text-xl font-semibold text-foreground sm:text-2xl" : "text-2xl font-semibold text-foreground sm:text-3xl"}>{priceParts.amount}</p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {hubPriceParts?.note} ·{" "}
-                          <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{contentHub.priceRange.source}</a>
+                          {priceParts.note} ·{" "}
+                          {priceInfo.sourceUrl ? (
+                            <a href={priceInfo.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{priceInfo.sourceLabel}</a>
+                          ) : priceInfo.sourceLabel}
+                          {priceInfo.priceType === "converted" && <> · FX {priceInfo.fxSource}, {priceInfo.fxDate}</>}
                         </p>
                       </div>
-                      {hasDirectAmazon && !contentHub.notOnAmazon ? (
+                      {!hubOfficialStoreUrl && hasDirectAmazon ? (
                         <SmartBuyLink variant="inline" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl} amazonLabel="Check current price" placement="product-price-range" />
-                      ) : (
-                        <a href={contentHub.priceRange.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">Check current price ↗</a>
-                      )}
+                      ) : priceActionUrl ? (
+                        <a href={priceActionUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">{priceInfo.priceType === "on_request" ? "Ask for a quote ↗" : "Check current price ↗"}</a>
+                      ) : null}
                     </div>
                   ) : contentHub ? (
                     <p className="mt-6 text-sm font-semibold text-foreground">Price varies by market and configuration. Check the official product page and the exact seller listing.</p>
@@ -316,10 +321,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 catalogLinks={catalogLinks}
                 reviews={chairReviews}
                 reviewCount={reviewCount}
-                defaultPrice={contentHub ? hubPriceParts?.amount : product.price}
+                defaultPrice={priceParts?.amount ?? (contentHub ? undefined : product.price)}
                 overview={
                   <ChairProductOverview
-                    product={contentHub ? { ...productWithLinks, price: hubPriceParts?.amount ?? "Check current configuration" } : productWithLinks}
+                    product={priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks}
                     similarProducts={similarProducts}
                     claimsVerified={hasFitEvidence}
                   />
