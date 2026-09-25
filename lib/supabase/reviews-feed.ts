@@ -336,7 +336,7 @@ export async function getReviews(
       }
     }
 
-    query = query.order("created_at", { ascending: false })
+    query = query.order("created_at", { ascending: false }).order("id", { ascending: true })
 
     const needsWideFetch =
       sortBy === "rating" ||

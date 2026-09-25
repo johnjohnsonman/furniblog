@@ -70,7 +70,7 @@ export default function AboutPage() {
           <section>
             <h2 className="font-serif text-2xl text-foreground">Why Chairpedia exists</h2>
             <p className="mt-4">
-              Buying a great chair is expensive, and most information online is thin: recycled spec sheets, outdated prices, and reviews written by people who never sat in the chair. Chairpedia is Leo&rsquo;s answer to that. Every page aims to do three things:
+              Buying a great chair is expensive, and most information online is thin: recycled spec sheets, outdated prices, and claims with no way to tell where they came from. Chairpedia is Leo&rsquo;s answer to that. Every page aims to do three things:
             </p>
             <ul className="mt-4 list-disc space-y-3 pl-6">
               <li><strong className="font-semibold text-foreground">Show real prices with sources.</strong> We list official prices with the date we checked them, and show local-currency prices for chairs sold only outside the US.</li>

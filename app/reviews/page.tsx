@@ -1,4 +1,6 @@
 import { Suspense } from "react"
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { ReviewsTabbedClient } from "@/components/reviews/reviews-tabbed-client"
@@ -6,7 +8,6 @@ import { ReviewsFeedSkeleton } from "@/components/reviews/reviews-feed-skeleton"
 import { getBrands, getReviewsFeedMeta } from "@/lib/supabase/queries"
 import { getReviews } from "@/lib/supabase/reviews-feed"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
-import { shuffle } from "@/lib/utils/shuffle"
 import {
   canonicalJob,
   canonicalPain,
@@ -15,12 +16,33 @@ import {
 } from "@/lib/reviews/normalize"
 import type { ExperienceReviewCard } from "@/components/reviews/experience-reviews-list"
 
-export const metadata = {
-  title: "Review Feed",
-  description:
-    "Real hands-on chair rankings from people like you, plus web-collected reviews from Reddit, YouTube and forums — filter by brand, category and source.",
-  // Consolidate ?page/?sort/?brand/?seed variants to the base feed.
-  alternates: { canonical: "/reviews" },
+type SearchParams = Promise<Record<string, string | string[] | undefined>>
+
+const PAGE_SIZE = 20
+const FILTER_KEYS = ["category", "brand", "source", "search", "sort", "period", "seed"] as const
+
+function readParams(sp: Record<string, string | string[] | undefined>) {
+  const one = (k: string): string | undefined => {
+    const v = sp[k]
+    return Array.isArray(v) ? v[0] : v
+  }
+  const n = Number(one("page"))
+  const page = Number.isInteger(n) && n > 1 ? n : 1
+  const filtered = FILTER_KEYS.some((k) => Boolean(one(k)))
+  return { one, page, filtered }
+}
+
+export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
+  const { page, filtered } = readParams(await searchParams)
+  // Unfiltered pages are canonical to themselves so crawlers can walk the whole
+  // feed; filter/sort variants still consolidate to the base feed.
+  const canonical = !filtered && page > 1 ? `/reviews?page=${page}` : "/reviews"
+  return {
+    title: page > 1 && !filtered ? `Review Feed — Page ${page}` : "Review Feed",
+    description:
+      "Real hands-on chair rankings from people like you, plus web-collected reviews from Reddit, YouTube and forums — filter by brand, category and source.",
+    alternates: { canonical },
+  }
 }
 
 export const dynamic = "force-dynamic"
@@ -58,8 +80,8 @@ type SessionRow = {
 async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
   try {
     const supabase = createPublicServerClient()
-    // Fetch all approved reviews; the client shuffles (random per visit) and
-    // paginates them. force-dynamic means the shuffle re-rolls each visit.
+    // Fetch all approved reviews, newest first (a fixed order; the browser
+    // shuffles only when a visitor picks "random").
     const { data, error } = await supabase
       .from("review_sessions")
       .select(
@@ -99,7 +121,7 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
         .sort((a, b) => a.rank - b.rank),
     }))
     // Drop any card with no ranked chair (no value without a top pick).
-    return shuffle(cards.filter((c) => c.rankings.length > 0))
+    return cards.filter((c) => c.rankings.length > 0)
   } catch {
     return []
   }
@@ -108,17 +130,13 @@ async function getExperienceCards(): Promise<ExperienceReviewCard[]> {
 export default async function ReviewsPage({
   searchParams,
 }: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>
+  searchParams: SearchParams
 }) {
   // Server-render the first page of web reviews so crawlers (and users) see real
   // content immediately. Honor the URL filters/sort so the server-rendered feed
   // matches the dropdowns — otherwise e.g. ?sort=recent showed "Most Recent" in
   // the UI but random data (the client skips the initial refetch).
-  const sp = await searchParams
-  const one = (k: string): string | undefined => {
-    const v = sp[k]
-    return Array.isArray(v) ? v[0] : v
-  }
+  const { one, page, filtered } = readParams(await searchParams)
   const seedParam = one("seed")
   const initialSeed =
     seedParam && Number.isFinite(Number(seedParam))
@@ -130,17 +148,20 @@ export default async function ReviewsPage({
     getBrands(),
     getExperienceCards(),
     getReviews({
-      page: 1,
-      limit: 20,
+      page,
+      limit: PAGE_SIZE,
       category: one("category") ?? "all",
       brand: one("brand") ?? "all",
       source: one("source") ?? "all",
       search: one("search") ?? "",
-      sortBy: (one("sort") ?? "random") as NonNullable<Parameters<typeof getReviews>[0]>["sortBy"],
+      sortBy: (one("sort") ?? "recent") as NonNullable<Parameters<typeof getReviews>[0]>["sortBy"],
       period: (one("period") ?? "all") as NonNullable<Parameters<typeof getReviews>[0]>["period"],
       seed: initialSeed,
     }).catch(() => ({ reviews: [], total: 0 })),
   ])
+
+  // Past the last page: 404 instead of an empty, indexable page.
+  if (page > 1 && initialFeed.reviews.length === 0) notFound()
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -160,6 +181,9 @@ export default async function ReviewsPage({
             initialReviews={initialFeed.reviews}
             initialTotal={initialFeed.total}
             initialSeed={initialSeed}
+            initialPage={page}
+            pageSize={PAGE_SIZE}
+            openWebTab={page > 1 || filtered}
           />
         </Suspense>
       </main>

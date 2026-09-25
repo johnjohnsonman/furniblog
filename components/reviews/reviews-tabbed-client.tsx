@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import type { Brand } from "@/types/brand"
 import type { ReviewFeedItem, ReviewsFeedMeta } from "@/lib/reviews/feed-types"
@@ -16,6 +17,9 @@ export function ReviewsTabbedClient({
   initialReviews = [],
   initialTotal = 0,
   initialSeed,
+  initialPage = 1,
+  pageSize = 20,
+  openWebTab = false,
 }: {
   initialMeta: ReviewsFeedMeta
   brands: Pick<Brand, "slug" | "name">[]
@@ -23,14 +27,20 @@ export function ReviewsTabbedClient({
   initialReviews?: ReviewFeedItem[]
   initialTotal?: number
   initialSeed?: number
+  initialPage?: number
+  pageSize?: number
+  /** Paged or filtered URLs open straight on the web reviews they point to. */
+  openWebTab?: boolean
 }) {
   // Remember the active tab so returning from a review detail (back) lands on
   // the same tab instead of resetting to Experience.
-  const [tab, setTab] = useState("experience")
+  const [tab, setTab] = useState(openWebTab ? "web" : "experience")
+  const searchParams = useSearchParams()
   useEffect(() => {
+    if (openWebTab) return
     const saved = sessionStorage.getItem("reviews-tab")
     if (saved === "experience" || saved === "web") setTab(saved)
-  }, [])
+  }, [openWebTab])
   function onTab(v: string) {
     setTab(v)
     try {
@@ -68,13 +78,20 @@ export function ReviewsTabbedClient({
           <ExperienceReviewsBrowser items={experienceItems} />
         </TabsContent>
 
-        <TabsContent value="web">
+        {/* Always rendered (hidden while inactive) so the review links and page
+            links are in the server HTML even when the Experience tab is open. */}
+        <TabsContent value="web" forceMount className="data-[state=inactive]:hidden">
           <ReviewsPageClient
+            // Remount on page navigation so the server-rendered page wins (filter
+            // changes keep refetching client-side, so the search box keeps focus).
+            key={searchParams.get("page") ?? "1"}
             initialMeta={initialMeta}
             brands={brands}
             initialReviews={initialReviews}
             initialTotal={initialTotal}
             initialSeed={initialSeed}
+            initialPage={initialPage}
+            pageSize={pageSize}
             compact
           />
         </TabsContent>

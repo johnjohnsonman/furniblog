@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Search, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { shuffle } from "@/lib/utils/shuffle"
 import {
   ExperienceReviewsList,
   type ExperienceReviewCard,
@@ -128,10 +129,10 @@ export function ExperienceReviewsBrowser({
     })
   }
 
-  // Sort: newest first (default) or the server's random order (fresh per visit).
+  // Sort: newest first (default) or a shuffle when the visitor picks random.
   const [sort, setSort] = useState<"newest" | "random">("newest")
   const sorted = useMemo(() => {
-    if (sort === "random") return filtered
+    if (sort === "random") return shuffle(filtered)
     return [...filtered].sort((a, b) =>
       (b.createdAt ?? "").localeCompare(a.createdAt ?? "")
     )

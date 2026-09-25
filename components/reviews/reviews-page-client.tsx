@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Search } from "lucide-react"
 import type { Brand } from "@/types/brand"
@@ -17,8 +18,6 @@ import {
 import { cn } from "@/lib/utils"
 import { ReviewListItem } from "./review-list-item"
 import { ReviewsFeedSkeleton } from "./reviews-feed-skeleton"
-
-const PAGE_SIZE = 10
 
 const CATEGORY_PILLS = [
   { label: "All", value: "all" },
@@ -59,6 +58,9 @@ type ReviewsPageClientProps = {
   initialReviews?: ReviewFeedItem[]
   initialTotal?: number
   initialSeed?: number
+  /** Server-rendered page number (?page=N); "Load more" continues from here. */
+  initialPage?: number
+  pageSize?: number
   compact?: boolean
 }
 
@@ -75,7 +77,7 @@ function buildQueryString(params: {
   if (params.category !== "all") q.set("category", params.category)
   if (params.brand !== "all") q.set("brand", params.brand)
   if (params.source !== "all") q.set("source", params.source)
-  if (params.sort !== "random") q.set("sort", params.sort)
+  if (params.sort !== "recent") q.set("sort", params.sort)
   if (params.period !== "all") q.set("period", params.period)
   return q.toString()
 }
@@ -86,6 +88,8 @@ export function ReviewsPageClient({
   initialReviews = [],
   initialTotal = 0,
   initialSeed,
+  initialPage = 1,
+  pageSize: PAGE_SIZE = 20,
   compact = false,
 }: ReviewsPageClientProps) {
   const router = useRouter()
@@ -97,7 +101,8 @@ export function ReviewsPageClient({
   )
   const [reviews, setReviews] = useState<ReviewFeedItem[]>(initialReviews)
   const [total, setTotal] = useState(initialTotal)
-  const [page, setPage] = useState(1)
+  const [startPage, setStartPage] = useState(initialPage)
+  const [page, setPage] = useState(initialPage)
   const [loading, setLoading] = useState(initialReviews.length === 0)
   const [loadingMore, setLoadingMore] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -113,7 +118,8 @@ export function ReviewsPageClient({
   const category = searchParams.get("category") ?? "all"
   const brand = searchParams.get("brand") ?? "all"
   const source = searchParams.get("source") ?? "all"
-  const sort = searchParams.get("sort") ?? "random"
+  // Fixed default order (newest first); "random" only when a visitor picks it.
+  const sort = searchParams.get("sort") ?? "recent"
   const period = searchParams.get("period") ?? "all"
   const search = searchParams.get("search") ?? ""
 
@@ -172,6 +178,7 @@ export function ReviewsPageClient({
         const items = (data.reviews ?? []) as ReviewFeedItem[]
         setTotal(data.total ?? 0)
         setReviews((prev) => (append ? [...prev, ...items] : items))
+        if (!append) setStartPage(targetPage)
         setPage(targetPage)
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load reviews")
@@ -184,7 +191,7 @@ export function ReviewsPageClient({
         setLoadingMore(false)
       }
     },
-    [category, brand, source, sort, period, search, randomSeed]
+    [category, brand, source, sort, period, search, randomSeed, PAGE_SIZE]
   )
 
   useEffect(() => {
@@ -241,6 +248,8 @@ export function ReviewsPageClient({
   useEffect(() => {
     if (restoredRef.current) return
     restoredRef.current = true
+    // Restoring only applies to the first page; ?page=N URLs render as linked.
+    if (initialPage !== 1) return
     let saved: { filterKey: string; page: number; scrollY: number } | null = null
     try {
       saved = JSON.parse(sessionStorage.getItem(SCROLL_KEY) || "null")
@@ -248,7 +257,8 @@ export function ReviewsPageClient({
       saved = null
     }
     if (!saved || saved.filterKey !== filterKey) return
-    const targetPage = Math.max(1, Math.min(saved.page || 1, 50))
+    // The API caps a request at 50 rows, so restore at most that many.
+    const targetPage = Math.max(1, Math.min(saved.page || 1, Math.floor(50 / PAGE_SIZE)))
     const scrollY = saved.scrollY || 0
     const doRestore = async () => {
       if (targetPage > 1) {
@@ -284,7 +294,16 @@ export function ReviewsPageClient({
   }, [])
 
   const visibleCount = reviews.length
-  const hasMore = visibleCount < total
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  const hasMore = page < totalPages
+  const firstShown = (startPage - 1) * PAGE_SIZE + 1
+  const pageHref = (n: number) => {
+    const qs = new URLSearchParams(buildQueryString({ search, category, brand, source, sort, period }))
+    if (sort === "random") qs.set("seed", String(randomSeed))
+    if (n > 1) qs.set("page", String(n))
+    const q = qs.toString()
+    return q ? `/reviews?${q}` : "/reviews"
+  }
 
   const resultLabel = useMemo(() => {
     if (search) {
@@ -415,8 +434,8 @@ export function ReviewsPageClient({
       {!loading && reviews.length > 0 && (
         <p className="mb-3 text-sm text-muted-foreground">
           {total.toLocaleString()} web review{total === 1 ? "" : "s"}
-          {Math.ceil(total / PAGE_SIZE) > 1
-            ? ` · page ${page} of ${Math.ceil(total / PAGE_SIZE).toLocaleString()}`
+          {totalPages > 1
+            ? ` · page ${page} of ${totalPages.toLocaleString()}`
             : ""}
         </p>
       )}
@@ -455,7 +474,8 @@ export function ReviewsPageClient({
 
           <div className="mt-6 flex flex-col items-center gap-3">
             <p className="text-sm text-muted-foreground">
-              Showing {visibleCount.toLocaleString()} of{" "}
+              Showing {firstShown.toLocaleString()}–
+              {(firstShown + visibleCount - 1).toLocaleString()} of{" "}
               {total.toLocaleString()} reviews
             </p>
             {hasMore && (
@@ -467,6 +487,20 @@ export function ReviewsPageClient({
               >
                 {loadingMore ? "Loading…" : "Load more"}
               </Button>
+            )}
+            {totalPages > 1 && (
+              <nav aria-label="Review pages" className="flex items-center gap-4 text-sm">
+                {startPage > 1 && (
+                  <Link href={pageHref(startPage - 1)} rel="prev" className="underline underline-offset-4">
+                    ← Previous page
+                  </Link>
+                )}
+                {hasMore && (
+                  <Link href={pageHref(page + 1)} rel="next" className="underline underline-offset-4">
+                    Next page →
+                  </Link>
+                )}
+              </nav>
             )}
           </div>
         </>

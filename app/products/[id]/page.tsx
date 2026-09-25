@@ -17,6 +17,7 @@ import {
   isSupabaseConfigured,
 } from "@/lib/supabase/queries"
 import { ProductChairTabs } from "@/components/chairs/ProductChairTabs"
+import { ProductReviewLinks } from "@/components/products/ProductReviewLinks"
 import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
@@ -325,11 +326,14 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 reviewCount={reviewCount}
                 defaultPrice={priceParts?.amount ?? (contentHub ? undefined : product.price)}
                 overview={
-                  <ChairProductOverview
-                    product={priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks}
-                    similarProducts={similarProducts}
-                    claimsVerified={hasFitEvidence}
-                  />
+                  <>
+                    <ChairProductOverview
+                      product={priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks}
+                      similarProducts={similarProducts}
+                      claimsVerified={hasFitEvidence}
+                    />
+                    <ProductReviewLinks reviews={chairReviews} productName={product.name} />
+                  </>
                 }
                 specs={<ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} />}
                 videoCount={productVideos.length}
