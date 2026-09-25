@@ -119,7 +119,7 @@ export const HBADA_P5: RichReview = {
     { q: "What is the weight capacity?", a: "Documented specs put it at 300 lb. Confirm on the listing you order from." },
     { q: "Is the seat mesh?", a: "The back is mesh; the seat is a cushioned (innerspring/foam) seat, not mesh." },
     { q: "Is the P5 still current?", a: "It remains on Amazon, but Hbada's US site now leads with a newer P2. Check current stock, price and support on the listing." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Hbada's documentation and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the Amazon listing, Hbada's documentation and published reviews." },
   ],
 
   sources: [

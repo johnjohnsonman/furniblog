@@ -119,7 +119,7 @@ export const NOUHAUS_ERGO3D: RichReview = {
     { q: "Are the armrests really 4D?", a: "The Amazon listing describes 4D armrests — adjustable for height, width, depth and pivot." },
     { q: "Is it full mesh?", a: "Yes — both the high back and the seat are breathable mesh." },
     { q: "Will it fit a taller person?", a: "Seat depth is about 16.3 in, which is on the shallow side. Overall height runs roughly 44–49 in. Taller users should confirm the seat depth and height on the listing." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Nouhaus's documentation and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the Amazon listing, Nouhaus's documentation and published reviews." },
   ],
 
   sources: [

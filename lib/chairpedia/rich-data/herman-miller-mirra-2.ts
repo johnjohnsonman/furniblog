@@ -124,7 +124,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { q: "Does Mirra 2 have a headrest?", a: "No — there's no headrest option. If you need neck support, look at a Steelcase Leap or an aftermarket solution." },
     { q: "What is FlexFront?", a: "An option that makes the seat depth adjustable (about 16.25–18 in). The base seat is a fixed depth; taller sitters usually want FlexFront." },
     { q: "What's the weight capacity?", a: "350 lb, per Herman Miller. Confirm on the listing you buy from." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Herman Miller's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [

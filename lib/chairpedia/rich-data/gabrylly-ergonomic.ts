@@ -118,7 +118,7 @@ export const GABRYLLY_ERGONOMIC: RichReview = {
     { q: "Do the armrests adjust for height?", a: "They flip up to tuck under a desk. Reports conflict on height adjustment for the classic, so treat them as flip-up only and confirm on the listing." },
     { q: "What's the weight capacity and fit?", a: "280 lb, with a comfortable fit around 5'5\"–6'2\". The seat is deep and doesn't adjust." },
     { q: "How long does it last?", a: "Reviewers report the mesh and lumbar can soften over roughly 12–18 months, especially for heavier users. It carries a 2-year warranty." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the official specs, the Amazon listing and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the official specs, the Amazon listing and published reviews." },
   ],
 
   sources: [

@@ -129,7 +129,7 @@ export const HAWORTH_ZODY: RichReview = {
   sources: [
     { k: "Haworth (official)", v: "haworth.com Zody II product and adjustment pages, checked 2026-09-10. Basis for PAL, tilt, arms, seat depth and warranty." },
     { k: "Dealer spec sheets", v: "Authorized-dealer specifications (e.g. btod.com) for the generation differences and weight ratings." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the seat/recline feel and the generation caution; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the seat/recline feel and the generation caution." },
   ],
   sourcesFooter:
     "Specifications are Haworth's figures plus dealer sheets and published reviews as of the date shown and are not independently verified by Chairpedia. Two Zody generations are sold with different capacities — confirm the generation, build and seller on the listing you buy from.",

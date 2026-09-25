@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
   title: "Editorial Policy",
-  description: "How Chairpedia is written: pages by Leo, official prices with sources and dates, owner reviews summarized from around the world, and clear disclosure of first-hand experience and commercial ties.",
+  description: "How Chairpedia is written: pages by Leo, official prices with sources and dates, owner reviews summarized from around the world, and clear disclosure of commercial ties.",
   alternates: { canonical: "/editorial-policy" },
   openGraph: { title: "Editorial Policy | Chairpedia", url: "/editorial-policy" },
 }
@@ -45,7 +45,7 @@ export default function EditorialPolicyPage() {
 
             <h2 className={H2}>Prices</h2>
             <p className={P}>
-              We list official prices with their source and the date we checked them. When a range is shown, it covers the configurations the source lists. For chairs sold only outside the US, we show the official local-currency price first, followed by a US-dollar estimate converted at a fixed, dated exchange rate. Where no reliable price is published, we say so instead of estimating one. Prices change, so check the seller before you buy.
+              We list official prices with their source and the date we checked them. When a range is shown, it covers the configurations the source lists. For chairs sold only outside the US, we show the official local-currency price first, followed by a US-dollar estimate converted at a fixed, dated exchange rate. Where no reliable price is published, we note that instead of estimating one. Prices change, so check the seller before you buy.
             </p>
 
             <h2 className={H2}>Owner reviews</h2>
@@ -53,10 +53,7 @@ export default function EditorialPolicyPage() {
               We collect and condense published reviews from owners around the world so you don&rsquo;t have to read hundreds of them. Each summary links back to its original source, and the opinions in it belong to the original author. A summary without a usable original link is labeled as such and is not presented as a verified owner review.
             </p>
 
-            <h2 className={H2}>Leo&rsquo;s own experience</h2>
-            <p className={P}>
-              Leo owns and rotates through many of the chairs covered here. Where he has lived with a chair himself, the page says so. Otherwise the page combines manufacturer specifications with owner reviews from around the world.
-            </p>
+            <h2 className={H2}>Scores</h2>
             <p className={P}>
               Where we show scores across criteria such as Comfort, Ergonomics, Build Quality, Design, Value and Long-Hour Use, those are editorial assessments drawn from this research and from published reviews, not the results of independent laboratory testing.
             </p>

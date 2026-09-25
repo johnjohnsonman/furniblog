@@ -252,7 +252,7 @@ export function ChairpediaLanding({
             <ShieldCheck className="h-6 w-6 text-[#9a7b4f] mx-auto" />
             <h2 className="mt-3 font-serif text-2xl font-medium text-foreground">How we research</h2>
             <p className="mt-2 text-muted-foreground max-w-2xl mx-auto text-sm leading-relaxed">
-              Every Chairpedia entry is built from manufacturer documentation and reputable sources, cross-checked for accuracy. Where a fact can't be verified, we say so plainly — and we cover the trade-offs, not just the highlights.
+              Every Chairpedia entry is built from manufacturer documentation and reputable sources, cross-checked for accuracy. Where a fact can't be verified, we flag it plainly — and we cover the trade-offs, not just the highlights.
             </p>
             <div className="mt-5 flex items-center justify-center gap-8 text-sm text-muted-foreground">
               <span><b className="text-foreground">{entries.length}</b> chairs documented</span>

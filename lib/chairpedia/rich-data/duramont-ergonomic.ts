@@ -129,7 +129,7 @@ export const DURAMONT_ERGONOMIC: RichReview = {
     { q: "What is the weight capacity?", a: "Duramont's figure is 330 lb (one review cites 350; use the manufacturer's 330 and confirm on the listing)." },
     { q: "Is the seat mesh?", a: "No. The back is breathable mesh; the seat is a cushioned foam pan, and it is deep with no depth adjustment." },
     { q: "Is there more than one Duramont chair?", a: "Yes — this mesh Ergonomic model and a separate Reclining Leather Executive chair. This guide covers the mesh model (ASIN B0797HZ8W1)." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, Duramont's documentation and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the Amazon listing, Duramont's documentation and published reviews." },
   ],
 
   sources: [

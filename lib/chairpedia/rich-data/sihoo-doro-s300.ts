@@ -126,7 +126,7 @@ export const SIHOO_DORO_S300: RichReview = {
     { q: "Does it have an adjustable headrest?", a: "The headrest is integrated into the backrest, not a separate height-adjustable piece — its support depends on your height." },
     { q: "What's the weight capacity?", a: "330 lb per SIHOO (some retail copy says 300). Use the official 330 and confirm on the listing." },
     { q: "How far does it recline?", a: "SIHOO doesn't state a firm angle; third parties cite roughly 135–138°. Treat it as approximate." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on SIHOO's specs and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on SIHOO's specs and published reviews." },
   ],
 
   sources: [

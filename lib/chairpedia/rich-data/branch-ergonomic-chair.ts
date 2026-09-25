@@ -125,7 +125,7 @@ export const BRANCH_ERGONOMIC_CHAIR: RichReview = {
     { q: "Does it include a headrest?", a: "No — Branch sells a headrest separately as an accessory." },
     { q: "What's the seat height and depth?", a: "Roughly 17–21 in seat height (higher with the optional tall cylinder) and an 18–22 in seat-depth slider; sources vary, so confirm the configuration on the live page." },
     { q: "What's the weight capacity?", a: "275 lb. Confirm on the listing you order from." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Branch's specs, the Amazon listing and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Branch's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [

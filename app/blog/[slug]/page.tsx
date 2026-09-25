@@ -24,7 +24,6 @@ import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
 import { ProductComparisonRail } from "@/components/growth/ProductComparisonRail"
 import { ContentStandardsNote } from "@/components/editorial/ContentStandardsNote"
 import { GuideContentLoop } from "@/components/products/GuideContentLoop"
-import { getLeoNote } from "@/lib/blog/leo-notes"
 import { getPublishedProductComparisons } from "@/lib/growth/product-comparisons"
 
 export const dynamic = "force-dynamic"
@@ -115,7 +114,6 @@ export default async function BlogPostPage({
   const post = await getPost(slug)
   if (!post) notFound()
   const buying = getBlogBuyingNotes(post.slug)
-  const leoNote = getLeoNote(post.slug)
   const reading = prepareArticleReading(wrapTables(rewriteAmazonHrefs(rewriteOwnedSiteLinks(post.content_html), pageSubtag(`/blog/${post.slug}`))))
   const productComparisons = buying
     ? await getPublishedProductComparisons(buying.productId)
@@ -205,12 +203,6 @@ export default async function BlogPostPage({
             dangerouslySetInnerHTML={{ __html: reading.html }}
           />
 
-          {leoNote && (
-            <section aria-labelledby="leo-note-heading" className="mt-10 border-t border-border pt-6">
-              <h2 id="leo-note-heading" className="font-serif text-2xl">{leoNote.title}</h2>
-              <div className="chairpedia-body article-reading mt-4" dangerouslySetInnerHTML={{ __html: leoNote.html }} />
-            </section>
-          )}
 
           {buying && (
             <section aria-labelledby="blog-buying-heading" data-testid="blog-buying" className="mt-10 space-y-4 border-t border-border pt-6">

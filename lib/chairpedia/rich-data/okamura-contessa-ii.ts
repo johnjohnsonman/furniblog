@@ -133,7 +133,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   sources: [
     { k: "Okamura (official)", v: "okamura.com Contessa II product and option pages, checked 2026-09-10. Basis for materials, Smart Operation, seat depth, arms, lumbar, headrest and capacity." },
     { k: "Amazon.co.jp listing", v: "Contessa II / Seconda (Japan-market). Basis for confirming the name equivalence and configurations; not a US purchase path." },
-    { k: "Published reviews", v: "Third-party reviews summarised for design, comfort and value; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for design, comfort and value." },
   ],
   sourcesFooter:
     "Specifications are Okamura's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Warranty and US availability vary by seller — confirm the exact options, seller and coverage before buying.",

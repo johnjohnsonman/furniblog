@@ -129,7 +129,7 @@ export const STEELCASE_GESTURE: RichReview = {
   sources: [
     { k: "Steelcase (official)", v: "steelcase.com Gesture product and specification pages, checked 2026-09-10. Basis for arms, back options, recline, capacity and warranty." },
     { k: "Amazon listing", v: "Steelcase Gesture — ASIN B08KL9JMVB (Licorice, 360-degree arms). Basis for the linked configuration." },
-    { k: "Published reviews", v: "Third-party reviews summarised for comfort and the arm behaviour; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for comfort and the arm behaviour." },
   ],
   sourcesFooter:
     "Specifications are Steelcase's figures plus the linked listing and published reviews as of the date shown and are not independently verified by Chairpedia. Gesture is sold in many configurations — confirm the arms, back, upholstery and casters on the listing you buy from.",

@@ -124,7 +124,7 @@ export const HON_IGNITION_2: RichReview = {
     { q: "What's the weight capacity?", a: "300 lb for the standard chair; there's a separate Big & Tall model rated 450 lb." },
     { q: "Is there a headrest?", a: "No headrest is standard; it's an option on some builds." },
     { q: "Mesh or upholstered?", a: "Both are offered. The mesh back is the breathable option; upholstered/fabric and vinyl seats are also available." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on HON's listing text, dealer specs and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on HON's listing text, dealer specs and published reviews." },
   ],
 
   sources: [

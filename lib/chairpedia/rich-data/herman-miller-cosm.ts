@@ -128,7 +128,7 @@ export const HERMAN_MILLER_COSM: RichReview = {
   sources: [
     { k: "Herman Miller (official)", v: "hermanmiller.com Cosm product and specification pages, checked 2026-09-10. Basis for the Auto-Harmonic tilt, back heights, arm tiers, suspension and warranty." },
     { k: "Amazon listings", v: "Herman Miller Cosm listings (various back heights/arms). Basis for available builds and retailer-sourced capacity." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the fixed-lumbar caution; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the fixed-lumbar caution." },
   ],
   sourcesFooter:
     "Specifications are Herman Miller's figures plus published reviews as of the date shown and are not independently verified by Chairpedia. Cosm is sold in three back heights and three arm tiers — confirm the exact build and colour on the listing you buy from.",

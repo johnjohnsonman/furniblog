@@ -120,7 +120,7 @@ export const MIMOGLAD_HIGH_BACK: RichReview = {
     { q: "Do the armrests adjust?", a: "Only by flipping up to tuck under a desk. There's no height or width adjustment on this model." },
     { q: "What's the weight capacity?", a: "300 lb for this model. Confirm on the listing." },
     { q: "How far does it recline?", a: "90–135° with two tilt-lock positions (not free-float tension)." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the OC-5188H manual, the Amazon listing and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the OC-5188H manual, the Amazon listing and published reviews." },
   ],
 
   sources: [

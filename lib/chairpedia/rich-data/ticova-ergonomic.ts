@@ -115,7 +115,7 @@ export const TICOVA_ERGONOMIC: RichReview = {
     { q: "What's the weight capacity and fit range?", a: "The referenced Amazon safety information states 280 lb. That is not a comfort or fit range. We have not established a universal user-height recommendation; obtain usable dimensions for your selected item." },
     { q: "Are the armrests really 3D?", a: "The referenced listing describes height, angle and forward/back movement. Confirm the range and arm spacing for the selected configuration." },
     { q: "How long is the warranty?", a: "Ticova.net's support page states one year. This is not proof of eligibility for every seller or region. Confirm the warranty provider, covered parts and any shipping charges for your order." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on published product descriptions. No universal comfort or user-height recommendation has been established." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on published product descriptions. No universal comfort or user-height recommendation has been established." },
   ],
 
   sources: [

@@ -107,7 +107,7 @@ export const SIHOO_M18: RichReview = {
 
   verdict: [
     "Shortlist the M18 if you want a cushioned seat and manually positioned lumbar support. Establish the exact fit and available arm movements before comparing the delivered price. A published load limit does not tell us how comfortable or durable the chair will be for a particular buyer.",
-    "Chairpedia has not hands-on tested the M18, so we do not rank its comfort or durability against premium chairs. Compare the C300 if you prefer a mesh seat, or Ticova if documented arm angle and forward/back movement matter. Resolve fit and seller terms before treating a higher price as an upgrade.",
+    "Published sources do not establish how the M18's comfort or durability compares with premium chairs, so we do not rank it against them. Compare the C300 if you prefer a mesh seat, or Ticova if documented arm angle and forward/back movement matter. Resolve fit and seller terms before treating a higher price as an upgrade.",
   ],
   verdictPullQuote:
     "A lot of ergonomic checkboxes for the money — as long as you want a cushioned seat and can live with 2D arms.",
@@ -118,7 +118,7 @@ export const SIHOO_M18: RichReview = {
     { q: "Are the armrests adjustable?", a: "The listing uses a 2D label and SIHOO's US page documents height adjustment. Width, pivot and forward/back adjustment during use are not verified here. Ask for the selected model's control diagram." },
     { q: "Is the M18 recline 126 or 130 degrees?", a: "SIHOO's US page advertises 126 degrees; its wholesale page lists tilt positions reaching 130 degrees. Do not assume either figure covers every configuration. Confirm the item you order." },
     { q: "What colours are available?", a: "Black, Duck Gray and Blue are commonly listed. The link points to Black; switch the colour on the listing if you prefer another." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on published listing and manufacturer descriptions." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on published listing and manufacturer descriptions." },
   ],
 
   sources: [

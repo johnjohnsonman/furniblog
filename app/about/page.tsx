@@ -63,7 +63,7 @@ export default function AboutPage() {
               Where most people see &ldquo;an office chair,&rdquo; Leo sees tilt mechanisms, seat-depth ranges, mesh tension, and the difference between a chair that supports you and one that merely holds you up. Over the years he has sat in, adjusted, lived with, and argued about more chairs than he can count, from <Brands />, and many more, from design icons to chairs that are rarely sold outside their home markets.
             </p>
             <p>
-              He doesn&rsquo;t just test chairs. He owns them. His collection has grown well past what any reasonable person needs, and he rotates through it, switching his daily work chair every so often to see how each one holds up over weeks, not minutes. Right now, the <strong className="font-semibold text-foreground">Kokuyo</strong> Ing Cloud is in the rotation. When he tells you how a chair feels after hour six, or after month three, it is because he has actually been there.
+              He doesn&rsquo;t just test chairs. He owns them. His collection has grown well past what any reasonable person needs, and he rotates through it, switching his daily work chair every so often to see how each one holds up over weeks, not minutes. When he tells you how a chair feels after hour six, or after month three, it is because he has actually been there.
             </p>
           </section>
 

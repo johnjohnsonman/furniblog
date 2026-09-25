@@ -129,7 +129,7 @@ export const HUMANSCALE_FREEDOM: RichReview = {
   sources: [
     { k: "Humanscale (official)", v: "humanscale.com Freedom pages, checked 2026-09-10. Basis for the recline design, arms, seat options, headrest and warranty." },
     { k: "Dealer spec sheets", v: "Authorized-dealer specifications (e.g. btod.com) for dimensions and capacity; marked \"Not confirmed\" where not on Humanscale's own page." },
-    { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the no-lock/upholstered cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for the recline feel and the no-lock/upholstered cautions." },
   ],
   sourcesFooter:
     "Specifications combine Humanscale documentation with dealer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Freedom is configured to order and mostly sold via dealers — confirm the version, capacity and seller before buying.",

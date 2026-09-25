@@ -128,7 +128,7 @@ export const HAWORTH_FERN: RichReview = {
     { q: "Does the Fern have a headrest?", a: "A headrest is optional on the Fern — except on the Fern Digital Knit, which does not offer one. Choose a non-Digital-Knit back if you want a headrest." },
     { q: "Is lumbar support included?", a: "Height-adjustable lumbar is an option, not standard on every configuration. Check whether a listing includes it if you need lumbar support." },
     { q: "What is the weight capacity?", a: "Haworth rates the Fern at 325 lb. Confirm on the listing you buy from." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Haworth's documentation and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Haworth's documentation and published reviews." },
   ],
 
   sources: [

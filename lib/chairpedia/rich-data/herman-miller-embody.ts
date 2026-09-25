@@ -124,7 +124,7 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
     { q: "What is \"pixelated support\"?", a: "Embody's seat and back use a matrix of hundreds of small support points (\"pixels\") over four layers, which flex individually to distribute weight and encourage micro-movement." },
     { q: "Does Embody come in sizes?", a: "No — it's a single adaptive size. Fit comes from the BackFit, seat-depth and arm adjustments rather than an A/B/C size chart." },
     { q: "Is there a headrest or adjustable lumbar?", a: "No headrest, and no separate lumbar dial — support is shaped by the pixelated matrix and the BackFit curve. If you want those, look at the Aeron or a Steelcase Leap." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Herman Miller's specs, dealer sheets and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Herman Miller's specs, dealer sheets and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [

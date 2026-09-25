@@ -124,7 +124,7 @@ export const STEELCASE_SERIES_1: RichReview = {
     { q: "Which arms should I choose?", a: "The 4D arms adjust height, width, depth and pivot. There's also a height-only arm and an armless build — the cheapest listings are often armless, so confirm 4D if you want full control." },
     { q: "Does Series 1 have a headrest?", a: "No. If you want a headrest, step up to the Steelcase Series 2 or Leap." },
     { q: "Is it really sold on Amazon?", a: "Yes — Series 1 is one of the few premium-brand chairs routinely sold on Amazon. The linked ASIN is one colour/build; confirm the exact one you want." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Steelcase's specs, the Amazon listing and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [

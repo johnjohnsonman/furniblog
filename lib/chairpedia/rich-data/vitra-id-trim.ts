@@ -120,7 +120,7 @@ export const VITRA_ID_TRIM: RichReview = {
     { q: "FlowMotion or AutoMotion?", a: "FlowMotion is Vitra's patented synchronised recline you can adjust while seated; AutoMotion self-adjusts its resistance to your weight. Choose whether you want to dial it in or let the chair do it." },
     { q: "Can I buy it on US Amazon?", a: "Not as a genuine product page. In the US the ID Trim is bought through Vitra's online shop or authorized dealers." },
     { q: "What's the weight capacity and seat-height range?", a: "Vitra doesn't publish those on the ID Trim product pages. Request the spec sheet from your seller before buying." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Vitra's pages and published reviews; the deep-dive below adds context." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Vitra's pages and published reviews; the deep-dive below adds context." },
   ],
 
   sources: [

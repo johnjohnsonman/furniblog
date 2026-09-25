@@ -126,7 +126,7 @@ export const SIDIZ_T50: RichReview = {
     { q: "Are the arms 3D or 4D?", a: "3D — height, pivot/angle and forward/back. The T80 is the step-up model." },
     { q: "What's the weight capacity?", a: "275 lb per SIDIZ (some reviews say 300). Use the official 275 and confirm on the listing." },
     { q: "How is it different from the T80?", a: "The T80 adds a synchronous auto-tilt mechanism, wider lumbar, thicker padding and a depth-adjustable headrest." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on SIDIZ's specs, the Amazon listing and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on SIDIZ's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [

@@ -130,7 +130,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
   sources: [
     { k: "Herman Miller (official)", v: "store.hermanmiller.com Sayl pages, checked 2026-09-10. Basis for back options, arms, lumbar and the 12-year warranty. The public spec page returned an error on our check." },
     { k: "Amazon listings", v: "Herman Miller Sayl listings (various configurations). Basis for arm and lumbar options and retailer-sourced dimensions." },
-    { k: "Published reviews", v: "Third-party reviews summarised for comfort and the seat/arm cautions; not first-hand." },
+    { k: "Published reviews", v: "Third-party reviews summarised for comfort and the seat/arm cautions." },
   ],
   sourcesFooter:
     "Specifications combine Herman Miller documentation with retailer-sourced dimensions (marked \"Not confirmed\") as of the date shown and are not independently verified by Chairpedia. Sayl is sold in many configurations — confirm the back, arms, lumbar and colour on the listing you buy from.",

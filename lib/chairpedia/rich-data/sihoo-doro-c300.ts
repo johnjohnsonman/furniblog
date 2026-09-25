@@ -126,7 +126,7 @@ export const SIHOO_DORO_C300: RichReview = {
     { q: "Will it fit me?", a: "SIHOO publishes overall height (42–49 in), backrest height (18.11–21.65 in) and seat depth (17.13–18.11 in), but not a seat-to-floor range or a recommended user height for the base model. Take the seat height from the listing and compare it with your desk. Our own measurements will be added after testing." },
     { q: "Can I set the lumbar support myself?", a: "Do not assume a manual height or depth lock from an adaptive-support description. We have not verified those controls on the linked configuration. Ask the seller to demonstrate them if they are essential to you." },
     { q: "Does the 30-day trial apply to Amazon orders?", a: "No. The 30-day trial is offered by SIHOO's official store only. Amazon orders follow Amazon's return window, which depends on the seller — check it on the listing." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on the Amazon listing, SIHOO's documentation and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on the Amazon listing, SIHOO's documentation and published reviews." },
   ],
 
   sources: [

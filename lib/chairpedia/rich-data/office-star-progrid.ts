@@ -126,7 +126,7 @@ export const OFFICE_STAR_PROGRID: RichReview = {
     { q: "Is the seat mesh?", a: "No. The back is breathable ProGrid mesh; the seat is padded fabric. There's no all-mesh seat on this SKU and no headrest." },
     { q: "What's the weight capacity?", a: "The official 92553 sheet omits it; dealers commonly list ~250 lb (some variants ~275). Confirm on the exact listing." },
     { q: "Does the lumbar adjust?", a: "It's built into the ProGrid back as a contour, not a separate adjustable lumbar device; some SKUs add ratchet back-height." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on Office Star's spec sheet, dealers and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Office Star's spec sheet, dealers and published reviews." },
   ],
 
   sources: [

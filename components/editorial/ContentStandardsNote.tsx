@@ -9,7 +9,7 @@ const COPY: Record<ContentKind, { label: string; text: string }> = {
   },
   guide: {
     label: "Research basis",
-    text: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so.",
+    text: "This guide combines manufacturer specifications with owner reviews from around the world.",
   },
   comparison: {
     label: "Comparison basis",

@@ -62,5 +62,5 @@ export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
     { k: "Logitech G (official)", url: "https://www.logitechg.com/en-us/products/gaming-furniture/embody-gaming-chair.html", v: "Gaming-edition product documentation for the collaboration and foam treatment, reviewed September 2026." },
   ],
   sourcesFooter:
-    "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
+    "This guide combines manufacturer specifications with owner reviews from around the world. Live price, stock, seller status and warranty eligibility can change; confirm them on the selected offer.",
 }

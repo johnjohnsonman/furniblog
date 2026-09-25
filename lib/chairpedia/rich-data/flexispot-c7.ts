@@ -125,7 +125,7 @@ export const FLEXISPOT_C7: RichReview = {
     { q: "Mesh or foam seat?", a: "Both are offered as separate SKUs (base C7 specification table lists 300 lb; confirm your SKU), with or without a retractable footrest. Choose before ordering." },
     { q: "What's the recline and seat height?", a: "FlexiSpot's page lists ≈ 93–110° recline and ≈ 18.3–21.7 in seat height; some reviews cite wider ranges. Treat the official page as the reference and confirm your SKU." },
     { q: "Is the lumbar adjustable?", a: "It's a self-adaptive dynamic lumbar that responds to your posture, and it can also be locked." },
-    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. Where Leo has lived with the chair himself, we say so. It draws on FlexiSpot's specs, the Amazon listing and published reviews." },
+    { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on FlexiSpot's specs, the Amazon listing and published reviews." },
   ],
 
   sources: [
