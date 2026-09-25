@@ -102,7 +102,9 @@ export function PriceCompareTable({
         </p>
       )}
       <p className="text-[11px] text-muted-foreground italic leading-relaxed">
-        Affiliate link — we may earn a commission. Confirm the model, seller, price and delivery terms at the retailer.
+        {/* Only Amazon rows carry the associate tag; official-store links earn nothing. */}
+        {rows.some((row) => row.channel === "amazon") ? "Affiliate link — we may earn a commission. " : ""}
+        Confirm the model, seller, price and delivery terms at the retailer.
       </p>
     </div>
   )

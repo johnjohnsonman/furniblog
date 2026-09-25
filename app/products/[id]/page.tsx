@@ -18,6 +18,7 @@ import {
 } from "@/lib/supabase/queries"
 import { ProductChairTabs } from "@/components/chairs/ProductChairTabs"
 import { ProductReviewLinks } from "@/components/products/ProductReviewLinks"
+import { getOfficialChannel } from "@/lib/products/official-channels"
 import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
@@ -146,12 +147,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ])
   const { videos: productVideos, total: productVideoTotal, chairId: productVideoChairId } = videoResult
   const chairReviews = configured ? supabaseReviews : getChairReviewsForProduct(product.id)
-  const catalogLinks = getProductAffiliateLinks(slug, product.name)
+  // Chairs without a buyable Amazon US listing would otherwise fall back to an
+  // unrelated Amazon search; send them to the sourced official channel instead.
+  const officialChannel = getOfficialChannel(slug, priceInfo, contentHub)
+  const catalogLinks = officialChannel
+    ? [{ retailer: officialChannel.retailer, url: officialChannel.url, isOfficial: true }]
+    : getProductAffiliateLinks(slug, product.name)
   const buyUrls = urlsFromCatalog(catalogLinks)
   const hasDirectAmazon = Boolean(buyUrls.amazonUrl?.includes("/dp/"))
-  // Hub products not sold on Amazon would otherwise fall back to an unrelated
-  // Amazon search; send them to the sourced official store instead.
-  const hubOfficialStoreUrl = contentHub?.notOnAmazon && priceInfo?.sourceUrl ? priceInfo.sourceUrl : null
+  const hubOfficialStoreUrl = contentHub?.notOnAmazon ? officialChannel?.url ?? null : null
   // "Check current price" target: official store for non-Amazon hubs, the tracked
   // Amazon link when there is a direct listing, otherwise the price source page.
   // Converted (≈) prices point at a foreign store, so they get no button here.
@@ -278,7 +282,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                           {priceInfo.priceType === "converted" && <> · FX {priceInfo.fxSource}, {priceInfo.fxDate}</>}
                         </p>
                       </div>
-                      {!hubOfficialStoreUrl && hasDirectAmazon ? (
+                      {!officialChannel && hasDirectAmazon ? (
                         <SmartBuyLink variant="inline" productId={slug} name={product.name} amazonUrl={buyUrls.amazonUrl} amazonLabel="Check current price" placement="product-price-range" />
                       ) : priceActionUrl ? (
                         <a href={priceActionUrl} target="_blank" rel="noopener noreferrer" className="inline-block border border-[#171717] bg-white px-4 py-2 text-sm font-semibold hover:bg-[#f5f1e8]">{priceInfo.priceType === "on_request" ? "Ask for a quote ↗" : "Check current price ↗"}</a>
@@ -335,7 +339,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     <ProductReviewLinks reviews={chairReviews} productName={product.name} />
                   </>
                 }
-                specs={<ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} />}
+                specs={<ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} officialSource={priceInfo?.sourceUrl ? { url: priceInfo.sourceUrl, label: priceInfo.sourceLabel } : null} />}
                 videoCount={productVideos.length}
                 videos={
                   productVideos.length > 0 ? (
@@ -344,10 +348,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                       total={productVideoTotal}
                       chairName={product.name}
                       chairId={productVideoChairId ?? product.id}
-                      amazonUrl={buyUrls.amazonUrl ?? product.amazonUrl}
+                      amazonUrl={officialChannel ? null : buyUrls.amazonUrl ?? product.amazonUrl}
                       reviewCount={reviewCount}
                     />
-                  ) : <section className="border border-dashed border-[#a9a298] bg-[#faf8f3] p-6"><h2 className="font-serif text-2xl">Video research pending</h2><p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">No product-specific video has passed Chairpedia’s relevance review yet. Use the specifications, comparisons and showroom finder while this section is being researched.</p><Link href={`/stores?model=${encodeURIComponent(slug)}`} className="mt-4 inline-block text-sm font-medium underline underline-offset-4">Find a place to inspect this chair</Link></section>
+                  ) : undefined
                 }
               /></div>
             </div>
@@ -381,8 +385,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="border border-[#171717] bg-[#fff0c7] p-5 shadow-[6px_6px_0_#171717]">
                   <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#7a5a00]">Buying options</p>
                   <h3 className="mb-4 mt-1 font-serif text-2xl text-foreground">Where to buy</h3>
-                  {hubOfficialStoreUrl ? (
-                    <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+                  {officialChannel ? (
+                    <a href={officialChannel.url} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">{officialChannel.label} ↗</a>
                   ) : (
                     <SmartBuyLink
                       variant="block"
@@ -394,7 +398,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     />
                   )}
                   <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                    {hubOfficialStoreUrl ? "Not sold on Amazon. Warranty, shipping and returns follow the official store's terms — check before ordering." : "Amazon returns are typically 30 days of delivery but set per listing — check before ordering."}{" "}
+                    {officialChannel ? officialChannel.note : "Amazon returns are typically 30 days of delivery but set per listing — check before ordering."}{" "}
                     <Link
                       href="/blog/office-chair-return-policies-and-warranties-compared-herman-miller-steelcase-amazon"
                       className="underline underline-offset-2"
@@ -409,8 +413,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#171717] bg-white p-3 shadow-[0_-8px_24px_rgba(0,0,0,.12)] lg:hidden">
-            {hubOfficialStoreUrl ? (
-              <a href={hubOfficialStoreUrl} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">View on Herman Miller Store ↗</a>
+            {officialChannel ? (
+              <a href={officialChannel.url} target="_blank" rel="noopener noreferrer" className="flex w-full items-center justify-center gap-2 bg-foreground px-4 py-3 text-sm font-semibold text-background hover:bg-foreground/90">{officialChannel.label} ↗</a>
             ) : (
               <SmartBuyLink
                 variant="block"

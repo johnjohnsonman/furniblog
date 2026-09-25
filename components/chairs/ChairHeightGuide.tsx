@@ -4,11 +4,15 @@ import type { ProductFitEvidence } from "@/lib/data/product-fit-evidence"
 interface ChairHeightGuideProps {
   chairSpecs?: Product["chairSpecs"]
   evidence?: ProductFitEvidence[]
+  /** Official page to check dimensions on when no field-level sources exist. */
+  officialSource?: { url: string; label: string } | null
 }
 
-export function ChairHeightGuide({ chairSpecs, evidence = [] }: ChairHeightGuideProps) {
+export function ChairHeightGuide({ chairSpecs, evidence = [], officialSource }: ChairHeightGuideProps) {
   const fields = new Set(evidence.map(item => item.fieldKey))
-  if (!chairSpecs || fields.size === 0) return <section className="mt-8 border border-dashed border-[#a9a298] bg-[#faf8f3] p-5"><h3 className="font-medium">Fit dimensions pending verification</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Chairpedia has not yet attached field-level sources to this product’s fit measurements. We do not present catalog placeholders as verified dimensions. Confirm the exact model with the manufacturer or showroom.</p></section>
+  // No sourced fit measurements: point to the official specification instead of
+  // showing catalog placeholders or a "pending" notice.
+  if (!chairSpecs || fields.size === 0) return <section className="mt-8 border-t border-border pt-5"><h3 className="font-medium">Check the exact dimensions</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">Seat height, depth and width vary by configuration. Confirm them for the exact build on the manufacturer&rsquo;s specification{officialSource ? <> — <a href={officialSource.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">{officialSource.label} ↗</a></> : "."}</p></section>
 
   const hasHeightRange = fields.has("recommended_height") &&
     chairSpecs.recommendedHeightMin != null && chairSpecs.recommendedHeightMax != null

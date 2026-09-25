@@ -5,9 +5,10 @@ import type { ProductFitEvidence } from "@/lib/data/product-fit-evidence"
 interface ChairProductSpecsProps {
   product: ProductView
   fitEvidence?: ProductFitEvidence[]
+  officialSource?: { url: string; label: string } | null
 }
 
-export function ChairProductSpecs({ product, fitEvidence = [] }: ChairProductSpecsProps) {
+export function ChairProductSpecs({ product, fitEvidence = [], officialSource }: ChairProductSpecsProps) {
   return (
     <>
       <section>
@@ -67,7 +68,7 @@ export function ChairProductSpecs({ product, fitEvidence = [] }: ChairProductSpe
           </section>
         </section>
       </section>
-      <ChairHeightGuide chairSpecs={product.chairSpecs} evidence={fitEvidence} />
+      <ChairHeightGuide chairSpecs={product.chairSpecs} evidence={fitEvidence} officialSource={officialSource} />
     </>
   )
 }

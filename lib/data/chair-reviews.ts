@@ -29,7 +29,7 @@ export const chairReviewsByProduct: Record<string, Review[]> = {
       productId: "herman-miller-aeron",
       source: "chairpark",
       summary:
-        "Tried it for 30 minutes at Chairpark before buying. Lumbar support is unmistakable and the mesh breathes well for long sessions.",
+        "Tried it for 30 minutes at a showroom before buying. Lumbar support is unmistakable and the mesh breathes well for long sessions.",
       pros: ["Strong lumbar support", "Excellent ventilation", "12-year warranty"],
       cons: ["Premium price", "Mesh seat adjustment period"],
       scores: chairparkScores(4.6, {
@@ -41,7 +41,6 @@ export const chairReviewsByProduct: Record<string, Review[]> = {
       reviewerWeightKg: 72,
       usageHoursPerDay: 9,
       usagePurpose: "office",
-      sourceUrl: "https://chairpark.co.kr/",
       originalLanguage: "en",
       verified: true,
       helpfulCount: 42,

@@ -22,13 +22,17 @@ export function ChairProductOverview({
   similarProducts,
   claimsVerified = true,
 }: ChairProductOverviewProps) {
+  // Skip "What to know" when it would repeat the hero description word for word.
+  const showOverview = Boolean(product.overview?.trim()) && product.overview?.trim() !== product.description?.trim()
   return (
     <>
-      {product.overview && (
+      {(showOverview || product.designer) && (
         <section>
-          <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Product overview</p>
-          <h2 className="mb-4 mt-1 font-serif text-3xl font-medium text-foreground">What to know</h2>
-          <p className="max-w-3xl text-lg leading-8 text-muted-foreground">{product.overview}</p>
+          {showOverview && <>
+            <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#3157e8]">Product overview</p>
+            <h2 className="mb-4 mt-1 font-serif text-3xl font-medium text-foreground">What to know</h2>
+            <p className="max-w-3xl text-lg leading-8 text-muted-foreground">{product.overview}</p>
+          </>}
           {product.designer && (
             <p className="mt-4 text-sm">
               <span className="text-muted-foreground">Designed by </span>

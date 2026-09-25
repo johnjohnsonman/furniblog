@@ -27,7 +27,8 @@ export const AFFILIATE_LINKS_DATA: Record<
   "aeris-3dee": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B00VG2ZW04", isOfficial: false }], // 3Dee — US listing is red seat / polished frame
   "libernovo-omni": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0FYCKPWP9", isOfficial: false }], // Omni base 48cm, chair only, black
   "varier-variable-balans": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B071ZM1CKG", isOfficial: false }], // Variable balans, black revive / black ash
-  "okamura-contessa-ii": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B0CZ6ZQGMQ", isOfficial: false }], // Contessa Seconda, white — US listing
+  // okamura-contessa-ii: the Amazon US listing (B0CZ6ZQGMQ, Contessa Seconda white) showed
+  // "Currently unavailable" on 2026-09-25 — now sold via the official channel below.
   "ergohuman-elite": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B003Y5BF7A", isOfficial: false }],
   "ergohuman-classic": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B002LK1YNO", isOfficial: false }],
   "duorest-alpha": [{ retailer: "Amazon", url: "https://www.amazon.com/dp/B07Y3X1H5J", isOfficial: false }],
@@ -377,12 +378,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
   ],
   "hag-tion": [
-    {
-      retailer: "HÅG Official",
-      url: "https://www.hag-global.com",
-      isOfficial: true,
-      priceUsd: 995,
-    },
+    { retailer: "Flokk US store", url: "https://store.flokk.com/us/en-gb/products/hag-tion", isOfficial: true },
   ],
   "flokk-rh-logic-400": [
     {
@@ -398,47 +394,19 @@ export const AFFILIATE_LINKS_DATA: Record<
       priceUsd: 1199,
     },
   ],
+  // Japan-only chairs, not sold on Amazon US: official stores only, same pages
+  // as price-provenance (no catalog prices — the sourced yen price is shown).
   "kokuyo-ing": [
-    {
-      retailer: "Kokuyo Official",
-      url: "https://www.kokuyo-furniture.co.jp/search/products/ing/",
-      isOfficial: true,
-      priceUsd: 380,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=kokuyo+ing",
-      isOfficial: false,
-      priceUsd: 350,
-    },
+    { retailer: "KOKUYO Workstyle Shop (Japan)", url: "https://workstyle.kokuyo.co.jp/shop/c/c1111_ssp/", isOfficial: true },
   ],
   "kokuyo-ing-cloud": [
-    {
-      retailer: "Kokuyo Official",
-      url: "https://www.kokuyo-furniture.co.jp/search/products/ing/",
-      isOfficial: true,
-      priceUsd: 580,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=kokuyo+ing+cloud",
-      isOfficial: false,
-      priceUsd: 550,
-    },
+    { retailer: "KOKUYO Workstyle Shop (Japan)", url: "https://workstyle.kokuyo.co.jp/shop/c/c1165/", isOfficial: true },
+  ],
+  "okamura-contessa-ii": [
+    { retailer: "OKAMURA Lifestyle Store (Japan)", url: "https://lifestylestore.okamura.co.jp/products/cc88xs-ff71", isOfficial: true },
   ],
   "itoki-act2": [
-    {
-      retailer: "Itoki Official",
-      url: "https://www.itoki.jp/product/chair/act2/",
-      isOfficial: true,
-      priceUsd: 850,
-    },
-    {
-      retailer: "Amazon Japan",
-      url: "https://www.amazon.co.jp/s?k=itoki+act2",
-      isOfficial: false,
-      priceUsd: 800,
-    },
+    { retailer: "ITOKI (Japan)", url: "https://www.itoki.jp/company/news/2025/2505_act2/", isOfficial: true },
   ],
   "vitra-id-chair-concept": [
     {
@@ -493,18 +461,7 @@ export const AFFILIATE_LINKS_DATA: Record<
     },
   ],
   "wilkhahn-on": [
-    {
-      retailer: "Wilkhahn Official",
-      url: "https://www.wilkhahn.com/en/products/on-office-swivel-chair/",
-      isOfficial: true,
-      priceUsd: 1800,
-    },
-    {
-      retailer: "Amazon",
-      url: "https://www.amazon.com/s?k=wilkhahn+on+chair",
-      isOfficial: false,
-      priceUsd: 1700,
-    },
+    { retailer: "Wilkhahn US (dealer network)", url: "https://www.wilkhahn.com/en-us/products/task-chairs-office-chairs/on/", isOfficial: true },
   ],
   "wilkhahn-at": [
     {

@@ -59,7 +59,7 @@ export const STEELCASE_GESTURE: RichReview = {
   ],
   fixed: [
     { k: "Lumbar", v: "The 3D LiveBack flexes with the spine; a separate adjustable lumbar is an add-on, not standard on every build.", src: "Steelcase / reviews" },
-    { k: "Headrest", v: "Not offered on Gesture (unlike Steelcase Leap/Series 2).", src: "Steelcase (documented)" },
+    { k: "Headrest", v: "Optional — an add-on, not included on every build.", src: "Steelcase (official store)" },
     { k: "One size", v: "Gesture is a single frame size (no A/B/C sizing).", src: "Steelcase (documented)" },
   ],
 
@@ -70,7 +70,7 @@ export const STEELCASE_GESTURE: RichReview = {
   ],
   cons: [
     { t: "Expensive, and the price climbs quickly with upholstery and back upgrades.", src: "Our reading" },
-    { t: "No headrest option — heavy recliners who want neck support should look at Leap or Series 2.", src: "Steelcase (documented)" },
+    { t: "The headrest is an optional add-on — confirm it is on the order if you want neck support.", src: "Steelcase (official store)" },
     { t: "Configuration sprawl makes it easy to buy a cheaper fixed-arm build by mistake.", src: "Our reading" },
   ],
 
@@ -81,7 +81,7 @@ export const STEELCASE_GESTURE: RichReview = {
     "Anyone who wants a contract chair rated to 400 lb with a lifetime warranty",
   ],
   skipWho: [
-    "Need a headrest (look at Steelcase Leap or Series 2)",
+    "Want a headrest included as standard (it is an optional add-on)",
     "Want an all-mesh back (Gesture's back is upholstered)",
     "Are shopping on a tight budget",
   ],
@@ -113,14 +113,14 @@ export const STEELCASE_GESTURE: RichReview = {
 
   verdict: [
     "The Gesture's argument is its arms. Where most chairs give you two or three arm adjustments, Gesture's 360-degree arms move in four directions and pivot, so they can actually prop your forearms whether you're typing, reclining with a phone, or hunched over a tablet. Pair that with a spine-tracking LiveBack, a flexible seat edge, a 400 lb rating and Steelcase's lifetime warranty and you have one of the most genuinely ergonomic task chairs sold.",
-    "The catches are price and choice. Gesture is expensive and gets more so with upholstery and back upgrades, it has no headrest, and it's sold in enough configurations that it's easy to click a cheaper fixed-arm build by accident. Decide on the arms, the back and the casters first, then buy — and if you want a headrest or all-mesh, look at Leap or Aeron instead.",
+    "The catches are price and choice. Gesture is expensive and gets more so with upholstery and back upgrades, the headrest is an optional add-on, and it's sold in enough configurations that it's easy to click a cheaper fixed-arm build by accident. Decide on the arms, the back and the casters first, then buy — and if you want an all-mesh back, look at Leap or Aeron instead.",
   ],
   verdictPullQuote:
     "If your hands are always moving between devices, no chair supports them like Gesture — just configure it deliberately.",
 
   faqs: [
     { q: "What makes the arms special?", a: "The 360-degree arms adjust up/down, in/out, forward/back and pivot, so the arm caps follow your forearms into postures ordinary arms can't reach — the chair's headline feature." },
-    { q: "Does Gesture have a headrest?", a: "No. Gesture is offered without a headrest. If you want neck support, look at the Steelcase Leap or Series 2." },
+    { q: "Does Gesture have a headrest?", a: "Yes, as an option. Steelcase sells Gesture with or without a headrest; it is an add-on, so confirm it on the exact order or listing." },
     { q: "Shell back or Wrapped back?", a: "The Shell back leaves the back's shell exposed (contract look, a little cheaper); the Wrapped back is fully upholstered. They support you the same way — it's aesthetics and price." },
     { q: "What's the weight capacity?", a: "400 lb, per Steelcase. Confirm on the listing you buy from." },
     { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Steelcase's specs and published reviews. We have not run our own instrumented lab test." },

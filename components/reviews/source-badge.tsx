@@ -23,7 +23,7 @@ const BADGE_CONFIG: Record<
   }
 > = {
   chairpark: {
-    label: "Chairpark in-store",
+    label: "Showroom visit",
     className: "bg-blue-50 text-blue-800 border-blue-200",
     icon: Star,
   },

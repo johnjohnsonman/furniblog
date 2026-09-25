@@ -61,7 +61,7 @@ function sourceLabel(source: string | null): string {
     review_sites: "Review sites",
     hackernews: "Hacker News",
     japan_community: "Japan community",
-    chairpark: "Chairpark",
+    chairpark: "Showroom",
   }
   return map[source] ?? source
 }

@@ -1,24 +1,24 @@
 // Display-only translations. Original video records and external videos remain unchanged.
 const translations: Record<string, {title: string; thumbnail_url: string | null; channel_title: string}> = {
   "wMP_r7LeFNw": {
-    "title": "Kokuyo Ing Cloud: Chairpark introduction (Korean-language source)",
+    "title": "Kokuyo Ing Cloud: showroom introduction (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/kokuyo-ing-cloud-1781599920937.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "b0q7pYPO1_c": {
     "title": "Kokuyo Ing Cloud: official operating guide (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/kokuyo-ing-cloud-1781599920937.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "Bqhv5HR7r3s": {
     "title": "Kokuyo Ing Cloud: behind the design (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/kokuyo-ing-cloud-1781599920937.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "DoegiaJFEmo": {
-    "title": "Itoki Act2: Chairpark introduction (Korean-language source)",
+    "title": "Itoki Act2: showroom introduction (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/itoki-act2-1781599115805.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "ILjz_PzdtBg": {
     "title": "Humanscale Freedom: office chair overview (Korean-language source)",
@@ -28,12 +28,12 @@ const translations: Record<string, {title: string; thumbnail_url: string | null;
   "nuvj_3U0l2w": {
     "title": "Kokuyo Ing: movement while seated (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/kokuyo-ing-1781599816324.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "MyqQyU3Ojt0": {
     "title": "Kokuyo Ing: movement demonstration (Korean-language source)",
     "thumbnail_url": "https://bvytheznlotwgavmytfr.supabase.co/storage/v1/object/public/product-images/kokuyo-ing-1781599816324.jpg",
-    "channel_title": "Chairpark"
+    "channel_title": "Showroom channel"
   },
   "JX_N2DYMWG4": {
     "title": "Okamura Sylphy: a new addition to my room (Vietnamese-language source)",

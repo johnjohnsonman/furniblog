@@ -1,7 +1,7 @@
 import type { Review, ReviewSource, ChairScores } from "@/types/review"
 
 export const SOURCE_LABELS: Record<ReviewSource, string> = {
-  chairpark: "Chairpark",
+  chairpark: "Showroom",
   reddit: "Reddit",
   youtube: "YouTube",
   dcinside: "DC Inside",

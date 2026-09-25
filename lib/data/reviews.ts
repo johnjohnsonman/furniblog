@@ -231,7 +231,7 @@ const extraFeedReviews: Review[] = [
     productId: "herman-miller-aeron",
     source: "chairpark",
     summary:
-      "Visited Chairpark Gangnam and bought Size C. Larger frame fit C well; staff sizing advice was helpful.",
+      "Visited a showroom and bought Size C. Larger frame fit C well; staff sizing advice was helpful.",
     pros: ["In-person trial", "Size consultation", "Lumbar support"],
     cons: ["Visit required", "Price"],
     scores: scores(4.7, { lumbarSupport: 4.9, seatComfort: 4.5 }),
@@ -239,7 +239,6 @@ const extraFeedReviews: Review[] = [
     reviewerWeightKg: 92,
     usageHoursPerDay: 10,
     usagePurpose: "office",
-    sourceUrl: "https://chairpark.co.kr/",
     verified: true,
     helpfulCount: 19,
     createdAt: "2025-12-01T14:00:00Z",

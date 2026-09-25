@@ -6,7 +6,7 @@ export const metadata = {
   alternates: { canonical: "/experience" },
   title: "Share your chair experience",
   description:
-    "Tried a chair at a Chairpark store? Share your experience to help other shoppers.",
+    "Tried a chair at a showroom? Share your experience to help other shoppers.",
 }
 
 export const dynamic = "force-dynamic"

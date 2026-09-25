@@ -54,7 +54,7 @@ const AFFILIATE_LABELS: Record<AffiliateChannel, string> = {
   official: "Official Store",
   amazon: "Amazon",
   rakuten: "Rakuten",
-  chairpark: "Try at Chairpark",
+  chairpark: "Try at a showroom",
 }
 
 function affiliateLinks(

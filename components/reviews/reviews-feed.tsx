@@ -104,7 +104,7 @@ export function ReviewsFeed({ reviews }: ReviewsFeedProps) {
         </h1>
         <p className="mt-2 text-muted-foreground text-sm max-w-2xl">
           Find reviews from people like you—filter by body type, work habits,
-          and health needs across Chairpark, Reddit, YouTube, and more.
+          and health needs across Reddit, YouTube, and more.
         </p>
       </div>
 
