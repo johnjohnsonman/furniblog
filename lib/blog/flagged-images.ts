@@ -260,7 +260,7 @@ export const CARD_BLOCKED_IMAGE_FILES = new Set<string>([
   "chairpedia-1785736356682.png",
 ])
 
-/** Same showroom without visible signage. Not blocked yet; never picked as a replacement. */
+/** Same showroom without visible signage. Also kept off cards (2026-09-26 decision). */
 export const SHOWROOM_UNSIGNED_IMAGE_FILES = new Set<string>([
   "chairpedia-1783324201656.png",
   "chairpedia-1783324267574.jpg",

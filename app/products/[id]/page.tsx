@@ -200,7 +200,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // Card images skip flagged blog images (Korean text, showroom branding); see lib/blog/card-image.ts.
   const blogGuides = relatedBlog
     .filter((b) => !hubGuides?.hrefs.has(`/blog/${b.slug}`))
-    .map((b) => ({ ...b, hero_image_url: productCardImage(b) }))
+    .map((b) => ({ ...b, hero_image_url: productCardImage(b, slug, galleryImages[0] ?? null) }))
   const hasVersions = contentHub ? hubHasVersions(contentHub) : false
   const hasGuides = Boolean(hubGuides && hubGuides.steps.length + hubGuides.more.length > 0) || blogGuides.length > 0
   const uniqueByHref = <T extends { href: string }>(items: T[]) => items.filter((item, i) => items.findIndex((x) => x.href === item.href) === i)

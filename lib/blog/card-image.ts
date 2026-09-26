@@ -1,17 +1,27 @@
 import { CARD_BLOCKED_IMAGE_FILES, SHOWROOM_UNSIGNED_IMAGE_FILES } from "./flagged-images"
 
 const fileOf = (url: string) => url.split("?")[0].split("/").pop() ?? ""
+const isFlagged = (url: string) => {
+  const file = fileOf(url)
+  return CARD_BLOCKED_IMAGE_FILES.has(file) || SHOWROOM_UNSIGNED_IMAGE_FILES.has(file)
+}
 
 /**
- * Image for a blog card on product pages. Blocked hero images are replaced by
- * the first unflagged image in the post body; with none, the card has no image.
+ * Image for a blog card on a product page. A flagged hero is replaced by, in
+ * order: the page product's own photo, a photo of that same product inside the
+ * post body (product-images files start with the product slug), or no image.
+ * Another chair's photo is never used as a stand-in.
  */
-export function productCardImage(post: { hero_image_url: string | null; content_html?: string | null }): string | null {
+export function productCardImage(
+  post: { hero_image_url: string | null; content_html?: string | null },
+  productSlug: string,
+  productImage?: string | null
+): string | null {
   const hero = post.hero_image_url
-  if (hero && !CARD_BLOCKED_IMAGE_FILES.has(fileOf(hero))) return hero
+  if (hero && !isFlagged(hero)) return hero
+  if (productImage && !isFlagged(productImage)) return productImage
   for (const m of (post.content_html ?? "").matchAll(/<img[^>]+src="([^"]+)"/g)) {
-    const file = fileOf(m[1])
-    if (!CARD_BLOCKED_IMAGE_FILES.has(file) && !SHOWROOM_UNSIGNED_IMAGE_FILES.has(file)) return m[1]
+    if (fileOf(m[1]).startsWith(`${productSlug}-`) && !isFlagged(m[1])) return m[1]
   }
   return null
 }
