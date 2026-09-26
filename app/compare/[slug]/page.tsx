@@ -113,7 +113,8 @@ export default async function ComparePage({
   const pilot = getVerifiedComparisonPilot(c.slug)
   const preview = isChairpediaPreview()
   const pageTitle = pilot?.title ?? c.title
-  const pageDescription = pilot?.description ?? c.excerpt ?? c.subtitle ?? null
+  // Pages under source review expose only the neutral summary, as in the meta description.
+  const pageDescription = pilot?.description ?? (c.requiresSourceReview ? neutralComparisonSummary(c.productA?.name, c.productB?.name) : c.excerpt ?? c.subtitle ?? null)
 
   const updatedAt = c.updated_at ?? c.published_at
   const displayUpdatedAt = pilot ? "2026-09-25" : updatedAt

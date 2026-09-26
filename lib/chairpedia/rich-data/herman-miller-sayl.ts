@@ -25,7 +25,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
     { label: "Back options", value: "Suspension / upholstered", note: "Choose at order" },
     { label: "Arms", value: "None / fixed / adjustable", note: "Configuration choice" },
     { label: "Warranty", value: "12 years", note: "Herman Miller-documented" },
-    { label: "Weight capacity", value: "≈ 350 lb", note: "Retailer-listed" },
+    { label: "Weight capacity", value: "350 lb", note: "Herman Miller-documented" },
   ],
 
   checksTitle: "Check these before you buy",
@@ -33,27 +33,27 @@ export const HERMAN_MILLER_SAYL: RichReview = {
     "Sayl spans a wide price range depending on how it's configured. The listing you click decides how adjustable it actually is — confirm these four.",
   checks: [
     { n: "01", title: "Suspension back or upholstered back", body: "The signature version is the unframed elastomer \"Y-Tower\" suspension back — airy, flexible and the look people buy Sayl for. There's also a fully upholstered back. Confirm which the listing is; they feel quite different." },
-    { n: "02", title: "Arms: armless, fixed or fully adjustable", body: "Sayl is sold armless, with fixed arms, or with fully adjustable arms. The cheapest listings are usually armless or fixed. If you want to set arm height and width, confirm the listing says fully adjustable." },
+    { n: "02", title: "Arms: armless, fixed or fully adjustable", body: "Sayl is sold with no arms, fixed arms, height-adjustable arms or Fully Adjustable 4D Arms. The cheapest listings are usually armless or fixed. If you want to set arm width, depth and pivot as well as height, confirm the listing says fully adjustable." },
     { n: "03", title: "Adjustable lumbar and seat depth are options, not defaults", body: "An adjustable lumbar (SwingBack/adjustable) and an adjustable seat depth are available but not on every build. If lower-back support matters, buy the version that includes the adjustable lumbar." },
     { n: "04", title: "Don't confuse it with the Sayl Gaming chair", body: "Herman Miller also sells a Sayl Gaming variant with different styling. For a work setup, buy the standard Sayl and pick your colour and base finish." },
   ],
 
   dims: [
     { k: "Overall", v: "≈ 24.5 in W × 19.75 in D × 34.75–39.25 in H", tier: "C" },
-    { k: "Seat height", v: "≈ 16–20.5 in", tier: "C" },
-    { k: "Weight capacity", v: "≈ 350 lb", tier: "C" },
+    { k: "Seat height", v: "16–20.5 in (standard cylinder; 15–19 low, 16.5–22 extended)", tier: "B" },
+    { k: "Weight capacity", v: "350 lb", tier: "B" },
     { k: "Back", v: "Unframed \"Y-Tower\" elastomer suspension, or upholstered", tier: "B" },
     { k: "Seat", v: "Upholstered foam", tier: "B" },
     { k: "Recline", v: "Tilt with tension; tilt limiter and forward seat-angle available", tier: "B" },
-    { k: "Armrests", v: "Armless, fixed, or fully adjustable (height + width)", tier: "B" },
+    { k: "Armrests", v: "No arms, fixed, height-adjustable, or Fully Adjustable 4D Arms (height, width, depth, pivot)", tier: "B" },
     { k: "Lumbar", v: "Optional adjustable lumbar (not on every build)", tier: "B" },
     { k: "Warranty", v: "12 years", tier: "B" },
   ],
   dimsSourceNote:
-    "Sources: store.hermanmiller.com, the Amazon listing and published reviews (checked 2026-09-10). Herman Miller's public Sayl spec page returned an error on our check, so dimensions and weight capacity are retailer-sourced and marked \"Not confirmed\"; back type, arms, lumbar and the 12-year warranty are Herman Miller-documented.",
+    "Sources: store.hermanmiller.com, the Amazon listing and published reviews (checked 2026-09-10). Overall dimensions remain retailer-sourced and marked \"Not confirmed\"; seat height, weight capacity (350 lb), back type, arms, lumbar and the 12-year, 3-shift warranty are Herman Miller-documented (product sheet and store, checked 2026-09-26).",
 
   adjustable: [
-    { k: "Arms (on adjustable builds)", v: "Height and width.", src: "Herman Miller / listing" },
+    { k: "Arms (on adjustable builds)", v: "Height-Adjustable Arms: 6.7–10.8 in above seat. Fully Adjustable 4D Arms: 4 in vertical, 1.38 in horizontal, 2 in front-to-back, 11° pivot out and in.", src: "Herman Miller (documented)" },
     { k: "Tilt", v: "Recline tension; tilt limiter and forward seat-angle options.", src: "Herman Miller (documented)" },
     { k: "Lumbar (option)", v: "Adjustable lumbar available on some builds.", src: "Herman Miller (documented)" },
     { k: "Seat depth (option)", v: "Adjustable on some builds.", src: "Herman Miller / listing" },
@@ -121,7 +121,7 @@ export const HERMAN_MILLER_SAYL: RichReview = {
 
   faqs: [
     { q: "What is the \"Y-Tower\" back?", a: "It's Sayl's unframed elastomer suspension back, hung off a single central spine like a suspension bridge — the design's signature and the reason for its open look." },
-    { q: "Which arms should I get?", a: "Sayl comes armless, with fixed arms, or with fully adjustable arms. If you want to set arm height and width, confirm the listing says fully adjustable — cheaper listings often aren't." },
+    { q: "Which arms should I get?", a: "Sayl comes with no arms, fixed arms, height-adjustable arms or Fully Adjustable 4D Arms. If you want to set arm width, depth and pivot as well as height, confirm the listing says fully adjustable — cheaper listings often aren't." },
     { q: "Does Sayl have a headrest?", a: "No. There's no headrest option on Sayl." },
     { q: "Is there an adjustable lumbar?", a: "It's available on some builds but not standard on all. If lower-back support matters, buy the version that lists an adjustable lumbar." },
     { q: "Has Chairpedia tested this chair?", a: "This guide is built on our research-based Chairpedia deep-dive (below) plus Herman Miller's information and published reviews. We have not run our own instrumented lab test." },

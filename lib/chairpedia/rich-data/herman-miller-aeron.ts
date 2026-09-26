@@ -58,7 +58,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
     { k: "Frame size", v: "Chosen at purchase (A/B/C) — not adjustable afterward.", src: "Herman Miller (documented)" },
     { k: "Seat height", v: "Pneumatic lift; range varies by size.", src: "Herman Miller (documented)" },
     { k: "Back support (PostureFit SL)", v: "Sacral + lumbar pads adjust when this option is fitted.", src: "Herman Miller (documented)" },
-    { k: "Arms", v: "Height / width / depth / pivot, depending on the arm option chosen.", src: "Herman Miller (documented)" },
+    { k: "Arms", v: "Fully Adjustable Arms: height, depth and angle (pivot). Height-Adjustable Arms: height (a with-pivot version is also listed). Stationary Arms: fixed.", src: "Herman Miller (documented)" },
     { k: "Tilt", v: "Tilt tension; recline range and forward tilt depend on tilt options.", src: "Herman Miller (documented)" },
   ],
   fixed: [

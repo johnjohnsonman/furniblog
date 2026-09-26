@@ -43,7 +43,7 @@ export function officialSpecRows(slug?: string | null): OfficialSpecRow[] {
   if (!specs) return []
   const rows: OfficialSpecRow[] = []
   for (const [field, label] of LABELS) {
-    const entries = (specs[field] ?? []).filter((v) => /\d|[A-Za-z]/.test(v.value))
+    const entries = (specs[field] ?? []).filter((v) => !v.displayExcluded && /\d|[A-Za-z]/.test(v.value))
     if (!entries.length) continue
     const bySource = new Map<string, OfficialSpecValue[]>()
     for (const v of entries) bySource.set(v.sourceUrl, [...(bySource.get(v.sourceUrl) ?? []), v])

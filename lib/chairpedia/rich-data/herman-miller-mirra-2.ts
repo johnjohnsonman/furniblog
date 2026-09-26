@@ -23,7 +23,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { label: "Seat", value: "AireWeave", note: "Elastomeric suspension" },
     { label: "Tilt", value: "Harmonic 2", note: "PostureFit sacral support" },
     { label: "Weight capacity", value: "350 lb", note: "Herman Miller-documented" },
-    { label: "Warranty", value: "12 years", note: "Full chair" },
+    { label: "Warranty", value: "12 years", note: "3-shift, limited exceptions" },
   ],
 
   checksTitle: "Check these before you buy",
@@ -33,7 +33,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { n: "01", title: "TriFlex back vs Butterfly back", body: "The standard TriFlex back is a flexible polymer with a dotted, varying-give pattern — airy and responsive. The Butterfly back adds a thin fabric-and-polymer suspension layer over it for a slightly softer, quieter feel. Both are breathable; confirm which the listing is, as they look and feel a little different." },
     { n: "02", title: "Tilt: standard or with tilt limiter and seat-angle", body: "The Harmonic 2 tilt reclines smoothly; an upgrade adds a tilt limiter and adjustable seat-angle for finer control. If you want to cap or fine-tune recline, buy the version that lists those." },
     { n: "03", title: "Seat depth: fixed or FlexFront", body: "The seat is a breathable AireWeave suspension at a fixed depth, or with the FlexFront option that adjusts seat depth (about 16.25–18 in). Taller sitters usually want FlexFront." },
-    { n: "04", title: "Arms and back support", body: "Arms range from fixed to fully adjustable (height, width, depth and pivot); the back support also adjusts for height and depth. Confirm the arm build and colour on the listing." },
+    { n: "04", title: "Arms and back support", body: "Arms range from fixed to fully adjustable (height, width, depth and pivot); the optional Adjustable Lumbar Support adjusts for height and depth. Confirm the arm build and colour on the listing." },
   ],
 
   dims: [
@@ -44,16 +44,16 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     { k: "Back", v: "TriFlex polymer, or Butterfly fabric-and-polymer suspension", tier: "B" },
     { k: "Seat", v: "AireWeave elastomeric suspension", tier: "B" },
     { k: "Recline", v: "Harmonic 2 tilt; PostureFit sacral support; Loop spine torsional flex", tier: "B" },
-    { k: "Armrests", v: "Fixed to fully adjustable (≈ 5 in vertical, 1 in horizontal, 2 in front-to-back, 20° pivot)", tier: "B" },
-    { k: "Back support", v: "Adjusts ≈ 4 in height, 1 in depth", tier: "B" },
-    { k: "Warranty", v: "12 years, full chair", tier: "B" },
+    { k: "Armrests", v: "No arms, fixed, or Fully Adjustable 4D Arms (5.5 in vertical, 6–11.5 in above seat; 1.125 in horizontal; 2 in front-to-back; 20° pivot out/in)", tier: "B" },
+    { k: "Lumbar", v: "PostureFit sacral support standard; optional Adjustable Lumbar Support (4.5 in height, 1 in depth)", tier: "B" },
+    { k: "Warranty", v: "12-year, 3-shift (limited exceptions)", tier: "B" },
   ],
   dimsSourceNote:
     "Sources: hermanmiller.com Mirra 2 specification page, the Amazon listing and published reviews (checked 2026-09-10). Figures are Herman Miller-documented; the arm and back-support ranges apply to the adjustable builds.",
 
   adjustable: [
-    { k: "Armrests (adjustable build)", v: "≈ 5 in vertical, 1 in horizontal, 2 in front-to-back, 20° pivot.", src: "Herman Miller (documented)" },
-    { k: "Back support", v: "≈ 4 in height, 1 in depth.", src: "Herman Miller (documented)" },
+    { k: "Armrests (Fully Adjustable 4D Arms)", v: "5.5 in vertical (6–11.5 in above seat), 1.125 in horizontal, 2 in front-to-back, 20° pivot out and in.", src: "Herman Miller (documented)" },
+    { k: "Lumbar (optional)", v: "Adjustable Lumbar Support: 4.5 in height, 1 in depth.", src: "Herman Miller (documented)" },
     { k: "Tilt (upgrade)", v: "Tilt limiter and adjustable seat-angle on the upgraded mechanism.", src: "Herman Miller (documented)" },
     { k: "Seat depth (FlexFront)", v: "≈ 16.25–18 in on the FlexFront option.", src: "Herman Miller (documented)" },
     { k: "Seat height", v: "Pneumatic (≈ 16–20.5 in).", src: "Herman Miller (documented)" },
@@ -67,7 +67,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
   pros: [
     { t: "Responsive TriFlex/Butterfly back and breathable AireWeave seat — cool and lively to sit in.", src: "Herman Miller · published reviews" },
     { t: "PostureFit sacral support and a smooth Harmonic 2 tilt, at a 350 lb capacity.", src: "Herman Miller (documented)" },
-    { t: "Full 12-year Herman Miller warranty for less than the Aeron/Embody flagships.", src: "Herman Miller (documented)" },
+    { t: "Herman Miller's 12-year, 3-shift warranty for less than the Aeron/Embody flagships.", src: "Herman Miller (documented)" },
   ],
   cons: [
     { t: "No headrest, and the base build has fixed seat depth and fixed arms.", src: "Herman Miller (documented)" },
@@ -100,7 +100,7 @@ export const HERMAN_MILLER_MIRRA_2: RichReview = {
     ctaLabel: "Search on Amazon",
     rows: [
       { k: "Returns", v: "Amazon's return window applies and depends on the seller; Herman Miller's own store lists a 30-day return. Check the listing." },
-      { k: "Warranty", v: "12 years, full chair (Herman Miller). Confirm on the listing." },
+      { k: "Warranty", v: "12-year, 3-shift with limited exceptions (Herman Miller). Confirm on the listing." },
       { k: "What to check", v: "Back type (TriFlex vs Butterfly), tilt (standard vs limiter + seat-angle), seat depth (fixed vs FlexFront), arm build and colour." },
     ],
     officialStore: {

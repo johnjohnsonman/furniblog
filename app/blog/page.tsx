@@ -1,5 +1,7 @@
 import { unstable_cache } from "next/cache"
 import { comparisonMedia } from "@/lib/comparisons/card-media"
+import { getComparisonCards } from "@/lib/comparisons/resolve"
+import { getVerifiedComparisonPilot } from "@/lib/comparisons/verified-pilots"
 import { enrichBlogPosts } from "@/lib/blog/media-server"
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
@@ -64,9 +66,17 @@ async function getComparisonCardsAsBlog(): Promise<BlogCard[]> {
       .order("published_at", { ascending: false, nullsFirst: false })
       .limit(1000)
     if (error) throw error
+    // Same rule as /compare: pages under source review show a neutral line
+    // instead of their stored summary; verified pilots show their own summary.
+    const hidden = new Set((await getComparisonCards(supabase)).filter((c) => c.requiresSourceReview).map((c) => c.slug))
     return ((await comparisonMedia(supabase, data ?? [])) as Array<Omit<BlogCard, "featured" | "category" | "href">>).map(
       (c) => ({
         ...c,
+        ...(getVerifiedComparisonPilot(c.slug)
+          ? { excerpt: getVerifiedComparisonPilot(c.slug)!.description, subtitle: null }
+          : hidden.has(c.slug)
+            ? { excerpt: "Source review pending. Product records remain available; this page is not a completed source-linked comparison.", subtitle: null }
+            : {}),
         featured: false, // don't let comparisons dominate the rotating hero
         category: "Comparisons",
         href: `/compare/${c.slug}`,

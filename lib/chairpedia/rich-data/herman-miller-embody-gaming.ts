@@ -5,6 +5,15 @@ import { HERMAN_MILLER_EMBODY } from "./herman-miller-embody"
 export const HERMAN_MILLER_EMBODY_GAMING: RichReview = {
   ...HERMAN_MILLER_EMBODY,
   includeDeepDive: false,
+  // Gaming edition arms per the Herman Miller Store: one option, Fully Adjustable Arms.
+  quickFacts: HERMAN_MILLER_EMBODY.quickFacts.map((f) => (f.label === "Arms" ? { ...f, value: "Fully Adjustable Arms", note: "Height, width, depth" } : f)),
+  dims: HERMAN_MILLER_EMBODY.dims.map((d) => (d.k === "Armrests" ? { ...d, v: "Fully Adjustable Arms (height, width, depth); no armless option in the US store" } : d)),
+  adjustable: HERMAN_MILLER_EMBODY.adjustable.map((a) => (a.k === "Arms" ? { ...a, v: "Height, width and depth (Fully Adjustable Arms)." } : a)),
+  rivals: HERMAN_MILLER_EMBODY.rivals.map((r) =>
+    r.isSelf
+      ? { ...r, name: "Herman Miller x Logitech G Embody Gaming", lumbar: "PostureFit + BackFit (no separate lumbar device)", arms: "Fully Adjustable Arms", standout: "Embody platform with gaming-edition foam" }
+      : r
+  ),
   eyebrow: "Herman Miller x Logitech G · Gaming chair · Buying guide",
   heroIntro:
     "The Embody Gaming Chair uses the standard Embody's pixelated support, BackFit adjustment and adjustable seat depth, then adds copper-infused cooling foam and extra upper-back foam for forward-leaning play. This guide separates those documented changes from claims the available sources do not establish.",
