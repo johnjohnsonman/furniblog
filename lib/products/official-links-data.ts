@@ -101,6 +101,24 @@ export const OFFICIAL_LINKS: Record<string, OfficialLink> = {
   "wilkhahn-fs": { kind: "site", url: "https://www.wilkhahn.com/en-us/products/task-chairs-office-chairs/fs/", label: "View on Wilkhahn site", retailer: "Wilkhahn official site", note: BRAND_NOTE },
   "wilkhahn-graph": { kind: "site", url: "https://www.wilkhahn.com/en-us/products/conference-chairs/graph/", label: "View on Wilkhahn site", retailer: "Wilkhahn official site", note: BRAND_NOTE },
   "wilkhahn-modus": { kind: "site", url: "https://www.wilkhahn.com/en-us/products/task-chairs-office-chairs/modus/", label: "View on Wilkhahn site", retailer: "Wilkhahn official site", note: BRAND_NOTE },
+  // KI and Vitra block automated checks (bot protection); these pages were opened
+  // in a browser by the owner on 2026-09-26. Includes KI Altus: no Amazon US listing.
+  "ki-altus": { kind: "site", url: "https://www.ki.com/products/name/altus-task-chair/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "ki-impress": { kind: "site", url: "https://www.ki.com/products/name/impress-task-chair/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "ki-kiaura": { kind: "site", url: "https://www.ki.com/products/by-collection/kiaura-collection/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "ki-ruckus": { kind: "site", url: "https://www.ki.com/products/name/ruckus-chair/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "ki-signia": { kind: "site", url: "https://www.ki.com/products/name/signia-task-chair/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "ki-torsion-air": { kind: "site", url: "https://www.ki.com/products/name/torsion-air-task-chair/", label: "View on KI site", retailer: "KI official site", note: BRAND_NOTE },
+  "vitra-grand-executive": { kind: "site", url: "https://www.vitra.com/en-us/product/grand-executive", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-grand-repos": { kind: "site", url: "https://www.vitra.com/en-us/product/details/grand-repos", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-id-chair-concept": { kind: "site", url: "https://www.vitra.com/en-us/product/id-chair-concept", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-id-soft": { kind: "site", url: "https://www.vitra.com/en-us/product/details/id-soft", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-id-trim": { kind: "site", url: "https://www.vitra.com/en-us/product/details/id-trim", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-lobby-chair-es-104": { kind: "site", url: "https://www.vitra.com/en-un/product/details/lobby-chair-es-104", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-pacific-chair": { kind: "site", url: "https://www.vitra.com/en-us/office/product/details/pacific-chair", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-physix": { kind: "site", url: "https://www.vitra.com/en-us/product/physix", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-physix-conference": { kind: "site", url: "https://www.vitra.com/en-us/product/details/596625", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
+  "vitra-soft-pad-chair-ea-219": { kind: "site", url: "https://www.vitra.com/en-un/product/details/126193", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
 }
 
 export function getOfficialLink(slug: string | null | undefined): OfficialLink | null {
