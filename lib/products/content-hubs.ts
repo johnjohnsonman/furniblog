@@ -177,11 +177,12 @@ export const productContentHubs: Record<string, ProductContentHub> = {
     comparisons: [
       { label: "Leap vs Aeron", href: "/compare/steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz", description: "Leap's seat, back and arm adjustments versus Aeron's size-based fit.", intent: "Compare" },
       { label: "Leap vs Gesture", href: "/compare/steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es", description: "Seat, back, recline and arm controls of two Steelcase chairs.", intent: "Compare" },
+      { label: "Leap vs Amia", href: "/compare/steelcase-leap-v2-vs-steelcase-amia-which-should-you-buy-mtgnkf2y", description: "Two Steelcase chairs, with official specs and Steelcase Store prices.", intent: "Compare" },
+      { label: "Leap vs Karman", href: "/compare/steelcase-leap-v2-vs-steelcase-karman-which-should-you-buy-mtdsokvd", description: "Two Steelcase chairs, compared on official specifications.", intent: "Compare" },
       { label: "Leap vs Embody", href: "/compare/steelcase-leap-v2-vs-herman-miller-embody-which-should-you-buy-mstsjr00", description: "LiveBack and back stop versus BackFit and seat depth.", intent: "Compare" },
       { label: "Leap vs Mirra 2", href: "/compare/steelcase-leap-v2-vs-herman-miller-mirra-2-which-should-you-buy-mt0xr0o4", description: "Standard controls versus configuration-dependent options.", intent: "Compare" },
-      { label: "Leap vs Cosm High Back", href: "/compare/steelcase-leap-v2-vs-herman-miller-cosm-high-back-which-should-you-buy-mssd4uxq", description: "LiveBack versus continuous suspension.", intent: "Compare" },
       { label: "Leap vs Sayl", href: "/compare/steelcase-leap-v2-vs-herman-miller-sayl-which-should-you-buy-mt9id44p", description: "Back construction and seat configuration.", intent: "Compare" },
-      { label: "Leap vs Freedom", href: "/compare/steelcase-leap-v2-vs-humanscale-freedom-which-should-you-buy-msgxmbd7", description: "Back stops versus self-adjusting recline.", intent: "Compare" },
+      { label: "Leap vs Contessa II", href: "/compare/steelcase-leap-v2-vs-okamura-contessa-ii-which-should-you-buy-ms9se1qj", description: "Steelcase and Okamura specifications side by side.", intent: "Compare" },
     ],
     officialSources: [
       { label: "Steelcase Leap spec guide (PDF)", href: "https://www.steelcase.com/content/uploads/2025/09/Leap-Spec-Guide-1.pdf", description: "Dimensions, options and adjustment ranges." },
