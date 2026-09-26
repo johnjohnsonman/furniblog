@@ -32,9 +32,9 @@ export function HubVersions({ hub, productName }: { hub: Hub; productName: strin
     {hub.versions.length > 0 && <section aria-labelledby="other-versions">
       <h2 id="other-versions" className="font-serif text-3xl">Other versions</h2>
       <div className="mt-5 grid gap-px border border-[#171717] bg-[#171717] sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2">
-        {hub.versions.map((item) => <Link key={item.href} href={item.href} className="group grid bg-white sm:grid-cols-[160px_1fr]">
+        {hub.versions.map((item) => <Link key={item.href} href={item.href} className={`group grid bg-white ${item.image ? "sm:grid-cols-[160px_1fr]" : ""}`}>
           {item.image && <div className="bg-[#f5f1e8] p-3"><Image src={item.image} alt={item.imageAlt ?? item.label} width={1080} height={1080} sizes="160px" className="aspect-square h-full w-full object-contain" /></div>}
-          <div className="p-5"><h3 className="font-serif text-xl">{item.label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p><span className="mt-4 inline-block text-sm font-semibold underline underline-offset-4">View version →</span></div>
+          <div className="p-5"><h3 className="font-serif text-xl">{item.label}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p><span className="mt-4 inline-block text-sm font-semibold underline underline-offset-4">{item.cta ?? "View version"} →</span></div>
         </Link>)}
       </div>
     </section>}

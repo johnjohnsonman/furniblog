@@ -7,6 +7,8 @@ export type ContentHubLink = {
   intent?: GuideIntent
   image?: string
   imageAlt?: string
+  /** Link text when the default (e.g. "View version") does not fit, such as a version without a product page. */
+  cta?: string
 }
 
 export type ProductContentHub = {
@@ -41,6 +43,7 @@ export type ProductContentHub = {
 }
 
 const EMBODY_AERON = "/compare/herman-miller-embody-vs-herman-miller-aeron-which-should-you-buy-ms6xh0fn"
+const LEAP_ID_GUIDE = "/blog/used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection"
 
 export const productContentHubs: Record<string, ProductContentHub> = {
   "herman-miller-aeron": {
@@ -139,6 +142,53 @@ export const productContentHubs: Record<string, ProductContentHub> = {
     comparisons: [{ label: "Standard Embody vs Aeron", href: EMBODY_AERON, description: "This comparison covers Standard Embody; it does not merge the Gaming edition into the result.", intent: "Compare" }],
     officialSources: [{ label: "Herman Miller x Logitech G Embody", href: "https://store.hermanmiller.com/gaming-chairs-embody-gaming-chair?lang=en_US", description: "Current US Gaming edition details and configuration." }],
   },
+  "steelcase-leap-v2": {
+    shortName: "Steelcase Leap",
+    edition: "Current Steelcase Leap (commonly called V2); used listings may be V1",
+    heroFacts: [
+      "Headrest is an option, not available on stools or Leap Plus",
+      "Seat-height range depends on the cylinder: standard or the optional taller one",
+      "Height-adjustable lumbar is standard on work chairs but may be omitted",
+      "Chair, stool and Leap Plus carry separate load ratings",
+      "Steelcase Limited Lifetime warranty: 12 years, multi-shift",
+    ],
+    sourceNote: "These points come from Steelcase's Leap spec guide and Leap product page (checked September 2026). The figures are in Specs below, each with its source.",
+    buyingChecks: [],
+    versions: [
+      {
+        label: "Leap V1 (earlier generation)",
+        href: LEAP_ID_GUIDE,
+        description: "No longer sold new and has no product page here. Used listings can be either generation, so identify V1 or V2 from the label and controls before comparing prices.",
+        cta: "How to tell V1 from V2",
+      },
+    ],
+    steps: [
+      { label: "1. V1 or V2?", href: LEAP_ID_GUIDE, description: "For a used or refurbished chair, confirm the generation from the label and controls first." },
+      { label: "2. Standard or taller cylinder?", href: "https://www.steelcase.com/content/uploads/2025/09/Leap-Spec-Guide-1.pdf", description: "Steelcase lists a standard seat-height range and an optional taller cylinder. Ask which one the chair has." },
+      { label: "3. Headrest fitted?", href: "/chairpedia/steelcase-leap-v2", description: "The headrest is an option. Ask for a rear photo showing whether one is installed." },
+      { label: "4. Lumbar and arms as listed?", href: "https://store.steelcase.com/seating/ergonomic-chairs/leap", description: "Compare the listing with Steelcase's own configuration: lumbar, arms and upholstery." },
+    ],
+    explainers: [],
+    guides: [
+      { label: "Leap V1 vs V2 identification", href: LEAP_ID_GUIDE, description: "Tell the generations apart and inspect a used chair.", intent: "Identify" },
+      { label: "Steelcase Leap buying guide", href: "/chairpedia/steelcase-leap-v2", description: "Features, fit and configuration checks.", intent: "Buy" },
+      { label: "Leap vs Gesture controls", href: "/blog/steelcase-leap-vs-gesture-which-high-end-ergonomic-chair-is-right-for-you", description: "Compare the documented controls of two Steelcase chairs.", intent: "Compare" },
+    ],
+    comparisons: [
+      { label: "Leap vs Aeron", href: "/compare/steelcase-leap-v2-vs-herman-miller-aeron-which-should-you-buy-ms42l6wz", description: "Leap's seat, back and arm adjustments versus Aeron's size-based fit.", intent: "Compare" },
+      { label: "Leap vs Gesture", href: "/compare/steelcase-leap-v2-vs-steelcase-gesture-which-should-you-buy-ms42m8es", description: "Seat, back, recline and arm controls of two Steelcase chairs.", intent: "Compare" },
+      { label: "Leap vs Embody", href: "/compare/steelcase-leap-v2-vs-herman-miller-embody-which-should-you-buy-mstsjr00", description: "LiveBack and back stop versus BackFit and seat depth.", intent: "Compare" },
+      { label: "Leap vs Mirra 2", href: "/compare/steelcase-leap-v2-vs-herman-miller-mirra-2-which-should-you-buy-mt0xr0o4", description: "Standard controls versus configuration-dependent options.", intent: "Compare" },
+      { label: "Leap vs Cosm High Back", href: "/compare/steelcase-leap-v2-vs-herman-miller-cosm-high-back-which-should-you-buy-mssd4uxq", description: "LiveBack versus continuous suspension.", intent: "Compare" },
+      { label: "Leap vs Sayl", href: "/compare/steelcase-leap-v2-vs-herman-miller-sayl-which-should-you-buy-mt9id44p", description: "Back construction and seat configuration.", intent: "Compare" },
+      { label: "Leap vs Freedom", href: "/compare/steelcase-leap-v2-vs-humanscale-freedom-which-should-you-buy-msgxmbd7", description: "Back stops versus self-adjusting recline.", intent: "Compare" },
+    ],
+    officialSources: [
+      { label: "Steelcase Leap spec guide (PDF)", href: "https://www.steelcase.com/content/uploads/2025/09/Leap-Spec-Guide-1.pdf", description: "Dimensions, options and adjustment ranges." },
+      { label: "Steelcase Leap product page", href: "https://www.steelcase.com/products/office-chairs/leap/", description: "Current product, load ratings and warranty." },
+      { label: "Steelcase Store: Leap", href: "https://store.steelcase.com/seating/ergonomic-chairs/leap", description: "US store configuration and list price." },
+    ],
+  },
 }
 
 export function getProductContentHub(slug: string) {
@@ -154,5 +204,8 @@ export const guideProductRelations: Record<string, { productSlug: string; intent
   "herman-miller-aeron-chair-review": { productSlug: "herman-miller-aeron", intent: "Buy" },
   "herman-miller-embody-chair": { productSlug: "herman-miller-embody", intent: "Buy" },
   "herman-miller-embody-gaming-chair": { productSlug: "herman-miller-embody-gaming", intent: "Identify" },
+  "used-steelcase-leap-buying-guide-v1-vs-v2-identification-and-inspection": { productSlug: "steelcase-leap-v2", intent: "Identify" },
+  "steelcase-leap-v2": { productSlug: "steelcase-leap-v2", intent: "Buy" },
+  "steelcase-leap-vs-gesture-which-high-end-ergonomic-chair-is-right-for-you": { productSlug: "steelcase-leap-v2", intent: "Compare" },
   "kokuyo-ing-cloud-review-the-3-000-chair-that-moves-with-you": { productSlug: "kokuyo-ing-cloud", intent: "Buy", productName: "Kokuyo ing Cloud" },
 }
