@@ -7,9 +7,10 @@ const isFlagged = (url: string) => {
 }
 
 /**
- * Image for a blog card on a product page. A flagged hero is replaced by, in
- * order: the page product's own photo, a photo of that same product inside the
- * post body (product-images files start with the product slug), or no image.
+ * Image for a blog card on a product page. A flagged hero, or a hero that is
+ * another chair's product photo, is replaced by, in order: the page product's
+ * own photo, a photo of that same product inside the post body (product-images
+ * files start with the product slug), or no image.
  * Another chair's photo is never used as a stand-in.
  */
 export function productCardImage(
@@ -18,7 +19,9 @@ export function productCardImage(
   productImage?: string | null
 ): string | null {
   const hero = post.hero_image_url
-  if (hero && !isFlagged(hero)) return hero
+  // A product photo of a different chair would misrepresent this page's product.
+  const otherProductPhoto = Boolean(hero && /\/product-images\//.test(hero) && !fileOf(hero).startsWith(`${productSlug}-`))
+  if (hero && !isFlagged(hero) && !otherProductPhoto) return hero
   if (productImage && !isFlagged(productImage)) return productImage
   for (const m of (post.content_html ?? "").matchAll(/<img[^>]+src="([^"]+)"/g)) {
     if (fileOf(m[1]).startsWith(`${productSlug}-`) && !isFlagged(m[1])) return m[1]
