@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { buildAffiliateUrl, pageSubtag, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
 import { resolveAmazonDestination } from "@/lib/affiliate/amazon-region"
+import { getOfficialLink } from "@/lib/products/official-links-data"
 
 const FALLBACK_AMAZON_TAG =
   process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
@@ -75,6 +76,20 @@ export function SmartBuyLink({
     variant === "block"
       ? "inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors"
       : "inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-sm font-semibold transition-colors"
+
+  // Chairs without a buyable Amazon US listing go to their official channel on
+  // every page (no Amazon search, no affiliate note).
+  const official = getOfficialLink(productId)
+  if (official) {
+    return (
+      <div className={cn(variant === "block" ? "space-y-2" : "inline-block", className)}>
+        <a href={official.url} target="_blank" rel="noopener noreferrer" onClick={() => track("official")} className={cn(base, RETAILER_STYLE.amazon)}>
+          {official.label}
+          <ExternalLink className="h-4 w-4 shrink-0 opacity-90" />
+        </a>
+      </div>
+    )
+  }
 
   // Local searches supplement the supplied Amazon product link.
   const amazon = resolveAmazonDestination(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US", subtag), query, country)

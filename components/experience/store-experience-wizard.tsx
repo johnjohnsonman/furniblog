@@ -33,7 +33,6 @@ const REASONS = [
   "Seat pressure distribution",
   "Breathability",
 ]
-const STORES = ["Hannam", "Gangnam", "Ilsan", "Mapo"]
 
 const STEP_TITLES = ["Choose chairs", "About you", "How you sit", "Rating & review"]
 const TOTAL_STEPS = 4
@@ -115,7 +114,6 @@ export function StoreExperienceWizard() {
   const [reasons, setReasons] = useState<string[]>([])
   const [photo, setPhoto] = useState<File | null>(null)
   const [photoPreview, setPhotoPreview] = useState<string | null>(null)
-  const [store, setStore] = useState<string | null>(null)
   const [comparing, setComparing] = useState("")
   const [nickname, setNickname] = useState("")
   const [phone, setPhone] = useState("")
@@ -222,7 +220,6 @@ export function StoreExperienceWizard() {
       rating,
       review_text: reviewText,
       selection_reasons: reasons,
-      store_location: store,
       comparing_chairs: comparing,
       nickname,
       phone,
@@ -582,16 +579,6 @@ export function StoreExperienceWizard() {
               className="hidden"
               onChange={onPickPhoto}
             />
-          </Field>
-
-          <Field label="Store visited" hint="Optional">
-            <div className="flex flex-wrap gap-2">
-              {STORES.map((s) => (
-                <ChoiceButton key={s} active={store === s} onClick={() => setStore(store === s ? null : s)}>
-                  {s}
-                </ChoiceButton>
-              ))}
-            </div>
           </Field>
 
           <Field label="Which other chairs are you considering?" hint="Optional">

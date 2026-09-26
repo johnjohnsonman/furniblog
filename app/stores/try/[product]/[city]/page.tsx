@@ -66,7 +66,7 @@ export default async function TrialPageRoute({ params }: Props) {
         <div className="location-card-actions">
           <Link href={`/products/${page.productSlug}`}>Research {page.productName} →</Link>
           <Link href="/compare">Compare chair models →</Link>
-          <RegionalAmazonLink href={amazon.url} name={`${page.brandName} ${page.productName}`} productId={page.productId} />
+          <RegionalAmazonLink href={amazon.url} name={`${page.brandName} ${page.productName}`} productId={page.productSlug} />
         </div>
       </section>
       <section>

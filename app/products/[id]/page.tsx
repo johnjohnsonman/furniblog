@@ -21,6 +21,7 @@ import { ProductSection } from "@/components/products/ProductSection"
 import { ProductReviewsSection } from "@/components/products/ProductReviewsSection"
 import { WhereToBuySection } from "@/components/affiliate/WhereToBuySection"
 import { getOfficialChannel } from "@/lib/products/official-channels"
+import { productCardImage } from "@/lib/blog/card-image"
 import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
@@ -196,7 +197,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   // One-page layout: every section is server-rendered; the jump menu lists only
   // sections that have content. Each guide/comparison/source URL appears once.
   const hubGuides = contentHub ? hubGuideGroups(contentHub) : null
-  const blogGuides = relatedBlog.filter((b) => !hubGuides?.hrefs.has(`/blog/${b.slug}`))
+  // Card images skip flagged blog images (Korean text, showroom branding); see lib/blog/card-image.ts.
+  const blogGuides = relatedBlog
+    .filter((b) => !hubGuides?.hrefs.has(`/blog/${b.slug}`))
+    .map((b) => ({ ...b, hero_image_url: productCardImage(b) }))
   const hasVersions = contentHub ? hubHasVersions(contentHub) : false
   const hasGuides = Boolean(hubGuides && hubGuides.steps.length + hubGuides.more.length > 0) || blogGuides.length > 0
   const uniqueByHref = <T extends { href: string }>(items: T[]) => items.filter((item, i) => items.findIndex((x) => x.href === item.href) === i)
