@@ -39,7 +39,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   ],
 
   dims: [
-    { k: "Seat height", v: "≈ 435–545 mm (17.1–21.5 in)", tier: "B" },
+    { k: "Seat height", v: "434–544 mm (17.1–21.4 in)", tier: "B" },
     { k: "Overall height", v: "≈ 994–1104 mm", tier: "B" },
     { k: "Weight capacity", v: "≈ 300 lb (136 kg)", tier: "B" },
     { k: "Back", v: "Kyoto Nishijin-weave mesh (leather back optional)", tier: "B" },
@@ -49,10 +49,10 @@ export const OKAMURA_CONTESSA_II: RichReview = {
     { k: "Armrests", v: "4D adjustable or fixed; regular or leather arm pads", tier: "B" },
     { k: "Lumbar", v: "Optional height-adjustable, ≈ 60 mm travel", tier: "B" },
     { k: "Headrest", v: "Adjustable, fixed large, or none", tier: "B" },
-    { k: "Warranty", v: "Not published on the product page (varies by market)", tier: "C" },
+    { k: "Warranty", v: "Outside Japan: 10 years structural parts (incl. mechanisms and adjustable arms); 5 years casters, gas cylinder, levers; 2 years finish, mesh, fabric, cushions, arm pads", tier: "B" },
   ],
   dimsSourceNote:
-    "Sources: okamura.com, the Amazon.co.jp listing and published reviews (checked 2026-09-10). Warranty terms are not stated on Okamura's product page and vary by market — treat as \"Not confirmed\" and check with your seller.",
+    "Sources: okamura.com, the Amazon.co.jp listing and published reviews (checked 2026-09-10). Seat height from Okamura's global spec guide (BIFMA) and warranty from its Global General Warranty Statement (outside Japan), checked 2026-09-26; Japan-market warranty terms differ.",
 
   adjustable: [
     { k: "Smart Operation controls", v: "Recline and height levers sit at the ends of the armrests for fingertip use.", src: "Okamura (documented)" },
@@ -74,7 +74,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
   ],
   cons: [
     { t: "Hard to buy in the US — dealer or import only, with the main Amazon listing being Japan-only.", src: "Our reading" },
-    { t: "Warranty terms aren't published on the product page and vary by market.", src: "Okamura (documented)" },
+    { t: "Warranty terms differ by market: Okamura's global statement (outside Japan) sets 10, 5 or 2 years by component; Japan-market terms are different.", src: "Okamura (documented)" },
     { t: "Fully optioned (adjustable headrest, 4D arms, lumbar, leather) the price rises steeply.", src: "Our reading" },
   ],
 
@@ -103,7 +103,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
     ctaLabel: "Search on Amazon",
     rows: [
       { k: "Returns", v: "Depends entirely on the dealer/importer; the Amazon.co.jp listing is Japan-only. Confirm the return policy with your seller before buying." },
-      { k: "Warranty", v: "Not published on Okamura's product page and varies by market — confirm coverage with your seller." },
+      { k: "Warranty", v: "Okamura's global warranty (outside Japan): 10 years structural parts, 5 years casters, gas cylinder and levers, 2 years finish, mesh, fabric, cushions and arm pads. Japan-market terms differ — confirm coverage with your seller." },
       { k: "What to check", v: "Seat/back material, headrest type, arm type (4D vs fixed), lumbar option, and the US seller's shipping and support." },
     ],
     officialStore: {
@@ -117,7 +117,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
 
   verdict: [
     "The Contessa II — Contessa Seconda in some markets — is Okamura's flagship and Japan's most credible rival to the Western big three. Giorgetto Giugiaro's styling, the Kyoto Nishijin-weave mesh back and the \"Smart Operation\" controls at the armrest tips give it a character none of the American chairs share, and the option list (mesh or multi-density cushion, adjustable headrest, 4D arms, a retrofit lumbar) lets you tailor it closely.",
-    "The friction is buying one in the US. There's no US Amazon product page — genuine chairs come through authorized dealers or importers, warranty terms aren't published on the product page, and a fully optioned build gets expensive. If you want a distinctive, superbly built flagship and don't mind dealer logistics, the Contessa II earns its place; if you want a click-to-buy chair with easy returns, an Aeron or Leap is simpler.",
+    "The friction is buying one in the US. There's no US Amazon product page — genuine chairs come through authorized dealers or importers, warranty terms differ by market, and a fully optioned build gets expensive. If you want a distinctive, superbly built flagship and don't mind dealer logistics, the Contessa II earns its place; if you want a click-to-buy chair with easy returns, an Aeron or Leap is simpler.",
   ],
   verdictPullQuote:
     "Japan's flagship answer to the big three — spec it carefully and sort out the US dealer path first.",
@@ -132,6 +132,7 @@ export const OKAMURA_CONTESSA_II: RichReview = {
 
   sources: [
     { k: "Okamura (official)", v: "okamura.com Contessa II product and option pages, checked 2026-09-10. Basis for materials, Smart Operation, seat depth, arms, lumbar, headrest and capacity." },
+    { k: "Okamura spec guide and warranty", v: "Contessa II Spec Guide, Global (BIFMA, mm), January 2026, and Okamura's Global General Warranty Statement (excludes Japan), checked 2026-09-26. Basis for seat height and warranty." },
     { k: "Amazon.co.jp listing", v: "Contessa II / Seconda (Japan-market). Basis for confirming the name equivalence and configurations; not a US purchase path." },
     { k: "Published reviews", v: "Third-party reviews summarised for design, comfort and value." },
   ],

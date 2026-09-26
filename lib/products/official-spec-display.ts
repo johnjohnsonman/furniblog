@@ -30,8 +30,10 @@ function sourceRank(v: OfficialSpecValue): number {
   return 1
 }
 
-const valueText = (v: OfficialSpecValue) =>
-  v.unit && v.unit !== "deg" && !v.value.includes(v.unit) ? `${v.value} ${v.unit}` : v.value
+const valueText = (v: OfficialSpecValue) => {
+  const text = v.unit && v.unit !== "deg" && !v.value.includes(v.unit) ? `${v.value} ${v.unit}` : v.value
+  return v.computedImperial ? `${text} (${v.computedImperial})` : text
+}
 
 /**
  * Display rows for a chair in the official ledger: one source per field (the

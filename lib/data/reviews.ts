@@ -178,7 +178,7 @@ const extraFeedReviews: Review[] = [
     productId: "okamura-contessa-ii",
     source: "japan_community",
     summary:
-      "Japanese office community notes. Integrated headrest eases neck fatigue; mesh quality stands out.",
+      "Japanese office community notes. Optional headrest eases neck fatigue; mesh quality stands out.",
     pros: ["Headrest", "Mesh quality", "Japan support"],
     cons: ["High price", "Armrest width"],
     scores: scores(4.6, { headrest: 4.8, lumbarSupport: 4.5 }),

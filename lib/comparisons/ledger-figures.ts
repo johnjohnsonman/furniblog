@@ -17,7 +17,7 @@ export function ledgerPairFigures(slugA?: string | null, slugB?: string | null):
       if (!Array.isArray(values)) continue
       for (const v of values) {
         if (v.displayExcluded) continue
-        for (const n of numbersIn(`${v.value} ${v.computedMetric ?? ""}`)) allowed.add(n)
+        for (const n of numbersIn(`${v.value} ${v.computedMetric ?? ""} ${v.computedImperial ?? ""}`)) allowed.add(n)
         if (field === "warranty") for (const m of `${v.value} ${v.quote ?? ""}`.matchAll(/\b(\d+)[- ]years?\b/gi)) allowed.add(`${m[1]}-year`)
       }
     }

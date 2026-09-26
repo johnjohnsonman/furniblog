@@ -7,7 +7,8 @@
  * Where sources disagree (e.g. Aeron seat height on the specs page vs the
  * store), each value is kept with its own scope. Field names mirror planned DB
  * columns (camelCase here, snake_case in the table), as in price-provenance.
- * `computedMetric` is a conversion we calculated, not an official figure.
+ * `computedMetric` and `computedImperial` are conversions we calculated, not
+ * official figures.
  */
 
 export type OfficialSpecValue = {
@@ -22,6 +23,8 @@ export type OfficialSpecValue = {
   /** Exact official wording. */
   quote?: string
   computedMetric?: string
+  /** Imperial conversion we calculated for a metric official value. */
+  computedImperial?: string
   /** Kept for the record but not shown (reason). */
   displayExcluded?: string
 }
@@ -1928,6 +1931,664 @@ export const officialSpecs: Record<string, OfficialSpecs> = {
         checkedOn: "2026-09-26",
         quote: "Product Weight 51.75 lbs",
         computedMetric: "23.5 kg"
+      }
+    ]
+  },
+  "anthros-chair": {
+    officialName: "Anthros Chair (Anthros Office; 'Anthros Custom' configurable, 'Anthros Black' fixed configuration)",
+    sizes: [
+      {
+        value: "One size (\"one-size-adjusts-all\"); base option: Swivel 5 Spoke or Fixed 4 Spoke (non-swivel)",
+        scope: "all",
+        sourceUrl: "https://faq.anthros.com/en/articles/7031562-am-i-too-tall-short-for-this-chair",
+        sourceTitle: "Anthros Help Center – Am I too tall/short for this chair?",
+        checkedOn: "2026-09-26",
+        quote: "The Anthros is a one-size-adjusts-all design."
+      }
+    ],
+    seatHeight: [
+      {
+        value: "17.1–20.7 in (5-spoke swivel base); 17.9–21.1 in (4-spoke fixed base)",
+        unit: "in",
+        scope: "Industry Standard Seat Height (weighted measuring device), by base",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "J Industry Standard Seat Height* 4 Spoke: 17.9 - 21.1\" (45.5 - 53.7 cm) 5 Spoke: 17.1 - 20.7\" (43.5 - 52.5 cm) … * Seat height to floor measured using industry-standard, and weighted, chair measurement device.",
+        computedMetric: "43.5–52.5 cm (5 Spoke); 45.5–53.7 cm (4 Spoke) (official cm)"
+      },
+      {
+        value: "18.5–22.1 (5 Spoke); 19.3–22.5 (4 Spoke)",
+        unit: "in",
+        scope: "Seat to Floor Height, non-weighted, front of seat (not industry standard)",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "K Seat to Floor Height** 4 Spoke: 19.3 - 22.5\" (49 - 57.2 cm) 5 Spoke: 18.5 - 22.1\" (47 - 56.1 cm) … ** Non-weighted, and non-standard, measurement taken from the front of the seat to floor.",
+        displayExcluded: "non-standard (unweighted, seat-front) measurement; show the Industry Standard value instead"
+      },
+      {
+        value: "17.1–20.7 (5 Spoke); 17.9–21.1 (4 Spoke)",
+        unit: "in",
+        scope: "dimensions web page (2023 version)",
+        sourceUrl: "https://anthros.com/anthros-chair-dimensions",
+        sourceTitle: "Anthros Chair Dimensions (anthros.com; page footer V2.0_12122023)",
+        checkedOn: "2026-09-26",
+        quote: "Industry Standard Seat Height* 4 Spoke: 17.9 - 21.1” (45.5 - 53.7 cm) 5 Spoke: 17.1 - 20.7” (43.5 - 52.5 cm)"
+      },
+      {
+        value: "17–20.6",
+        unit: "in",
+        scope: "help center (no base specified)",
+        sourceUrl: "https://faq.anthros.com/en/articles/7031562-am-i-too-tall-short-for-this-chair",
+        sourceTitle: "Anthros Help Center – Am I too tall/short for this chair?",
+        checkedOn: "2026-09-26",
+        quote: "The Anthros is designed to fit most adults, with a seat height range of 17\" to 20.6\".",
+        computedMetric: "43.2–52.3 cm",
+        displayExcluded: "rounded/unscoped; conflicts slightly with manual 17.1–20.7 (5 Spoke)"
+      }
+    ],
+    seatDepth: [
+      {
+        value: "15.2–18.3",
+        unit: "in",
+        scope: "effective seat depth (set by moving the lower back pad; no seat slider)",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "H Seat Depth: 15.2\" - 18.3\" (38.7 - 46.6 cm)",
+        computedMetric: "38.7–46.6 cm (official cm)"
+      },
+      {
+        value: "No seat slider; depth set by low back pad",
+        scope: "help center",
+        sourceUrl: "https://faq.anthros.com/en/articles/8474233-does-anthros-have-a-seat-slider-refers-to-seat-depth",
+        sourceTitle: "Anthros Help Center – Does Anthros have a seat slider?",
+        checkedOn: "2026-09-26",
+        quote: "We don’t have a seat slider. Instead, we use the low back pad to determine depth adjustment."
+      }
+    ],
+    seatWidth: [
+      {
+        value: "21.2",
+        unit: "in",
+        scope: "user manual v7.0 (Dec 2025)",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "F Seat Width: 21.2\" (53.8 cm)",
+        computedMetric: "53.8 cm (official)"
+      },
+      {
+        value: "19.8",
+        unit: "in",
+        scope: "dimensions web page (2023 version)",
+        sourceUrl: "https://anthros.com/anthros-chair-dimensions",
+        sourceTitle: "Anthros Chair Dimensions (anthros.com; page footer V2.0_12122023)",
+        checkedOn: "2026-09-26",
+        quote: "Seat Width: 19.8” (50.3 cm)",
+        displayExcluded: "superseded by user manual v7.0 (12/03/2025) value 21.2 in"
+      }
+    ],
+    backHeight: [
+      {
+        value: "Upper back pad 14.2 in high × 15.2 in wide; lower back pad 5.8 in high × 17.3 in wide",
+        unit: "in",
+        scope: "two-part back (pad dimensions, not overall backrest height)",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "A Upper Back Height: 14.2\" (50 cm) B Upper Back Width: 15.2\" (38.6 cm) C Lower Back Height: 5.8\" (14.7 cm) D Lower Back Width: 17.3\" (43.9 cm)",
+        computedMetric: "upper 36.1 cm high (brand prints '50 cm'); lower 14.7 cm high",
+        displayExcluded: "Back pad dimensions, not backrest height; the manual's inch and cm figures do not match"
+      },
+      {
+        value: "Upper back 12 in; lower back 5 in",
+        unit: "in",
+        scope: "dimensions web page (2023 version)",
+        sourceUrl: "https://anthros.com/anthros-chair-dimensions",
+        sourceTitle: "Anthros Chair Dimensions (anthros.com; page footer V2.0_12122023)",
+        checkedOn: "2026-09-26",
+        quote: "Upper Back Height: 12” (55.9 cm) … Lower Back Height: 5” (17.8 cm)",
+        displayExcluded: "superseded by manual v7.0; inch/cm mismatch on the page"
+      }
+    ],
+    weightCapacity: [
+      {
+        value: "300",
+        unit: "lb",
+        scope: "all",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "This chair has been tested and approved for users weighing up to 300 lbs (136kg).",
+        computedMetric: "136 kg (official)"
+      },
+      {
+        value: "300",
+        unit: "lb",
+        scope: "help center",
+        sourceUrl: "https://faq.anthros.com/en/articles/7031540-do-i-weigh-too-much-for-this",
+        sourceTitle: "Anthros Help Center – Do I weigh too much for this?",
+        checkedOn: "2026-09-26",
+        quote: "The Anthros has a weight capacity of 300 lbs. … The chair is independently tested by BIFMA … to meet or exceed 300 lbs",
+        computedMetric: "136.1 kg"
+      },
+      {
+        value: "300",
+        unit: "lb",
+        scope: "dimensions page",
+        sourceUrl: "https://anthros.com/anthros-chair-dimensions",
+        sourceTitle: "Anthros Chair Dimensions (anthros.com; page footer V2.0_12122023)",
+        checkedOn: "2026-09-26",
+        quote: "Weight capacity 300lbs"
+      },
+      {
+        value: "Tilt spring: Light (under 140 lb) or Standard (140–300 lb)",
+        scope: "tilt spring choice (affects tilt feel, not capacity)",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "The light spring chair has been tested and approved for users weighing up to 140 lbs (63kg). The standard spring chair has been tested and approved for users weighing 140-300 lbs (63-136 kg).",
+        displayExcluded: "spring option, not a capacity figure"
+      }
+    ],
+    recline: [
+      {
+        value: "Decompress Mode tilt: 0°–16°; five tilt options – three locked positions (Active −2°, Standard 1°, Decompress 5°) and two unlocked (Free-Float, Full Decompress to 16°)",
+        scope: "all",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "Locked Positions Active Mode -2° Standard Mode* 1° Decompress Mode 5° … Unlocked Positions Free-Float Decompress Mode … Full Decompress Mode: Leave tilt unlocked and loosen tension until you can fully tilt to 16°. … L Tilt Angle: 0° - 16°"
+      },
+      {
+        value: "Five posture-preserving tilt options: three locked, two unlocked",
+        scope: "features page",
+        sourceUrl: "https://anthros.com/features",
+        sourceTitle: "Features (anthros.com)",
+        checkedOn: "2026-09-26",
+        quote: "Five posture-preserving tilt options to match how you sit, work, and recharge. With three locked positions for stable support and two unlocked positions that let the chair move naturally with your body"
+      }
+    ],
+    arms: [
+      {
+        value: "4D Arms (option) or No Arms; the arms adjust in height, width, depth and angle",
+        scope: "configurator + manual",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "Arm Adjustment … They can also be adjusted in height, width, depth, and angle."
+      },
+      {
+        value: "Arm height 7.7–11.8 in; arm width (outside) 24.75–27 in",
+        unit: "in",
+        scope: "user manual v7.0",
+        sourceUrl: "https://anthros.com/assets/files/UserManual_v7.0_12032025.pdf",
+        sourceTitle: "Anthros User Manual v7.0 (PDF, 12/03/2025)",
+        checkedOn: "2026-09-26",
+        quote: "E Arm Width: 24.75\" - 27\" (62.9 - 68.6 cm) … I Arm Height: 7.7\" - 11.8\" (19.5 - 30 cm)",
+        computedMetric: "arm height 19.5–30 cm (official)"
+      },
+      {
+        value: "Fully 4D adjustable: forward/back, in/out, up/down, angle; height 7.4–11.5 in from seat; removable",
+        scope: "help center",
+        sourceUrl: "https://faq.anthros.com/en/articles/7031560-do-you-have-armrests",
+        sourceTitle: "Anthros Help Center – Do you have armrests?",
+        checkedOn: "2026-09-26",
+        quote: "Yes! Anthros arms are fully 4D adjustable. … Move them forward/back, in/out, up/down, and angle in/out … Height range: 7.4\" to 11.5\" from the seat surface"
+      }
+    ],
+    lumbar: [
+      {
+        value: "Precision Posture System: independently adjustable Upper Back + Lower Back Pelvis Support (no conventional lumbar pad)",
+        scope: "all",
+        sourceUrl: "https://anthros.com/features",
+        sourceTitle: "Features (anthros.com)",
+        checkedOn: "2026-09-26",
+        quote: "Anthros has designed an adjustable 2-part back system that can support most individual body types. The low back pelvis support works with the upper back to promote an upright posture … When you support the pelvis, the lumbar region is naturally supported with it"
+      }
+    ],
+    headrest: [
+      {
+        value: "No headrest / head support",
+        scope: "all",
+        sourceUrl: "https://faq.anthros.com/en/articles/10113219-why-does-anthros-not-include-a-head-support",
+        sourceTitle: "Anthros Help Center – Why does Anthros not include a head support?",
+        checkedOn: "2026-09-26",
+        quote: "Anthros is built for active, upright sitting. Headrests are designed for a different kind of sitting entirely. … Are you working on a headrest option? Yes — we're exploring accessories"
+      }
+    ],
+    warranty: [
+      {
+        value: "12-year limited warranty (components and workmanship, from date of purchase; original purchaser; non-transferable)",
+        scope: "all",
+        sourceUrl: "https://anthros.com/warranty",
+        sourceTitle: "Anthros Warranty Page (anthros.com)",
+        checkedOn: "2026-09-26",
+        quote: "We warrant that every component on your chair, and the workmanship performed to build your chair, will be free from defects in materials and workmanship for a period of 12 years from your date of purchase."
+      },
+      {
+        value: "12-year warranty, bumper to bumper",
+        scope: "store FAQ",
+        sourceUrl: "https://configurator.anthros.com/products/chair",
+        sourceTitle: "Customize Your Anthros Chair – official configurator/store",
+        checkedOn: "2026-09-26",
+        quote: "We offer a 12-year warranty, bumper to bumper."
+      }
+    ]
+  },
+  "haworth-zody-ii": {
+    officialName: "Zody II (Haworth; designed by ITO Design and Haworth Design Studio). Sold in EMEA and Asia Pacific as 'Zody II'. The US Haworth Store sells 'Zody Office Chair' (dual posture, PAL, 4D arms) without the 'II' name; the North America 'zody-ii' URL returns an empty template.",
+    sizes: [
+      {
+        value: "One size; options: task chair, dual posture chair, stool (stool AP only); EMEA also EN 1335 Type A",
+        scope: "EMEA/AP",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody-ii_zody-lx_sales-presentation_eu_en_2026.pdf",
+        sourceTitle: "Zody II & Zody LX sales presentation, EU (PDF, 2026)",
+        checkedOn: "2026-09-26",
+        quote: "Zody II … Posture types: Task chair (available also in Type A EN 1335) · Dual posture chair · Stool (only in AP)"
+      }
+    ],
+    seatHeight: [
+      {
+        value: "406–533 mm (office chair); 445–615 mm (dual posture)",
+        unit: "mm",
+        scope: "Asia Pacific market",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_product_sheets_ap_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, Asia Pacific (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "SH: * 406 - 533 ** 445 - 615 mm * Office Chair ** Dual posture",
+        computedImperial: "16–21 in; 17.5–24.2 in"
+      },
+      {
+        value: "410–530 mm (office chair); 430–590 mm (dual posture); 400–530 mm (EN 1335 Type A)",
+        unit: "mm",
+        scope: "EMEA market",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/Zody-II_product-sheet_eu_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, EMEA (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "SH: * 410 - 530 ** 430 - 590 *** 400 - 530 mm * Office Chair ** Dual posture *** Type A",
+        computedImperial: "16.1–20.9 in; 16.9–23.2 in; 15.7–20.9 in"
+      },
+      {
+        value: "40–53 cm | 43–59 cm (Dual posture)",
+        unit: "cm",
+        scope: "EMEA web comparison table",
+        sourceUrl: "https://www.haworth.com/eu/en/products/office-chairs/zody-ii.html",
+        sourceTitle: "Zody II | Office Chair | Haworth Europe",
+        checkedOn: "2026-09-26",
+        quote: "PNEUMATIC HEIGHT … 40 - 53cm | 43 - 59cm (Dual posture)",
+        displayExcluded: "rounded; the EMEA product sheet (410–530 mm) is the spec document"
+      },
+      {
+        value: "16–21 (Standard Posture); 17.5–24.5 (Dual Posture)",
+        unit: "in",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "Standard Posture: Seat Height: 16\"–21\" Dual Posture: Seat Height: 17.5\"–24.5\"",
+        computedMetric: "40.6–53.3 cm",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    seatDepth: [
+      {
+        value: "427–495 mm (76 mm adjustment)",
+        unit: "mm",
+        scope: "Asia Pacific market",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_product_sheets_ap_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, Asia Pacific (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "SD : 427 - 495 mm",
+        computedImperial: "16.8–19.5 in"
+      },
+      {
+        value: "425–503 mm (74 mm adjustment)",
+        unit: "mm",
+        scope: "EMEA market",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/Zody-II_product-sheet_eu_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, EMEA (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "SD : 425 - 503 mm",
+        computedImperial: "16.7–19.8 in"
+      },
+      {
+        value: "16.8–19.5 with lumbar; 17.5–20.2 without lumbar",
+        unit: "in",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "Seat Depth: with Lumbar: 16.8\"-19.5\" Seat Depth: without Lumbar: 17.5\"-20.2\"",
+        computedMetric: "42.7–49.5 cm with lumbar; 44.5–51.3 cm without",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    seatWidth: [
+      {
+        value: "19.5",
+        unit: "in",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "Seat Width: 19.5\"",
+        computedMetric: "49.5 cm",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    weightCapacity: [
+      {
+        value: "< 181",
+        unit: "kg",
+        scope: "Asia Pacific web comparison table",
+        sourceUrl: "https://www.haworth.com/ap/en/products/office-chairs/zody-ii.html",
+        sourceTitle: "Zody II | Office Chair | Haworth Asia Pacific",
+        checkedOn: "2026-09-26",
+        quote: "WEIGHT CAPACITY … < 181kg",
+        computedImperial: "399 lb"
+      },
+      {
+        value: "400",
+        unit: "lb",
+        scope: "Asia Pacific warranty (24/7 multiple shift)",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/ap/docs/products/warranties/haworth_ap_product_warranty_bilingual.pdf",
+        sourceTitle: "Haworth Asia Pacific Product Warranty (PDF, bilingual)",
+        checkedOn: "2026-09-26",
+        quote: "warranted for 24/7 multiple shift use by persons up to 325 lbs (400 lbs for Zody II and LX models)",
+        computedMetric: "181.4 kg",
+        displayExcluded: "Warranty use condition, not a published capacity figure"
+      },
+      {
+        value: "< 150",
+        unit: "kg",
+        scope: "EMEA web comparison table",
+        sourceUrl: "https://www.haworth.com/eu/en/products/office-chairs/zody-ii.html",
+        sourceTitle: "Zody II | Office Chair | Haworth Europe",
+        checkedOn: "2026-09-26",
+        quote: "WEIGHT CAPACITY … < 150kg",
+        computedImperial: "331 lb"
+      },
+      {
+        value: "350 without forward tilt; 325 with forward tilt",
+        unit: "lb",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "Warrantied for people up to 350 lbs without forward tilt option Warrantied for people up to 325 lbs with forward tilt option",
+        computedMetric: "158.8 kg / 147.4 kg",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    recline: [
+      {
+        value: "Balanced 3-point tilt: back reclines 24° from upright, seat pan moves down 3°; back stop in 6 positions (upright and every 4°); forward tilt; tilt tension crank",
+        scope: "Asia Pacific user guide",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_user_guide_ap_en_202311.pdf",
+        sourceTitle: "Zody II User Guide, AP (PDF, 2023-11)",
+        checkedOn: "2026-09-26",
+        quote: "Back reclines 24° from the upright position. Seat pan moves downward 3° from the initial position. … Back stops in 6 positions - upright and every 4° backward."
+      },
+      {
+        value: "3-point synchronous tilt; Back Stop; Tilt Tension; Forward Tilt (seat forward 5°); optional Dual Posture",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "a 3-point synchronous tilt system that aligns with the body's natural pivot points — hip, knee, and ankle … Tilt the seat forward by 5°",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    arms: [
+      {
+        value: "4D arms (EMEA: 4D only); AP also fixed, height-adjustable (1D) or armless",
+        scope: "market-dependent",
+        sourceUrl: "https://www.haworth.com/ap/en/products/office-chairs/zody-ii.html",
+        sourceTitle: "Zody II | Office Chair | Haworth Asia Pacific",
+        checkedOn: "2026-09-26",
+        quote: "ARMREST … 4D, 1D, Fixed"
+      },
+      {
+        value: "4D arms: height, side to side, front to back, arm cap pivot",
+        scope: "AP product sheet",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_product_sheets_ap_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, Asia Pacific (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "4D arms fluidly adjust in height, side to side, front to back, and arm cap pivot position; also available with fixed or height-adjustable arms"
+      },
+      {
+        value: "Arm height 193–295 mm above the seat",
+        unit: "mm",
+        scope: "product sheets",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_product_sheets_ap_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, Asia Pacific (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "AH: 193 - 295 mm",
+        computedImperial: "7.6–11.6 in"
+      },
+      {
+        value: "4D Arms: in and out, up and down, side to side, front to back",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "Get full support for your neck and shoulders with arms that move in and out, up and down, side to side, and front to back.",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ],
+    lumbar: [
+      {
+        value: "PAL™ (Pelvic and Asymmetrical Lumbar) back system: height-adjustable lumbar with independent left/right support; AP also height-adjustable lumbar or no lumbar",
+        scope: "market-dependent",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/int/docs/products/haworth/seating/zody-ii/zody_ii_product_sheets_ap_en_2025.pdf",
+        sourceTitle: "Zody II product sheet, Asia Pacific (PDF, © 2025 Haworth)",
+        checkedOn: "2026-09-26",
+        quote: "Pelvic and Asymmetrical Lumbar (PAL™) back system provides independently adjustable support for each side of the lower back"
+      }
+    ],
+    headrest: [
+      {
+        value: "Not yet generally available: listed as '(phase 2)' in Asia Pacific and 'coming soon' in EMEA",
+        scope: "not yet generally available",
+        sourceUrl: "https://www.haworth.com/ap/en/products/office-chairs/zody-ii.html",
+        sourceTitle: "Zody II | Office Chair | Haworth Asia Pacific",
+        checkedOn: "2026-09-26",
+        quote: "HEADREST (ADJUSTABLE) … (phase 2)"
+      }
+    ],
+    warranty: [
+      {
+        value: "12 years, 24/7 multiple shift (Asia Pacific)",
+        scope: "Asia Pacific",
+        sourceUrl: "https://www.haworth.com/content/dam/digital/ap/docs/products/warranties/haworth_ap_product_warranty_bilingual.pdf",
+        sourceTitle: "Haworth Asia Pacific Product Warranty (PDF, bilingual)",
+        checkedOn: "2026-09-26",
+        quote: "Twelve (12) Years All Haworth AP manufactured seating … is warranted for 24/7 multiple shift use by persons up to 325 lbs (400 lbs for Zody II and LX models)"
+      },
+      {
+        value: "12 year warranty",
+        scope: "US Haworth Store 'Zody Office Chair'",
+        sourceUrl: "https://store.haworth.com/products/zody-office-chair",
+        sourceTitle: "Zody Office Chair – Haworth Store (US) [sold as 'Zody', not 'Zody II']",
+        checkedOn: "2026-09-26",
+        quote: "12 year warranty",
+        displayExcluded: "Sold on the US Haworth Store as 'Zody Office Chair'; not confirmed as Zody II by name"
+      }
+    ]
+  },
+  "okamura-contessa-ii": {
+    officialName: "Contessa II (Okamura; Japanese name コンテッサ セコンダ / Contessa seconda; design ITALDESIGN)",
+    sizes: [
+      {
+        value: "One size (high back): mesh or cushion seat, with 4D arm or fixed arm",
+        scope: "all",
+        sourceUrl: "https://okamura.ent.box.com/s/qbtjkiaz27eytjb71s4m8suu0eqxsfbr/folder/156267804123",
+        sourceTitle: "Okamura Contessa II Spec Guide, Global (BIFMA, mm), January 2026",
+        checkedOn: "2026-09-26",
+        quote: "1: High Back, Mesh Seat, with 4D arm 2: High Back, Mesh Seat, with Fixed arm 3: High Back, Cushion Seat, with 4D arm 4: High Back, Cushion Seat, Fixed arm"
+      }
+    ],
+    seatHeight: [
+      {
+        value: "434–544",
+        unit: "mm",
+        scope: "Global Spec Guide, BIFMA (mm) Standard, 5-star swivel (all back/seat types)",
+        sourceUrl: "https://okamura.ent.box.com/s/qbtjkiaz27eytjb71s4m8suu0eqxsfbr/folder/156267804123",
+        sourceTitle: "Okamura Contessa II Spec Guide, Global (BIFMA, mm), January 2026",
+        checkedOn: "2026-09-26",
+        quote: "[ BIFMA（㎜）Standard ] … 5-Star Swivel … 434～544",
+        computedImperial: "17.1–21.4 in"
+      },
+      {
+        value: "420–520",
+        unit: "mm",
+        scope: "Japan (外形寸法代表図 representative drawing; JP catalog 2025-01 identical)",
+        sourceUrl: "https://www.okamura.co.jp/catalog/pdf/contessa_seconda_external_dimensions.pdf",
+        sourceTitle: "Okamura Japan dimension drawing: Contessa Seconda (Japanese PDF)",
+        checkedOn: "2026-09-26",
+        quote: "420- -520",
+        computedImperial: "16.5–20.5 in",
+        displayExcluded: "Japanese drawing measured at a different point; the global BIFMA spec guide value is shown"
+      },
+      {
+        value: "100 mm height adjustment",
+        unit: "mm",
+        scope: "Japan product page",
+        sourceUrl: "https://product.okamura.co.jp/ext/DispCate.do?volumeName=00001&lv3=%E3%82%B3%E3%83%B3%E3%83%86%E3%83%83%E3%82%B5+%E3%82%BB%E3%82%B3%E3%83%B3%E3%83%80",
+        sourceTitle: "Okamura Japan product page: Contessa Seconda (Japanese)",
+        checkedOn: "2026-09-26",
+        quote: "座面高さ調節 右肘の操作レバーにより、座面の高さ調節が行なえます。上下ストロークは100㎜です。",
+        computedImperial: "3.9 in"
+      }
+    ],
+    seatDepth: [
+      {
+        value: "400–450",
+        unit: "mm",
+        scope: "Global Spec Guide (BIFMA) and Japan drawing (same)",
+        sourceUrl: "https://okamura.ent.box.com/s/qbtjkiaz27eytjb71s4m8suu0eqxsfbr/folder/156267804123",
+        sourceTitle: "Okamura Contessa II Spec Guide, Global (BIFMA, mm), January 2026",
+        checkedOn: "2026-09-26",
+        quote: "400～450",
+        computedImperial: "15.7–17.7 in"
+      }
+    ],
+    seatWidth: [
+      {
+        value: "530 mm (cushion seat); 520 mm (mesh seat)",
+        unit: "mm",
+        scope: "Global Spec Guide (BIFMA)",
+        sourceUrl: "https://okamura.ent.box.com/s/qbtjkiaz27eytjb71s4m8suu0eqxsfbr/folder/156267804123",
+        sourceTitle: "Okamura Contessa II Spec Guide, Global (BIFMA, mm), January 2026",
+        checkedOn: "2026-09-26",
+        quote: "Cushion Seat … 530 … Mesh Seat … 520",
+        computedImperial: "20.9 in; 20.5 in"
+      }
+    ],
+    backHeight: [
+      {
+        value: "Back width 502 (no back height stated)",
+        unit: "mm",
+        scope: "Global Spec Guide / JP drawing",
+        sourceUrl: "https://www.okamura.co.jp/catalog/pdf/contessa_seconda_external_dimensions.pdf",
+        sourceTitle: "Okamura Japan dimension drawing: Contessa Seconda (Japanese PDF)",
+        checkedOn: "2026-09-26",
+        quote: "502 (背)",
+        computedImperial: "19.8 in",
+        displayExcluded: "width, not height; no official backrest height"
+      }
+    ],
+    weightCapacity: [
+      {
+        value: "300",
+        unit: "lb",
+        scope: "global (BIFMA X5.1 tested)",
+        sourceUrl: "https://www.okamura.com/products/contessa-ii/?area=asia-pacific",
+        sourceTitle: "Contessa II | Okamura global (okamura.com, Asia Pacific English)",
+        checkedOn: "2026-09-26",
+        quote: "This chair has been designed and tested for users weighing up to 300lbs (136Kg).",
+        computedMetric: "136 kg (official)"
+      }
+    ],
+    recline: [
+      {
+        value: "Ankle-tilt reclining; recline angle 26°",
+        scope: "Japan",
+        sourceUrl: "https://product.okamura.co.jp/ext/DispCate.do?volumeName=00001&lv3=%E3%82%B3%E3%83%B3%E3%83%86%E3%83%83%E3%82%B5+%E3%82%BB%E3%82%B3%E3%83%B3%E3%83%80",
+        sourceTitle: "Okamura Japan product page: Contessa Seconda (Japanese)",
+        checkedOn: "2026-09-26",
+        quote: "アンクルチルトリクライニング くるぶしを中心として、背と座がシンクロしてスライドするアンクルチルトリクライニング。…（リクライニング角度：26°）"
+      },
+      {
+        value: "Fingertip adjustment for recline and height; ankle-tilt reclining",
+        scope: "global",
+        sourceUrl: "https://www.okamura.com/products/contessa-ii/?area=asia-pacific",
+        sourceTitle: "Contessa II | Okamura global (okamura.com, Asia Pacific English)",
+        checkedOn: "2026-09-26",
+        quote: "To recline, simply lean backwards, tilting from your ankles. Ankle-tilt reclining maintains a natural posture throughout."
+      }
+    ],
+    arms: [
+      {
+        value: "Adjust Arm (4D arm): up/down 100 mm; angle 15° inward, 7.5° outward; front/back 40 mm; side to side 25 mm each way",
+        scope: "Adjustable arm models (Japan)",
+        sourceUrl: "https://product.okamura.co.jp/ext/DispCate.do?volumeName=00001&lv3=%E3%82%B3%E3%83%B3%E3%83%86%E3%83%83%E3%82%B5+%E3%82%BB%E3%82%B3%E3%83%B3%E3%83%80",
+        sourceTitle: "Okamura Japan product page: Contessa Seconda (Japanese)",
+        checkedOn: "2026-09-26",
+        quote: "アジャストアーム（４Dアーム） これまでの肘パッド部の上下（1D）、角度（2D）、前後（3D）の動きに加え、左右方向（4D）の調節が可能です。上下は100㎜、角度は内側15°、外側7.5°、前後は40㎜、左右は片側25㎜ずつ可動します。"
+      },
+      {
+        value: "4D arm or fixed arm; armrest height from the floor 604–814 mm (4D arm), 639–749 mm (fixed arm)",
+        unit: "mm",
+        scope: "Global Spec Guide (BIFMA), 5-star swivel",
+        sourceUrl: "https://okamura.ent.box.com/s/qbtjkiaz27eytjb71s4m8suu0eqxsfbr/folder/156267804123",
+        sourceTitle: "Okamura Contessa II Spec Guide, Global (BIFMA, mm), January 2026",
+        checkedOn: "2026-09-26",
+        quote: "With Adjustable Arms … 604～814 … With Fixed Arms … 639～749",
+        computedImperial: "23.8–32 in; 25.2–29.5 in"
+      }
+    ],
+    lumbar: [
+      {
+        value: "Optional lumbar support with 60 mm height adjustment (can be retrofitted)",
+        scope: "option",
+        sourceUrl: "https://product.okamura.co.jp/ext/DispCate.do?volumeName=00001&lv3=%E3%82%B3%E3%83%B3%E3%83%86%E3%83%83%E3%82%B5+%E3%82%BB%E3%82%B3%E3%83%B3%E3%83%80",
+        sourceTitle: "Okamura Japan product page: Contessa Seconda (Japanese)",
+        checkedOn: "2026-09-26",
+        quote: "ランバーサポート 体格に合わせて、上下60㎜の調節が可能です。",
+        computedImperial: "2.4 in"
+      }
+    ],
+    headrest: [
+      {
+        value: "Options: large fixed headrest or small adjustable headrest (up/down, front/back, swivel)",
+        scope: "option",
+        sourceUrl: "https://product.okamura.co.jp/ext/DispCate.do?volumeName=00001&lv3=%E3%82%B3%E3%83%B3%E3%83%86%E3%83%83%E3%82%B5+%E3%82%BB%E3%82%B3%E3%83%B3%E3%83%80",
+        sourceTitle: "Okamura Japan product page: Contessa Seconda (Japanese)",
+        checkedOn: "2026-09-26",
+        quote: "大型固定ヘッドレスト ワイドタイプの固定式ヘッドレスト。… 小型可動ヘッドレスト 上下はもちろん、前後への移動や首振り機能も備えています。"
+      }
+    ],
+    warranty: [
+      {
+        value: "10 years: structural components, including mechanisms and adjustable arms; 5 years: casters, gas cylinder, adjustment levers; 2 years: coating finish, mesh and fabric, cushions, arm pads",
+        scope: "Global General Warranty (excludes Japan; products made after 1 Jan 2022)",
+        sourceUrl: "https://www.okamura.com/warranty/?area=asia-pacific",
+        sourceTitle: "Okamura Global General Warranty Statement (excludes Japan)",
+        checkedOn: "2026-09-26",
+        quote: "Ten (10) years Structural components, including frames, shells, bases, operating mechanisms including adjustable arms / Five (5) years Casters, Gas cylinder, Adjustment levers / Two (2) years Coating finish, mesh & fabric, cushions, and arm-pads"
+      },
+      {
+        value: "Japan: 1 year finish/surfaces, 2 years mechanisms/moving parts, 8 years structure (JOIFA guideline; 8 h/day office use)",
+        scope: "Japan (取扱説明書 2021-07)",
+        sourceUrl: "https://www.okamura.co.jp/catalog/pdf/contessa_seconda_manual_202107.pdf",
+        sourceTitle: "Okamura Japan user manual: Contessa Seconda, July 2021 (Japanese PDF)",
+        checkedOn: "2026-09-26",
+        quote: "通常の状態で使用された場合、3つの種別ごとに（お客様ご購入の日から）1年・2年・8年としております。… 外観・表面仕上げ … １年 機構部・可動部 … ２年 構造体 強度・構造体にかかわる破損 8年",
+        displayExcluded: "Japan-market terms; the global (outside Japan) warranty statement is shown"
       }
     ]
   }
