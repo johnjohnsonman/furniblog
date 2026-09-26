@@ -51,6 +51,12 @@ const nextConfig = {
         destination: "/products/herman-miller-aeron",
         permanent: true,
       },
+      // Same current chair listed twice; the "V2" name is not an Anthros product name.
+      {
+        source: "/products/anthros-v2-chair",
+        destination: "/products/anthros-chair",
+        permanent: true,
+      },
     ]
   },
 }

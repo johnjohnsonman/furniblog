@@ -309,3 +309,4 @@
 - 1단계(9e5c613): 아마존 미판매 제품(ing Cloud·ing·Contessa II·Act2·Wilkhahn ON·HÅG Tion·허브 notOnAmazon)은 `lib/products/official-channels.ts`로 공식 판매처/견적 버튼. ing Cloud $580 제거, Gesture 헤드레스트 = optional(코드+비교글 3개 DB), "Pending"·"Still unverified"·영상 0 탭 등 미완성 표시 제거, 체어파크 표기 중립화(리뷰 21개 DB). 백업: chairpedia-backups\2026-09-26_*.
 - 2단계: 제품 페이지를 탭 대신 한 페이지+따라오는 바로가기 메뉴로(Overview·Versions·Guides·Specs·Videos·Reviews·Where to buy). 모든 구역 서버 HTML, 리뷰 10개+같은 페이지 더 보기(server action), Aeron HTML 744→183KB. 캡처: chairpedia-screenshots\2026-09-26_product-layout.
 - 배치3(공식 스펙 원장 +3): Anthros Chair·Zody II·Contessa II 추가(13개). 미터 단위 값은 인치 환산 병기(`computedImperial`), Zody 미국 매장 'Zody Office Chair' 값·Contessa 일본 기준 값은 기록만(표시 제외). Contessa·Zody 가이드 데이터 정정. 비교 문구 점검(235건)은 대표님 결정 대기.
+- 배치3 적용: 가격 출처 +4(Amia·Fern 정가만·Sayl·Liberty), Contessa II 가격 ¥225,610–¥349,360(고정 팔걸이 구성 포함, 가죽 제외로 정정), /products/anthros-v2-chair → anthros-chair 308. CLAUDE.md에 한국어 보고 규칙.

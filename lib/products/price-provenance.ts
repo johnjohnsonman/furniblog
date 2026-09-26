@@ -69,6 +69,11 @@ export const priceProvenance: Record<string, PriceProvenance> = {
   "steelcase-gesture": { priceType: "regular", regularMinUsd: 1599, regularMaxUsd: 2560, scope: "without headrest", sourceLabel: STEELCASE, sourceUrl: "https://store.steelcase.com/seating/ergonomic-chairs/gesture", checkedOn: CHECKED },
   "steelcase-karman": { priceType: "regular", regularMinUsd: 1199, regularMaxUsd: 1543, sourceLabel: STEELCASE, sourceUrl: "https://store.steelcase.com/seating/ergonomic-chairs/steelcase-karman", checkedOn: CHECKED },
   "herman-miller-mirra-2": { priceType: "regular", regularMinUsd: 1365, regularMaxUsd: 1915, sourceLabel: HM, sourceUrl: "https://store.hermanmiller.com/collection-mirra2?lang=en_US", checkedOn: CHECKED },
+  "herman-miller-sayl": { priceType: "regular", regularMinUsd: 935, regularMaxUsd: 1580, sourceLabel: HM, sourceUrl: "https://store.hermanmiller.com/office-chairs-ergonomic-chairs/sayl-chair/2294.html?lang=en_US", checkedOn: "2026-09-26" },
+  "steelcase-amia": { priceType: "regular", regularMinUsd: 1099, regularMaxUsd: 1511, sourceLabel: STEELCASE, sourceUrl: "https://store.steelcase.com/seating/ergonomic-chairs/amia", checkedOn: "2026-09-26" },
+  // Regular list range only; a time-limited store discount is not recorded.
+  "haworth-fern": { priceType: "regular", regularMinUsd: 1180, regularMaxUsd: 2225, sourceLabel: "US Haworth Store", sourceUrl: "https://store.haworth.com/products/fern-office-chair", checkedOn: "2026-09-26" },
+  "humanscale-liberty": { priceType: "regular", regularMinUsd: 1613, regularMaxUsd: 2326, scope: "frame and upholstery options", sourceLabel: "US Humanscale Shop", sourceUrl: "https://shop.humanscale.com/products/liberty-task-chair", checkedOn: "2026-09-26" },
   "knoll-generation": { priceType: "regular", regularMinUsd: 1494, regularMaxUsd: 1705, sourceLabel: KNOLL, sourceUrl: "https://www.knoll.com/shop/en_us/collection-generation-family", checkedOn: CHECKED },
   "knoll-barcelona-chair": {
     priceType: "regular", regularMinUsd: 5550, regularMaxUsd: 12725,
@@ -82,9 +87,10 @@ export const priceProvenance: Record<string, PriceProvenance> = {
 
   // Not sold in the US: official Japanese price converted at a fixed rate ("≈")
   "okamura-contessa-ii": {
-    priceType: "converted", localCurrency: "JPY", localMin: 244310, localMax: 391820, localTaxIncluded: true, ...ECB,
-    scope: "standard fabric and mesh configurations",
-    sourceLabel: "OKAMURA Lifestyle Store (Japan)", sourceUrl: "https://lifestylestore.okamura.co.jp/products/cc88xs-ff71", checkedOn: CHECKED,
+    // Min = fixed-arm configuration; the previous max was a leather configuration outside this scope.
+    priceType: "converted", localCurrency: "JPY", localMin: 225610, localMax: 349360, localTaxIncluded: true, ...ECB,
+    scope: "standard fabric and mesh configurations (fixed or adjustable arms, with or without headrest); excludes leather",
+    sourceLabel: "OKAMURA Lifestyle Store (Japan)", sourceUrl: "https://lifestylestore.okamura.co.jp/pages/detail?seriesId=2", checkedOn: "2026-09-26",
   },
   "kokuyo-ing-cloud": {
     priceType: "converted", localCurrency: "JPY", localMin: 246180, localMax: 266860, localTaxIncluded: true, ...ECB,
