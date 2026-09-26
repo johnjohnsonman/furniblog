@@ -303,3 +303,8 @@
 - [ ] (선택) 폼 페이지(`/experience`,`/reviews/new`) noindex / 이미지 최적화(`images.unoptimized:true` 해제) / breadcrumb·FAQ 스키마.
 - [ ] (선택) 수익화: ⑤Chairpark 퍼널 CTA PoC → D2C 직제휴 1곳 → Levanta. 광고망 졸업은 트래픽 2.5만+ 후.
 - [ ] (선택) Reddit 앱 키 발급 시 `REDDIT_CLIENT_ID/SECRET/USER_AGENT` 설정.
+
+### 2026-09-25~26 리뷰 링크·제품 페이지 정리 (Claude Code)
+- 리뷰: /reviews 고정 순서+`?page=N` 페이지 넘김(자기 canonical), 제품 페이지에 리뷰 링크 서버 렌더 → 공개 리뷰 3,558개 전부 사이트 안에서 도달. 리뷰 날짜는 월·연도(UTC). 리뷰 주소 변경은 `docs/backlog.md`(11월 중하순 재검토).
+- 1단계(9e5c613): 아마존 미판매 제품(ing Cloud·ing·Contessa II·Act2·Wilkhahn ON·HÅG Tion·허브 notOnAmazon)은 `lib/products/official-channels.ts`로 공식 판매처/견적 버튼. ing Cloud $580 제거, Gesture 헤드레스트 = optional(코드+비교글 3개 DB), "Pending"·"Still unverified"·영상 0 탭 등 미완성 표시 제거, 체어파크 표기 중립화(리뷰 21개 DB). 백업: chairpedia-backups\2026-09-26_*.
+- 2단계: 제품 페이지를 탭 대신 한 페이지+따라오는 바로가기 메뉴로(Overview·Versions·Guides·Specs·Videos·Reviews·Where to buy). 모든 구역 서버 HTML, 리뷰 10개+같은 페이지 더 보기(server action), Aeron HTML 744→183KB. 캡처: chairpedia-screenshots\2026-09-26_product-layout.
