@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { buildAffiliateUrl, pageSubtag, trackAffiliateClick, type AffiliateCountry } from "@/lib/affiliate/links"
 import { isSeaCountry, resolveSeaLinks, type SeaCountry } from "@/lib/affiliate/sea"
 import { resolveAmazonDestination } from "@/lib/affiliate/amazon-region"
-import { getOfficialLink } from "@/lib/products/official-links-data"
+import { AMAZON_LISTING_NOTES, getOfficialLink } from "@/lib/products/official-links-data"
 
 const FALLBACK_AMAZON_TAG =
   process.env.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG?.trim() || "furniblog0e-20"
@@ -91,6 +91,8 @@ export function SmartBuyLink({
     )
   }
 
+  const listingNote = productId ? AMAZON_LISTING_NOTES[productId] : undefined
+
   // Local searches supplement the supplied Amazon product link.
   const amazon = resolveAmazonDestination(buildAffiliateUrl(amazonUrl || amazonSearchUrl(query), "amazon", "US", subtag), query, country)
   const href = amazon.url
@@ -125,6 +127,14 @@ export function SmartBuyLink({
             </a>
           ))}
         </div>
+      )}
+      {listingNote && (
+        <p className="text-[11px] leading-relaxed text-muted-foreground">
+          {listingNote.note}{" "}
+          <a href={listingNote.official.url} target="_blank" rel="noopener noreferrer" onClick={() => track("official")} className="underline underline-offset-2">
+            {listingNote.official.label} ↗
+          </a>
+        </p>
       )}
       {showDisclaimer && amazon.affiliate && (
         <p className="text-[11px] italic leading-relaxed text-muted-foreground">

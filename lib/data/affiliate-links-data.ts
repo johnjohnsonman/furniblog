@@ -394,6 +394,13 @@ export const AFFILIATE_LINKS_DATA: Record<
       priceUsd: 1199,
     },
   ],
+  // Amazon US lists only the headrest version (SK 9246) from third-party sellers,
+  // matched by title to the owner's amazon.com search on 2026-09-26; the
+  // official Trendoffice page stays alongside (see AMAZON_LISTING_NOTES).
+  "dauphin-to-strike": [
+    { retailer: "Amazon", url: "https://www.amazon.com/dp/B0DBVHKLVJ", isOfficial: false },
+    { retailer: "Trendoffice official site", url: "https://www.trendoffice.com/en/office-swivel-chairs/to-strike-comfort", isOfficial: true },
+  ],
   // Japan-only chairs, not sold on Amazon US: official stores only, same pages
   // as price-provenance (no catalog prices — the sourced yen price is shown).
   "kokuyo-ing": [

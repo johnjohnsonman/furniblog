@@ -121,6 +121,17 @@ export const OFFICIAL_LINKS: Record<string, OfficialLink> = {
   "vitra-soft-pad-chair-ea-219": { kind: "site", url: "https://www.vitra.com/en-un/product/details/126193", label: "View on Vitra site", retailer: "Vitra official site", note: BRAND_NOTE },
 }
 
+/**
+ * Facts shown next to an Amazon button when the listing differs from the
+ * catalog model or its seller; the official page is offered as well.
+ */
+export const AMAZON_LISTING_NOTES: Record<string, { note: string; official: { url: string; label: string } }> = {
+  "dauphin-to-strike": {
+    note: "Amazon listing is the headrest version (SK 9246), sold by a third-party seller.",
+    official: { url: "https://www.trendoffice.com/en/office-swivel-chairs/to-strike-comfort", label: "View on Trendoffice site" },
+  },
+}
+
 export function getOfficialLink(slug: string | null | undefined): OfficialLink | null {
   return slug ? OFFICIAL_LINKS[slug] ?? null : null
 }
