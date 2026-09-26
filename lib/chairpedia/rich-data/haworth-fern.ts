@@ -3,7 +3,7 @@ import type { RichReview } from "@/lib/chairpedia/rich-types"
 /**
  * Haworth Fern — research-based buying guide data.
  * Specs from Haworth's official documentation (Wave Suspension, material
- * options incl. Digital Knit, 325 lb capacity, optional lumbar/headrest, 4D
+ * options incl. Digital Knit, 350 lb capacity (325 lb with forward tilt), optional lumbar/headrest/4D
  * arms, 12-year warranty), checked 2026-09-09. No single Amazon ASIN is
  * verified (listings vary by material and options), so the Amazon link is a
  * search and the official store is the reliable path. No fixed prices.
@@ -23,8 +23,8 @@ export const HAWORTH_FERN: RichReview = {
   quickFacts: [
     { label: "Back tech", value: "Wave Suspension", note: "Patented, spine-mimicking" },
     { label: "Materials", value: "Digital Knit / mesh / fabric / leather", note: "Back-material options" },
-    { label: "Weight capacity", value: "325 lb", note: "Per Haworth" },
-    { label: "Arms", value: "4D", note: "Height, width, depth, pivot" },
+    { label: "Weight capacity", value: "350 lb", note: "325 lb with forward-tilt option" },
+    { label: "Arms", value: "4D (option)", note: "Also fixed, height-adjustable or armless" },
     { label: "Warranty", value: "12 years", note: "Per Haworth" },
   ],
 
@@ -41,24 +41,24 @@ export const HAWORTH_FERN: RichReview = {
   dims: [
     { k: "Back suspension", v: "Patented Wave Suspension system", tier: "B" },
     { k: "Back materials", v: "Digital Knit / mesh / coated fabric / leather / woven", tier: "B" },
-    { k: "Weight capacity", v: "325 lb", tier: "B" },
-    { k: "Seat height", v: "≈ 420–540 mm (≈ 16.5–21.3 in)", tier: "B" },
-    { k: "Seat depth", v: "≈ 88 mm (≈ 3.5 in) of adjustment", tier: "B" },
-    { k: "Arms", v: "4D (height, width, depth, pivot)", tier: "B" },
+    { k: "Weight capacity", v: "350 lb (325 lb with forward-tilt option)", tier: "B" },
+    { k: "Seat height", v: "16.5–21.5 in (≈ 419–546 mm)", tier: "B" },
+    { k: "Seat depth", v: "15.5–18.5 in (3 in / ≈ 76 mm of adjustment)", tier: "B" },
+    { k: "Arms", v: "Option: 4D (height, width, depth, pivot); fixed, height-adjustable or armless also offered", tier: "B" },
     { k: "Lumbar", v: "Optional height-adjustable lumbar", tier: "B" },
     { k: "Headrest", v: "Optional — but not available on Fern Digital Knit", tier: "B" },
-    { k: "Recline", v: "Tilt tension, 5-position back stop, forward tilt", tier: "B" },
+    { k: "Recline", v: "Tilt tension, 5-position back stop, optional 5° forward tilt", tier: "B" },
     { k: "Warranty", v: "12 years", tier: "B" },
   ],
   dimsSourceNote:
     "Source: Haworth official product documentation (checked 2026-09-09). Options (material, lumbar, headrest) change the configuration; confirm on the listing you buy from.",
 
   adjustable: [
-    { k: "Seat height", v: "Pneumatic, ≈ 420–540 mm.", src: "Haworth (documented)" },
-    { k: "Seat depth", v: "≈ 88 mm of adjustment.", src: "Haworth (documented)" },
+    { k: "Seat height", v: "Pneumatic, 16.5–21.5 in (≈ 419–546 mm).", src: "Haworth (documented)" },
+    { k: "Seat depth", v: "3 in (≈ 76 mm) of adjustment, 15.5–18.5 in.", src: "Haworth (documented)" },
     { k: "Lumbar (option)", v: "Height-adjustable when fitted.", src: "Haworth (documented)" },
-    { k: "Arms — 4D", v: "Height, width, depth and pivot.", src: "Haworth (documented)" },
-    { k: "Recline", v: "Tilt tension, 5-position back stop and forward tilt.", src: "Haworth (documented)" },
+    { k: "Arms — 4D (option)", v: "Height, width, depth and pivot when the 4D arm option is fitted.", src: "Haworth (documented)" },
+    { k: "Recline", v: "Tilt tension, 5-position back stop and optional forward tilt.", src: "Haworth (documented)" },
   ],
   fixed: [
     { k: "Back material", v: "Chosen at purchase; not changed afterward.", src: "Haworth (documented)" },
@@ -69,20 +69,20 @@ export const HAWORTH_FERN: RichReview = {
   pros: [
     { t: "Patented Wave Suspension back that flexes across the whole back for even support.", src: "Haworth (documented)" },
     { t: "Signature zero-waste Digital Knit, plus mesh/fabric/leather choices for look and airflow.", src: "Haworth (documented)" },
-    { t: "Full 4D arms, seat-depth and tilt adjustment, with a 12-year warranty.", src: "Haworth (documented)" },
+    { t: "Optional 4D arms, seat-depth and tilt adjustment, with a 12-year warranty.", src: "Haworth (documented)" },
     { t: "Praised in published reviews for distinctive, even back support.", src: "Published reviews (research)" },
   ],
   cons: [
     { t: "No headrest option on the Digital Knit version.", src: "Haworth (documented)" },
     { t: "Lumbar is an option, not standard on every configuration.", src: "Haworth (documented)" },
     { t: "Premium price; configurations and availability vary by material and dealer.", src: "Our reading, product documentation" },
-    { t: "325 lb capacity is lower than some rivals (e.g. the Leap's 400 lb).", src: "Haworth (documented)" },
+    { t: "350 lb capacity (325 lb with the forward-tilt option) is lower than some rivals (e.g. the Leap's 400 lb).", src: "Haworth (documented)" },
   ],
 
   forWhoTitle: "The Fern suits",
   forWho: [
     "Buyers drawn to the distinctive Digital Knit look and Wave Suspension support",
-    "Those who want a premium chair with 4D arms and seat-depth adjustment",
+    "Those who want a premium chair with seat-depth adjustment and the 4D-arm option",
     "Anyone comparing mesh alternatives to the Aeron who wants a different back feel",
   ],
   skipWho: [
@@ -92,8 +92,8 @@ export const HAWORTH_FERN: RichReview = {
   ],
 
   rivals: [
-    { name: "Haworth Fern", lumbar: "Optional height-adjustable", arms: "4D", standout: "Wave Suspension, Digital Knit option", isSelf: true },
-    { name: "Herman Miller Aeron (Remastered)", lumbar: "PostureFit SL (option)", arms: "Up to fully adjustable", standout: "All-mesh icon, 3 sizes, 350 lb" },
+    { name: "Haworth Fern", lumbar: "Optional height-adjustable", arms: "4D (option)", standout: "Wave Suspension, Digital Knit option", isSelf: true },
+    { name: "Herman Miller Aeron (Remastered)", lumbar: "PostureFit SL (option)", arms: "Up to fully adjustable", standout: "All-mesh icon, 3 sizes, 300–400 lb by size" },
     { name: "Steelcase Leap V2", lumbar: "Adjustable height + firmness", arms: "4D", standout: "Upholstered LiveBack, 400 lb" },
     { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar at a fraction of the price" },
   ],
@@ -117,8 +117,8 @@ export const HAWORTH_FERN: RichReview = {
   },
 
   verdict: [
-    "The Fern is Haworth's answer to the premium task-chair question, and its patented Wave Suspension back — which flexes across the whole back rather than at a few points — gives it a genuinely different feel from the Aeron or Leap. The signature Digital Knit is a distinctive, zero-waste look, and the chair carries full 4D arms, seat-depth adjustment and a 12-year warranty.",
-    "Because the Fern is configured, the material and options define your chair. The Digital Knit version has no headrest option; lumbar is an option rather than standard; and the 325 lb capacity trails some rivals. Decide on the back material first, then whether you need lumbar and a headrest, and confirm all of it on the listing. Get the configuration right and the Fern is a strong, distinctive premium pick.",
+    "The Fern is Haworth's answer to the premium task-chair question, and its patented Wave Suspension back — which flexes across the whole back rather than at a few points — gives it a genuinely different feel from the Aeron or Leap. The signature Digital Knit is a distinctive, zero-waste look, and the chair offers optional 4D arms, seat-depth adjustment and a 12-year warranty.",
+    "Because the Fern is configured, the material and options define your chair. The Digital Knit version has no headrest option; lumbar is an option rather than standard; and the 350 lb capacity (325 lb with forward tilt) trails some rivals. Decide on the back material first, then whether you need lumbar and a headrest, and confirm all of it on the listing. Get the configuration right and the Fern is a strong, distinctive premium pick.",
   ],
   verdictPullQuote:
     "A genuinely different back feel — just choose the material and options deliberately, especially if you want a headrest.",
@@ -127,12 +127,12 @@ export const HAWORTH_FERN: RichReview = {
     { q: "What is the difference between the Fern materials?", a: "The back comes in Digital Knit (a zero-waste custom knit), mesh, coated fabric, leather or woven materials. Digital Knit is the signature look; mesh maximises airflow. The material affects feel and price." },
     { q: "Does the Fern have a headrest?", a: "A headrest is optional on the Fern — except on the Fern Digital Knit, which does not offer one. Choose a non-Digital-Knit back if you want a headrest." },
     { q: "Is lumbar support included?", a: "Height-adjustable lumbar is an option, not standard on every configuration. Check whether a listing includes it if you need lumbar support." },
-    { q: "What is the weight capacity?", a: "Haworth rates the Fern at 325 lb. Confirm on the listing you buy from." },
+    { q: "What is the weight capacity?", a: "Haworth warranties the Fern for people up to 350 lb without the forward-tilt option, or 325 lb with it. Confirm on the listing you buy from." },
     { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Haworth's documentation and published reviews." },
   ],
 
   sources: [
-    { k: "Haworth (official)", v: "Fern product pages and specifications, checked 2026-09-09. Basis for Wave Suspension, material options, 325 lb capacity, seat-height/seat-depth/4D-arm adjustment, optional lumbar and headrest, and the 12-year warranty." },
+    { k: "Haworth (official)", v: "Fern product pages and specifications, checked 2026-09-09. Basis for Wave Suspension, material options, 350 lb (325 lb with forward tilt) capacity, seat-height/seat-depth adjustment, optional 4D arms, optional lumbar and headrest, and the 12-year warranty." },
     { k: "Published reviews", v: "Third-party reviews summarised for the comfort/support notes." },
   ],
 

@@ -22,6 +22,8 @@ import { ProductReviewsSection } from "@/components/products/ProductReviewsSecti
 import { WhereToBuySection } from "@/components/affiliate/WhereToBuySection"
 import { getOfficialChannel } from "@/lib/products/official-channels"
 import { productCardImage } from "@/lib/blog/card-image"
+import { officialSpecRows } from "@/lib/products/official-spec-display"
+import { OfficialSpecsTable } from "@/components/products/OfficialSpecsTable"
 import { getProductAffiliateLinks } from "@/lib/data/affiliate-links"
 import { urlsFromCatalog } from "@/lib/affiliate/catalog-price-rows"
 import { ChairProductOverview } from "@/components/chairs/ChairProductOverview"
@@ -191,6 +193,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
       new Set(fitEvidence.map((row) => row.fieldKey))
     ),
   }, chairReviews, [])
+  // Chairs in the official spec ledger show ledger values (with sources) in
+  // Specs and structured data instead of catalog/fit-record values.
+  const officialRows = officialSpecRows(slug)
+  if (officialRows.length > 0) {
+    chairSchema.additionalProperty = officialRows.map((row) => ({
+      "@type": "PropertyValue",
+      name: row.label,
+      value: row.values.map((v) => (v.scope ? `${v.text} (${v.scope})` : v.text)).join("; "),
+    }))
+  }
   const decisionGuide = getProductDecisionGuide(slug, product)
   const hasFitEvidence = fitEvidence.length > 0
 
@@ -211,6 +223,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   ]).slice(0, 6)
   const officialSources = uniqueByHref([
     ...(contentHub?.officialSources ?? []),
+    ...officialRows.map((row) => ({ href: row.source.url, label: row.source.title, description: `Official specifications, checked ${row.source.checkedOn ?? ""}.`.replace(" .", ".") })),
     ...(priceInfo?.sourceUrl ? [{ href: priceInfo.sourceUrl, label: priceInfo.sourceLabel, description: `Price source, checked ${priceInfo.checkedOn}.` }] : []),
   ])
   const overviewProduct = priceParts ? { ...productWithLinks, price: priceParts.amount } : contentHub ? { ...productWithLinks, price: "Check current configuration" } : productWithLinks
@@ -391,9 +404,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
               )}
 
               <ProductSection id="specs" eyebrow="Specs">
-                <ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} officialSource={null} />
+                {officialRows.length > 0 ? (
+                  <OfficialSpecsTable rows={officialRows} productName={product.name} />
+                ) : (
+                  <>
+                    <ChairProductSpecs product={productWithLinks} fitEvidence={fitEvidence} officialSource={null} />
+                    <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
+                  </>
+                )}
                 <DocumentedProductResearch slug={slug} inSpecs />
-                <ProductDataConfidence evidence={fitEvidence} trust={fitTrust} />
                 {officialSources.length > 0 && (
                   <div className="mt-8 border border-[#171717] bg-[#f5f1e8] p-6">
                     <h3 className="font-serif text-2xl">Sources</h3>

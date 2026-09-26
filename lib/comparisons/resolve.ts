@@ -5,7 +5,40 @@ import type { SupabaseClient } from "@supabase/supabase-js"
 import type { ComparisonProductInput } from "@/lib/comparisons/generate"
 import { runPublicReviewQuery } from "@/lib/reviews/exclusion"
 import { filterChairSpecsByEvidence } from "@/lib/data/product-fit-evidence"
-import { comparisonNeedsSourceReview, neutralComparisonSummary } from "@/lib/comparisons/public-safety"
+import { comparisonNeedsSourceReview, ledgerComparisonNeedsSourceReview, neutralComparisonSummary } from "@/lib/comparisons/public-safety"
+import { ledgerPairFigures } from "@/lib/comparisons/ledger-figures"
+
+/** Where the ledger-built spec table goes in place of the stored one. */
+export const OFFICIAL_SPEC_TABLE_MARKER = "<!--official-spec-table-->"
+
+type ReviewInput = {
+  subtitle?: string | null
+  excerpt?: string | null
+  seo_description?: string | null
+  content_html?: string | null
+  faq?: unknown
+}
+
+/**
+ * Whether a comparison shows its body. When both chairs are in the official
+ * spec ledger, the stored spec table is replaced by a ledger-built one and the
+ * rest of the page (FAQ included) must only state ledger or price-source
+ * figures; otherwise the original unsourced-claim check applies.
+ */
+export function comparisonReviewState(row: ReviewInput, slugA?: string | null, slugB?: string | null) {
+  const content = row.content_html ?? ""
+  const allowed = ledgerPairFigures(slugA, slugB)
+  if (!allowed) {
+    return { requiresSourceReview: comparisonNeedsSourceReview(row.subtitle, row.excerpt, row.seo_description, content), officialSpecTable: false, content }
+  }
+  const stripped = content.replace(/<table[\s\S]*?<\/table>/i, OFFICIAL_SPEC_TABLE_MARKER)
+  const faqText = Array.isArray(row.faq) ? (row.faq as { q?: string; a?: string }[]).map((f) => `${f?.q ?? ""} ${f?.a ?? ""}`).join(" ") : ""
+  return {
+    requiresSourceReview: ledgerComparisonNeedsSourceReview(allowed, row.subtitle, row.excerpt, row.seo_description, stripped, faqText),
+    officialSpecTable: true,
+    content: stripped,
+  }
+}
 
 /** Assemble one product's grounding data for the AI generator (admin/server). */
 export async function loadProductInput(
@@ -102,6 +135,8 @@ export type PublicComparison = {
   productA: PublicComparisonProduct | null
   productB: PublicComparisonProduct | null
   requiresSourceReview: boolean
+  /** Both chairs are in the official spec ledger; render the ledger table at the marker. */
+  officialSpecTable: boolean
 }
 
 async function loadPublicProduct(
@@ -149,7 +184,8 @@ export async function getPublicComparison(
     loadPublicProduct(supabase, (data.product_a_id as string | null) ?? null, Boolean(getVerifiedComparisonPilot(slug))),
     loadPublicProduct(supabase, (data.product_b_id as string | null) ?? null, Boolean(getVerifiedComparisonPilot(slug))),
   ])
-  const content = (data.content_html as string) ?? ""
+  const review = comparisonReviewState(data, productA?.slug, productB?.slug)
+  const content = review.content
 
   return {
     slug: data.slug as string,
@@ -168,7 +204,8 @@ export async function getPublicComparison(
     updated_at: (data.updated_at as string | null) ?? null,
     productA,
     productB,
-    requiresSourceReview: comparisonNeedsSourceReview(data.subtitle as string | null, data.excerpt as string | null, data.seo_description as string | null, content),
+    requiresSourceReview: review.requiresSourceReview,
+    officialSpecTable: review.officialSpecTable,
   }
 }
 
@@ -187,18 +224,28 @@ export async function getComparisonCards(
 ): Promise<ComparisonCard[]> {
   const { data } = await supabase
     .from("comparisons")
-    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at, product_a_id, product_b_id, content_html, seo_description")
+    .select("slug, title, subtitle, excerpt, hero_image_url, tier, featured, published_at, product_a_id, product_b_id, content_html, seo_description, faq")
     .eq("status", "published")
     .order("featured", { ascending: false })
     .order("published_at", { ascending: false, nullsFirst: false })
     .limit(200)
-  return (await comparisonMedia(supabase, data ?? [])).map((c) => ({
-    requiresSourceReview: comparisonNeedsSourceReview(c.subtitle as string | null, c.excerpt as string | null, c.seo_description as string | null, c.content_html as string | null),
+  const ids = [...new Set((data ?? []).flatMap((c) => [c.product_a_id, c.product_b_id]).filter(Boolean))]
+  const { data: products } = ids.length ? await supabase.from("products").select("id, slug").in("id", ids) : { data: [] }
+  const slugOf = new Map((products ?? []).map((p) => [p.id as string, p.slug as string]))
+  return (await comparisonMedia(supabase, data ?? [])).map((c) => {
+    const slugA = slugOf.get(c.product_a_id as string), slugB = slugOf.get(c.product_b_id as string)
+    const allowed = ledgerPairFigures(slugA, slugB)
+    const excerptHidden = allowed
+      ? ledgerComparisonNeedsSourceReview(allowed, c.excerpt as string | null, c.subtitle as string | null)
+      : comparisonNeedsSourceReview(c.excerpt as string | null, c.subtitle as string | null)
+    return {
+    requiresSourceReview: comparisonReviewState(c, slugA, slugB).requiresSourceReview,
     slug: c.slug as string,
     title: c.title as string,
     subtitle: (c.subtitle as string | null) ?? null,
-    excerpt: comparisonNeedsSourceReview(c.excerpt as string | null, c.subtitle as string | null) ? neutralComparisonSummary() : (c.excerpt as string | null) ?? null,
+    excerpt: excerptHidden ? neutralComparisonSummary() : (c.excerpt as string | null) ?? null,
     hero_image_url: (c.hero_image_url as string | null) ?? null,
     tier: (c.tier as string | null) ?? null,
-  }))
+    }
+  })
 }

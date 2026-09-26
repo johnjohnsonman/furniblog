@@ -26,7 +26,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
     { label: "Sizes", value: "A · B · C", note: "Small / medium / large" },
     { label: "Mesh", value: "8Z Pellicle", note: "Eight tension zones, back and seat" },
     { label: "Lumbar", value: "PostureFit SL", note: "Option; other back supports exist" },
-    { label: "Warranty", value: "12 years", note: "24/7 use, no excluded parts" },
+    { label: "Warranty", value: "12 years", note: "3-shift use, limited exceptions" },
   ],
 
   checksTitle: "Check these before you buy",
@@ -34,7 +34,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
     "The Aeron's price and options make configuration the whole game. Confirm four things before ordering.",
   checks: [
     { n: "01", title: "Classic vs Remastered", body: "The chair Herman Miller sells today is the Remastered Aeron (updated in 2016) with 8Z Pellicle mesh, PostureFit SL and a revised tilt. The older Classic is discontinued but still circulates as used/refurbished stock. If you want the current chair, confirm the listing says \"Remastered\"." },
-    { n: "02", title: "Pick the right size (A, B or C)", body: "The Aeron does not adjust its frame size — you choose it. Size A is the smallest, B is the standard/most common, and C is the largest. Weight capacity is 300 lb for A and 350 lb for B and C. Use Herman Miller's size chart against your height and weight before ordering; the wrong size is the most common Aeron regret." },
+    { n: "02", title: "Pick the right size (A, B or C)", body: "The Aeron does not adjust its frame size — you choose it. Size A is the smallest, B is the standard/most common, and C is the largest. Weight capacity is 300 lb for A, 350 lb for B and 400 lb for C. Use Herman Miller's size chart against your height and weight before ordering; the wrong size is the most common Aeron regret." },
     { n: "03", title: "Choose the back support and arms", body: "Back support is an option: Basic, Adjustable Lumbar, PostureFit, or Adjustable PostureFit SL (the most supportive). Arms range from fixed to height-adjustable to fully adjustable. A cheaper listing is often a more basic configuration — check exactly what it includes." },
     { n: "04", title: "There is no factory headrest; watch condition on marketplaces", body: "Herman Miller does not make an Aeron headrest — any headrest you see is third-party. On Amazon and resale sites, listings mix new, open-box, used and refurbished stock at very different prices and warranties; confirm the exact version, size, options and condition before you buy." },
   ],
@@ -43,13 +43,13 @@ export const HERMAN_MILLER_AERON: RichReview = {
     { k: "Sizes", v: "A (small), B (medium), C (large) — frame size is chosen, not adjusted", tier: "B" },
     { k: "Size B dimensions", v: "≈ 27 in W × 16.75 in D × 41 in H; seat height ≈ 20.5 in", tier: "B" },
     { k: "Size C dimensions", v: "≈ 28.25 in W × 18.5 in D × 43 in H", tier: "B" },
-    { k: "Weight capacity", v: "Size A: 300 lb · Sizes B & C: 350 lb", tier: "B" },
+    { k: "Weight capacity", v: "Size A: 300 lb · Size B: 350 lb · Size C: 400 lb", tier: "B" },
     { k: "Mesh", v: "8Z Pellicle (eight tension zones) on back and seat", tier: "B" },
     { k: "Back support", v: "Option: Basic / Adjustable Lumbar / PostureFit / Adjustable PostureFit SL", tier: "B" },
     { k: "Arms", v: "Option: fixed, height-adjustable, or fully adjustable", tier: "B" },
     { k: "Tilt", v: "Standard tilt; Tilt Limiter and Seat Angle are options", tier: "B" },
     { k: "Headrest", v: "None from Herman Miller (third-party only)", tier: "B" },
-    { k: "Warranty", v: "12 years, 24/7 use, no excluded parts", tier: "B" },
+    { k: "Warranty", v: "12 years, 3-shift, limited exceptions", tier: "B" },
   ],
   dimsSourceNote:
     "Source: Herman Miller official product documentation and size/fit reference (checked 2026-09-09). Exact dimensions vary by size; confirm the size and options on the listing you buy from.",
@@ -71,7 +71,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
   pros: [
     { t: "All-mesh 8Z Pellicle back and seat with strong airflow and a very long track record.", src: "Herman Miller (documented)" },
     { t: "Three sizes plus PostureFit SL let you fit a wide range of bodies precisely.", src: "Herman Miller (documented)" },
-    { t: "12-year, 24/7 warranty with no excluded parts and a deep spare-parts/repair ecosystem.", src: "Herman Miller (documented)" },
+    { t: "12-year, 3-shift warranty (limited exceptions) and a deep spare-parts/repair ecosystem.", src: "Herman Miller (documented)" },
     { t: "Consistently rated among the best task chairs in published long-term reviews.", src: "Published reviews (research)" },
   ],
   cons: [
@@ -96,7 +96,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
   rivals: [
     { name: "Herman Miller Aeron (Remastered)", lumbar: "PostureFit SL (option)", arms: "Up to fully adjustable (option)", standout: "All-mesh icon, 3 sizes, 12-yr warranty", isSelf: true },
     { name: "Steelcase Leap V2", lumbar: "Adjustable height + firmness", arms: "4D", standout: "Upholstered LiveBack, 400 lb capacity" },
-    { name: "Haworth Fern", lumbar: "Optional height-adjustable", arms: "4D", standout: "Wave Suspension, headrest on non-Digital-Knit" },
+    { name: "Haworth Fern", lumbar: "Optional height-adjustable", arms: "4D (option)", standout: "Wave Suspension, headrest on non-Digital-Knit" },
     { name: "SIHOO Doro C300", lumbar: "Self-adaptive dynamic", arms: "3D", standout: "Adaptive lumbar at a fraction of the price" },
   ],
 
@@ -127,7 +127,7 @@ export const HERMAN_MILLER_AERON: RichReview = {
 
   faqs: [
     { q: "Is the current Aeron the Classic or the Remastered?", a: "Herman Miller sells the Remastered Aeron (updated in 2016) with 8Z Pellicle mesh and PostureFit SL. The Classic is discontinued but still appears as used/refurbished stock — check the listing." },
-    { q: "Which size should I choose?", a: "Size A is smallest, B is standard, C is largest, and the frame size cannot be changed later. Weight capacity is 300 lb for A and 350 lb for B and C. Use Herman Miller's size/fit chart against your height and weight before ordering." },
+    { q: "Which size should I choose?", a: "Size A is smallest, B is standard, C is largest, and the frame size cannot be changed later. Weight capacity is 300 lb for A, 350 lb for B and 400 lb for C. Use Herman Miller's size/fit chart against your height and weight before ordering." },
     { q: "Does the Aeron come with a headrest?", a: "No. Herman Miller does not make an Aeron headrest; any headrest you see is a third-party accessory." },
     { q: "Why are Amazon prices so different?", a: "Amazon listings mix Classic and Remastered, different sizes and options, and new, open-box, used and refurbished stock. The link here is a search — confirm exactly what a listing is before buying." },
     { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Herman Miller's documentation and published reviews." },

@@ -40,13 +40,13 @@ export const STEELCASE_GESTURE: RichReview = {
   dims: [
     { k: "Overall", v: "≈ 39.25–44.25 in H × 22.375–34.625 in W × 21–23.625 in D", tier: "B" },
     { k: "Seat height", v: "≈ 16–21 in", tier: "B" },
-    { k: "Seat depth", v: "Adjustable ≈ 15.75–18.75 in", tier: "B" },
+    { k: "Seat depth", v: "Adjustable 15.75–18.5 in", tier: "B" },
     { k: "Weight capacity", v: "400 lb", tier: "B" },
     { k: "Recline", v: "Full recline with 3 locking angles, upright lock and tension dial", tier: "B" },
     { k: "Armrests", v: "360-degree arms (up/down, in/out, forward/back, pivot); fixed or armless also sold", tier: "B" },
     { k: "Back", v: "3D LiveBack; Shell or Wrapped upholstery options", tier: "B" },
     { k: "Seat", v: "Contoured foam with flexible perimeter/adaptive bolstering", tier: "B" },
-    { k: "Warranty", v: "Limited lifetime frame; 12-year multi-shift parts & labour (per Steelcase terms)", tier: "B" },
+    { k: "Warranty", v: "Steelcase Limited Lifetime warranty – 12 years, multi-shift, 24/7 parts and labor", tier: "B" },
   ],
   dimsSourceNote:
     "Sources: steelcase.com, the linked Amazon listing (ASIN B08KL9JMVB) and published reviews (checked 2026-09-10). Overall dimensions vary with the arm and back configuration; some retail listings quote larger heights that appear to include packaging — the figures here follow Steelcase.",
@@ -99,7 +99,7 @@ export const STEELCASE_GESTURE: RichReview = {
     ctaLabel: "Check price on Amazon",
     rows: [
       { k: "Returns", v: "Amazon's return window applies and depends on the seller; Steelcase's own store lists a 30-day return. Check the listing." },
-      { k: "Warranty", v: "Limited lifetime on the frame, 12-year multi-shift on parts and labour (per Steelcase). Confirm on the listing." },
+      { k: "Warranty", v: "Steelcase Limited Lifetime warranty – 12 years, multi-shift, 24/7 parts and labor. Confirm on the listing." },
       { k: "What to check", v: "Arm type (360-degree vs fixed), back (Shell vs Wrapped), upholstery grade, and caster type for your floor." },
     ],
     officialStore: {

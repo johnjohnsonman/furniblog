@@ -8,7 +8,8 @@ import { ChevronRight } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { createPublicServerClient } from "@/lib/supabase/public-server"
-import { getPublicComparison } from "@/lib/comparisons/resolve"
+import { getPublicComparison, OFFICIAL_SPEC_TABLE_MARKER } from "@/lib/comparisons/resolve"
+import { OfficialPairSpecTable } from "@/components/compare/OfficialPairSpecTable"
 import { resolveAmazonAffiliateLink } from "@/lib/affiliate/resolve-amazon-link"
 import { SmartBuyLink } from "@/components/affiliate/SmartBuyLink"
 import { BuyingGuideRail } from "@/components/growth/BuyingGuideRail"
@@ -177,7 +178,15 @@ export default async function ComparePage({
             </div>
           )}
 
-          {pilot ? <VerifiedComparison pilot={pilot} productA={c.productA} productB={c.productB} /> : c.requiresSourceReview ? <section className="border border-[#171717] bg-[#f5f1e8] p-6" aria-labelledby="source-review-heading"><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#8a5a20]">Source review in progress</p><h2 id="source-review-heading" className="mt-2 font-serif text-2xl">This comparison is being checked against model-specific sources.</h2><p className="mt-3 leading-7 text-muted-foreground">Earlier copy included claims whose exact model, configuration or source could not be confirmed. Chairpedia has withheld those claims while preserving access to both product records.</p></section> : <div className="chairpedia-body" dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(c.content_html)) }} />}
+          {pilot ? <VerifiedComparison pilot={pilot} productA={c.productA} productB={c.productB} /> : c.requiresSourceReview ? <section className="border border-[#171717] bg-[#f5f1e8] p-6" aria-labelledby="source-review-heading"><p className="text-xs font-semibold uppercase tracking-[.14em] text-[#8a5a20]">Source review in progress</p><h2 id="source-review-heading" className="mt-2 font-serif text-2xl">This comparison is being checked against model-specific sources.</h2><p className="mt-3 leading-7 text-muted-foreground">Earlier copy included claims whose exact model, configuration or source could not be confirmed. Chairpedia has withheld those claims while preserving access to both product records.</p></section> : c.officialSpecTable && c.productA && c.productB ? (() => {
+            // The stored spec table was swapped for a marker; render the ledger table there.
+            const [before, after = ""] = c.content_html.includes(OFFICIAL_SPEC_TABLE_MARKER) ? c.content_html.split(OFFICIAL_SPEC_TABLE_MARKER) : ["", c.content_html]
+            return <>
+              {before && <div className="chairpedia-body" dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(before)) }} />}
+              <OfficialPairSpecTable a={c.productA} b={c.productB} />
+              <div className="chairpedia-body" dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(after)) }} />
+            </>
+          })() : <div className="chairpedia-body" dangerouslySetInnerHTML={{ __html: wrapTables(rewriteOwnedSiteLinks(c.content_html)) }} />}
 
           {c.faq.length > 0 && !c.requiresSourceReview && !pilot && (
             <section className="mt-12 border-t border-border pt-8">

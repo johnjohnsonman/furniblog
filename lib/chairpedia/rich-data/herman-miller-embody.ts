@@ -114,7 +114,7 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
 
   verdict: [
     "Embody is the health argument made into a chair. Instead of a lumbar dial and a size chart, it uses a \"pixelated\" matrix of hundreds of moving support points and a backbone-like central spine to distribute your weight and keep you subtly moving — the case being that motion, not rigidity, is what long sitting needs. One adaptive size, a BackFit curve you match to your spine, an adjustable seat depth and a 300 lb, 12-year-warrantied build round it out.",
-    "It asks you to accept its philosophy. There's no headrest and no separate lumbar knob, and the seat is firmer and warmer than mesh, so if you want a headrest, dial-in lumbar or an airy seat, the Aeron is the better Herman Miller. The gaming Logitech G edition is the same chassis with cooling foam and lean-forward padding — pick that if you sit forward and run warm. For active, all-day sitting in one size, few chairs are as considered.",
+    "It asks you to accept its philosophy. There's no headrest and no separate lumbar knob, and the seat is firmer and warmer than mesh, so if you want dial-in lumbar or an airy seat, the Aeron is the better Herman Miller (it has no factory headrest either). The gaming Logitech G edition is the same chassis with cooling foam and lean-forward padding — pick that if you sit forward and run warm. For active, all-day sitting in one size, few chairs are as considered.",
   ],
   verdictPullQuote:
     "Built to keep you moving, not locked in place — one adaptive size, no headrest, and a gaming twin that shares its bones.",
@@ -123,7 +123,7 @@ export const HERMAN_MILLER_EMBODY: RichReview = {
     { q: "How is the gaming Embody different?", a: "The Logitech G Embody uses the same frame, adjustments, 300 lb capacity and 12-year warranty, but adds copper-infused cooling foam and thicker upper-back padding for forward-leaning postures, in limited dark colourways." },
     { q: "What is \"pixelated support\"?", a: "Embody's seat and back use a matrix of hundreds of small support points (\"pixels\") over four layers, which flex individually to distribute weight and encourage micro-movement." },
     { q: "Does Embody come in sizes?", a: "No — it's a single adaptive size. Fit comes from the BackFit, seat-depth and arm adjustments rather than an A/B/C size chart." },
-    { q: "Is there a headrest or adjustable lumbar?", a: "No headrest, and no separate lumbar dial — support is shaped by the pixelated matrix and the BackFit curve. If you want those, look at the Aeron or a Steelcase Leap." },
+    { q: "Is there a headrest or adjustable lumbar?", a: "No headrest, and no separate lumbar dial — support is shaped by the pixelated matrix and the BackFit curve. For adjustable lumbar, look at the Aeron or a Steelcase Leap; for a factory headrest option, the Leap (the Aeron has none)." },
     { q: "What is this guide based on?", a: "This guide combines manufacturer specifications with owner reviews from around the world. It draws on Herman Miller's specs, dealer sheets and published reviews; the deep-dive below adds context." },
   ],
 
